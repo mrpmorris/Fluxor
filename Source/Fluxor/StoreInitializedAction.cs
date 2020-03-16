@@ -5,9 +5,8 @@
 	/// action dispatched, although it might not be because Middlewares may dispatch
 	/// actions earlier on.
 	/// </summary>
-	public class StoreInitializedAction 
+	public class StoreInitializedAction
 	{
-		//TODO: Make internal
-		public StoreInitializedAction() { }
+		internal StoreInitializedAction() { }
 	}
 }
