@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Fluxor\Fluxor.csproj" />
+    <ProjectReference Include="..\..\Source\Fluxor\Fluxor.csproj" />
   </ItemGroup>
 
 </Project>

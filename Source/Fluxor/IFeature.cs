@@ -44,16 +44,9 @@ namespace Fluxor
 		void ReceiveDispatchNotificationFromStore(object action);
 
 		/// <summary>
-		/// Registers a component to be re-rendered whenever the state changes
+		/// Event that is executed whenever the state changes
 		/// </summary>
-		/// <param name="subscriber">The component that will have <see cref="ComponentBase.StateHasChanged"/> executed when the state changes</param>
-		// TODO: Replace void Subscribe(ComponentBase subscriber);
-
-		/// <summary>
-		/// Stops a component from being re-rendered whenever the state changes
-		/// </summary>
-		/// <param name="subscriber">The component that has <see cref="ComponentBase.StateHasChanged"/> executed when the state changes</param>
-		//TODO: Replace void Unsubscribe(ComponentBase subscriber);
+		event EventHandler StateChanged;
 	}
 
 	/// <summary>
@@ -77,6 +70,6 @@ namespace Fluxor
 		/// <summary>
 		/// Event that is executed whenever the state changes
 		/// </summary>
-		event EventHandler<TState> StateChanged;
+		new event EventHandler<TState> StateChanged;
 	}
 }

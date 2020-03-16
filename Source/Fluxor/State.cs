@@ -32,10 +32,13 @@ namespace Fluxor
 			remove { Feature.StateChanged -= value; }
 		}
 
-		/// <see cref="IState.Subscribe(ComponentBase)"/>
-		//TODO: Replace public void Subscribe(ComponentBase subscriber) => Feature.Subscribe(subscriber);
-
-		/// <see cref="IState.Unsubscribe(ComponentBase)"/>
-		//TODO: Replace public void Unsubscribe(ComponentBase subscriber) => Feature.Unsubscribe(subscriber);
+		/// <summary>
+		/// Event that is executed whenever the state changes
+		/// </summary>
+		event EventHandler IState.StateChanged
+		{
+			add { (Feature as IFeature).StateChanged += value; }
+			remove { (Feature as IFeature).StateChanged -= value; }
+		}
 	}
 }
