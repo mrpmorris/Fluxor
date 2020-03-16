@@ -23,7 +23,6 @@ namespace Fluxor.Blazor.Web.Components
 			Dispose(true);
 		}
 
-
 		/// <summary>
 		/// Subscribes to state properties
 		/// </summary>

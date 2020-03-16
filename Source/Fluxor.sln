@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.UnitTests", "..\Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web", "Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj", "{6289FEA3-4F01-4100-BB4B-6F8938203886}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluxor.Blazor.Web.UnitTests", "Fluxor.Blazor.Web.UnitTests\Fluxor.Blazor.Web.UnitTests.csproj", "{2163CE42-F884-4A6D-907A-840CE1C7D3A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,18 @@ Global
 		{6289FEA3-4F01-4100-BB4B-6F8938203886}.Release|iPhone.Build.0 = Release|Any CPU
 		{6289FEA3-4F01-4100-BB4B-6F8938203886}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{6289FEA3-4F01-4100-BB4B-6F8938203886}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhone.Build.0 = Release|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +88,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A143115C-F0CD-42A5-9DBB-31F4857D8729} = {1A6663AC-4F1F-40AD-8D03-0B0977ED466D}
 		{1C0017E0-BF78-4E09-9763-E0D1907DF5AF} = {2279CD95-5886-4777-B019-E66683CE32F1}
+		{2163CE42-F884-4A6D-907A-840CE1C7D3A6} = {2279CD95-5886-4777-B019-E66683CE32F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}
