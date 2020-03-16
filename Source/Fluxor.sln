@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web", "Fluxor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluxor.Blazor.Web.UnitTests", "Fluxor.Blazor.Web.UnitTests\Fluxor.Blazor.Web.UnitTests.csproj", "{2163CE42-F884-4A6D-907A-840CE1C7D3A6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 CounterSample", "01 CounterSample", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CounterSample", "..\Samples\Blazor\01CounterSample\CounterSample\CounterSample.csproj", "{E4E667AC-8CFE-4632-99D0-56DD69117DD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,18 @@ Global
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhone.Build.0 = Release|Any CPU
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhone.Build.0 = Release|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +105,8 @@ Global
 		{A143115C-F0CD-42A5-9DBB-31F4857D8729} = {1A6663AC-4F1F-40AD-8D03-0B0977ED466D}
 		{1C0017E0-BF78-4E09-9763-E0D1907DF5AF} = {2279CD95-5886-4777-B019-E66683CE32F1}
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6} = {2279CD95-5886-4777-B019-E66683CE32F1}
+		{14D676FF-AC1C-4912-81D0-9B98B8B090D8} = {A143115C-F0CD-42A5-9DBB-31F4857D8729}
+		{E4E667AC-8CFE-4632-99D0-56DD69117DD2} = {14D676FF-AC1C-4912-81D0-9B98B8B090D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}

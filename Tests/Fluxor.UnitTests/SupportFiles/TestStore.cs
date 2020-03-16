@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Fluxor.UnitTests.SupportFiles
 {
-	public class TestStore : AbstractStore
+	public class TestStore : Store
 	{
 	}
 }

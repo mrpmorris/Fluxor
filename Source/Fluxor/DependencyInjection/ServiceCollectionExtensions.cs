@@ -25,10 +25,9 @@ namespace Fluxor
 		///	);
 		///});
 		///</example>
-		public static IServiceCollection AddFluxor<TStore>(
+		public static IServiceCollection AddFluxor(
 			this IServiceCollection serviceCollection,
 			Action<Options> configure = null)
-			where TStore: AbstractStore
 		{
 			// We only use an instance so middleware can create extensions to the Options
 			var options = new Options(serviceCollection);
@@ -44,7 +43,7 @@ namespace Fluxor
 			// Scan for features and effects
 			if (Options.DependencyInjectionEnabled)
 			{
-				DependencyScanner.Scan<TStore>(
+				DependencyScanner.Scan(
 					serviceCollection: serviceCollection,
 					assembliesToScan: Options.DependencyInjectionAssembliesToScan,
 					scanIncludeList: scanIncludeList);

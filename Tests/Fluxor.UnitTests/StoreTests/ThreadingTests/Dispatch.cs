@@ -13,7 +13,7 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests
 		const int NumberOfIncrementsPerThread = 1000;
 		volatile int NumberOfThreadsWaitingToStart = NumberOfThreads;
 
-		AbstractStore Store;
+		Store Store;
 		IFeature<CounterState> Feature;
 		ManualResetEvent StartEvent;
 

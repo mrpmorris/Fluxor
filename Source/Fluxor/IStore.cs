@@ -6,7 +6,7 @@ namespace Fluxor
 {
 	/// <summary>
 	/// Identifies a store, which is a collection of features. It is recommended that you do not create your
-	/// own classes that implement this interface as the <see cref="AbstractStore"/> class does this for you.
+	/// own classes that implement this interface as the <see cref="Store"/> class does this for you.
 	/// </summary>
 	public interface IStore : IDispatcher
 	{
@@ -90,5 +90,11 @@ namespace Fluxor
 		/// </summary>
 		/// <see cref="InitializeAsync()"/>
 		Task Initialized { get; }
+
+		/// <summary>
+		/// Returns a list of registered middleware
+		/// </summary>
+		/// <returns>Middleware instances currently registered</returns>
+		IEnumerable<IMiddleware> GetMiddlewares();
 	}
 }

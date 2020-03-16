@@ -9,11 +9,10 @@ namespace Fluxor.DependencyInjection
 {
 	internal static class DependencyScanner
 	{
-		internal static void Scan<TStore>(
+		internal static void Scan(
 			this IServiceCollection serviceCollection,
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
-			where TStore: AbstractStore
 		{
 			if (assembliesToScan == null || assembliesToScan.Count() == 0)
 				throw new ArgumentNullException(nameof(assembliesToScan));
@@ -53,18 +52,17 @@ namespace Fluxor.DependencyInjection
 					discoveredReducerClasses,
 					discoveredReducerMethods);
 
-			RegisterStore<TStore>(
+			RegisterStore(
 				serviceCollection,
 				discoveredFeatureClasses,
 				discoveredEffectClasses,
 				discoveredEffectMethods);
 		}
 
-		private static void RegisterStore<TStore>(IServiceCollection serviceCollection,
+		private static void RegisterStore(IServiceCollection serviceCollection,
 			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses,
 			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses,
 			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods)
-			where TStore : AbstractStore
 		{
 			// Register IDispatcher as an alias to IStore
 			serviceCollection.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetService<IStore>());
@@ -72,7 +70,7 @@ namespace Fluxor.DependencyInjection
 			// Register a custom factory for building IStore that will inject all effects
 			serviceCollection.AddScoped(typeof(IStore), serviceProvider =>
 			{
-				var store = serviceProvider.GetRequiredService<TStore>();
+				var store = new Store();
 				foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
 				{
 					var feature = (IFeature)serviceProvider.GetService(discoveredFeatureClass.FeatureInterfaceGenericType);

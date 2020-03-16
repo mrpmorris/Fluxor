@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Fluxor
 {
 	/// <see cref="IStore"/>
-	public abstract class AbstractStore : IStore
+	public class Store : IStore
 	{
 		/// <see cref="IStore.Features"/>
 		public IReadOnlyDictionary<string, IFeature> Features => FeaturesByName;
@@ -31,7 +31,7 @@ namespace Fluxor
 		/// <summary>
 		/// Creates an instance of the store
 		/// </summary>
-		public AbstractStore()
+		public Store()
 		{
 			MethodInfo dispatchNotifictionFromStoreMethodInfo =
 				typeof(IFeature)
@@ -41,6 +41,9 @@ namespace Fluxor
 
 			Dispatch(new StoreInitializedAction());
 		}
+
+		/// <see cref="IStore.GetMiddlewares"/>
+		public IEnumerable<IMiddleware> GetMiddlewares() => Middlewares;
 
 		/// <see cref="IStore.AddFeature(IFeature)"/>
 		public void AddFeature(IFeature feature)
