@@ -31,14 +31,18 @@ namespace Fluxor.DependencyInjection
 		/// <summary>
 		/// Enables automatic discovery of features/effects/reducers
 		/// </summary>
-		/// <param name="assembliesToScan">A collection of assemblies to scan</param>
+		/// <param name="additionalAssembliesToScan">A collection of assemblies to scan</param>
 		/// <returns>Options</returns>
-		public Options UseDependencyInjection(params Assembly[] assembliesToScan)
+		public Options UseDependencyInjection(Assembly assemblyToScan, params Assembly[] additionalAssembliesToScan)
 		{
-			if (assembliesToScan == null || assembliesToScan.Length == 0)
-				throw new ArgumentNullException(nameof(assembliesToScan));
+			if (assemblyToScan == null)
+				throw new ArgumentNullException(nameof(assemblyToScan));
 
-			var newAssembliesToScan = assembliesToScan.Select(x => new AssemblyScanSettings(x)).ToList();
+			var allAssemblies = new List<Assembly> { assemblyToScan };
+			if (additionalAssembliesToScan != null)
+				allAssemblies.AddRange(additionalAssembliesToScan);
+
+			var newAssembliesToScan = allAssemblies.Select(x => new AssemblyScanSettings(x)).ToList();
 			newAssembliesToScan.AddRange(DependencyInjectionAssembliesToScan);
 			DependencyInjectionEnabled = true;
 			DependencyInjectionAssembliesToScan = newAssembliesToScan.ToArray();
