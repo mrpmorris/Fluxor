@@ -10,7 +10,7 @@
     <Copyright>Peter Morris</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
-    <PackageIcon>blazor-fluxor-logo-small.png</PackageIcon>
+    <PackageIcon>fluxor-blazor-logo-small.png</PackageIcon>
     <PackageIconUrl />
     <RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -32,7 +32,7 @@
 
 
   <ItemGroup>
-    <None Include="..\..\docs\images\blazor-fluxor-logo-small.png">
+    <None Include="..\..\docs\images\fluxor-blazor-logo-small.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
