@@ -1,10 +1,10 @@
 ﻿namespace EffectsSample.Client.Store.CounterUseCase
 {
-	public class State
+	public class CounterState
 	{
 		public int ClickCount { get; }
 
-		public State(int clickCount)
+		public CounterState(int clickCount)
 		{
 			ClickCount = clickCount;
 		}

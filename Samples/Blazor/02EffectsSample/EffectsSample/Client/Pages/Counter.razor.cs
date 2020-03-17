@@ -6,7 +6,7 @@ namespace EffectsSample.Client.Pages
 	public partial class Counter
 	{
 		[Inject]
-		private IState<Store.CounterUseCase.State> State { get; set; }
+		private IState<Store.CounterUseCase.CounterState> State { get; set; }
 
 		[Inject]
 		public IDispatcher Dispatcher { get; set; }

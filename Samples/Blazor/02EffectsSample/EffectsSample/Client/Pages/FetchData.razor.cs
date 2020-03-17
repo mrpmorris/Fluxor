@@ -7,7 +7,7 @@ namespace EffectsSample.Client.Pages
 	public partial class FetchData
 	{
 		[Inject]
-		private IState<Store.WeatherUseCase.State> State { get; set; }
+		private IState<Store.WeatherUseCase.WeatherState> State { get; set; }
 
 		[Inject]
 		private IDispatcher Dispatcher { get; set; }
