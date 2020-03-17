@@ -1,8 +1,8 @@
-﻿using EffectsSample.Client.Store.CounterUseCase;
-using Fluxor;
+﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
+using ReduxDevToolsSample.Client.Store.CounterUseCase;
 
-namespace EffectsSample.Client.Pages
+namespace ReduxDevToolsSample.Client.Pages
 {
 	public partial class Counter
 	{

@@ -5,7 +5,7 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (State.Value.IsLoading)
+@if (WeatherState.Value.IsLoading)
 {
 	<p><em>Loading...</em></p>
 }
@@ -21,9 +21,9 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@if (State.Value.Forecasts != null)
+			@if (WeatherState.Value.Forecasts != null)
 			{
-				foreach (var forecast in State.Value.Forecasts)
+				foreach (var forecast in WeatherState.Value.Forecasts)
 				{
 					<tr>
 						<td>@forecast.Date.ToShortDateString()</td>

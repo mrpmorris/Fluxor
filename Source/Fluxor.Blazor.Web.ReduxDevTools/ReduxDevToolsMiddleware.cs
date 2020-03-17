@@ -9,7 +9,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 	/// <summary>
 	/// Middleware for interacting with the Redux Devtools extension for Chrome
 	/// </summary>
-	internal class ReduxDevToolsMiddleware : WebMiddleware
+	public sealed class ReduxDevToolsMiddleware : WebMiddleware
 	{
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;
@@ -76,7 +76,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 					if (!Store.Features.TryGetValue(newFeatureState.Key, out IFeature feature))
 						continue;
 
-					var serializedFeatureStateElement = (JsonToken)newFeatureState.Value;
+					var serializedFeatureStateElement = JsonConvert.SerializeObject(newFeatureState.Value);
 					object stronglyTypedFeatureState = JsonConvert.DeserializeObject(
 						value: serializedFeatureStateElement.ToString(),
 						type: feature.GetStateType());

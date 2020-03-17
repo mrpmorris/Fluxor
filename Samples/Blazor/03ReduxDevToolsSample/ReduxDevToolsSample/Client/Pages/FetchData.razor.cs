@@ -1,8 +1,8 @@
-﻿using EffectsSample.Client.Store.WeatherUseCase;
+﻿using ReduxDevToolsSample.Client.Store.WeatherUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 
-namespace EffectsSample.Client.Pages
+namespace ReduxDevToolsSample.Client.Pages
 {
 	public partial class FetchData
 	{
