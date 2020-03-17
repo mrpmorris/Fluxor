@@ -1,5 +1,5 @@
 ﻿using Fluxor;
-using System;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -20,18 +20,21 @@ namespace MiddlewareSample.Client.Middlewares.Logging
 
 		public override bool MayDispatchAction(object action)
 		{
-			Debug.WriteLine(nameof(MayDispatchAction), action);
+			Debug.WriteLine(nameof(MayDispatchAction) + ObjectInfo(action));
 			return true;
 		}
 
 		public override void BeforeDispatch(object action)
 		{
-			Debug.WriteLine(nameof(BeforeDispatch), action);
+			Debug.WriteLine(nameof(BeforeDispatch) + ObjectInfo(action));
 		}
 
 		public override void AfterDispatch(object action)
 		{
-			Debug.WriteLine(nameof(AfterDispatch), action);
+			Debug.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
 		}
+
+		private string ObjectInfo(object obj)
+			=> ": " + obj.GetType().Name + " = " + JsonConvert.SerializeObject(obj);
 	}
 }
