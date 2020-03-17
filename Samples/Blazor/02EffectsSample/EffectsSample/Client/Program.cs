@@ -11,7 +11,7 @@ namespace EffectsSample.Client
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("app");
 			builder.Services.AddFluxor(o => o
-				.UseDependencyInjection(typeof(Program).Assembly)
+				.ScanAssemblies(typeof(Program).Assembly)
 			);
 			await builder.Build().RunAsync();
 		}

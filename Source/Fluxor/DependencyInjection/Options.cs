@@ -11,8 +11,7 @@ namespace Fluxor.DependencyInjection
 	/// </summary>
 	public class Options
 	{
-		internal static bool DependencyInjectionEnabled { get; private set; }
-		internal static AssemblyScanSettings[] DependencyInjectionAssembliesToScan { get; private set; } = new AssemblyScanSettings[0];
+		internal static AssemblyScanSettings[] AssembliesToScan { get; private set; } = new AssemblyScanSettings[0];
 		internal static Type[] MiddlewareTypes = new Type[0];
 		/// <summary>
 		/// Service collection for registering services
@@ -33,7 +32,7 @@ namespace Fluxor.DependencyInjection
 		/// </summary>
 		/// <param name="additionalAssembliesToScan">A collection of assemblies to scan</param>
 		/// <returns>Options</returns>
-		public Options UseDependencyInjection(Assembly assemblyToScan, params Assembly[] additionalAssembliesToScan)
+		public Options ScanAssemblies(Assembly assemblyToScan, params Assembly[] additionalAssembliesToScan)
 		{
 			if (assemblyToScan == null)
 				throw new ArgumentNullException(nameof(assemblyToScan));
@@ -43,9 +42,8 @@ namespace Fluxor.DependencyInjection
 				allAssemblies.AddRange(additionalAssembliesToScan);
 
 			var newAssembliesToScan = allAssemblies.Select(x => new AssemblyScanSettings(x)).ToList();
-			newAssembliesToScan.AddRange(DependencyInjectionAssembliesToScan);
-			DependencyInjectionEnabled = true;
-			DependencyInjectionAssembliesToScan = newAssembliesToScan.ToArray();
+			newAssembliesToScan.AddRange(AssembliesToScan);
+			AssembliesToScan = newAssembliesToScan.ToArray();
 
 			return this;
 		}
@@ -67,7 +65,7 @@ namespace Fluxor.DependencyInjection
 			Assembly assembly = typeof(TMiddleware).Assembly;
 			string @namespace = typeof(TMiddleware).Namespace;
 
-			DependencyInjectionAssembliesToScan = new List<AssemblyScanSettings>(DependencyInjectionAssembliesToScan)
+			AssembliesToScan = new List<AssemblyScanSettings>(AssembliesToScan)
 			{
 				new AssemblyScanSettings(assembly, @namespace)
 			}

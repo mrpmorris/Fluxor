@@ -40,15 +40,11 @@ namespace Fluxor
 			IEnumerable<AssemblyScanSettings> scanIncludeList = Options.MiddlewareTypes
 				.Select(t => new AssemblyScanSettings(t.Assembly, t.Namespace));
 
-			// Scan for features and effects
-			if (Options.DependencyInjectionEnabled)
-			{
-				DependencyScanner.Scan(
-					serviceCollection: serviceCollection,
-					assembliesToScan: Options.DependencyInjectionAssembliesToScan,
-					scanIncludeList: scanIncludeList);
-				serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
-			}
+			DependencyScanner.Scan(
+				serviceCollection: serviceCollection,
+				assembliesToScan: Options.AssembliesToScan,
+				scanIncludeList: scanIncludeList);
+			serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
 
 			return serviceCollection;
 		}

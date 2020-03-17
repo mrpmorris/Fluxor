@@ -1,4 +1,6 @@
 Blazor.Fluxor => Fluxor.Blazor.Web
 _content/Blazor.Fluxor/index.js => _content/Fluxor.Blazor.Web/scripts/index.js
 Go => GoAction
-Routing Uri=>Url
+options.UseReduxDevTools
+options.UseRouting
+options.UseDependencyInjection => ScanAssemblies

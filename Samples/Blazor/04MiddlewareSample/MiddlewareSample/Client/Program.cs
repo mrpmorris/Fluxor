@@ -2,8 +2,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Fluxor;
+using MiddlewareSample.Client.Middlewares.Logging;
 
-namespace ReduxDevToolsSample.Client
+namespace MiddlewareSample.Client
 {
 	public class Program
 	{
@@ -11,11 +12,13 @@ namespace ReduxDevToolsSample.Client
 		{
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("app");
-			builder.Services.AddBaseAddressHttpClient();
 			builder.Services.AddFluxor(o => o
 				.ScanAssemblies(typeof(Program).Assembly)
-				.UseReduxDevTools()
-			);
+				.UseRouting()
+				.AddMiddleware<LoggingMiddleware>());
+
+			builder.Services.AddBaseAddressHttpClient();
+
 			await builder.Build().RunAsync();
 		}
 	}
