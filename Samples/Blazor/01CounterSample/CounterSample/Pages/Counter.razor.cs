@@ -1,4 +1,5 @@
-﻿using Fluxor;
+﻿using CounterSample.Store.CounterUseCase;
+using Fluxor;
 using Microsoft.AspNetCore.Components;
 
 namespace CounterSample.Pages
@@ -6,14 +7,14 @@ namespace CounterSample.Pages
 	public partial class Counter
 	{
 		[Inject]
-		private IState<Store.CounterUseCase.State> State { get; set; }
+		private IState<CounterState> CounterState { get; set; }
 
 		[Inject]
 		public IDispatcher Dispatcher { get; set; }
 
 		private void IncrementCount()
 		{
-			var action = new Store.CounterUseCase.IncrementCounterAction();
+			var action = new IncrementCounterAction();
 			Dispatcher.Dispatch(action);
 		}
 	}
