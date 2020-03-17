@@ -1,2 +1,2 @@
 @call build.bat
-dotnet test test\Blazor.Fluxor.UnitTests\Blazor.Fluxor.UnitTests.csproj
+dotnet test Source\Fluxor.sln

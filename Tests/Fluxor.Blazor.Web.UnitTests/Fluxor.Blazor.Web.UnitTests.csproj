@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
-    <ProjectReference Include="..\Fluxor\Fluxor.csproj" />
+    <ProjectReference Include="..\..\Source\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
+    <ProjectReference Include="..\..\Source\Fluxor\Fluxor.csproj" />
   </ItemGroup>
 
 </Project>

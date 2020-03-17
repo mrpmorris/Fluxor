@@ -1,1 +1,1 @@
-dotnet build test\Blazor.Fluxor.UnitTests\Blazor.Fluxor.UnitTests.csproj -c Release
+dotnet build Source\Fluxor.sln -c Release
