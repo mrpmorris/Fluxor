@@ -17,15 +17,15 @@ namespace Fluxor.DependencyInjection
 		/// <summary>
 		/// Service collection for registering services
 		/// </summary>
-		public readonly IServiceCollection ServiceCollection;
+		public readonly IServiceCollection Services;
 
 		/// <summary>
 		/// Creates a new instance
 		/// </summary>
-		/// <param name="serviceCollection"></param>
-		public Options(IServiceCollection serviceCollection)
+		/// <param name="services"></param>
+		public Options(IServiceCollection services)
 		{
-			ServiceCollection = serviceCollection;
+			Services = services;
 		}
 
 		/// <summary>
@@ -63,7 +63,7 @@ namespace Fluxor.DependencyInjection
 			if (Array.IndexOf(MiddlewareTypes, typeof(TMiddleware)) > -1)
 				return this;
 
-			ServiceCollection.AddScoped(typeof(TMiddleware));
+			Services.AddScoped(typeof(TMiddleware));
 			Assembly assembly = typeof(TMiddleware).Assembly;
 			string @namespace = typeof(TMiddleware).Namespace;
 
