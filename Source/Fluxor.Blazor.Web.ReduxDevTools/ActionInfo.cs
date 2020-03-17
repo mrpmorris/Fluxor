@@ -2,7 +2,7 @@
 
 namespace Fluxor.Blazor.Web.ReduxDevTools
 {
-	public class ActionInfo
+	internal class ActionInfo
 	{
 #pragma warning disable IDE1006 // Naming Styles
 		public string type { get; }

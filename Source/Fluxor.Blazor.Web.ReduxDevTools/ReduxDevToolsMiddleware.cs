@@ -9,7 +9,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 	/// <summary>
 	/// Middleware for interacting with the Redux Devtools extension for Chrome
 	/// </summary>
-	public sealed class ReduxDevToolsMiddleware : WebMiddleware
+	internal sealed class ReduxDevToolsMiddleware : WebMiddleware
 	{
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;

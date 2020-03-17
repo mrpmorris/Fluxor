@@ -1,6 +1,6 @@
 ﻿namespace Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects
 {
-	public class BasePayload
+	internal class BasePayload
 	{
 #pragma warning disable IDE1006 // Naming Styles
 		public string type { get; set; }

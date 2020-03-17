@@ -10,7 +10,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 	/// <summary>
 	/// Interop for dev tools
 	/// </summary>
-	public sealed class ReduxDevToolsInterop : IDisposable
+	internal sealed class ReduxDevToolsInterop : IDisposable
 	{
 
 		public const string DevToolsCallbackId = "DevToolsCallback";
@@ -59,7 +59,6 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// </summary>
 		/// <param name="messageAsJson"></param>
 		[JSInvokable(DevToolsCallbackId)]
-		//TODO: Make private https://github.com/aspnet/Blazor/issues/1218
 		public async Task DevToolsCallback(string messageAsJson)
 		{
 			if (string.IsNullOrWhiteSpace(messageAsJson))
