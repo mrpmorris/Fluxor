@@ -76,9 +76,8 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 					if (!Store.Features.TryGetValue(newFeatureState.Key, out IFeature feature))
 						continue;
 
-					var serializedFeatureStateElement = JsonConvert.SerializeObject(newFeatureState.Value);
 					object stronglyTypedFeatureState = JsonConvert.DeserializeObject(
-						value: serializedFeatureStateElement.ToString(),
+						value: newFeatureState.Value.ToString(),
 						type: feature.GetStateType());
 
 					// Now set the feature's state to the deserialized object

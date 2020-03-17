@@ -62,7 +62,6 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		//TODO: Make private https://github.com/aspnet/Blazor/issues/1218
 		public async Task DevToolsCallback(string messageAsJson)
 		{
-			Console.WriteLine("DevToolsCallback: " + messageAsJson);
 			if (string.IsNullOrWhiteSpace(messageAsJson))
 				return;
 
