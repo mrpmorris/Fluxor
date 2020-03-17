@@ -2,9 +2,9 @@
 
 namespace CounterSample.Store.CounterUseCase
 {
-	public class Feature : Feature<State>
+	public class Feature : Feature<CounterState>
 	{
 		public override string GetName() => "Counter";
-		protected override State GetInitialState() => new State(clickCount: 0);
+		protected override CounterState GetInitialState() => new CounterState(clickCount: 0);
 	}
 }

@@ -9,13 +9,6 @@ namespace Fluxor
 	public interface IMiddleware
 	{
 		/// <summary>
-		/// If the Middleware requires scripts inside the browser in order to function
-		/// then those scripts should be returned from this method
-		/// </summary>
-		/// <returns>Any required Javascript, or null</returns>
-		//TODO: Replace string GetClientScripts();
-
-		/// <summary>
 		/// Called exactly once by the store when the store initialises, or when
 		/// the middleware is added to the store (if the store has already been initialised)
 		/// </summary>
