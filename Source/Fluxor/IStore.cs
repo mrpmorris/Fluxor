@@ -70,14 +70,6 @@ namespace Fluxor
 		IReadOnlyDictionary<string, IFeature> Features { get; }
 
 		/// <summary>
-		/// Generates the standard Fluxor JavaScript needed, and also
-		/// gathers any JavaScript required for middleware that has
-		/// been used.
-		/// </summary>
-		/// <returns>JavaScript required by Fluxor and middleware</returns>
-		//TODO: Replace string GetScripts();
-
-		/// <summary>
 		/// This method should be executed when the store is first ready to be initialized.
 		/// It will, in turn, initialise any middleware. This method can safely be executed
 		/// more than once.

@@ -139,28 +139,6 @@ namespace Fluxor
 			}
 		}
 
-		/// <see cref="IStore.GetScripts"/>
-		//TODO: Replace
-		//public string GetScripts()
-		//{
-		//	var scriptBuilder = new StringBuilder();
-		//	scriptBuilder.AppendLine("<script id='initializeFluxor'>");
-		//	{
-		//		foreach (IMiddleware middleware in Middlewares)
-		//		{
-		//			string middlewareScript = middleware.GetClientScripts();
-		//			if (middlewareScript != null)
-		//			{
-		//				scriptBuilder.AppendLine($"// Middleware scripts: {middleware.GetType().FullName}");
-		//				scriptBuilder.AppendLine($"{middlewareScript}");
-		//			}
-		//		}
-		//	}
-		//	scriptBuilder.AppendLine("</script>");
-
-		//	return scriptBuilder.ToString();
-		//}
-
 		/// <see cref="IStore.InitializeAsync"/>
 		public async Task InitializeAsync()
 		{

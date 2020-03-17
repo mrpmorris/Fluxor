@@ -22,9 +22,6 @@ namespace Fluxor
 		/// </summary>
 		protected bool IsInsideMiddlewareChange => BeginMiddlewareChangeCount > 0;
 
-		/// <see cref="IMiddleware.GetClientScripts"/>
-		//TODO: Replace public virtual string GetClientScripts() => null;
-
 		/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
 		public virtual Task InitializeAsync(IStore store)
 		{
