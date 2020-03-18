@@ -1,8 +1,8 @@
-﻿using MiddlewareSample.Client.Store.WeatherUseCase;
+﻿using FluxorBlazorWeb.MiddlewareSample.Client.Store.WeatherUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 
-namespace MiddlewareSample.Client.Pages
+namespace FluxorBlazorWeb.MiddlewareSample.Client.Pages
 {
 	public partial class FetchData
 	{

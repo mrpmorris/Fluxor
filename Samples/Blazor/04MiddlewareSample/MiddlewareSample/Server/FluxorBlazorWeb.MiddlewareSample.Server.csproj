@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\MiddlewareSample.Client.csproj" />
-    <ProjectReference Include="..\Shared\MiddlewareSample.Shared.csproj" />
+    <ProjectReference Include="..\Client\FluxorBlazorWeb.MiddlewareSample.Client.csproj" />
+    <ProjectReference Include="..\Shared\FluxorBlazorWeb.MiddlewareSample.Shared.csproj" />
   </ItemGroup>
 
 

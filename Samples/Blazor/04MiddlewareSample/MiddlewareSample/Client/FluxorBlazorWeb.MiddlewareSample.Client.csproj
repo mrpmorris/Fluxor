@@ -15,7 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Source\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
     <ProjectReference Include="..\..\..\..\..\Source\Fluxor\Fluxor.csproj" />
-    <ProjectReference Include="..\Shared\MiddlewareSample.Shared.csproj" />
+    <ProjectReference Include="..\Shared\FluxorBlazorWeb.MiddlewareSample.Shared.csproj" />
   </ItemGroup>
 
 </Project>

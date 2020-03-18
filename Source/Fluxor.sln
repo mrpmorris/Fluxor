@@ -51,11 +51,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 MiddlewareSample", "04 MiddlewareSample", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareSample.Server", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Server\MiddlewareSample.Server.csproj", "{C5FEF754-CDCB-453C-924E-58FB3BB5F551}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Server", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Server\FluxorBlazorWeb.MiddlewareSample.Server.csproj", "{C5FEF754-CDCB-453C-924E-58FB3BB5F551}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareSample.Client", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Client\MiddlewareSample.Client.csproj", "{7627287C-4254-4CA1-A4F7-F694B78E80C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Client", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Client\FluxorBlazorWeb.MiddlewareSample.Client.csproj", "{7627287C-4254-4CA1-A4F7-F694B78E80C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareSample.Shared", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Shared\MiddlewareSample.Shared.csproj", "{EF468D50-CA42-4589-B37E-8E4EF32C05A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Shared", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Shared\FluxorBlazorWeb.MiddlewareSample.Shared.csproj", "{EF468D50-CA42-4589-B37E-8E4EF32C05A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
