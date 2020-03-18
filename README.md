@@ -22,6 +22,9 @@ You can download the latest release / pre-release NuGet packages from the offici
 
 ## Flux pattern
 
+Often confused with Redux. Redux is the name of a library, Flux is the name of the pattern that Redux and
+Fluxor implement.
+
 ![](./Images/flux-pattern.jpg)
 
 * State should be read-only.
