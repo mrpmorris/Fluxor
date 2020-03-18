@@ -55,7 +55,7 @@ public static async Task Main(string[] args)
 ```
 
 - Then we need to ensure the store is initialized. Edit `App.razor` and at the top of the file add
-- the following mark-up.
+the following mark-up.
 
 ```html
 <Fluxor.Blazor.Web.StoreInitializer/>
