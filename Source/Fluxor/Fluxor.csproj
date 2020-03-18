@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\docs\images\fluxor-small-logo.png">
+    <None Include="..\..\Images\fluxor-small-logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

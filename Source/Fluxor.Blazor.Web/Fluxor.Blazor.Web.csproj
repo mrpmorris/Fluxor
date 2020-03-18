@@ -30,12 +30,4 @@
     <ProjectReference Include="..\Fluxor\Fluxor.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <None Include="..\..\docs\images\fluxor-blazor-logo-small.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
-
 </Project>
