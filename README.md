@@ -1,5 +1,5 @@
 # Fluxor
-![](./images/fluxor-logo.png)
+![](./Images/fluxor-logo.png)
 
 Fluxor is a zero boilerplate Flux/Redux library for [Microsoft DotNet](https://dotnet.microsoft.com/).
 
