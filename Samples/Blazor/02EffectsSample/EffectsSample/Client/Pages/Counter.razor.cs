@@ -1,8 +1,8 @@
-﻿using EffectsSample.Client.Store.CounterUseCase;
+﻿using FluxorBlazorWeb.EffectsSample.Client.Store.CounterUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 
-namespace EffectsSample.Client.Pages
+namespace FluxorBlazorWeb.EffectsSample.Client.Pages
 {
 	public partial class Counter
 	{

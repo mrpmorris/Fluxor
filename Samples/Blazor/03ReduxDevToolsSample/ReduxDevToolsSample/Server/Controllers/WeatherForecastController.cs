@@ -1,12 +1,11 @@
-﻿using ReduxDevToolsSample.Shared;
+﻿using FluxorBlazorWeb.ReduxDevToolsSample.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace ReduxDevToolsSample.Server.Controllers
+namespace FluxorBlazorWeb.ReduxDevToolsSample.Server.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]

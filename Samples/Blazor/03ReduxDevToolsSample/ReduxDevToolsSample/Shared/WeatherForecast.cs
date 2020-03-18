@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace ReduxDevToolsSample.Shared
+namespace FluxorBlazorWeb.ReduxDevToolsSample.Shared
 {
 	public class WeatherForecast
 	{

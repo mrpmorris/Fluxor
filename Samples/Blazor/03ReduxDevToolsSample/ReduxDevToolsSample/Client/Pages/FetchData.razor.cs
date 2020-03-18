@@ -1,8 +1,8 @@
-﻿using ReduxDevToolsSample.Client.Store.WeatherUseCase;
+﻿using FluxorBlazorWeb.ReduxDevToolsSample.Client.Store.WeatherUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 
-namespace ReduxDevToolsSample.Client.Pages
+namespace FluxorBlazorWeb.ReduxDevToolsSample.Client.Pages
 {
 	public partial class FetchData
 	{

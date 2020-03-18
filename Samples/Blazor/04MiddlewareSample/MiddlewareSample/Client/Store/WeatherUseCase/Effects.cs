@@ -1,10 +1,10 @@
-﻿using MiddlewareSample.Shared;
+﻿using FluxorBlazorWeb.MiddlewareSample.Shared;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace MiddlewareSample.Client.Store.WeatherUseCase
+namespace FluxorBlazorWeb.MiddlewareSample.Client.Store.WeatherUseCase
 {
 	public class Effects
 	{

@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 
-namespace ReduxDevToolsSample.Client.Store.WeatherUseCase
+namespace FluxorBlazorWeb.ReduxDevToolsSample.Client.Store.WeatherUseCase
 {
 	public static class Reducers
 	{

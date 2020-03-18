@@ -1,4 +1,4 @@
-﻿namespace ReduxDevToolsSample.Client.Store.CounterUseCase
+﻿namespace FluxorBlazorWeb.ReduxDevToolsSample.Client.Store.CounterUseCase
 {
 	public class CounterState
 	{

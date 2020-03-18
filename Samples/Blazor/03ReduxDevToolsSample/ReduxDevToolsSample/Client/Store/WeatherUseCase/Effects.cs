@@ -1,10 +1,10 @@
-﻿using ReduxDevToolsSample.Shared;
+﻿using FluxorBlazorWeb.ReduxDevToolsSample.Shared;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ReduxDevToolsSample.Client.Store.WeatherUseCase
+namespace FluxorBlazorWeb.ReduxDevToolsSample.Client.Store.WeatherUseCase
 {
 	public class Effects
 	{

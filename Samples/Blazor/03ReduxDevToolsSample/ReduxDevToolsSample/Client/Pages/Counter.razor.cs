@@ -1,8 +1,8 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
-using ReduxDevToolsSample.Client.Store.CounterUseCase;
+using FluxorBlazorWeb.ReduxDevToolsSample.Client.Store.CounterUseCase;
 
-namespace ReduxDevToolsSample.Client.Pages
+namespace FluxorBlazorWeb.ReduxDevToolsSample.Client.Pages
 {
 	public partial class Counter
 	{

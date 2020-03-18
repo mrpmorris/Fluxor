@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Fluxor;
 
-namespace ReduxDevToolsSample.Client
+namespace FluxorBlazorWeb.ReduxDevToolsSample.Client
 {
 	public class Program
 	{

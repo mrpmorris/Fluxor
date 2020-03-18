@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MiddlewareSample.Shared
+namespace FluxorBlazorWeb.MiddlewareSample.Shared
 {
 	public class WeatherForecast
 	{

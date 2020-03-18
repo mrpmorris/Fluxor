@@ -1,8 +1,8 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
-using MiddlewareSample.Client.Store.CounterUseCase;
+using FluxorBlazorWeb.MiddlewareSample.Client.Store.CounterUseCase;
 
-namespace MiddlewareSample.Client.Pages
+namespace FluxorBlazorWeb.MiddlewareSample.Client.Pages
 {
 	public partial class Counter
 	{

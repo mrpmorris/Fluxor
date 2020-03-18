@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace CounterSample
+namespace FluxorBlazorWeb.CounterSample
 {
 	public class Startup
 	{

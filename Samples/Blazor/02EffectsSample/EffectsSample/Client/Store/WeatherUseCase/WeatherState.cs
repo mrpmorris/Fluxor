@@ -1,8 +1,7 @@
-﻿using EffectsSample.Shared;
-using System;
+﻿using FluxorBlazorWeb.EffectsSample.Shared;
 using System.Collections.Generic;
 
-namespace EffectsSample.Client.Store.WeatherUseCase
+namespace FluxorBlazorWeb.EffectsSample.Client.Store.WeatherUseCase
 {
 	public class WeatherState
 	{

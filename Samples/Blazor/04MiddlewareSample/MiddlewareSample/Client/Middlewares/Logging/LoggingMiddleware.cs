@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace MiddlewareSample.Client.Middlewares.Logging
+namespace FluxorBlazorWeb.MiddlewareSample.Client.Middlewares.Logging
 {
 	public class LoggingMiddleware : Middleware
 	{

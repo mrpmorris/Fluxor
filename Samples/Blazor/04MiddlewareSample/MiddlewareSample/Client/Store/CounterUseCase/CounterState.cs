@@ -1,4 +1,4 @@
-﻿namespace MiddlewareSample.Client.Store.CounterUseCase
+﻿namespace FluxorBlazorWeb.MiddlewareSample.Client.Store.CounterUseCase
 {
 	public class CounterState
 	{

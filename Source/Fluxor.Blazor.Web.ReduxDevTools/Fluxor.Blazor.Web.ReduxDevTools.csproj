@@ -34,7 +34,7 @@
 
 
   <ItemGroup>
-    <None Include="..\..\docs\images\fluxor-blazor-reduxdevtools-small.png">
+    <None Include="..\..\Images\fluxor-blazor-reduxdevtools-small.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

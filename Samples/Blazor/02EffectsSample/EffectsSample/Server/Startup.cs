@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 
-namespace EffectsSample.Server
+namespace FluxorBlazorWeb.EffectsSample.Server
 {
 	public class Startup
 	{

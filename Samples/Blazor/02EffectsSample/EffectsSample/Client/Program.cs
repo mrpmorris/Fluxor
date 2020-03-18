@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Blazor.Hosting;
 using Fluxor;
 
-namespace EffectsSample.Client
+namespace FluxorBlazorWeb.EffectsSample.Client
 {
 	public class Program
 	{

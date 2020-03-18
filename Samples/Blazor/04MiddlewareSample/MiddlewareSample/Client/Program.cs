@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Fluxor;
-using MiddlewareSample.Client.Middlewares.Logging;
+using FluxorBlazorWeb.MiddlewareSample.Client.Middlewares.Logging;
 
-namespace MiddlewareSample.Client
+namespace FluxorBlazorWeb.MiddlewareSample.Client
 {
 	public class Program
 	{

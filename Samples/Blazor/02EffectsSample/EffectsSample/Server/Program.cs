@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace EffectsSample.Server
+namespace FluxorBlazorWeb.EffectsSample.Server
 {
 	public class Program
 	{
