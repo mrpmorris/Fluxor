@@ -1,4 +1,4 @@
-﻿using EffectsSample.Shared;
+﻿using FluxorBlazorWeb.EffectsSample.Shared;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 using System.Net.Http;

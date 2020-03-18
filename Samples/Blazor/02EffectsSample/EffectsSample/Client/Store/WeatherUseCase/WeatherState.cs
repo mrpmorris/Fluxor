@@ -1,4 +1,4 @@
-﻿using EffectsSample.Shared;
+﻿using FluxorBlazorWeb.EffectsSample.Shared;
 using System.Collections.Generic;
 
 namespace FluxorBlazorWeb.EffectsSample.Client.Store.WeatherUseCase
