@@ -20,6 +20,20 @@ You can download the latest release / pre-release NuGet packages from the offici
 * [Fluxor.Blazor.Web](https://www.nuget.org/packages/Fluxor.Blazor.Web) [![NuGet version (Fluxor)](https://img.shields.io/nuget/v/Fluxor.Blazor.Web.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor.Blazor.Web/)
 * [Fluxor.Blazor.Web.ReduxDevTools](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools) [![NuGet version (Fluxor.Blazor.Web.ReduxDevTools)](https://img.shields.io/nuget/v/Fluxor.Blazor.Web.ReduxDevTools.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools/)
 
+## Flux pattern
+
+Often confused with Redux. Redux is the name of a library, Flux is the name of the pattern that Redux and
+Fluxor implement.
+
+![](./Images/flux-pattern.jpg)
+
+* State should always be read-only.
+* To alter state our app should dispatch an action.
+* The store runs the action through every registered reducer.
+* Every reducer that processes the dispatched action type will create new state
+from the existing state, along with any changes intended by the dispatched action.
+* The UI then uses the new state to render its display.
+
 # Licence
 [MIT](https://opensource.org/licenses/MIT)
 

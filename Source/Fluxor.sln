@@ -35,6 +35,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.CounterSample", "..\Samples\Blazor\01CounterSample\CounterSample\FluxorBlazorWeb.CounterSample.csproj", "{E4E667AC-8CFE-4632-99D0-56DD69117DD2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 EffectsSample", "02 EffectsSample", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
+	ProjectSection(SolutionItems) = preProject
+		..\Samples\Blazor\02EffectsSample\README.md = ..\Samples\Blazor\02EffectsSample\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Server", "..\Samples\Blazor\02EffectsSample\EffectsSample\Server\FluxorBlazorWeb.EffectsSample.Server.csproj", "{01E13581-FD37-4595-A9DC-37BFAA77864F}"
 EndProject
