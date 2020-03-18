@@ -33,11 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.CounterSamp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 EffectsSample", "02 EffectsSample", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EffectsSample.Server", "..\Samples\Blazor\02EffectsSample\EffectsSample\Server\EffectsSample.Server.csproj", "{01E13581-FD37-4595-A9DC-37BFAA77864F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Server", "..\Samples\Blazor\02EffectsSample\EffectsSample\Server\FluxorBlazorWeb.EffectsSample.Server.csproj", "{01E13581-FD37-4595-A9DC-37BFAA77864F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EffectsSample.Client", "..\Samples\Blazor\02EffectsSample\EffectsSample\Client\EffectsSample.Client.csproj", "{2C5214A3-24D8-4A11-8F9E-91964D3ACF2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Client", "..\Samples\Blazor\02EffectsSample\EffectsSample\Client\FluxorBlazorWeb.EffectsSample.Client.csproj", "{2C5214A3-24D8-4A11-8F9E-91964D3ACF2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EffectsSample.Shared", "..\Samples\Blazor\02EffectsSample\EffectsSample\Shared\EffectsSample.Shared.csproj", "{E776EB53-8E10-4002-A98A-064667E090AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Shared", "..\Samples\Blazor\02EffectsSample\EffectsSample\Shared\FluxorBlazorWeb.EffectsSample.Shared.csproj", "{E776EB53-8E10-4002-A98A-064667E090AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 ReduxDevToolsSample", "03 ReduxDevToolsSample", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
 EndProject

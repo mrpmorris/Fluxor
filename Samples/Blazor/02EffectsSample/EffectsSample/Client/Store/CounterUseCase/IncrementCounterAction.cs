@@ -1,4 +1,4 @@
-﻿namespace EffectsSample.Client.Store.CounterUseCase
+﻿namespace FluxorBlazorWeb.EffectsSample.Client.Store.CounterUseCase
 {
 	public class IncrementCounterAction
 	{

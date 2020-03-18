@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace EffectsSample.Client.Store.WeatherUseCase
+namespace FluxorBlazorWeb.EffectsSample.Client.Store.WeatherUseCase
 {
 	public class Effects
 	{

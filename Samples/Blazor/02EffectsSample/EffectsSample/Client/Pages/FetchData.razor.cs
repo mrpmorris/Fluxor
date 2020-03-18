@@ -1,8 +1,8 @@
-﻿using EffectsSample.Client.Store.WeatherUseCase;
+﻿using FluxorBlazorWeb.EffectsSample.Client.Store.WeatherUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 
-namespace EffectsSample.Client.Pages
+namespace FluxorBlazorWeb.EffectsSample.Client.Pages
 {
 	public partial class FetchData
 	{

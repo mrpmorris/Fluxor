@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace EffectsSample.Server.Controllers
+namespace FluxorBlazorWeb.EffectsSample.Server.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
