@@ -1,4 +1,5 @@
 ﻿using FluxorBlazorWeb.EffectsSample.Shared;
+using System;
 using System.Collections.Generic;
 
 namespace FluxorBlazorWeb.EffectsSample.Client.Store.WeatherUseCase
@@ -11,7 +12,7 @@ namespace FluxorBlazorWeb.EffectsSample.Client.Store.WeatherUseCase
 		public WeatherState(bool isLoading, IEnumerable<WeatherForecast> forecasts)
 		{
 			IsLoading = isLoading;
-			Forecasts = forecasts;
+			Forecasts = forecasts ?? Array.Empty<WeatherForecast>();
 		}
 	}
 }

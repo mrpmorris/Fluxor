@@ -21,17 +21,14 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@if (WeatherState.Value.Forecasts != null)
+			@foreach (var forecast in WeatherState.Value.Forecasts)
 			{
-				foreach (var forecast in WeatherState.Value.Forecasts)
-				{
-					<tr>
-						<td>@forecast.Date.ToShortDateString()</td>
-						<td>@forecast.TemperatureC</td>
-						<td>@forecast.TemperatureF</td>
-						<td>@forecast.Summary</td>
-					</tr>
-				}
+			<tr>
+				<td>@forecast.Date.ToShortDateString()</td>
+				<td>@forecast.TemperatureC</td>
+				<td>@forecast.TemperatureF</td>
+				<td>@forecast.Summary</td>
+			</tr>
 			}
 		</tbody>
 	</table>
