@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview2.20160.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Source\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
     <ProjectReference Include="..\..\..\..\..\Source\Fluxor\Fluxor.csproj" />
