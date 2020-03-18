@@ -15,7 +15,7 @@
     <ProjectReference Include="..\..\..\..\..\Source\Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools.csproj" />
     <ProjectReference Include="..\..\..\..\..\Source\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
     <ProjectReference Include="..\..\..\..\..\Source\Fluxor\Fluxor.csproj" />
-    <ProjectReference Include="..\Shared\ReduxDevToolsSample.Shared.csproj" />
+    <ProjectReference Include="..\Shared\FluxorBlazorWeb.ReduxDevToolsSample.Shared.csproj" />
   </ItemGroup>
 
 </Project>

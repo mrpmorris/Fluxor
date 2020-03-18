@@ -1,7 +1,7 @@
-﻿using ReduxDevToolsSample.Shared;
+﻿using FluxorBlazorWeb.ReduxDevToolsSample.Shared;
 using System.Collections.Generic;
 
-namespace ReduxDevToolsSample.Client.Store.WeatherUseCase
+namespace FluxorBlazorWeb.ReduxDevToolsSample.Client.Store.WeatherUseCase
 {
 	public class WeatherState
 	{
