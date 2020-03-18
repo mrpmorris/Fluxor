@@ -28,6 +28,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.UnitTests", "..\Tests\Fluxor.Blazor.Web.UnitTests\Fluxor.Blazor.Web.UnitTests.csproj", "{2163CE42-F884-4A6D-907A-840CE1C7D3A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 CounterSample", "01 CounterSample", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
+	ProjectSection(SolutionItems) = preProject
+		..\Samples\Blazor\01CounterSample\README.md = ..\Samples\Blazor\01CounterSample\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.CounterSample", "..\Samples\Blazor\01CounterSample\CounterSample\FluxorBlazorWeb.CounterSample.csproj", "{E4E667AC-8CFE-4632-99D0-56DD69117DD2}"
 EndProject
