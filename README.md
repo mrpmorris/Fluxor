@@ -27,10 +27,11 @@ Fluxor implement.
 
 ![](./Images/flux-pattern.jpg)
 
-* State should be read-only.
+* State should always be read-only.
 * To alter state our app should dispatch an action.
 * The store runs the action through every registered reducer.
-* All reducers tht handle the type of the dispatched action it will alter state to reflect the change.
+* Every reducer that processes the dispatched action type will create new state
+from the existing state, along with any changes intended by the dispatched action.
 * The UI then uses the new state to render its display.
 
 # Licence
