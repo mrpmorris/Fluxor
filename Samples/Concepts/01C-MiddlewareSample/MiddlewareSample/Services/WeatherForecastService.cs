@@ -1,9 +1,9 @@
-﻿using FluxorConcepts.EffectsSample.Shared;
+﻿using FluxorConcepts.MiddlewareSample.Shared;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FluxorConcepts.EffectsSample.Services
+namespace FluxorConcepts.MiddlewareSample.Services
 {
 	public interface IWeatherForecastService
 	{

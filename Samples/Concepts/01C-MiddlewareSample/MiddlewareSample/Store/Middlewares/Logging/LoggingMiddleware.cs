@@ -1,10 +1,10 @@
 ﻿using Fluxor;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace FluxorBlazorWeb.MiddlewareSample.Client.Middlewares.Logging
+namespace FluxorConcepts.MiddlewareSample.Store.Middlewares.Logging
 {
 	public class LoggingMiddleware : Middleware
 	{
@@ -13,35 +13,41 @@ namespace FluxorBlazorWeb.MiddlewareSample.Client.Middlewares.Logging
 		public override Task InitializeAsync(IStore store)
 		{
 			Store = store;
-			Debug.WriteLine(nameof(InitializeAsync));
+			Console.WriteLine(nameof(InitializeAsync));
 			return Task.CompletedTask;
 		}
 
 		public override void AfterInitializeAllMiddlewares()
 		{
-			Debug.WriteLine(nameof(AfterInitializeAllMiddlewares));
+			Console.WriteLine(nameof(AfterInitializeAllMiddlewares));
 		}
 
 		public override bool MayDispatchAction(object action)
 		{
-			Debug.WriteLine(nameof(MayDispatchAction) + ObjectInfo(action));
+			Console.WriteLine(nameof(MayDispatchAction) + ObjectInfo(action));
 			return true;
 		}
 
 		public override void BeforeDispatch(object action)
 		{
-			Debug.WriteLine(nameof(BeforeDispatch) + ObjectInfo(action));
+			Console.WriteLine(nameof(BeforeDispatch) + ObjectInfo(action));
 		}
 
 		public override void AfterDispatch(object action)
 		{
-			Debug.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
-			Debug.WriteLine("================");
+			Console.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
+			Console.WriteLine("\t===========STATE AFTER DISPATCH===========");
 			foreach (KeyValuePair<string, IFeature> feature in Store.Features)
-				Debug.WriteLine(feature.Key + ": " + JsonConvert.SerializeObject(feature.Value, Formatting.Indented));
+			{
+				string json = JsonConvert.SerializeObject(feature.Value, Formatting.Indented)
+					.Replace("\n", "\n\t");
+				Console.WriteLine("\t" + feature.Key + ": " + json);
+
+			}
 		}
 
 		private string ObjectInfo(object obj)
 			=> ": " + obj.GetType().Name + " " + JsonConvert.SerializeObject(obj, Formatting.Indented);
 	}
+
 }
