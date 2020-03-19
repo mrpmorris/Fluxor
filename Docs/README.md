@@ -18,7 +18,9 @@ state combined with the changes expected for the action.
 
 ## Samples
 ### Basic concepts
-* TODO
+
+* [State, actions, and reducers](../Samples/01-BasicConcepts/01A-StateActionsReducersSample/README.md)
+* [Effects](../Samples/01-BasicConcepts/01B-EffectsSample/README.md)
 
 ### Blazor for web
 

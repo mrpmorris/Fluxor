@@ -165,7 +165,7 @@ uses the injected state to demonstrate how to get hold of state at any point and
 updated*.
 
 
-#### Using an Action and a Reducer to alter state
+#### Using an `Action` and a `Reducer` to alter state
 
 - In the `Store\WeatherUseCase` folder, create an empty class `FetchDataAction` (this can remain empty).
 - Create a static `Reducers` class, which will set `IsLoading` to true when our 

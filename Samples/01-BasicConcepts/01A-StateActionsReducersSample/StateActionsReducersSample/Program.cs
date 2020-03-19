@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace BasicConcepts.StateReducersActionsSample
+namespace BasicConcepts.StateActionsReducersSample
 {
 	class Program
 	{

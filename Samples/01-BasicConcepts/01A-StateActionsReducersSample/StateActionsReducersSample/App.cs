@@ -2,7 +2,7 @@
 using BasicConcepts.StateActionsReducersSample.Store.CounterUseCase;
 using System;
 
-namespace BasicConcepts.StateReducersActionsSample
+namespace BasicConcepts.StateActionsReducersSample
 {
 		public class App
 		{

@@ -28,8 +28,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.UnitTests", "..\Tests\Fluxor.Blazor.Web.UnitTests\Fluxor.Blazor.Web.UnitTests.csproj", "{2163CE42-F884-4A6D-907A-840CE1C7D3A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02A-StateActionsReducersSample", "02A-StateActionsReducersSample", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
+	ProjectSection(SolutionItems) = preProject
+		..\Samples\02-Blazor\02A-StateActionsReducersSample\README.md = ..\Samples\02-Blazor\02A-StateActionsReducersSample\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02B-EffectsSample", "02B-EffectsSample", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
+	ProjectSection(SolutionItems) = preProject
+		..\Samples\02-Blazor\02B-EffectsSample\README.md = ..\Samples\02-Blazor\02B-EffectsSample\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02D-ReduxDevToolsSample", "02D-ReduxDevToolsSample", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
 EndProject
@@ -40,10 +46,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-BasicConcepts", "01-BasicConcepts", "{755410A3-91C0-4CD3-B234-1DEAE35F19DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01A-StateActionsReducersSample", "01A-StateActionsReducersSample", "{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.StateReducersActionsSample", "..\Samples\01-BasicConcepts\01A-StateReducersActionsSample\StateReducersActionsSample\BasicConcepts.StateReducersActionsSample.csproj", "{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}"
+	ProjectSection(SolutionItems) = preProject
+		..\Samples\01-BasicConcepts\01A-StateActionsReducersSample\README.md = ..\Samples\01-BasicConcepts\01A-StateActionsReducersSample\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01B-EffectsSample", "01B-EffectsSample", "{D432FFED-B5D0-4AC4-ABDC-0568BBE40848}"
+	ProjectSection(SolutionItems) = preProject
+		..\Samples\01-BasicConcepts\01B-EffectsSample\README.md = ..\Samples\01-BasicConcepts\01B-EffectsSample\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.EffectsSample", "..\Samples\01-BasicConcepts\01B-EffectsSample\EffectsSample\BasicConcepts.EffectsSample.csproj", "{3B3FABB2-0C7F-4BE3-926F-1709744E555B}"
 EndProject
@@ -75,6 +85,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{028DE5AF-7
 	ProjectSection(SolutionItems) = preProject
 		..\Docs\README.md = ..\Docs\README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.StateActionsReducersSample", "..\Samples\01-BasicConcepts\01A-StateActionsReducersSample\StateActionsReducersSample\BasicConcepts.StateActionsReducersSample.csproj", "{5E423494-7C7A-485E-8E84-A5CD11F7C504}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -146,18 +158,6 @@ Global
 		{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}.Release|iPhone.Build.0 = Release|Any CPU
 		{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|iPhone.Build.0 = Release|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -302,6 +302,18 @@ Global
 		{A56E9867-7EB6-4EF6-A641-737C77E62B37}.Release|iPhone.Build.0 = Release|Any CPU
 		{A56E9867-7EB6-4EF6-A641-737C77E62B37}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{A56E9867-7EB6-4EF6-A641-737C77E62B37}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Release|iPhone.Build.0 = Release|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -316,7 +328,6 @@ Global
 		{F1016E3F-9840-4C96-AC62-C69B0A177005} = {A143115C-F0CD-42A5-9DBB-31F4857D8729}
 		{755410A3-91C0-4CD3-B234-1DEAE35F19DA} = {1A6663AC-4F1F-40AD-8D03-0B0977ED466D}
 		{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
-		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3} = {4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}
 		{D432FFED-B5D0-4AC4-ABDC-0568BBE40848} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
 		{3B3FABB2-0C7F-4BE3-926F-1709744E555B} = {D432FFED-B5D0-4AC4-ABDC-0568BBE40848}
 		{EF613203-37A7-412F-84BD-1E75CC8F34E4} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
@@ -331,6 +342,7 @@ Global
 		{E17DD7FD-6496-4DFE-8527-802B4F25CB89} = {0555A496-56DB-45D0-9618-BEF456ABA67B}
 		{4E9607E0-545A-47FC-BB75-75E53F87929D} = {0555A496-56DB-45D0-9618-BEF456ABA67B}
 		{A56E9867-7EB6-4EF6-A641-737C77E62B37} = {14D676FF-AC1C-4912-81D0-9B98B8B090D8}
+		{5E423494-7C7A-485E-8E84-A5CD11F7C504} = {4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}
