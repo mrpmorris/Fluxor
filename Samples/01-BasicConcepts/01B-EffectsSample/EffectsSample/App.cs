@@ -56,7 +56,6 @@ namespace BasicConcepts.EffectsSample
 			Console.WriteLine("");
 		}
 
-
 		public void Run()
 		{
 			Console.Clear();
