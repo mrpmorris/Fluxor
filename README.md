@@ -11,7 +11,8 @@ The video is based on the original [Blazor-Fluxor](https://github.com/mrpmorris/
 The aim of Fluxor is to create a multi-UI, single-state store approach to front-end development without the headaches typically associated with other implementations, such as the overwhelming amount of boiler-plate code required just to add a very basic feature.
 
 ## Getting started
-The easiest way to get started is to look at the [Sample projects](./Samples/README.md). They are numbered in an order recommended for learning Fluxor. Each will have a `README` file that explains how the sample was created.
+The easiest way to get started is to read the [documentation](./Docs/README.md).
+Which includes samples that are numbered in an order recommended for learning Fluxor. Each will have a `README` file that explains how the sample was created.
 
 ## Installation
 You can download the latest release / pre-release NuGet packages from the official Fluxor nuget pages.
@@ -19,20 +20,6 @@ You can download the latest release / pre-release NuGet packages from the offici
 * [Fluxor](https://www.nuget.org/packages/Fluxor) [![NuGet version (Fluxor)](https://img.shields.io/nuget/v/Fluxor.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor/)
 * [Fluxor.Blazor.Web](https://www.nuget.org/packages/Fluxor.Blazor.Web) [![NuGet version (Fluxor)](https://img.shields.io/nuget/v/Fluxor.Blazor.Web.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor.Blazor.Web/)
 * [Fluxor.Blazor.Web.ReduxDevTools](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools) [![NuGet version (Fluxor.Blazor.Web.ReduxDevTools)](https://img.shields.io/nuget/v/Fluxor.Blazor.Web.ReduxDevTools.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools/)
-
-## Flux pattern
-
-Often confused with Redux. Redux is the name of a library, Flux is the name of the pattern that Redux and
-Fluxor implement.
-
-![](./Images/flux-pattern.jpg)
-
-* State should always be read-only.
-* To alter state our app should dispatch an action.
-* The store runs the action through every registered reducer.
-* Every reducer that processes the dispatched action type will create new state
-from the existing state, along with any changes intended by the dispatched action.
-* The UI then uses the new state to render its display.
 
 # Licence
 [MIT](https://opensource.org/licenses/MIT)
