@@ -27,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web", "Fluxor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.UnitTests", "..\Tests\Fluxor.Blazor.Web.UnitTests\Fluxor.Blazor.Web.UnitTests.csproj", "{2163CE42-F884-4A6D-907A-840CE1C7D3A6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02A StateActionsReducersSample", "02A StateActionsReducersSample", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "A StateActionsReducersSample", "A StateActionsReducersSample", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02B EffectsSample", "02B EffectsSample", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "B EffectsSample", "B EffectsSample", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Server", "..\Samples\Blazor\02B-EffectsSample\EffectsSample\Server\FluxorBlazorWeb.EffectsSample.Server.csproj", "{01E13581-FD37-4595-A9DC-37BFAA77864F}"
 EndProject
@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSamp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Shared", "..\Samples\Blazor\02B-EffectsSample\EffectsSample\Shared\FluxorBlazorWeb.EffectsSample.Shared.csproj", "{E776EB53-8E10-4002-A98A-064667E090AC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04C ReduxDevToolsSample", "04C ReduxDevToolsSample", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "D ReduxDevToolsSample", "D ReduxDevToolsSample", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevTools", "Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools.csproj", "{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}"
 EndProject
@@ -47,21 +47,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Shared", "..\Samples\Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Shared\FluxorBlazorWeb.ReduxDevToolsSample.Shared.csproj", "{89981135-CA37-4339-963C-1CD17BDE8FBD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03C MiddlewareSample", "03C MiddlewareSample", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C MiddlewareSample", "C MiddlewareSample", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Concepts", "01 Concepts", "{755410A3-91C0-4CD3-B234-1DEAE35F19DA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01A StateActionsReducersSample", "01A StateActionsReducersSample", "{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "A StateActionsReducersSample", "A StateActionsReducersSample", "{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.StateActionsReducersSample", "..\Samples\Blazor\02A-StateReducersActionsSample\StateActionsReducersSample\FluxorBlazorWeb.StateActionsReducersSample.csproj", "{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorConcepts.StateReducersActionsSample", "..\Samples\Concepts\01A-StateReducersActionsSample\StateReducersActionsSample\FluxorConcepts.StateReducersActionsSample.csproj", "{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01B EffectsSample", "01B EffectsSample", "{D432FFED-B5D0-4AC4-ABDC-0568BBE40848}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "B EffectsSample", "B EffectsSample", "{D432FFED-B5D0-4AC4-ABDC-0568BBE40848}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorConcepts.EffectsSample", "..\Samples\Concepts\01B-EffectsSample\EffectsSample\FluxorConcepts.EffectsSample.csproj", "{3B3FABB2-0C7F-4BE3-926F-1709744E555B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02C MiddlewareSample", "02C MiddlewareSample", "{EF613203-37A7-412F-84BD-1E75CC8F34E4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C MiddlewareSample", "C MiddlewareSample", "{EF613203-37A7-412F-84BD-1E75CC8F34E4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Shared", "..\Samples\Blazor\02C-MiddlewareSample\MiddlewareSample\Shared\FluxorBlazorWeb.MiddlewareSample.Shared.csproj", "{A2E26646-CED6-4570-B10B-C8F7CC18F078}"
 EndProject
@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Server", "..\Samples\Blazor\02C-MiddlewareSample\MiddlewareSample\Server\FluxorBlazorWeb.MiddlewareSample.Server.csproj", "{874F8196-FEEF-49C6-A4C4-56AED20A0924}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluxorConcepts.MiddlewareSample", "..\Samples\Concepts\01C-MiddlewareSample\MiddlewareSample\FluxorConcepts.MiddlewareSample.csproj", "{A25525A9-9042-4C69-8AF1-4C05F833700D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorConcepts.MiddlewareSample", "..\Samples\Concepts\01C-MiddlewareSample\MiddlewareSample\FluxorConcepts.MiddlewareSample.csproj", "{A25525A9-9042-4C69-8AF1-4C05F833700D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
