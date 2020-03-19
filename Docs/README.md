@@ -1,4 +1,4 @@
-# Fluxor - Samples
+# Fluxor - documentation
 
 ## Basic concepts
 
