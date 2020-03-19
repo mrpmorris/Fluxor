@@ -13,6 +13,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 	{
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;
+		private IStore Store;
 		private readonly ReduxDevToolsInterop ReduxDevToolsInterop;
 
 		/// <summary>
@@ -31,7 +32,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
 		public async override Task InitializeAsync(IStore store)
 		{
-			await base.InitializeAsync(store);
+			Store = store;
 			await ReduxDevToolsInterop.InitializeAsync(GetState());
 		}
 
