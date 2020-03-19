@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 
-namespace FluxorBlazorWeb.CounterSample.Store.CounterUseCase
+namespace FluxorBlazorWeb.StateActionsReducersSample.Store.CounterUseCase
 {
 	public class Feature : Feature<CounterState>
 	{

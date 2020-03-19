@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace FluxorBlazorWeb.CounterSample
+namespace FluxorBlazorWeb.StateActionsReducersSample
 {
 	public class Program
 	{

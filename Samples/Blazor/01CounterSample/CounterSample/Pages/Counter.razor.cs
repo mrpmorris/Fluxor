@@ -1,8 +1,8 @@
-﻿using FluxorBlazorWeb.CounterSample.Store.CounterUseCase;
+﻿using FluxorBlazorWeb.StateActionsReducersSample.Store.CounterUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
 
-namespace FluxorBlazorWeb.CounterSample.Pages
+namespace FluxorBlazorWeb.StateActionsReducersSample.Pages
 {
 	public partial class Counter
 	{
