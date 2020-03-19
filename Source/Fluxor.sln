@@ -28,44 +28,38 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.UnitTests", "..\Tests\Fluxor.Blazor.Web.UnitTests\Fluxor.Blazor.Web.UnitTests.csproj", "{2163CE42-F884-4A6D-907A-840CE1C7D3A6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02A StateActionsReducers", "02A StateActionsReducers", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
-	ProjectSection(SolutionItems) = preProject
-		..\Samples\Blazor\01CounterSample\README.md = ..\Samples\Blazor\01CounterSample\README.md
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.StateActionsReducersSample", "..\Samples\Blazor\01CounterSample\CounterSample\FluxorBlazorWeb.StateActionsReducersSample.csproj", "{E4E667AC-8CFE-4632-99D0-56DD69117DD2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02B EffectsSample", "02B EffectsSample", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
-	ProjectSection(SolutionItems) = preProject
-		..\Samples\Blazor\02EffectsSample\README.md = ..\Samples\Blazor\02EffectsSample\README.md
-	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Server", "..\Samples\Blazor\02EffectsSample\EffectsSample\Server\FluxorBlazorWeb.EffectsSample.Server.csproj", "{01E13581-FD37-4595-A9DC-37BFAA77864F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Server", "..\Samples\Blazor\02B-EffectsSample\EffectsSample\Server\FluxorBlazorWeb.EffectsSample.Server.csproj", "{01E13581-FD37-4595-A9DC-37BFAA77864F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Client", "..\Samples\Blazor\02EffectsSample\EffectsSample\Client\FluxorBlazorWeb.EffectsSample.Client.csproj", "{2C5214A3-24D8-4A11-8F9E-91964D3ACF2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Client", "..\Samples\Blazor\02B-EffectsSample\EffectsSample\Client\FluxorBlazorWeb.EffectsSample.Client.csproj", "{2C5214A3-24D8-4A11-8F9E-91964D3ACF2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Shared", "..\Samples\Blazor\02EffectsSample\EffectsSample\Shared\FluxorBlazorWeb.EffectsSample.Shared.csproj", "{E776EB53-8E10-4002-A98A-064667E090AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Shared", "..\Samples\Blazor\02B-EffectsSample\EffectsSample\Shared\FluxorBlazorWeb.EffectsSample.Shared.csproj", "{E776EB53-8E10-4002-A98A-064667E090AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04C ReduxDevToolsSample", "04C ReduxDevToolsSample", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevTools", "Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools.csproj", "{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Server", "..\Samples\Blazor\03ReduxDevToolsSample\ReduxDevToolsSample\Server\FluxorBlazorWeb.ReduxDevToolsSample.Server.csproj", "{69A0F2C5-481B-4B77-954A-E5CDD278D336}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Server", "..\Samples\Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Server\FluxorBlazorWeb.ReduxDevToolsSample.Server.csproj", "{69A0F2C5-481B-4B77-954A-E5CDD278D336}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Client", "..\Samples\Blazor\03ReduxDevToolsSample\ReduxDevToolsSample\Client\FluxorBlazorWeb.ReduxDevToolsSample.Client.csproj", "{CF6492F5-7E58-4CA7-A950-75CFC4676B6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Client", "..\Samples\Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Client\FluxorBlazorWeb.ReduxDevToolsSample.Client.csproj", "{CF6492F5-7E58-4CA7-A950-75CFC4676B6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Shared", "..\Samples\Blazor\03ReduxDevToolsSample\ReduxDevToolsSample\Shared\FluxorBlazorWeb.ReduxDevToolsSample.Shared.csproj", "{89981135-CA37-4339-963C-1CD17BDE8FBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Shared", "..\Samples\Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Shared\FluxorBlazorWeb.ReduxDevToolsSample.Shared.csproj", "{89981135-CA37-4339-963C-1CD17BDE8FBD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03C MiddlewareSample", "03C MiddlewareSample", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Server", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Server\FluxorBlazorWeb.MiddlewareSample.Server.csproj", "{C5FEF754-CDCB-453C-924E-58FB3BB5F551}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Server", "..\Samples\Blazor\03C-MiddlewareSample\MiddlewareSample\Server\FluxorBlazorWeb.MiddlewareSample.Server.csproj", "{C5FEF754-CDCB-453C-924E-58FB3BB5F551}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Client", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Client\FluxorBlazorWeb.MiddlewareSample.Client.csproj", "{7627287C-4254-4CA1-A4F7-F694B78E80C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Client", "..\Samples\Blazor\03C-MiddlewareSample\MiddlewareSample\Client\FluxorBlazorWeb.MiddlewareSample.Client.csproj", "{7627287C-4254-4CA1-A4F7-F694B78E80C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Shared", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Shared\FluxorBlazorWeb.MiddlewareSample.Shared.csproj", "{EF468D50-CA42-4589-B37E-8E4EF32C05A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Shared", "..\Samples\Blazor\03C-MiddlewareSample\MiddlewareSample\Shared\FluxorBlazorWeb.MiddlewareSample.Shared.csproj", "{EF468D50-CA42-4589-B37E-8E4EF32C05A7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Concepts", "01 Concepts", "{755410A3-91C0-4CD3-B234-1DEAE35F19DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01A StateActionsReducers", "01A StateActionsReducers", "{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.StateActionsReducersSample", "..\Samples\Blazor\02A-StateReducersActionsSample\StateActionsReducersSample\FluxorBlazorWeb.StateActionsReducersSample.csproj", "{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,18 +119,6 @@ Global
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhone.Build.0 = Release|Any CPU
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhone.Build.0 = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{01E13581-FD37-4595-A9DC-37BFAA77864F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01E13581-FD37-4595-A9DC-37BFAA77864F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01E13581-FD37-4595-A9DC-37BFAA77864F}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -257,6 +239,18 @@ Global
 		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Release|iPhone.Build.0 = Release|Any CPU
 		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|iPhone.Build.0 = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -266,7 +260,6 @@ Global
 		{1C0017E0-BF78-4E09-9763-E0D1907DF5AF} = {2279CD95-5886-4777-B019-E66683CE32F1}
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6} = {2279CD95-5886-4777-B019-E66683CE32F1}
 		{14D676FF-AC1C-4912-81D0-9B98B8B090D8} = {A143115C-F0CD-42A5-9DBB-31F4857D8729}
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2} = {14D676FF-AC1C-4912-81D0-9B98B8B090D8}
 		{730B26CD-CADC-4CF0-8A1D-3BB174692A40} = {A143115C-F0CD-42A5-9DBB-31F4857D8729}
 		{01E13581-FD37-4595-A9DC-37BFAA77864F} = {730B26CD-CADC-4CF0-8A1D-3BB174692A40}
 		{2C5214A3-24D8-4A11-8F9E-91964D3ACF2B} = {730B26CD-CADC-4CF0-8A1D-3BB174692A40}
@@ -281,6 +274,7 @@ Global
 		{EF468D50-CA42-4589-B37E-8E4EF32C05A7} = {F1016E3F-9840-4C96-AC62-C69B0A177005}
 		{755410A3-91C0-4CD3-B234-1DEAE35F19DA} = {1A6663AC-4F1F-40AD-8D03-0B0977ED466D}
 		{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52} = {14D676FF-AC1C-4912-81D0-9B98B8B090D8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}
