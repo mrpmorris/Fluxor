@@ -8,11 +8,6 @@ namespace Fluxor
 	public abstract class Middleware : IMiddleware
 	{
 		/// <summary>
-		/// A reference to the store instance this middleware was added to
-		/// </summary>
-		protected IStore Store { get; private set; }
-
-		/// <summary>
 		/// Number of times <see cref="IMiddleware.BeginInternalMiddlewareChange"/> has been called
 		/// </summary>
 		protected volatile int BeginMiddlewareChangeCount;
@@ -23,11 +18,7 @@ namespace Fluxor
 		protected bool IsInsideMiddlewareChange => BeginMiddlewareChangeCount > 0;
 
 		/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
-		public virtual Task InitializeAsync(IStore store)
-		{
-			Store = store;
-			return Task.CompletedTask;
-		}
+		public virtual Task InitializeAsync(IStore store) => Task.CompletedTask;
 
 		/// <see cref="IMiddleware.AfterInitializeAllMiddlewares"/>
 		public virtual void AfterInitializeAllMiddlewares() { }

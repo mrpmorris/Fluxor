@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor", "Fluxor\Fluxor.csproj", "{863909D3-7E81-4240-8C0A-6F57768D28FF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor.Web", "Blazor.Web", "{A143115C-F0CD-42A5-9DBB-31F4857D8729}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Blazor.Web", "02 Blazor.Web", "{A143115C-F0CD-42A5-9DBB-31F4857D8729}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.UnitTests", "..\Tests\Fluxor.UnitTests\Fluxor.UnitTests.csproj", "{1C0017E0-BF78-4E09-9763-E0D1907DF5AF}"
 EndProject
@@ -27,41 +27,49 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web", "Fluxor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.UnitTests", "..\Tests\Fluxor.Blazor.Web.UnitTests\Fluxor.Blazor.Web.UnitTests.csproj", "{2163CE42-F884-4A6D-907A-840CE1C7D3A6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 CounterSample", "01 CounterSample", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
-	ProjectSection(SolutionItems) = preProject
-		..\Samples\Blazor\01CounterSample\README.md = ..\Samples\Blazor\01CounterSample\README.md
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02A StateActionsReducersSample", "02A StateActionsReducersSample", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.CounterSample", "..\Samples\Blazor\01CounterSample\CounterSample\FluxorBlazorWeb.CounterSample.csproj", "{E4E667AC-8CFE-4632-99D0-56DD69117DD2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02B EffectsSample", "02B EffectsSample", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 EffectsSample", "02 EffectsSample", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
-	ProjectSection(SolutionItems) = preProject
-		..\Samples\Blazor\02EffectsSample\README.md = ..\Samples\Blazor\02EffectsSample\README.md
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Server", "..\Samples\Blazor\02B-EffectsSample\EffectsSample\Server\FluxorBlazorWeb.EffectsSample.Server.csproj", "{01E13581-FD37-4595-A9DC-37BFAA77864F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Server", "..\Samples\Blazor\02EffectsSample\EffectsSample\Server\FluxorBlazorWeb.EffectsSample.Server.csproj", "{01E13581-FD37-4595-A9DC-37BFAA77864F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Client", "..\Samples\Blazor\02B-EffectsSample\EffectsSample\Client\FluxorBlazorWeb.EffectsSample.Client.csproj", "{2C5214A3-24D8-4A11-8F9E-91964D3ACF2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Client", "..\Samples\Blazor\02EffectsSample\EffectsSample\Client\FluxorBlazorWeb.EffectsSample.Client.csproj", "{2C5214A3-24D8-4A11-8F9E-91964D3ACF2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Shared", "..\Samples\Blazor\02B-EffectsSample\EffectsSample\Shared\FluxorBlazorWeb.EffectsSample.Shared.csproj", "{E776EB53-8E10-4002-A98A-064667E090AC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Shared", "..\Samples\Blazor\02EffectsSample\EffectsSample\Shared\FluxorBlazorWeb.EffectsSample.Shared.csproj", "{E776EB53-8E10-4002-A98A-064667E090AC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 ReduxDevToolsSample", "03 ReduxDevToolsSample", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04C ReduxDevToolsSample", "04C ReduxDevToolsSample", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevTools", "Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools.csproj", "{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Server", "..\Samples\Blazor\03ReduxDevToolsSample\ReduxDevToolsSample\Server\FluxorBlazorWeb.ReduxDevToolsSample.Server.csproj", "{69A0F2C5-481B-4B77-954A-E5CDD278D336}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Server", "..\Samples\Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Server\FluxorBlazorWeb.ReduxDevToolsSample.Server.csproj", "{69A0F2C5-481B-4B77-954A-E5CDD278D336}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Client", "..\Samples\Blazor\03ReduxDevToolsSample\ReduxDevToolsSample\Client\FluxorBlazorWeb.ReduxDevToolsSample.Client.csproj", "{CF6492F5-7E58-4CA7-A950-75CFC4676B6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Client", "..\Samples\Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Client\FluxorBlazorWeb.ReduxDevToolsSample.Client.csproj", "{CF6492F5-7E58-4CA7-A950-75CFC4676B6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Shared", "..\Samples\Blazor\03ReduxDevToolsSample\ReduxDevToolsSample\Shared\FluxorBlazorWeb.ReduxDevToolsSample.Shared.csproj", "{89981135-CA37-4339-963C-1CD17BDE8FBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Shared", "..\Samples\Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Shared\FluxorBlazorWeb.ReduxDevToolsSample.Shared.csproj", "{89981135-CA37-4339-963C-1CD17BDE8FBD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 MiddlewareSample", "04 MiddlewareSample", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03C MiddlewareSample", "03C MiddlewareSample", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Server", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Server\FluxorBlazorWeb.MiddlewareSample.Server.csproj", "{C5FEF754-CDCB-453C-924E-58FB3BB5F551}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Concepts", "01 Concepts", "{755410A3-91C0-4CD3-B234-1DEAE35F19DA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Client", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Client\FluxorBlazorWeb.MiddlewareSample.Client.csproj", "{7627287C-4254-4CA1-A4F7-F694B78E80C4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01A StateActionsReducersSample", "01A StateActionsReducersSample", "{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Shared", "..\Samples\Blazor\04MiddlewareSample\MiddlewareSample\Shared\FluxorBlazorWeb.MiddlewareSample.Shared.csproj", "{EF468D50-CA42-4589-B37E-8E4EF32C05A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.StateActionsReducersSample", "..\Samples\Blazor\02A-StateReducersActionsSample\StateActionsReducersSample\FluxorBlazorWeb.StateActionsReducersSample.csproj", "{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorConcepts.StateReducersActionsSample", "..\Samples\Concepts\01A-StateReducersActionsSample\StateReducersActionsSample\FluxorConcepts.StateReducersActionsSample.csproj", "{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01B EffectsSample", "01B EffectsSample", "{D432FFED-B5D0-4AC4-ABDC-0568BBE40848}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorConcepts.EffectsSample", "..\Samples\Concepts\01B-EffectsSample\EffectsSample\FluxorConcepts.EffectsSample.csproj", "{3B3FABB2-0C7F-4BE3-926F-1709744E555B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02C MiddlewareSample", "02C MiddlewareSample", "{EF613203-37A7-412F-84BD-1E75CC8F34E4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Shared", "..\Samples\Blazor\02C-MiddlewareSample\MiddlewareSample\Shared\FluxorBlazorWeb.MiddlewareSample.Shared.csproj", "{A2E26646-CED6-4570-B10B-C8F7CC18F078}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Client", "..\Samples\Blazor\02C-MiddlewareSample\MiddlewareSample\Client\FluxorBlazorWeb.MiddlewareSample.Client.csproj", "{E5208D18-8F6B-41B5-830B-CF2CACA478B6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Server", "..\Samples\Blazor\02C-MiddlewareSample\MiddlewareSample\Server\FluxorBlazorWeb.MiddlewareSample.Server.csproj", "{874F8196-FEEF-49C6-A4C4-56AED20A0924}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluxorConcepts.MiddlewareSample", "..\Samples\Concepts\01C-MiddlewareSample\MiddlewareSample\FluxorConcepts.MiddlewareSample.csproj", "{A25525A9-9042-4C69-8AF1-4C05F833700D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,18 +129,6 @@ Global
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhone.Build.0 = Release|Any CPU
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhone.Build.0 = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{01E13581-FD37-4595-A9DC-37BFAA77864F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{01E13581-FD37-4595-A9DC-37BFAA77864F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01E13581-FD37-4595-A9DC-37BFAA77864F}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -217,42 +213,90 @@ Global
 		{89981135-CA37-4339-963C-1CD17BDE8FBD}.Release|iPhone.Build.0 = Release|Any CPU
 		{89981135-CA37-4339-963C-1CD17BDE8FBD}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{89981135-CA37-4339-963C-1CD17BDE8FBD}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Release|iPhone.Build.0 = Release|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Release|iPhone.Build.0 = Release|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Release|iPhone.Build.0 = Release|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|iPhone.Build.0 = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|iPhone.Build.0 = Release|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Release|iPhone.Build.0 = Release|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Release|iPhone.Build.0 = Release|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Release|iPhone.Build.0 = Release|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Release|Any CPU.Build.0 = Release|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Release|iPhone.Build.0 = Release|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Release|iPhone.Build.0 = Release|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{A25525A9-9042-4C69-8AF1-4C05F833700D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -262,7 +306,6 @@ Global
 		{1C0017E0-BF78-4E09-9763-E0D1907DF5AF} = {2279CD95-5886-4777-B019-E66683CE32F1}
 		{2163CE42-F884-4A6D-907A-840CE1C7D3A6} = {2279CD95-5886-4777-B019-E66683CE32F1}
 		{14D676FF-AC1C-4912-81D0-9B98B8B090D8} = {A143115C-F0CD-42A5-9DBB-31F4857D8729}
-		{E4E667AC-8CFE-4632-99D0-56DD69117DD2} = {14D676FF-AC1C-4912-81D0-9B98B8B090D8}
 		{730B26CD-CADC-4CF0-8A1D-3BB174692A40} = {A143115C-F0CD-42A5-9DBB-31F4857D8729}
 		{01E13581-FD37-4595-A9DC-37BFAA77864F} = {730B26CD-CADC-4CF0-8A1D-3BB174692A40}
 		{2C5214A3-24D8-4A11-8F9E-91964D3ACF2B} = {730B26CD-CADC-4CF0-8A1D-3BB174692A40}
@@ -272,9 +315,17 @@ Global
 		{CF6492F5-7E58-4CA7-A950-75CFC4676B6D} = {0555A496-56DB-45D0-9618-BEF456ABA67B}
 		{89981135-CA37-4339-963C-1CD17BDE8FBD} = {0555A496-56DB-45D0-9618-BEF456ABA67B}
 		{F1016E3F-9840-4C96-AC62-C69B0A177005} = {A143115C-F0CD-42A5-9DBB-31F4857D8729}
-		{C5FEF754-CDCB-453C-924E-58FB3BB5F551} = {F1016E3F-9840-4C96-AC62-C69B0A177005}
-		{7627287C-4254-4CA1-A4F7-F694B78E80C4} = {F1016E3F-9840-4C96-AC62-C69B0A177005}
-		{EF468D50-CA42-4589-B37E-8E4EF32C05A7} = {F1016E3F-9840-4C96-AC62-C69B0A177005}
+		{755410A3-91C0-4CD3-B234-1DEAE35F19DA} = {1A6663AC-4F1F-40AD-8D03-0B0977ED466D}
+		{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
+		{A8DF0A63-6BB7-4570-AD16-35026E2EDE52} = {14D676FF-AC1C-4912-81D0-9B98B8B090D8}
+		{A2C833B2-AF75-4E72-8E5D-337D2F12E0F3} = {4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}
+		{D432FFED-B5D0-4AC4-ABDC-0568BBE40848} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
+		{3B3FABB2-0C7F-4BE3-926F-1709744E555B} = {D432FFED-B5D0-4AC4-ABDC-0568BBE40848}
+		{EF613203-37A7-412F-84BD-1E75CC8F34E4} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
+		{A2E26646-CED6-4570-B10B-C8F7CC18F078} = {F1016E3F-9840-4C96-AC62-C69B0A177005}
+		{E5208D18-8F6B-41B5-830B-CF2CACA478B6} = {F1016E3F-9840-4C96-AC62-C69B0A177005}
+		{874F8196-FEEF-49C6-A4C4-56AED20A0924} = {F1016E3F-9840-4C96-AC62-C69B0A177005}
+		{A25525A9-9042-4C69-8AF1-4C05F833700D} = {EF613203-37A7-412F-84BD-1E75CC8F34E4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}
