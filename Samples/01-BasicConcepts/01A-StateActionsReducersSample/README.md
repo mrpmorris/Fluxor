@@ -264,7 +264,7 @@ public static class SomeOtherReducerClass
 
 ##### Injecting dependencies
 
-**Tip: Do not inject state into reducers!**
+**Tip: Do not inject dependencies into reducers!**
 
 It is possible to decorate instance methods with `[ReducerMethod]`.
 Any dependencies in the constructor will be injected automatically.
