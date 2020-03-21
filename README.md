@@ -12,7 +12,7 @@ The aim of Fluxor is to create a multi-UI, single-state store approach to front-
 
 ## Getting started
 The easiest way to get started is to read the [documentation](./Docs/README.md).
-Which includes samples that are numbered in an order recommended for learning Fluxor. Each will have a `README` file that explains how the sample was created.
+Which includes tutorials that are numbered in an order recommended for learning Fluxor. Each will have a `README` file that explains how the tutorial was created.
 
 ## Installation
 You can download the latest release / pre-release NuGet packages from the official Fluxor nuget pages.

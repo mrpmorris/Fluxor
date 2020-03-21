@@ -1,8 +1,6 @@
 # Fluxor - documentation
 
-## Basic concepts
-
-### Flux pattern
+## Flux pattern
 
 Often confused with Redux. Redux is the name of a library, Flux is the name of the pattern that Redux and
 Fluxor implement.
@@ -16,15 +14,15 @@ Fluxor implement.
 state combined with the changes expected for the action.
 * The UI then uses the new state to render its display.
 
-## Samples
+## Tutorials
 ### Basic concepts
 
-* [State, actions, and reducers](../Samples/01-BasicConcepts/01A-StateActionsReducersSample/README.md)
-* [Effects](../Samples/01-BasicConcepts/01B-EffectsSample/README.md)
+* [State, actions, and reducers](../Tutorials/01-BasicConcepts/01A-StateActionsReducersTutorial/README.md)
+* [Effects](../Tutorials/01-BasicConcepts/01B-EffectsTutorial/README.md)
 
 ### Blazor for web
 
-* [State, actions, and reducers](../Samples/02-Blazor/02A-StateActionsReducersSample/README.md)
-* [Effects](../Samples/02-Blazor/02B-EffectsSample/README.md)
-* [TODO - Custom middleware](../Samples/02-Blazor/02C-MiddlewareSample/README.md)
-* [TODO - Redux Dev Tools](../Samples/02-Blazor/02D-ReduxDevToolsSample/README.md)
+* [State, actions, and reducers](../Tutorials/02-Blazor/02A-StateActionsReducersTutorial/README.md)
+* [Effects](../Tutorials/02-Blazor/02B-EffectsTutorial/README.md)
+* [TODO - Custom middleware](../Tutorials/02-Blazor/02C-MiddlewareTutorial/README.md)
+* [TODO - Redux Dev Tools](../Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/README.md)

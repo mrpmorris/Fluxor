@@ -3,10 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28809.33
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1A6663AC-4F1F-40AD-8D03-0B0977ED466D}"
-	ProjectSection(SolutionItems) = preProject
-		..\Samples\README.md = ..\Samples\README.md
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{1A6663AC-4F1F-40AD-8D03-0B0977ED466D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2279CD95-5886-4777-B019-E66683CE32F1}"
 EndProject
@@ -27,66 +24,69 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web", "Fluxor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.UnitTests", "..\Tests\Fluxor.Blazor.Web.UnitTests\Fluxor.Blazor.Web.UnitTests.csproj", "{2163CE42-F884-4A6D-907A-840CE1C7D3A6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02A-StateActionsReducersSample", "02A-StateActionsReducersSample", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02A-StateActionsReducersTutorial", "02A-StateActionsReducersTutorial", "{14D676FF-AC1C-4912-81D0-9B98B8B090D8}"
 	ProjectSection(SolutionItems) = preProject
-		..\Samples\02-Blazor\02A-StateActionsReducersSample\README.md = ..\Samples\02-Blazor\02A-StateActionsReducersSample\README.md
+		..\Tutorials\02-Blazor\02A-StateActionsReducersTutorial\README.md = ..\Tutorials\02-Blazor\02A-StateActionsReducersTutorial\README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02B-EffectsSample", "02B-EffectsSample", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02B-EffectsTutorial", "02B-EffectsTutorial", "{730B26CD-CADC-4CF0-8A1D-3BB174692A40}"
 	ProjectSection(SolutionItems) = preProject
-		..\Samples\02-Blazor\02B-EffectsSample\README.md = ..\Samples\02-Blazor\02B-EffectsSample\README.md
+		..\Tutorials\02-Blazor\02B-EffectsTutorial\README.md = ..\Tutorials\02-Blazor\02B-EffectsTutorial\README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02D-ReduxDevToolsSample", "02D-ReduxDevToolsSample", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02D-ReduxDevToolsTutorial", "02D-ReduxDevToolsTutorial", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevTools", "Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools.csproj", "{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02C-MiddlewareSample", "02C-MiddlewareSample", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02C-MiddlewareTutorial", "02C-MiddlewareTutorial", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-BasicConcepts", "01-BasicConcepts", "{755410A3-91C0-4CD3-B234-1DEAE35F19DA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01A-StateActionsReducersSample", "01A-StateActionsReducersSample", "{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01A-StateActionsReducersTutorial", "01A-StateActionsReducersTutorial", "{4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}"
 	ProjectSection(SolutionItems) = preProject
-		..\Samples\01-BasicConcepts\01A-StateActionsReducersSample\README.md = ..\Samples\01-BasicConcepts\01A-StateActionsReducersSample\README.md
+		..\Tutorials\01-BasicConcepts\01A-StateActionsReducersTutorial\README.md = ..\Tutorials\01-BasicConcepts\01A-StateActionsReducersTutorial\README.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01B-EffectsSample", "01B-EffectsSample", "{D432FFED-B5D0-4AC4-ABDC-0568BBE40848}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01B-EffectsTutorial", "01B-EffectsTutorial", "{D432FFED-B5D0-4AC4-ABDC-0568BBE40848}"
 	ProjectSection(SolutionItems) = preProject
-		..\Samples\01-BasicConcepts\01B-EffectsSample\README.md = ..\Samples\01-BasicConcepts\01B-EffectsSample\README.md
+		..\Tutorials\01-BasicConcepts\01B-EffectsTutorial\README.md = ..\Tutorials\01-BasicConcepts\01B-EffectsTutorial\README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.EffectsSample", "..\Samples\01-BasicConcepts\01B-EffectsSample\EffectsSample\BasicConcepts.EffectsSample.csproj", "{3B3FABB2-0C7F-4BE3-926F-1709744E555B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.EffectsTutorial", "..\Tutorials\01-BasicConcepts\01B-EffectsTutorial\EffectsTutorial\BasicConcepts.EffectsTutorial.csproj", "{3B3FABB2-0C7F-4BE3-926F-1709744E555B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01C-MiddlewareSample", "01C-MiddlewareSample", "{EF613203-37A7-412F-84BD-1E75CC8F34E4}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01C-MiddlewareTutorial", "01C-MiddlewareTutorial", "{EF613203-37A7-412F-84BD-1E75CC8F34E4}"
+	ProjectSection(SolutionItems) = preProject
+		..\Tutorials\01-BasicConcepts\01C-MiddlewareTutorial\README.md = ..\Tutorials\01-BasicConcepts\01C-MiddlewareTutorial\README.md
+	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.MiddlewareSample", "..\Samples\01-BasicConcepts\01C-MiddlewareSample\MiddlewareSample\BasicConcepts.MiddlewareSample.csproj", "{A25525A9-9042-4C69-8AF1-4C05F833700D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.MiddlewareTutorial", "..\Tutorials\01-BasicConcepts\01C-MiddlewareTutorial\MiddlewareTutorial\BasicConcepts.MiddlewareTutorial.csproj", "{A25525A9-9042-4C69-8AF1-4C05F833700D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Shared", "..\Samples\02-Blazor\02B-EffectsSample\EffectsSample\Shared\FluxorBlazorWeb.EffectsSample.Shared.csproj", "{5896274D-8570-4FFA-A5BD-68717E8E37D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsTutorial.Shared", "..\Tutorials\02-Blazor\02B-EffectsTutorial\EffectsTutorial\Shared\FluxorBlazorWeb.EffectsTutorial.Shared.csproj", "{5896274D-8570-4FFA-A5BD-68717E8E37D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Client", "..\Samples\02-Blazor\02B-EffectsSample\EffectsSample\Client\FluxorBlazorWeb.EffectsSample.Client.csproj", "{690AF25B-189C-4FA0-B88E-40BEBE224B35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsTutorial.Client", "..\Tutorials\02-Blazor\02B-EffectsTutorial\EffectsTutorial\Client\FluxorBlazorWeb.EffectsTutorial.Client.csproj", "{690AF25B-189C-4FA0-B88E-40BEBE224B35}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsSample.Server", "..\Samples\02-Blazor\02B-EffectsSample\EffectsSample\Server\FluxorBlazorWeb.EffectsSample.Server.csproj", "{2BD5B41E-24D9-4163-9F6E-939615572A8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsTutorial.Server", "..\Tutorials\02-Blazor\02B-EffectsTutorial\EffectsTutorial\Server\FluxorBlazorWeb.EffectsTutorial.Server.csproj", "{2BD5B41E-24D9-4163-9F6E-939615572A8B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Shared", "..\Samples\02-Blazor\02C-MiddlewareSample\MiddlewareSample\Shared\FluxorBlazorWeb.MiddlewareSample.Shared.csproj", "{C40E2FE6-76DB-476B-BB46-34C994343161}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareTutorial.Shared", "..\Tutorials\02-Blazor\02C-MiddlewareTutorial\MiddlewareTutorial\Shared\FluxorBlazorWeb.MiddlewareTutorial.Shared.csproj", "{C40E2FE6-76DB-476B-BB46-34C994343161}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Client", "..\Samples\02-Blazor\02C-MiddlewareSample\MiddlewareSample\Client\FluxorBlazorWeb.MiddlewareSample.Client.csproj", "{25A4A21B-3CFB-4984-968A-2B7DAE079A26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareTutorial.Client", "..\Tutorials\02-Blazor\02C-MiddlewareTutorial\MiddlewareTutorial\Client\FluxorBlazorWeb.MiddlewareTutorial.Client.csproj", "{25A4A21B-3CFB-4984-968A-2B7DAE079A26}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareSample.Server", "..\Samples\02-Blazor\02C-MiddlewareSample\MiddlewareSample\Server\FluxorBlazorWeb.MiddlewareSample.Server.csproj", "{B18EE732-92B5-4C3F-952C-3D01FE9DC61D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.MiddlewareTutorial.Server", "..\Tutorials\02-Blazor\02C-MiddlewareTutorial\MiddlewareTutorial\Server\FluxorBlazorWeb.MiddlewareTutorial.Server.csproj", "{B18EE732-92B5-4C3F-952C-3D01FE9DC61D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Shared", "..\Samples\02-Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Shared\FluxorBlazorWeb.ReduxDevToolsSample.Shared.csproj", "{4867964C-FDEF-4B83-AB3E-D5BCE9692577}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsTutorial.Shared", "..\Tutorials\02-Blazor\02D-ReduxDevToolsTutorial\ReduxDevToolsTutorial\Shared\FluxorBlazorWeb.ReduxDevToolsTutorial.Shared.csproj", "{4867964C-FDEF-4B83-AB3E-D5BCE9692577}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Client", "..\Samples\02-Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Client\FluxorBlazorWeb.ReduxDevToolsSample.Client.csproj", "{E17DD7FD-6496-4DFE-8527-802B4F25CB89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsTutorial.Client", "..\Tutorials\02-Blazor\02D-ReduxDevToolsTutorial\ReduxDevToolsTutorial\Client\FluxorBlazorWeb.ReduxDevToolsTutorial.Client.csproj", "{E17DD7FD-6496-4DFE-8527-802B4F25CB89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsSample.Server", "..\Samples\02-Blazor\02D-ReduxDevToolsSample\ReduxDevToolsSample\Server\FluxorBlazorWeb.ReduxDevToolsSample.Server.csproj", "{4E9607E0-545A-47FC-BB75-75E53F87929D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ReduxDevToolsTutorial.Server", "..\Tutorials\02-Blazor\02D-ReduxDevToolsTutorial\ReduxDevToolsTutorial\Server\FluxorBlazorWeb.ReduxDevToolsTutorial.Server.csproj", "{4E9607E0-545A-47FC-BB75-75E53F87929D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.StateActionsReducersSample", "..\Samples\02-Blazor\02A-StateActionsReducersSample\StateActionsReducersSample\FluxorBlazorWeb.StateActionsReducersSample.csproj", "{A56E9867-7EB6-4EF6-A641-737C77E62B37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.StateActionsReducersTutorial", "..\Tutorials\02-Blazor\02A-StateActionsReducersTutorial\StateActionsReducersTutorial\FluxorBlazorWeb.StateActionsReducersTutorial.csproj", "{A56E9867-7EB6-4EF6-A641-737C77E62B37}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{028DE5AF-7FF2-4E1D-8AB7-99B2668A9736}"
 	ProjectSection(SolutionItems) = preProject
 		..\Docs\README.md = ..\Docs\README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.StateActionsReducersSample", "..\Samples\01-BasicConcepts\01A-StateActionsReducersSample\StateActionsReducersSample\BasicConcepts.StateActionsReducersSample.csproj", "{5E423494-7C7A-485E-8E84-A5CD11F7C504}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.StateActionsReducersTutorial", "..\Tutorials\01-BasicConcepts\01A-StateActionsReducersTutorial\StateActionsReducersTutorial\BasicConcepts.StateActionsReducersTutorial.csproj", "{5E423494-7C7A-485E-8E84-A5CD11F7C504}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
