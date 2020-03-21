@@ -1,9 +1,7 @@
 ﻿using Fluxor;
 using BasicConcepts.MiddlewareSample.Client.Store.WeatherUseCase;
-using BasicConcepts.MiddlewareSample.Shared;
 using BasicConcepts.MiddlewareSample.Store.CounterUseCase;
 using System;
-using System.Linq;
 
 namespace BasicConcepts.MiddlewareSample
 {

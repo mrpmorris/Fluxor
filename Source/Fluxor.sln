@@ -4,9 +4,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.28809.33
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1A6663AC-4F1F-40AD-8D03-0B0977ED466D}"
-	ProjectSection(SolutionItems) = preProject
-		..\Samples\README.md = ..\Samples\README.md
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2279CD95-5886-4777-B019-E66683CE32F1}"
 EndProject
@@ -58,6 +55,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.EffectsSample", "..\Samples\01-BasicConcepts\01B-EffectsSample\EffectsSample\BasicConcepts.EffectsSample.csproj", "{3B3FABB2-0C7F-4BE3-926F-1709744E555B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01C-MiddlewareSample", "01C-MiddlewareSample", "{EF613203-37A7-412F-84BD-1E75CC8F34E4}"
+	ProjectSection(SolutionItems) = preProject
+		..\Samples\01-BasicConcepts\01C-MiddlewareSample\README.md = ..\Samples\01-BasicConcepts\01C-MiddlewareSample\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.MiddlewareSample", "..\Samples\01-BasicConcepts\01C-MiddlewareSample\MiddlewareSample\BasicConcepts.MiddlewareSample.csproj", "{A25525A9-9042-4C69-8AF1-4C05F833700D}"
 EndProject

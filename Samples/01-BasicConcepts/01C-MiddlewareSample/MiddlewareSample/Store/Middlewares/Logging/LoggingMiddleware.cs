@@ -42,8 +42,8 @@ namespace BasicConcepts.MiddlewareSample.Store.Middlewares.Logging
 				string json = JsonConvert.SerializeObject(feature.Value, Formatting.Indented)
 					.Replace("\n", "\n\t");
 				Console.WriteLine("\t" + feature.Key + ": " + json);
-
 			}
+			Console.WriteLine();
 		}
 
 		private string ObjectInfo(object obj)
