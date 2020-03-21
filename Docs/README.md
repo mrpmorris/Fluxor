@@ -1,8 +1,6 @@
 # Fluxor - documentation
 
-## Basic concepts
-
-### Flux pattern
+## Flux pattern
 
 Often confused with Redux. Redux is the name of a library, Flux is the name of the pattern that Redux and
 Fluxor implement.
