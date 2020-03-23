@@ -1,5 +1,9 @@
 # Releases
 
+### New in 3.0.2
+  * Bug fix for ([#134](https://github.com/mrpmorris/blazor-fluxor/issues/134)) - URLs not taking into account query parameters
+  * Update NuGet package icons.
+
 ## New in 3.0.0
   * Rewritten to make the library UI agnostic `Fluxor`
   * Separated out `Blazor.Fluxor` into `Fluxor.Blazor.Web`
@@ -8,9 +12,6 @@
   * Added basic-concepts tutorials demonstrating how to use Fluxor in a console app.
 
 ## Previous versions (Blazor-Fluxor)
-
-### New in 2.0.1
-  * Bug fix for ([#134](https://github.com/mrpmorris/blazor-fluxor/issues/134)) - URLs not taking into account query parameters
 
 ### New in 2.0
   * Change `@Store.Initialize` to `<Blazor.Fluxor.StoreInitializer/>` component, to allow async calls (fixes #120)
