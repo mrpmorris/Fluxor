@@ -22,7 +22,11 @@ You can download the latest release / pre-release NuGet packages from the offici
 * [Fluxor.Blazor.Web.ReduxDevTools](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools) [![NuGet version (Fluxor.Blazor.Web.ReduxDevTools)](https://img.shields.io/nuget/v/Fluxor.Blazor.Web.ReduxDevTools.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools/)
 
 ## Release notes
-See the [releases page](./Docs/releases.md) for release history.
+See the [Releases page](./Docs/releases.md) for release history.
+
+## Upgrading from Blazor.Fluxor (v1 or v2)
+See the [Upgrading instructions](./Docs/upgrading-instructions.md) for instructions on how to upgrade from
+`Blazor.Fluxor` V1 or V2 to `Fluxor`.
 
 # Licence
 [MIT](https://opensource.org/licenses/MIT)
