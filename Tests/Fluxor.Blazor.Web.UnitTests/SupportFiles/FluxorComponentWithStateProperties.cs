@@ -4,8 +4,8 @@ namespace Fluxor.Blazor.Web.UnitTests.SupportFiles
 {
 	public class FluxorComponentWithStateProperties : FluxorComponent
 	{
-		public IState State1 { get; set; }
-		public IState State2 { get; set; }
+		public IState<int> State1 { get; set; }
+		public IState<int> State2 { get; set; }
 
 		public void ExecuteOnInitialized()
 		{
