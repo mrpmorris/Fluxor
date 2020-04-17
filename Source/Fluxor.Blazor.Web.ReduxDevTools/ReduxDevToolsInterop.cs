@@ -102,10 +102,25 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			DotNetRef.Dispose();
 		}
 
+		private static bool IsDotNetReferenceObject(object x) =>
+			(x != null)
+			&& (x.GetType().IsGenericType)
+			&& (x.GetType().GetGenericTypeDefinition() == typeof(DotNetObjectReference<>));
+
 		private ValueTask<TResult> InvokeFluxorDevToolsMethodAsync<TResult>(string identifier, params object[] args)
 		{
 			if (!DevToolsBrowserPluginDetected && !IsInitializing)
 				return new ValueTask<TResult>(default(TResult));
+
+
+			if (args != null && args.Length > 0)
+			{
+				for (int i = 0; i < args.Length; i++)
+				{
+					if (!IsDotNetReferenceObject(args[i]))
+						args[i] = Newtonsoft.Json.JsonConvert.SerializeObject(args[i]);
+				}
+			}
 
 			string fullIdentifier = $"{FluxorDevToolsId}.{identifier}";
 			return JSRuntime.InvokeAsync<TResult>(fullIdentifier, args);
@@ -121,7 +136,7 @@ window.{FluxorDevToolsId} = new (function() {{
 	this.{ToJsInitMethodName} = function() {{}};
 
 	if (reduxDevTools !== undefined && reduxDevTools !== null) {{
-		const fluxorDevTools = reduxDevTools.connect({{ name: 'Blazor-Fluxor' }});
+		const fluxorDevTools = reduxDevTools.connect({{ name: 'Fluxor' }});
 		if (fluxorDevTools !== undefined && fluxorDevTools !== null) {{
 			fluxorDevTools.subscribe((message) => {{ 
 				if (window.fluxorDevToolsDotNetInterop) {{
@@ -133,6 +148,7 @@ window.{FluxorDevToolsId} = new (function() {{
 
 		this.{ToJsInitMethodName} = function(dotNetCallbacks, state) {{
 			window.fluxorDevToolsDotNetInterop = dotNetCallbacks;
+			state = JSON.parse(state);
 			fluxorDevTools.init(state);
 
 			if (window.fluxorDevToolsDotNetInterop) {{
@@ -148,6 +164,8 @@ window.{FluxorDevToolsId} = new (function() {{
 		}};
 
 		this.{ToJsDispatchMethodName} = function(action, state) {{
+			action = JSON.parse(action);
+			state = JSON.parse(state);
 			fluxorDevTools.send(action, state);
 		}};
 

@@ -2,7 +2,7 @@
 
 namespace Fluxor.Blazor.Web.UnitTests.SupportFiles
 {
-	public class FluxorComponentWithStateProperties : FluxorComponent
+	public class FluxorLayoutWithStateProperties : FluxorLayout
 	{
 		public IState<int> State1 { get; set; }
 		public IState<int> State2 { get; set; }

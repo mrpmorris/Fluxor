@@ -4,10 +4,10 @@ using System;
 namespace Fluxor.Blazor.Web.Components
 {
 	/// <summary>
-	/// A component that auto-subscribes to state changes on all <see cref="IState"/> properties
-	/// and ensures <see cref="ComponentBase.StateHasChanged"/> is called
+	/// A layout that auto-subscribes to state changes on all <see cref="IState"/> properties
+	/// and ensures <see cref="LayoutComponentBase.StateHasChanged"/> is called
 	/// </summary>
-	public class FluxorComponent : ComponentBase, IDisposable
+	public class FluxorLayout : LayoutComponentBase, IDisposable
 	{
 		private bool Disposed;
 		private IDisposable StateSubscription;

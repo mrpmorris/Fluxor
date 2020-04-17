@@ -1,6 +1,4 @@
 ﻿using Fluxor.Blazor.Web.UnitTests.SupportFiles;
-using Moq;
-using System;
 using Xunit;
 
 namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests
@@ -10,29 +8,26 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests
 		public class Dispose
 		{
 			private readonly FluxorComponentWithStateProperties Subject;
-			private readonly Mock<IState> MockState1;
-			private readonly Mock<IState> MockState2;
+			private readonly MockState<int> MockState1;
+			private readonly MockState<int> MockState2;
 
 			[Fact]
 			public void UnsubscribesFromStateProperties()
 			{
 				Subject.ExecuteOnInitialized();
-
-				MockState1.SetupRemove(x => x.StateChanged -= It.IsAny<EventHandler>()).Verifiable();
-				MockState2.SetupRemove(x => x.StateChanged -= It.IsAny<EventHandler>()).Verifiable();
-
 				Subject.Dispose();
-				MockState1.VerifyAll();
-				MockState2.VerifyAll();
+
+				Assert.Equal(1, MockState1.UnsubscribeCount);
+				Assert.Equal(1, MockState2.UnsubscribeCount);
 			}
 
 			public Dispose()
 			{
-				MockState1 = new Mock<IState>();
-				MockState2 = new Mock<IState>();
+				MockState1 = new MockState<int>();
+				MockState2 = new MockState<int>();
 				Subject = new FluxorComponentWithStateProperties {
-					State1 = MockState1.Object,
-					State2 = MockState2.Object
+					State1 = MockState1,
+					State2 = MockState2
 				};
 			}
 		}

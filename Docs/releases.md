@@ -1,5 +1,9 @@
 # Releases
 
+### New in 3.1.0
+  * Used Newtonsoft entirely for JS interop to ReduxDevTools to prevent serialization errors ([#7](https://github.com/mrpmorris/Fluxor/issues/7))
+  * Added new FluxorLayout for auto-subscribing to state ([#8](https://github.com/mrpmorris/Fluxor/issues/8))
+
 ### New in 3.0.2
   * Bug fix for ([#134](https://github.com/mrpmorris/blazor-fluxor/issues/134)) - URLs not taking into account query parameters
   * Update NuGet package icons.
