@@ -26,7 +26,7 @@ namespace Fluxor.Blazor.Web.Components
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			StateSubscription = StateSubscriber.Subscribe(this, _ => StateHasChanged());
+			StateSubscription = StateSubscriber.Subscribe(this, _ => InvokeAsync(StateHasChanged));
 		}
 
 		protected virtual void Dispose(bool disposing)
