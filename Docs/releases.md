@@ -1,5 +1,8 @@
 # Releases
 
+### New in 3.1.1
+ * Fixed bug that caused exception when using `.ConfigureAwait` in an Effect ([#20](https://github.com/mrpmorris/Fluxor/issues/20))
+
 ### New in 3.1.0
   * Used Newtonsoft entirely for JS interop to ReduxDevTools to prevent serialization errors ([#7](https://github.com/mrpmorris/Fluxor/issues/7))
   * Added new FluxorLayout for auto-subscribing to state ([#8](https://github.com/mrpmorris/Fluxor/issues/8))
