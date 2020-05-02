@@ -33,11 +33,13 @@ namespace Fluxor.Blazor.Web.Components
 				subscriptions.Add((state, handler));
 				state.StateChanged += handler;
 			}
-			return new DisposableCallback(() =>
-			{
-				foreach (var subscription in subscriptions)
-					subscription.State.StateChanged -= subscription.Handler;
-			});
+			return new DisposableCallback(
+				id: $"{nameof(StateSubscriber)}.{nameof(Subscribe)}",
+				() =>
+					{
+						foreach (var subscription in subscriptions)
+							subscription.State.StateChanged -= subscription.Handler;
+					});
 		}
 
 		private static IEnumerable<GetStateDelegate> GetStateDelegatesForType(Type type)

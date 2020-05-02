@@ -4,31 +4,29 @@ using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests
 {
-	public partial class StoreTests
+	public class BeginInternalMiddlewareChange
 	{
-		public class BeginInternalMiddlewareChange
+		[Fact]
+		public void WhenCalled_ThenExecutesOnAllRegisteredMiddlewares()
 		{
-			[Fact]
-			public void ExecutesOnAllRegisteredMiddlewares()
-			{
-				int disposeCount = 0;
-				var mockMiddleware = new Mock<IMiddleware>();
-				mockMiddleware
-					.Setup(x => x.BeginInternalMiddlewareChange())
-					.Returns(new DisposableCallback(() => disposeCount++));
+			int disposeCount = 0;
+			var mockMiddleware = new Mock<IMiddleware>();
+			mockMiddleware
+				.Setup(x => x.BeginInternalMiddlewareChange())
+				.Returns(new DisposableCallback("Test", () => disposeCount++));
 
-				var subject = new TestStore();
-				subject.AddMiddleware(mockMiddleware.Object);
+			var subject = new TestStore();
+			subject.AddMiddleware(mockMiddleware.Object);
 
-				var disposable1 = subject.BeginInternalMiddlewareChange();
-				var disposable2 = subject.BeginInternalMiddlewareChange();
+			var disposable1 = subject.BeginInternalMiddlewareChange();
+			var disposable2 = subject.BeginInternalMiddlewareChange();
 
-				disposable1.Dispose();
-				Assert.Equal(0, disposeCount);
+			disposable1.Dispose();
+			Assert.Equal(0, disposeCount);
 
-				disposable2.Dispose();
-				Assert.Equal(1, disposeCount);
-			}
+			disposable2.Dispose();
+			Assert.Equal(1, disposeCount);
 		}
 	}
 }
+
