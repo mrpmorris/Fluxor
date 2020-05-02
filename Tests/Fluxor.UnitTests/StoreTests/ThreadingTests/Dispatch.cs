@@ -18,7 +18,7 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests
 		ManualResetEvent StartEvent;
 
 		[Fact]
-		public async Task DoesNotLoseState()
+		public async Task WhenExecutedByMultipleThreads_ThenSynchronizesStateUpdates()
 		{
 			await Store.InitializeAsync();
 

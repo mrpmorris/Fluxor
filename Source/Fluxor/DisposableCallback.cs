@@ -9,16 +9,27 @@ namespace Fluxor
 	/// <seealso cref="IStore.BeginInternalMiddlewareChange()"/>
 	public sealed class DisposableCallback : IDisposable
 	{
+		private readonly string Id;
 		private readonly Action Action;
 		private bool IsDisposed;
 
 		/// <summary>
 		/// Creates an instance of the class
 		/// </summary>
+		/// <param name="id">
+		///		An Id that is included in the message of exceptions that are thrown, this is useful
+		///		for helping to identify the source that created the instance that threw the exception.
+		/// </param>
 		/// <param name="action">The action to execute when the instance is disposed</param>
-		public DisposableCallback(Action action)
+		public DisposableCallback(string id, Action action)
 		{
-			Action = action ?? throw new ArgumentNullException(nameof(action));
+			if (string.IsNullOrWhiteSpace(id))
+				throw new ArgumentNullException(nameof(id));
+			if (action == null)
+				 throw new ArgumentNullException(nameof(action));
+
+			Id = id;
+			Action = action;
 		}
 
 		/// <summary>
@@ -27,7 +38,9 @@ namespace Fluxor
 		public void Dispose()
 		{
 			if (IsDisposed)
-				throw new ObjectDisposedException(nameof(DisposableCallback));
+				throw new ObjectDisposedException(
+					nameof(DisposableCallback),
+					$"Attempt to call {nameof(Dispose)} twice on {nameof(DisposableCallback)} with Id \"{Id}\".");
 
 			IsDisposed = true;
 			GC.SuppressFinalize(this);
@@ -41,7 +54,7 @@ namespace Fluxor
 		~DisposableCallback()
 		{
 			if (!IsDisposed)
-				throw new InvalidOperationException("DisposableCallback was not disposed");
+				throw new InvalidOperationException($"{nameof(DisposableCallback)} with Id \"{Id}\" was not disposed.");
 		}
 	}
 }

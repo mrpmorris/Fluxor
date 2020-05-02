@@ -40,12 +40,14 @@ namespace Fluxor
 		IDisposable IMiddleware.BeginInternalMiddlewareChange()
 		{
 			Interlocked.Increment(ref BeginMiddlewareChangeCount);
-			return new DisposableCallback(() =>
-			{
-				if (BeginMiddlewareChangeCount == 1)
-					OnInternalMiddlewareChangeEnding();
-				Interlocked.Decrement(ref BeginMiddlewareChangeCount);
-			});
+			return new DisposableCallback(
+				id: $"{nameof(Middleware)} {nameof(IMiddleware)}.{nameof(IMiddleware.BeginInternalMiddlewareChange)}",
+				() =>
+					{
+						if (BeginMiddlewareChangeCount == 1)
+							OnInternalMiddlewareChangeEnding();
+						Interlocked.Decrement(ref BeginMiddlewareChangeCount);
+					});
 		}
 	}
 }

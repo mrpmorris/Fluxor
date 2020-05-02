@@ -9,7 +9,7 @@ namespace Fluxor.UnitTests.MockFactories
 			var mock = new Mock<IMiddleware>();
 			mock
 				.Setup(x => x.BeginInternalMiddlewareChange())
-				.Returns(new DisposableCallback(() => { }));
+				.Returns(new DisposableCallback("Test", () => { }));
 			mock
 				.Setup(x => x.MayDispatchAction(It.IsAny<object>()))
 				.Returns(true);

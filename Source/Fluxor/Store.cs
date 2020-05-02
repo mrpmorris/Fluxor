@@ -135,7 +135,9 @@ namespace Fluxor
 					.Select(x => x.BeginInternalMiddlewareChange())
 					.ToArray();
 
-				return new DisposableCallback(() => EndMiddlewareChange(disposables));
+				return new DisposableCallback(
+					id: $"{nameof(Store)}.{nameof(BeginInternalMiddlewareChange)}",
+					() => EndMiddlewareChange(disposables));
 			}
 		}
 
