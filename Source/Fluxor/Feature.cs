@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Fluxor
 {
@@ -30,6 +31,8 @@ namespace Fluxor
 		/// </summary>
 		protected readonly List<IReducer<TState>> Reducers = new List<IReducer<TState>>();
 
+		private SpinLock SpinLock = new SpinLock();
+
 		/// <summary>
 		/// Creates a new instance
 		/// </summary>
@@ -43,21 +46,73 @@ namespace Fluxor
 		{
 			add
 			{
-				untypedStateChanged += value;
+				bool lockTaken = false;
+				try
+				{
+					SpinLock.Enter(ref lockTaken);
+					untypedStateChanged += value;
+				}
+				finally
+				{
+					if (lockTaken)
+						SpinLock.Exit();
+				}
 			}
 
 			remove
 			{
-				untypedStateChanged -= value;
+				bool lockTaken = false;
+				try
+				{
+					SpinLock.Enter(ref lockTaken);
+					untypedStateChanged -= value;
+				}
+				finally
+				{
+					if (lockTaken)
+						SpinLock.Exit();
+				}
 			}
 		}
 
 		private TState _State;
 
+		private EventHandler<TState> stateChanged;
 		/// <summary>
 		/// Event that is executed whenever the state changes
 		/// </summary>
-		public event EventHandler<TState> StateChanged;
+		public event EventHandler<TState> StateChanged
+		{
+			add
+			{
+				bool lockTaken = false;
+				try
+				{
+					SpinLock.Enter(ref lockTaken);
+					stateChanged += value;
+				}
+				finally
+				{
+					if (lockTaken)
+						SpinLock.Exit();
+				}
+			}
+
+			remove
+			{
+				bool lockTaken = false;
+				try
+				{
+					SpinLock.Enter(ref lockTaken);
+					stateChanged -= value;
+				}
+				finally
+				{
+					if (lockTaken)
+						SpinLock.Exit();
+				}
+			}
+		}
 
 		/// <see cref="IFeature{TState}.State"/>
 		public virtual TState State
@@ -98,7 +153,7 @@ namespace Fluxor
 		private void TriggerStateChangedCallbacks(TState newState)
 		{
 			untypedStateChanged?.Invoke(this, EventArgs.Empty);
-			StateChanged?.Invoke(this, newState);
+			stateChanged?.Invoke(this, newState);
 		}
 	}
 }

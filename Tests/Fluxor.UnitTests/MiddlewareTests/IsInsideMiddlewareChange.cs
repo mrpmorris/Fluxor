@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Fluxor.UnitTests
+namespace Fluxor.UnitTests.MiddlewareTests
 {
-	public class MiddlewareTests
+	public class IsInsideMiddlewareChange
 	{
 		[Fact]
-		public void IsInsideMiddlewareChange_ShouldBeTrue_UntilBeginInternalMiddlewareChangeIsDisposed()
+		public void WhenResultFromBeginInternalMiddlewareChangeIsNotDisposed_ThenReturnsTrue()
 		{
 			var subject = new MiddlewareWithExposedMembers();
 			var disposables = new Queue<IDisposable>();
@@ -37,25 +37,6 @@ namespace Fluxor.UnitTests
 
 			Assert.Equal(0, subject._BeginMiddlewareChangeCount);
 			Assert.False(subject._IsInsideMiddlewareChange);
-		}
-
-		[Fact]
-		public void OnInternalMiddlewareChangeEnding_ShouldOnlyBeCalled_WhenLastInternalChangeCallHasCompleted()
-		{
-			var subject = new MiddlewareWithExposedMembers();
-			Assert.Equal(0, subject.OnInternalMiddlewareChangeEndingCallCount);
-
-			subject._BeginInternalMiddlewareChange().Dispose();
-			Assert.Equal(1, subject.OnInternalMiddlewareChangeEndingCallCount);
-
-			using (subject._BeginInternalMiddlewareChange())
-			{
-				using (subject._BeginInternalMiddlewareChange())
-				{
-
-				}
-			}
-			Assert.Equal(2, subject.OnInternalMiddlewareChangeEndingCallCount);
 		}
 	}
 }
