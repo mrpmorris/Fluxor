@@ -4,6 +4,7 @@
  * Fixed bug that caused exception when using `.ConfigureAwait` in an Effect ([#20](https://github.com/mrpmorris/Fluxor/issues/20))
  * Ensured add/remove on events are thread safe ([#23](https://github.com/mrpmorris/Fluxor/issues/23))
  * Made it easier to find the source of DisposableCallback instances that are not disposed ([#24](https://github.com/mrpmorris/Fluxor/issues/24))
+ * State properties were not discovered if they were declared as private in a base class ([#25](https://github.com/mrpmorris/Fluxor/issues/25))
 
 ### New in 3.1.0
   * Used Newtonsoft entirely for JS interop to ReduxDevTools to prevent serialization errors ([#7](https://github.com/mrpmorris/Fluxor/issues/7))
