@@ -25,7 +25,7 @@ namespace Fluxor.Blazor.Web.Components
 
 			IEnumerable<GetStateDelegate> getStateDelegates = GetStateDelegatesForType(subject.GetType());
 			var subscriptions = new List<(IState State, EventHandler Handler)>();
-			foreach(GetStateDelegate getState in getStateDelegates)
+			foreach (GetStateDelegate getState in getStateDelegates)
 			{
 				var state = (IState)getState(subject);
 				var handler = new EventHandler((s, a) => callback(state));
@@ -42,18 +42,24 @@ namespace Fluxor.Blazor.Web.Components
 					});
 		}
 
+		private static IEnumerable<PropertyInfo> GetStateProperties(Type t) =>
+			t == typeof(object)
+			? Enumerable.Empty<PropertyInfo>()
+			: GetStateProperties(t.BaseType)
+				.Union(
+					t.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+						.Where(p => p.PropertyType.IsGenericType)
+						.Where(p => p.PropertyType.GetGenericTypeDefinition() == typeof(IState<>))
+				);
+
 		private static IEnumerable<GetStateDelegate> GetStateDelegatesForType(Type type)
 		{
 			return ValueDelegatesForType.GetOrAdd(type, _ =>
 			{
 				var delegates = new List<GetStateDelegate>();
+				IEnumerable<PropertyInfo> stateProperties = GetStateProperties(type);
 
-				const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-				IEnumerable<PropertyInfo> stateProperties = type.GetProperties(bindingFlags)
-					.Where(p => p.PropertyType.IsGenericType)
-					.Where(p => p.PropertyType.GetGenericTypeDefinition() == typeof(IState<>));
-
-				foreach(PropertyInfo currentProperty in stateProperties)
+				foreach (PropertyInfo currentProperty in stateProperties)
 				{
 					Type stateType = currentProperty.PropertyType.GetGenericArguments()[0];
 					Type iStateType = typeof(IState<>).MakeGenericType(stateType);
