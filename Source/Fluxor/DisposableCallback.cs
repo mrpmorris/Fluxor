@@ -12,6 +12,7 @@ namespace Fluxor
 		private readonly string Id;
 		private readonly Action Action;
 		private bool IsDisposed;
+		private bool WasCreated;
 
 		/// <summary>
 		/// Creates an instance of the class
@@ -30,6 +31,7 @@ namespace Fluxor
 
 			Id = id;
 			Action = action;
+			WasCreated = true;
 		}
 
 		/// <summary>
@@ -53,7 +55,7 @@ namespace Fluxor
 		/// <exception cref="InvalidOperationException">Thrown if the object is collected without being disposed</exception>
 		~DisposableCallback()
 		{
-			if (!IsDisposed)
+			if (!IsDisposed && WasCreated)
 				throw new InvalidOperationException($"{nameof(DisposableCallback)} with Id \"{Id}\" was not disposed.");
 		}
 	}
