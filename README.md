@@ -19,7 +19,7 @@ You can download the latest release / pre-release NuGet packages from the offici
 
 * [Fluxor](https://www.nuget.org/packages/Fluxor) [![NuGet version (Fluxor)](https://img.shields.io/nuget/v/Fluxor.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor/)
 * [Fluxor.Blazor.Web](https://www.nuget.org/packages/Fluxor.Blazor.Web) [![NuGet version (Fluxor)](https://img.shields.io/nuget/v/Fluxor.Blazor.Web.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor.Blazor.Web/)
-* [Fluxor.Blazor.Web.ReduxDevTools](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools) [![NuGet version (Fluxor.Blazor.Web.ReduxDevTools)](https://img.shields.io/nuget/v/Fluxor.Blazor.Web.ReduxDevTools.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools/)
+* [Fluxor.Blazor.Web.ReduxDevTools](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools) [![NuGet version (Fluxor.Blazor.Web.ReduxDevTools)](https://img.shields.io/nuget/v/Fluxor.Blazor.Web.ReduxDevTools.svg?style=flat-square)](https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools/) [![Join the chat at https://gitter.im/mrpmorris-fluxor/fluxor](https://badges.gitter.im/mrpmorris-fluxor/fluxor.svg)](https://gitter.im/mrpmorris-fluxor/fluxor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Release notes
 See the [Releases page](./Docs/releases.md) for release history.
