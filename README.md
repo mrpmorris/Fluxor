@@ -3,6 +3,8 @@
 
 Fluxor is a zero boilerplate Flux/Redux library for [Microsoft DotNet](https://dotnet.microsoft.com/).
 
+[![Join the chat at https://gitter.im/mrpmorris/fluxor](https://badges.gitter.im/mrpmorris/fluxor.svg)](https://gitter.im/mrpmorris/fluxor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Introduction
 If you are new to Fluxor, or to the Flux/Redux approach in general then [this YouTube video by Nick Chapsas](https://www.youtube.com/watch?v=k_c-ErPaYa8) is an excellent introduction.
 The video is based on the original [Blazor-Fluxor](https://github.com/mrpmorris/blazor-fluxor) library, but the concepts are the same.
