@@ -37,6 +37,13 @@ namespace Fluxor
 		void RestoreState(object value);
 
 		/// <summary>
+		/// Reset the current state of the feature to the initial state. This should only be used by Middleware, not for mutating
+		/// state within an application.
+		/// </summary>
+		/// <seealso cref="IMiddleware"/>
+		void ResetToInitialState();
+
+		/// <summary>
 		/// Allows a feature to react to an action dispatched via the store. This should not be called by
 		/// consuming applications. Instead you should dispatch actions only via <see cref="IDispatcher.Dispatch(object)"/>
 		/// </summary>

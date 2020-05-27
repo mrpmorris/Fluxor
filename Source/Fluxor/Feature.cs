@@ -17,6 +17,9 @@ namespace Fluxor
 		/// <see cref="IFeature.RestoreState(object)"/>
 		public virtual void RestoreState(object value) => State = (TState)value;
 
+		/// <see cref="IFeature.ResetToInitialState()"/>
+		public virtual void ResetToInitialState() => State = GetInitialState();
+
 		/// <see cref="IFeature.GetStateType"/>
 		public virtual Type GetStateType() => typeof(TState);
 
