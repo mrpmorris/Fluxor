@@ -16,7 +16,7 @@
   * Change `AddMiddleware<Blazor.Fluxor.ReduxDevTools.ReduxDevToolsMiddleware>();` to `UseReduxDevTools();`
 4. Instead of using `<Blazor.Fluxor.StoreInitializer/>` or calling `Store.Initialize()` in your razor file, add the following to your `App.razor` file
   * `<Fluxor.Blazor.Web.StoreInitializer/>`
-5: `FluxorComponent` now implements `IDisposable`, so override `Dispose(bool disposing)` instead of implementing `IDisposable` yourself.
-6: Change the script reference from `_content/Blazor.Fluxor/index.js` to `_content/Fluxor.Blazor.Web/scripts/index.js`
-7: The `Go` class in the Routing namespace is now called `GoAction`
+5. `FluxorComponent` now implements `IDisposable`, so override `Dispose(bool disposing)` instead of implementing `IDisposable` yourself.
+6. Change the script reference from `_content/Blazor.Fluxor/index.js` to `_content/Fluxor.Blazor.Web/scripts/index.js`
+7. The `Go` class in the Routing namespace is now called `GoAction`
 
