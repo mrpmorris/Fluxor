@@ -13,7 +13,7 @@
 3. When bootstrapping Fluxor, change the options in `services.AddFluxor` as follows
   * Change `UseDependencyInjection` to `ScanAssemblies`
   * Change `AddMiddleware<Blazor.Fluxor.Routing.RoutingMiddleware>();` to `UseRouting();`
-  * Change `AddMiddleware<Blazor.Fluxor.ReduxDevTools.ReduxDevToolsMiddleware>();` to `UseRouting();`
+  * Change `AddMiddleware<Blazor.Fluxor.ReduxDevTools.ReduxDevToolsMiddleware>();` to `UseReduxDevTools();`
 4. Instead of using `<Blazor.Fluxor.StoreInitializer/>` or calling `Store.Initialize()` in your razor file, add the following to your `App.razor` file
   * `<Fluxor.Blazor.Web.StoreInitializer/>`
 5: `FluxorComponent` now implements `IDisposable`, so override `Dispose(bool disposing)` instead of implementing `IDisposable` yourself.
