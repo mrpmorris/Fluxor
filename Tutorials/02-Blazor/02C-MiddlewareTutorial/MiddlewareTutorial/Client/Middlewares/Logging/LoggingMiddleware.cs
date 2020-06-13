@@ -1,8 +1,7 @@
 ﻿using Fluxor;
-using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Middlewares.Logging
 {
@@ -39,6 +38,6 @@ namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Middlewares.Logging
 		}
 
 		private string ObjectInfo(object obj)
-			=> ": " + obj.GetType().Name + " " + JsonConvert.SerializeObject(obj);
+			=> ": " + obj.GetType().Name + " " + JsonSerializer.Serialize(obj);
 	}
 }

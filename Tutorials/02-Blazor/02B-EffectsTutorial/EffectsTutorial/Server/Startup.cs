@@ -7,11 +7,13 @@ using System.Linq;
 
 namespace FluxorBlazorWeb.EffectsTutorial.Server
 {
-	public class Startup
-	{
+#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
+    public class Startup
+#pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
+    {
 		// This method gets called by the runtime. Use this method to add services to the container.
 		// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-		public void ConfigureServices(IServiceCollection services)
+		public static void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
 			services.AddResponseCompression(opts =>
@@ -22,25 +24,29 @@ namespace FluxorBlazorWeb.EffectsTutorial.Server
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			app.UseResponseCompression();
 
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseBlazorDebugging();
+				// app.UseBlazorDebugging();
+				app.UseWebAssemblyDebugging();
 			}
 
 			app.UseStaticFiles();
-			app.UseClientSideBlazorFiles<Client.Program>();
-
+			// Replace the call to app.UseClientSideBlazorFiles<Client.Program>() with app.UseBlazorFrameworkFiles()
+			// app.UseClientSideBlazorFiles<Client.Program>();
+			app.UseBlazorFrameworkFiles();
 			app.UseRouting();
-
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapDefaultControllerRoute();
-				endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
+				// Replace the call to endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html") 
+				// with endpoints.MapFallbackToFile("index.html").
+				// endpoints.MapFallbackToClientSideBlazor<Client.Program>("index.html");
+				endpoints.MapFallbackToFile("index.html");
 			});
 		}
 	}
