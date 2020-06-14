@@ -1,8 +1,8 @@
 ﻿using FluxorBlazorWeb.MiddlewareTutorial.Shared;
 using Fluxor;
-using Microsoft.AspNetCore.Components;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Net.Http.Json;
 
 namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Store.WeatherUseCase
 {
@@ -18,7 +18,7 @@ namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Store.WeatherUseCase
 		[EffectMethod]
 		public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
 		{
-			var forecasts = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
+			var forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
 			dispatcher.Dispatch(new FetchDataResultAction(forecasts));
 		}
 	}

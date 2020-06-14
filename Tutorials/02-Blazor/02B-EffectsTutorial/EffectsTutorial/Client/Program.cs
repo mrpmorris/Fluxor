@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Blazor.Hosting;
 using Fluxor;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace FluxorBlazorWeb.EffectsTutorial.Client
 {
