@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Fluxor;
 using FluxorBlazorWeb.MiddlewareTutorial.Client.Middlewares.Logging;
+using System.Net.Http;
+using System;
 
 namespace FluxorBlazorWeb.MiddlewareTutorial.Client
 {
@@ -17,7 +19,7 @@ namespace FluxorBlazorWeb.MiddlewareTutorial.Client
 				.UseRouting()
 				.AddMiddleware<LoggingMiddleware>());
 
-			builder.Services.AddBaseAddressHttpClient();
+			builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 			await builder.Build().RunAsync();
 		}
