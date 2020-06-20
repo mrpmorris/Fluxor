@@ -13,41 +13,46 @@ namespace BasicConcepts.MiddlewareTutorial.Store.Middlewares.Logging
 		public override Task InitializeAsync(IStore store)
 		{
 			Store = store;
-			Console.WriteLine(nameof(InitializeAsync));
+			Log(nameof(InitializeAsync));
 			return Task.CompletedTask;
 		}
 
 		public override void AfterInitializeAllMiddlewares()
 		{
-			Console.WriteLine(nameof(AfterInitializeAllMiddlewares));
+			Log(nameof(AfterInitializeAllMiddlewares));
 		}
 
 		public override bool MayDispatchAction(object action)
 		{
-			Console.WriteLine(nameof(MayDispatchAction) + ObjectInfo(action));
+			Log(nameof(MayDispatchAction) + ObjectInfo(action));
 			return true;
 		}
 
 		public override void BeforeDispatch(object action)
 		{
-			Console.WriteLine(nameof(BeforeDispatch) + ObjectInfo(action));
+			Log(nameof(BeforeDispatch) + ObjectInfo(action));
 		}
 
 		public override void AfterDispatch(object action)
 		{
-			Console.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
-			Console.WriteLine("\t===========STATE AFTER DISPATCH===========");
+			Log(nameof(AfterDispatch) + ObjectInfo(action));
+			Log("\t===========STATE AFTER DISPATCH===========");
 			foreach (KeyValuePair<string, IFeature> feature in Store.Features)
 			{
 				string json = JsonConvert.SerializeObject(feature.Value, Formatting.Indented)
 					.Replace("\n", "\n\t");
-				Console.WriteLine("\t" + feature.Key + ": " + json);
+				Log("\r\n\t" + feature.Key + ": " + json);
 			}
 			Console.WriteLine();
 		}
 
 		private string ObjectInfo(object obj)
 			=> ": " + obj.GetType().Name + " " + JsonConvert.SerializeObject(obj, Formatting.Indented);
+
+		private static void Log(string text)
+		{
+			Console.WriteLine($"Middleware: {text}");
+		}
 	}
 
 }
