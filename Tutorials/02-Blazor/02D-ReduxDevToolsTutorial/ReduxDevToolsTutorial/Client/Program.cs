@@ -13,7 +13,9 @@ namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client
 		{
 			var builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("app");
-			builder.Services.AddSingleton(new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
 			builder.Services.AddFluxor(o => o
 				.ScanAssemblies(typeof(Program).Assembly)
 				.UseReduxDevTools()
