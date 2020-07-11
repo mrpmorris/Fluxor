@@ -21,7 +21,7 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var forecast in WeatherState.Value.Forecasts)
+			@foreach (var forecast in State.Value.Forecasts)
 			{
 			<tr>
 				<td>@forecast.Date.ToShortDateString()</td>
