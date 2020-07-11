@@ -1,11 +1,11 @@
 ﻿@page "/fetchdata"
-@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inherits Fluxor.Blazor.Web.Components.FluxorDispatchComponent<FluxorBlazorWeb.MiddlewareTutorial.Client.Store.WeatherUseCase.WeatherState>
 
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
 
-@if (WeatherState.Value.IsLoading)
+@if (State.Value.IsLoading)
 {
 	<p><em>Loading...</em></p>
 }

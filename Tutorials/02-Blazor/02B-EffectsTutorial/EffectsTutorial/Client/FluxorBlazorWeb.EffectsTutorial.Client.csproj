@@ -13,7 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\Source\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Source\Fluxor\Fluxor.csproj" />
     <ProjectReference Include="..\Shared\FluxorBlazorWeb.EffectsTutorial.Shared.csproj" />
   </ItemGroup>
 

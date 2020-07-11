@@ -7,7 +7,7 @@ namespace Fluxor.Blazor.Web.Components
 	/// A component that auto-subscribes to state changes on all <see cref="IState"/> properties
 	/// and ensures <see cref="ComponentBase.StateHasChanged"/> is called
 	/// </summary>
-	public class FluxorComponent : ComponentBase, IDisposable
+	public abstract class FluxorComponent : ComponentBase, IDisposable
 	{
 		private bool Disposed;
 		private IDisposable StateSubscription;
