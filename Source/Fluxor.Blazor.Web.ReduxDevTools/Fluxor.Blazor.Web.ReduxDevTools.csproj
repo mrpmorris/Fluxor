@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
-    <ProjectReference Include="..\Fluxor\Fluxor.csproj" />
   </ItemGroup>
 
 
