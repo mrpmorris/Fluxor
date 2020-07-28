@@ -22,7 +22,8 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 				.Select(x => new DiscoveredEffectMethod(
 					hostClassType: x.MethodInfo.DeclaringType,
 					methodInfo: x.MethodInfo,
-					actionType: x.MethodInfo.GetParameters()[0].ParameterType));
+					actionType: x.MethodInfo.GetParameters()[0].ParameterType))
+				.ToArray();
 
 			IEnumerable<Type> hostClassTypes = discoveredEffects
 				.Select(x => x.HostClassType)

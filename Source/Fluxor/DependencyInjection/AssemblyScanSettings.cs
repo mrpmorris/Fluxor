@@ -26,7 +26,10 @@ namespace Fluxor.DependencyInjection
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
 		{
 			return types
-				.Where(t => scanIncludeList.Any(wl => wl.Matches(t)) || !scanExcludeList.Any(bl => bl.Matches(t)));
+				.Where(t =>
+					scanIncludeList.Any(wl => wl.Matches(t))
+					|| !scanExcludeList.Any(bl => bl.Matches(t)))
+				.ToArray();
 		}
 
 		public override bool Equals(object obj)
