@@ -14,7 +14,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 				.Where(t => typeof(IEffect).IsAssignableFrom(t))
 				.Where(t => t != typeof(EffectWrapper<>))
 				.Select(t => new DiscoveredEffectClass(implementingType: t))
-				.ToList();
+				.ToArray();
 
 			foreach (DiscoveredEffectClass discoveredEffectInfo in discoveredEffectInfos)
 				serviceCollection.AddScoped(discoveredEffectInfo.ImplementingType);

@@ -18,16 +18,28 @@ namespace Fluxor.DependencyInjection
 				throw new ArgumentNullException(nameof(assembliesToScan));
 			scanIncludeList = scanIncludeList ?? new List<AssemblyScanSettings>();
 
-			IEnumerable<Type> allCandidateTypes = assembliesToScan.SelectMany(x => x.Assembly.GetTypes())
+			IEnumerable<Type> allCandidateTypes = 
+				assembliesToScan
+				.SelectMany(x => x.Assembly.GetTypes())
 				.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
-				.Distinct();
-			IEnumerable<Type> allNonAbstractCandidateTypes = allCandidateTypes.Where(t => !t.IsAbstract);
-			IEnumerable<Assembly> allCandidateAssemblies = assembliesToScan.Select(x => x.Assembly)
+				.Distinct()
+				.ToArray();
+
+			IEnumerable<Type> allNonAbstractCandidateTypes =
+				allCandidateTypes
+				.Where(t => !t.IsAbstract)
+				.ToArray();
+
+			IEnumerable<Assembly> allCandidateAssemblies =
+				assembliesToScan
+				.Select(x => x.Assembly)
 				.Union(scanIncludeList.Select(x => x.Assembly))
-				.Distinct();
+				.Distinct()
+				.ToArray();
 
 			IEnumerable<AssemblyScanSettings> scanExcludeList =
 				MiddlewareClassesDiscovery.FindMiddlewareLocations(allCandidateAssemblies);
+
 			allCandidateTypes = AssemblyScanSettings.Filter(
 				types: allCandidateTypes,
 				scanExcludeList: scanExcludeList,

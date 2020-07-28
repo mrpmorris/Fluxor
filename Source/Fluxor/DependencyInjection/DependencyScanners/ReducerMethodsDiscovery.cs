@@ -24,7 +24,8 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 					hostClassType: x.MethodInfo.DeclaringType,
 					methodInfo: x.MethodInfo,
 					stateType: x.MethodInfo.GetParameters()[0].ParameterType,
-					actionType: x.MethodInfo.GetParameters()[1].ParameterType));
+					actionType: x.MethodInfo.GetParameters()[1].ParameterType))
+				.ToArray();
 
 			IEnumerable<Type> hostClassTypes = discoveredReducers
 				.Select(x => x.HostClassType)
