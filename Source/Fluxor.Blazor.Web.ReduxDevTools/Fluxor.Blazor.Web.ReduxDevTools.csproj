@@ -1,47 +1,50 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <RazorLangVersion>3.0</RazorLangVersion>
-    <Version>3.2.0</Version>
-    <Authors>Peter Morris</Authors>
-    <Company />
-    <Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
-    <Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
-    <Copyright>Peter Morris</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
-    <PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
-    <PackageIconUrl />
-    <RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>3.2.0.0</AssemblyVersion>
-    <FileVersion>3.2.0.0</FileVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<RazorLangVersion>3.0</RazorLangVersion>
+		<Version>3.2.0</Version>
+		<Authors>Peter Morris</Authors>
+		<Company />
+		<Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
+		<Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
+		<Copyright>Peter Morris</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
+		<PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
+		<PackageIconUrl />
+		<RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<AssemblyVersion>3.2.0.0</AssemblyVersion>
+		<FileVersion>3.2.0.0</FileVersion>
+		<SignAssembly>true</SignAssembly>
+		<AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.6" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
 
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
+		<ProjectReference Include="..\Fluxor\Fluxor.csproj" />
+	</ItemGroup>
 
 
-  <ItemGroup>
-    <ProjectReference Include="..\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
-    <ProjectReference Include="..\Fluxor\Fluxor.csproj" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <None Include="..\..\Images\fluxor-blazor-reduxdevtools-small.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\Images\fluxor-blazor-reduxdevtools-small.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>

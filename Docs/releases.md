@@ -1,7 +1,9 @@
-# Releases
+  # Releases
 
 ### New in 3.2
  * Improved speed of app start-up when using `options.ScanAssemblies`
+ * Assemblies are now signed
+ * Set project options to treat all warnings as errors
 
 ### New in 3.1.1
  * Fixed bug that caused exception when using `.ConfigureAwait` in an Effect ([#20](https://github.com/mrpmorris/Fluxor/issues/20))
