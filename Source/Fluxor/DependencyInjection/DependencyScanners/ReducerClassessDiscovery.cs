@@ -21,7 +21,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 				.Select(x => new DiscoveredReducerClass(
 					implementingType: x.ImplementingType,
 					stateType: x.GenericParameterTypes[0]))
-				.ToList();
+				.ToArray();
 
 			foreach (DiscoveredReducerClass discoveredReducerInfo in discoveredReducerInfos)
 				serviceCollection.AddScoped(serviceType: discoveredReducerInfo.ImplementingType);

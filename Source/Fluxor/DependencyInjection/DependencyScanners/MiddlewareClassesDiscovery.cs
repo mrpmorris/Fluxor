@@ -11,7 +11,8 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 			return assembliesToScan
 				.SelectMany(x => x.GetTypes().Where(t => t.GetInterfaces().Any(i => i == typeof(IMiddleware))))
 				.Select(x => new AssemblyScanSettings(x.Assembly, x.Namespace))
-				.Distinct();
+				.Distinct()
+				.ToArray();
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 					stateType: x.GenericParameterTypes[0]
 					)
 				)
-				.ToList();
+				.ToArray();
 
 			foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
 			{
