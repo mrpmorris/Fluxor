@@ -46,7 +46,7 @@ namespace Fluxor.DependencyInjection
 				scanExcludeList: scanExcludeList,
 				scanIncludeList: scanIncludeList);
 
-			MethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
+			IEnumerable<MethodInfo> allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
 			IEnumerable<DiscoveredReducerClass> discoveredReducerClasses =
 				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allNonAbstractCandidateTypes);
