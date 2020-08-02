@@ -56,7 +56,8 @@ namespace Fluxor
 		~DisposableCallback()
 		{
 			if (!IsDisposed && WasCreated)
-				throw new InvalidOperationException($"{nameof(DisposableCallback)} with Id \"{Id}\" was not disposed.");
+				throw new InvalidOperationException($"{nameof(DisposableCallback)} with Id \"{Id}\" was not disposed. " +
+					$"See https://github.com/mrpmorris/Fluxor/tree/master/Docs/disposable-callback-not-disposed.md for more details");
 		}
 	}
 }
