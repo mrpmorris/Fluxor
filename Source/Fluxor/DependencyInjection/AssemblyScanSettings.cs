@@ -35,8 +35,7 @@ namespace Fluxor.DependencyInjection
 			.SelectMany(t =>
 				t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.NonPublic))
 			.Where(m =>
-				CustomAttributeExtensions.GetCustomAttribute(m, typeof(EffectMethodAttribute)) != null
-				|| CustomAttributeExtensions.GetCustomAttribute(m, typeof(ReducerMethodAttribute)) != null)
+				m.GetCustomAttributes(false).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
 			.ToArray();
 
 		public override bool Equals(object obj)
