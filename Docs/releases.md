@@ -1,5 +1,9 @@
   # Releases
 
+### New in 3.3
+ * More speed improvements in `options.ScanAssemblies`
+ * **Breaking change**: `EffectMethod` and `ReducerMethod` decorated methods must now be public - although they can be methods of internal classes.
+
 ### New in 3.2
  * Improved speed of app start-up when using `options.ScanAssemblies`
  * Assemblies are now signed

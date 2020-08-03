@@ -10,7 +10,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 		internal static IEnumerable<DiscoveredEffectClass> DiscoverEffectClasses(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
-			IEnumerable<DiscoveredEffectClass> discoveredEffectInfos = allCandidateTypes
+			DiscoveredEffectClass[] discoveredEffectInfos = allCandidateTypes
 				.Where(t => typeof(IEffect).IsAssignableFrom(t))
 				.Where(t => t != typeof(EffectWrapper<>))
 				.Select(t => new DiscoveredEffectClass(implementingType: t))
