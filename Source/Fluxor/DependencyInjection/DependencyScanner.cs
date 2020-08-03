@@ -20,8 +20,8 @@ namespace Fluxor.DependencyInjection
 
 			IEnumerable<Type> allCandidateTypes = 
 				assembliesToScan
-				.SelectMany(x => x.Assembly.GetTypes())
-				.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
+				.SelectMany(x => GetLoadedTypes(x.Assembly))
+				.Union(scanIncludeList.SelectMany(x => GetLoadedTypes(x.Assembly)))
 				.Distinct()
 				.ToArray();
 
@@ -109,6 +109,17 @@ namespace Fluxor.DependencyInjection
 
 				return store;
 			});
+		}
+		 public static IEnumerable<Type> GetLoadedTypes(Assembly assembly)
+		{
+		    try
+		    {
+			return assembly.GetTypes();
+		    }
+		    catch (ReflectionTypeLoadException ex)
+		    {
+			return ex.Types.Where(x => x != null);
+		    }
 		}
 	}
 }
