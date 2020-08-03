@@ -112,16 +112,16 @@ namespace Fluxor.DependencyInjection
 				return store;
 			});
 		}
-		 public static IEnumerable<Type> GetLoadedTypes(Assembly assembly)
+		public static IEnumerable<Type> GetLoadedTypes(Assembly assembly)
 		{
-		    try
-		    {
-			return assembly.GetTypes();
-		    }
-		    catch (ReflectionTypeLoadException ex)
-		    {
-			return ex.Types.Where(x => x != null);
-		    }
+			try
+		    	{
+				return assembly.GetTypes();
+			}
+			catch (ReflectionTypeLoadException ex)
+			{
+				return ex.Types.Where(x => x != null);
+			}
 		}
 	}
 }
