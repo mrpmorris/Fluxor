@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using System;
 
 namespace Fluxor.Blazor.Web.Components
@@ -26,7 +26,15 @@ namespace Fluxor.Blazor.Web.Components
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			StateSubscription = StateSubscriber.Subscribe(this, _ => InvokeAsync(StateHasChanged));
+			StateSubscription = StateSubscriber.Subscribe(this, state =>
+			{
+				OnStateChanged(state);
+				InvokeAsync(StateHasChanged);
+			});
+		}
+
+		protected virtual void OnStateChanged(IState state)
+		{
 		}
 
 		protected virtual void Dispose(bool disposing)
