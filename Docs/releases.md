@@ -1,5 +1,10 @@
   # Releases
 
+### New in 3.3
+ * More start-up speed improvements
+ * Subscriptions to StateChanged will now be triggered before FluxorComponent/FluxorLayout notified of changes (to avoid render before manual subscriptions are executed)
+ * Added link with more information for when `DisposableCallback` throws an error because it has not been disposed
+
 ### New in 3.2
  * Improved speed of app start-up when using `options.ScanAssemblies`
  * Assemblies are now signed
