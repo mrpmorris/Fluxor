@@ -152,8 +152,8 @@ namespace Fluxor
 
 		private void TriggerStateChangedCallbacks(TState newState)
 		{
-			untypedStateChanged?.Invoke(this, EventArgs.Empty);
 			stateChanged?.Invoke(this, newState);
+			untypedStateChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

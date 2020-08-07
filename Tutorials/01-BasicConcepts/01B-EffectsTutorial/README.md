@@ -332,7 +332,7 @@ Temp C  Temp F  Summary
 * The `ReduceFetchDataAction` reducer method sets `IsLoading` to true, so our UI can reflect the change.
 2. The effect method is triggered by the `FetchDataAction` and asynchronously makes a data request
 to our mock server.
-* The call to `Dispather.Dispatch(fetchDataAction)` in our `App` class completes, so redisplays the
+* The call to `Dispatcher.Dispatch(fetchDataAction)` in our `App` class completes, so redisplays the
 menu options.
 3. One second later the mock service returns data.
 4. The effect method bundles the result data into a new `FetchDataResultAction` and dispatches the action.

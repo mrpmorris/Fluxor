@@ -22,15 +22,21 @@ namespace Fluxor.DependencyInjection
 			Namespace = @namespace;
 		}
 
-		public static IEnumerable<Type> Filter(IEnumerable<Type> types, IEnumerable<AssemblyScanSettings> scanExcludeList, 
+		public static IEnumerable<Type> FilterClasses(IEnumerable<Type> types, IEnumerable<AssemblyScanSettings> scanExcludeList, 
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
-		{
-			return types
+			=> types
 				.Where(t =>
 					scanIncludeList.Any(wl => wl.Matches(t))
 					|| !scanExcludeList.Any(bl => bl.Matches(t)))
 				.ToArray();
-		}
+
+		public static IEnumerable<MethodInfo> FilterMethods(IEnumerable<Type> allCandidateTypes) =>
+			allCandidateTypes
+			.SelectMany(t =>
+				t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static))
+			.Where(m =>
+				m.GetCustomAttributes(false).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
+			.ToArray();
 
 		public override bool Equals(object obj)
 		{
@@ -45,6 +51,5 @@ namespace Fluxor.DependencyInjection
 		{
 			return (Assembly.FullName + "/" + Namespace).GetHashCode();
 		}
-
 	}
 }
