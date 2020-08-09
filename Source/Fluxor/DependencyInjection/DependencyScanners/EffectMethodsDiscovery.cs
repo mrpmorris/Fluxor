@@ -9,10 +9,9 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 	internal static class EffectMethodsDiscovery
 	{
 		internal static IEnumerable<DiscoveredEffectMethod> DiscoverEffectMethods(IServiceCollection serviceCollection,
-			IEnumerable<Type> allCandidateTypes)
+			IEnumerable<MethodInfo> allCandidateMethods)
 		{
-			var discoveredEffects = allCandidateTypes
-				.SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
+			DiscoveredEffectMethod[] discoveredEffects = allCandidateMethods
 				.Select(m => new
 				{
 					MethodInfo = m,

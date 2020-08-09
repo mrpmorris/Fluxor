@@ -1,5 +1,12 @@
   # Releases
 
+### New in 3.3
+ * **Breaking change**: `EffectMethod` and `ReducerMethod` decorated methods must now be public - although they can be methods of internal classes.
+ * New `IActionSubscriber` to receive notifications before actions are reduced into state and before Effects are triggered
+ * More speed improvements in `options.ScanAssemblies`
+ * Subscriptions to the `StateChanged` event will now be triggered before FluxorComponent/FluxorLayout notified of changes (so manual subscriptions are executed before rendering)
+ * Added link with more information for when `DisposableCallback` throws an error because it has not been disposed### New in 3.2
+
 ### New in 3.2
  * Improved speed of app start-up when using `options.ScanAssemblies`
  * Assemblies are now signed

@@ -10,7 +10,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 		internal static IEnumerable<DiscoveredReducerClass> DiscoverReducerClasses(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
-			IEnumerable<DiscoveredReducerClass> discoveredReducerInfos = allCandidateTypes
+			DiscoveredReducerClass[] discoveredReducerInfos = allCandidateTypes
 				.Where(t => t != typeof(ReducerWrapper<,>))
 				.Select(t => new
 				{

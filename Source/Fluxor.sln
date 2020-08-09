@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C2B1D7B3-E943-4EA3-88B0-94433B49080C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\Docs\disposable-callback-not-disposed.md = ..\Docs\disposable-callback-not-disposed.md
 		..\README.md = ..\README.md
 		..\Docs\releases.md = ..\Docs\releases.md
 	EndProjectSection
@@ -83,12 +84,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.StateAction
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{028DE5AF-7FF2-4E1D-8AB7-99B2668A9736}"
 	ProjectSection(SolutionItems) = preProject
+		..\Docs\disposable-callback-not-disposed.md = ..\Docs\disposable-callback-not-disposed.md
 		..\Docs\README.md = ..\Docs\README.md
 		..\Docs\releases.md = ..\Docs\releases.md
 		..\Docs\upgrading-instructions.md = ..\Docs\upgrading-instructions.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.StateActionsReducersTutorial", "..\Tutorials\01-BasicConcepts\01A-StateActionsReducersTutorial\StateActionsReducersTutorial\BasicConcepts.StateActionsReducersTutorial.csproj", "{5E423494-7C7A-485E-8E84-A5CD11F7C504}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01E-ActionSubscriber", "01E-ActionSubscriber", "{6118BA67-8200-42C8-8A6D-B65E085E07A0}"
+	ProjectSection(SolutionItems) = preProject
+		..\Tutorials\01-BasicConcepts\01E-ActionObserver\README.md = ..\Tutorials\01-BasicConcepts\01E-ActionObserver\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -345,6 +352,7 @@ Global
 		{4E9607E0-545A-47FC-BB75-75E53F87929D} = {0555A496-56DB-45D0-9618-BEF456ABA67B}
 		{A56E9867-7EB6-4EF6-A641-737C77E62B37} = {14D676FF-AC1C-4912-81D0-9B98B8B090D8}
 		{5E423494-7C7A-485E-8E84-A5CD11F7C504} = {4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}
+		{6118BA67-8200-42C8-8A6D-B65E085E07A0} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}

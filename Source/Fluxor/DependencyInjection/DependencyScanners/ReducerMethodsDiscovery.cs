@@ -10,10 +10,9 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 	{
 		internal static IEnumerable<DiscoveredReducerMethod> DiscoverReducerMethods(
 			IServiceCollection serviceCollection,
-			IEnumerable<Type> allCandidateTypes)
+			IEnumerable<MethodInfo> allCandidateMethods)
 		{
-			var discoveredReducers = allCandidateTypes
-				.SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
+			DiscoveredReducerMethod[] discoveredReducers = allCandidateMethods
 				.Select(m => new
 				{
 					MethodInfo = m,

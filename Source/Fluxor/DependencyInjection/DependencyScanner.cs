@@ -18,7 +18,7 @@ namespace Fluxor.DependencyInjection
 				throw new ArgumentNullException(nameof(assembliesToScan));
 			scanIncludeList = scanIncludeList ?? new List<AssemblyScanSettings>();
 
-			IEnumerable<Type> allCandidateTypes = 
+			IEnumerable<Type> allCandidateTypes =
 				assembliesToScan
 				.SelectMany(x => x.Assembly.GetTypes())
 				.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
@@ -40,22 +40,24 @@ namespace Fluxor.DependencyInjection
 			IEnumerable<AssemblyScanSettings> scanExcludeList =
 				MiddlewareClassesDiscovery.FindMiddlewareLocations(allCandidateAssemblies);
 
-			allCandidateTypes = AssemblyScanSettings.Filter(
+			allCandidateTypes = AssemblyScanSettings.FilterClasses(
 				types: allCandidateTypes,
 				scanExcludeList: scanExcludeList,
 				scanIncludeList: scanIncludeList);
+
+			IEnumerable<MethodInfo> allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
 			IEnumerable<DiscoveredReducerClass> discoveredReducerClasses =
 				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allNonAbstractCandidateTypes);
 
 			IEnumerable<DiscoveredReducerMethod> discoveredReducerMethods =
-				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateTypes);
+				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateMethods);
 
 			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses =
 				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
 
 			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods =
-				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateTypes);
+				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateMethods);
 
 			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses =
 				FeatureClassesDiscovery.DiscoverFeatureClasses(
@@ -76,11 +78,15 @@ namespace Fluxor.DependencyInjection
 			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses,
 			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods)
 		{
-			// Register IDispatcher as an alias to IStore
-			serviceCollection.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetService<IStore>());
+			// Register IDispatcher as an alias to Store
+			serviceCollection.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetService<Store>());
+			// Register IActionSubscriber as an alias to Store
+			serviceCollection.AddScoped<IActionSubscriber>(serviceProvider => serviceProvider.GetService<Store>());
+			// Register IStore as an alias to Store
+			serviceCollection.AddScoped<IStore>(serviceProvider => serviceProvider.GetService<Store>());
 
 			// Register a custom factory for building IStore that will inject all effects
-			serviceCollection.AddScoped(typeof(IStore), serviceProvider =>
+			serviceCollection.AddScoped(typeof(Store), serviceProvider =>
 			{
 				var store = new Store();
 				foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
