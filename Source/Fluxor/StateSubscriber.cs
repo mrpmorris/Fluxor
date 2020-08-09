@@ -7,7 +7,10 @@ using GetStateDelegate = System.Func<object, Fluxor.IState>;
 
 namespace Fluxor
 {
-	// TODO: PeteM - XML Comments
+	/// <summary>
+	/// A utility class that automaticaly subscribes to all <see cref="IState{TState}"/> properties
+	/// on a specific object
+	/// </summary>
 	public static class StateSubscriber
 	{
 		private static readonly ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>> ValueDelegatesByType;
@@ -17,6 +20,13 @@ namespace Fluxor
 			ValueDelegatesByType = new ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>>();
 		}
 
+		/// <summary>
+		/// Subscribes to all <see cref="IState{TState}"/> properties on the specified <paramref name="subject"/>
+		/// to ensure <paramref name="callback"/> is called whenever a state is modified
+		/// </summary>
+		/// <param name="subject">The object to scan for <see cref="IState{TState}"/> properties.</param>
+		/// <param name="callback">The action to execute when one of the states are modified</param>
+		/// <returns></returns>
 		public static IDisposable Subscribe(object subject, Action<IState> callback)
 		{
 			if (subject == null)

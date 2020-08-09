@@ -10,7 +10,8 @@ If ever you see an error message like the following
 
 it is most likely because of one of the following reasons:
 
-* You have overridden `Dispose(bool disposed)` on `FluxorComponent`
+### Not calling base.Dispose
+**Problem:** You have overridden `Dispose(bool disposed)` on `FluxorComponent`
 or `FluxorLayout` and not called `base.Dispose(disposed)`.
 
 **Fix:** If you override a method, make sure you call the base method.
@@ -23,7 +24,8 @@ protected override void Dispose(bool disposed)
 }
 ```
 
-* In more advanced scenarios, you have called `IStore.BeginInternalMiddlewareChange` without
+### Not calling base.BeginMiddlewareChange
+**Problem:** In more advanced scenarios, you have called `IStore.BeginInternalMiddlewareChange` without
 disposing the result.
 
 **Fix:** If you execute a method that returns an IDisposable,
@@ -36,3 +38,9 @@ using (Store.BeginMiddlewareChange())
 	//etc
 }
 ```
+
+### Not calling Dispose on IActionSubscriber.GetActionUnsubscriberAsIDisposable
+**Problem:** You have called `IActionSubscriber.GetActionUnsubscriberAsIDisposable()` and
+not called `Dispose()` on the result.
+
+**Fix:** You must call `Dispose`

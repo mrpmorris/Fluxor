@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C2B1D7B3-E943-4EA3-88B0-94433B49080C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\Docs\disposable-callback-not-disposed.md = ..\Docs\disposable-callback-not-disposed.md
 		..\README.md = ..\README.md
 		..\Docs\releases.md = ..\Docs\releases.md
 	EndProjectSection
@@ -83,6 +84,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.StateAction
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{028DE5AF-7FF2-4E1D-8AB7-99B2668A9736}"
 	ProjectSection(SolutionItems) = preProject
+		..\Docs\disposable-callback-not-disposed.md = ..\Docs\disposable-callback-not-disposed.md
 		..\Docs\README.md = ..\Docs\README.md
 		..\Docs\releases.md = ..\Docs\releases.md
 		..\Docs\upgrading-instructions.md = ..\Docs\upgrading-instructions.md
