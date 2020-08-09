@@ -16,7 +16,7 @@ namespace Fluxor
 		/// <see cref="IStore.Initialized"/>
 		public Task Initialized => InitializedCompletionSource.Task;
 
-		private SpinLock SpinLock = new SpinLock();
+		private object SyncRoot = new object();
 		private readonly Dictionary<string, IFeature> FeaturesByName = new Dictionary<string, IFeature>(StringComparer.InvariantCultureIgnoreCase);
 		private readonly List<IEffect> Effects = new List<IEffect>();
 		private readonly List<IMiddleware> Middlewares = new List<IMiddleware>();
@@ -56,10 +56,10 @@ namespace Fluxor
 			if (feature == null)
 				throw new ArgumentNullException(nameof(feature));
 
-			SpinLock.ExecuteLocked(() =>
+			lock (SyncRoot)
 			{
 				FeaturesByName.Add(feature.GetName(), feature);
-			});
+			}
 		}
 
 		/// <see cref="IDispatcher.Dispatch(object)"/>
@@ -68,7 +68,7 @@ namespace Fluxor
 			if (action == null)
 				throw new ArgumentNullException(nameof(action));
 
-			SpinLock.ExecuteLocked(() =>
+			lock (SyncRoot)
 			{
 				// Do not allow task dispatching inside a middleware-change.
 				// These change cycles are for things like "jump to state" in Redux Dev Tools
@@ -93,7 +93,7 @@ namespace Fluxor
 					return;
 
 				DequeueActions();
-			});
+			};
 		}
 
 		/// <see cref="IStore.AddEffect(IEffect)"/>
@@ -102,16 +102,16 @@ namespace Fluxor
 			if (effect == null)
 				throw new ArgumentNullException(nameof(effect));
 
-			SpinLock.ExecuteLocked(() =>
+			lock (SyncRoot)
 			{
 				Effects.Add(effect);
-			});
+			}
 		}
 
 		/// <see cref="IStore.AddMiddleware(IMiddleware)"/>
 		public void AddMiddleware(IMiddleware middleware)
 		{
-			SpinLock.ExecuteLocked(() =>
+			lock (SyncRoot)
 			{
 				Middlewares.Add(middleware);
 				ReversedMiddlewares.Insert(0, middleware);
@@ -127,20 +127,20 @@ namespace Fluxor
 								middleware.AfterInitializeAllMiddlewares();
 						});
 				}
-			});
+			}
 		}
 
 		/// <see cref="IStore.BeginInternalMiddlewareChange"/>
 		public IDisposable BeginInternalMiddlewareChange()
 		{
 			IDisposable[] disposables = null;
-			SpinLock.ExecuteLocked(() =>
+			lock (SyncRoot)
 			{
 				BeginMiddlewareChangeCount++;
 				disposables = Middlewares
 					.Select(x => x.BeginInternalMiddlewareChange())
 					.ToArray();
-			});
+			}
 
 			return new DisposableCallback(
 				id: $"{nameof(Store)}.{nameof(BeginInternalMiddlewareChange)}",
@@ -157,12 +157,12 @@ namespace Fluxor
 
 		private void EndMiddlewareChange(IDisposable[] disposables)
 		{
-			SpinLock.ExecuteLocked(() =>
+			lock (SyncRoot)
 			{
 				BeginMiddlewareChangeCount--;
 				if (BeginMiddlewareChangeCount == 0)
 					disposables.ToList().ForEach(x => x.Dispose());
-			});
+			}
 		}
 
 		private void TriggerEffects(object action)
@@ -199,12 +199,12 @@ namespace Fluxor
 
 			await InitializeMiddlewaresAsync();
 
-			SpinLock.ExecuteLocked(() =>
+			lock (SyncRoot)
 			{
 				HasActivatedStore = true;
 				DequeueActions();
 				InitializedCompletionSource.SetResult(true);
-			});
+			}
 		}
 
 		private void DequeueActions()
@@ -221,7 +221,7 @@ namespace Fluxor
 					if (Middlewares.All(x => x.MayDispatchAction(nextActionToProcess)))
 					{
 						ExecuteMiddlewareBeforeDispatch(nextActionToProcess);
-						ActionSubscriber.Notify(nextActionToProcess);
+						ActionSubscriber?.Notify(nextActionToProcess);
 
 						// Notify all features of this action
 						foreach (var featureInstance in FeaturesByName.Values)

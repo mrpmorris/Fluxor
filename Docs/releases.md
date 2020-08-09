@@ -5,7 +5,7 @@
  * New `IActionSubscriber` to receive notifications before actions are reduced into state and before Effects are triggered
  * More speed improvements in `options.ScanAssemblies`
  * Subscriptions to the `StateChanged` event will now be triggered before FluxorComponent/FluxorLayout notified of changes (so manual subscriptions are executed before rendering)
- * Added link with more information for when `DisposableCallback` throws an error because it has not been disposed### New in 3.2
+ * Added link with more information for when `DisposableCallback` throws an error because it has not been disposed
 
 ### New in 3.2
  * Improved speed of app start-up when using `options.ScanAssemblies`
