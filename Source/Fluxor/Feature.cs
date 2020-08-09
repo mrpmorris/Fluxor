@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fluxor.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -46,32 +47,12 @@ namespace Fluxor
 		{
 			add
 			{
-				bool lockTaken = false;
-				try
-				{
-					SpinLock.Enter(ref lockTaken);
-					untypedStateChanged += value;
-				}
-				finally
-				{
-					if (lockTaken)
-						SpinLock.Exit();
-				}
+				SpinLock.ExecuteLocked(() => untypedStateChanged += value );
 			}
 
 			remove
 			{
-				bool lockTaken = false;
-				try
-				{
-					SpinLock.Enter(ref lockTaken);
-					untypedStateChanged -= value;
-				}
-				finally
-				{
-					if (lockTaken)
-						SpinLock.Exit();
-				}
+				SpinLock.ExecuteLocked(() => untypedStateChanged -= value);
 			}
 		}
 
@@ -85,32 +66,12 @@ namespace Fluxor
 		{
 			add
 			{
-				bool lockTaken = false;
-				try
-				{
-					SpinLock.Enter(ref lockTaken);
-					stateChanged += value;
-				}
-				finally
-				{
-					if (lockTaken)
-						SpinLock.Exit();
-				}
+				SpinLock.ExecuteLocked(() => stateChanged += value);
 			}
 
 			remove
 			{
-				bool lockTaken = false;
-				try
-				{
-					SpinLock.Enter(ref lockTaken);
-					stateChanged -= value;
-				}
-				finally
-				{
-					if (lockTaken)
-						SpinLock.Exit();
-				}
+				SpinLock.ExecuteLocked(() => stateChanged -= value);
 			}
 		}
 

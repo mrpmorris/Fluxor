@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Fluxor
 {
 	/// <see cref="IStore"/>
-	public class Store : IStore
+	public class Store : IStore, IDispatcher, IActionSubscriber
 	{
 		/// <see cref="IStore.Features"/>
 		public IReadOnlyDictionary<string, IFeature> Features => FeaturesByName;
@@ -21,6 +21,7 @@ namespace Fluxor
 		private readonly List<IMiddleware> ReversedMiddlewares = new List<IMiddleware>();
 		private readonly Queue<object> QueuedActions = new Queue<object>();
 		private readonly TaskCompletionSource<bool> InitializedCompletionSource = new TaskCompletionSource<bool>();
+		private readonly ActionSubscriber ActionSubscriber;
 
 		private volatile bool IsDispatching;
 		private volatile int BeginMiddlewareChangeCount;
@@ -33,6 +34,8 @@ namespace Fluxor
 		/// </summary>
 		public Store()
 		{
+			ActionSubscriber = new ActionSubscriber();
+
 			MethodInfo dispatchNotifictionFromStoreMethodInfo =
 				typeof(IFeature)
 				.GetMethod(nameof(IFeature.ReceiveDispatchNotificationFromStore));
@@ -90,6 +93,17 @@ namespace Fluxor
 				DequeueActions();
 			}
 		}
+
+		public void OnAction<TAction>(object subscriber, Action<TAction> callback)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Unsubscribe(object subscriber)
+		{
+			throw new NotImplementedException();
+		}
+
 
 		/// <see cref="IStore.AddEffect(IEffect)"/>
 		public void AddEffect(IEffect effect)
@@ -231,5 +245,18 @@ namespace Fluxor
 				IsDispatching = false;
 			}
 		}
+
+		public void SubscribeToAction<TAction>(object subscriber, Action<TAction> callback)
+		{
+			ActionSubscriber.SubscribeToAction(subscriber, callback);
+		}
+
+		public void CancelActionSubscriptions(object subscriber)
+		{
+			ActionSubscriber.CancelActionSubscriptions(subscriber);
+		}
+
+		public IDisposable GetIDisposableForActionSubscriptions(object subscriber) =>
+			ActionSubscriber.GetIDisposableForActionSubscriptions(subscriber);
 	}
 }

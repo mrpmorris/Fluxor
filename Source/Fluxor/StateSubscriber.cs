@@ -5,15 +5,16 @@ using System.Linq;
 using System.Reflection;
 using GetStateDelegate = System.Func<object, Fluxor.IState>;
 
-namespace Fluxor.Blazor.Web.Components
+namespace Fluxor
 {
-	internal static class StateSubscriber
+	// TODO: PeteM - XML Comments
+	public static class StateSubscriber
 	{
-		private static readonly ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>> ValueDelegatesForType;
+		private static readonly ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>> ValueDelegatesByType;
 
 		static StateSubscriber()
 		{
-			ValueDelegatesForType = new ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>>();
+			ValueDelegatesByType = new ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>>();
 		}
 
 		public static IDisposable Subscribe(object subject, Action<IState> callback)
@@ -54,7 +55,7 @@ namespace Fluxor.Blazor.Web.Components
 
 		private static IEnumerable<GetStateDelegate> GetStateDelegatesForType(Type type)
 		{
-			return ValueDelegatesForType.GetOrAdd(type, _ =>
+			return ValueDelegatesByType.GetOrAdd(type, _ =>
 			{
 				var delegates = new List<GetStateDelegate>();
 				IEnumerable<PropertyInfo> stateProperties = GetStateProperties(type);
