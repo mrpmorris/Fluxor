@@ -1,5 +1,4 @@
-﻿using BasicConcepts.ActionObserver.Services;
-using Fluxor;
+﻿using Fluxor;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -11,7 +10,6 @@ namespace BasicConcepts.ActionObserver
 		{
 			var services = new ServiceCollection();
 			services.AddScoped<App>();
-			services.AddScoped<IApiService, ApiService>();
 			services.AddFluxor(o => o
 				.ScanAssemblies(typeof(Program).Assembly));
 

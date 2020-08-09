@@ -2,8 +2,6 @@
 using Fluxor;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BasicConcepts.ActionObserver
 {
@@ -25,13 +23,7 @@ namespace BasicConcepts.ActionObserver
 			Console.Clear();
 			Console.WriteLine("Initializing store");
 			Store.InitializeAsync().Wait();
-			Console.WriteLine($"Subscribing to action {nameof(GetCustomerForEditResultAction)}");
-			ActionSubscriber.SubscribeToAction<GetCustomerForEditResultAction>(this, action => 
-			{
-				string jsonToShowInConsole = JsonConvert.SerializeObject(action.Customer, Formatting.Indented);
-				Console.WriteLine("Action notification:");
-				Console.WriteLine(jsonToShowInConsole);
-			});
+			SubscribeToResultAction();
 			string input = "";
 			do
 			{
@@ -54,10 +46,21 @@ namespace BasicConcepts.ActionObserver
 			} while (true);
 		}
 
+		private void SubscribeToResultAction()
+		{
+			Console.WriteLine($"Subscribing to action {nameof(GetCustomerForEditResultAction)}");
+			ActionSubscriber.SubscribeToAction<GetCustomerForEditResultAction>(this, action =>
+			{
+				string jsonToShowInConsole = JsonConvert.SerializeObject(action.Customer, Formatting.Indented);
+				Console.WriteLine("Action notification:");
+				Console.WriteLine(jsonToShowInConsole);
+			});
+		}
+
+		// IMPORTANT: Unsubscribe to avoid memory leaks!
 		void IDisposable.Dispose()
 		{
 			ActionSubscriber.UnsubscribeFromAllActions(this);
 		}
 	}
-
 }
