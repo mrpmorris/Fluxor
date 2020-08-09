@@ -1,7 +1,7 @@
 # Fluxor - Basic concepts
 
-## IActionObserver
-`IActionObserver` allows us to subscribe to the dispatch pipeline and be notifified
+## IActionSubscriber
+`IActionSubscriber` allows us to subscribe to the dispatch pipeline and be notifified
 whenever an action has been dispatched.
 
 One particularly useful example of this is when we wish to retrieve

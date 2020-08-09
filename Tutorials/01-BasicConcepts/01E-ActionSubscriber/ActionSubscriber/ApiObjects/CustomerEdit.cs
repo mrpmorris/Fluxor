@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BasicConcepts.ActionObserver.ApiObjects
+namespace BasicConcepts.ActionSubscriber.ApiObjects
 {
 	public class CustomerEdit
 	{

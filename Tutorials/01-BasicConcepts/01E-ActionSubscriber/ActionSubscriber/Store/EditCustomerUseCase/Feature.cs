@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 
-namespace BasicConcepts.ActionObserver.Store.EditCustomerUseCase
+namespace BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase
 {
 	public class Feature : Feature<EditCustomerState>
 	{
