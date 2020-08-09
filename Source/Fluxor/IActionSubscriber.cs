@@ -6,7 +6,7 @@ namespace Fluxor
 	public interface IActionSubscriber
 	{
 		void SubscribeToAction<TAction>(object subscriber, Action<TAction> callback);
-		void CancelActionSubscriptions(object subscriber);
-		IDisposable GetIDisposableForActionSubscriptions(object subscriber);
+		void UnsubscribeFromAllActions(object subscriber);
+		IDisposable GetActionUnsubscriberAsIDisposable(object subscriber);
 	}
 }

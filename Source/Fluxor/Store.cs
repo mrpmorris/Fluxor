@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Fluxor.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fluxor
@@ -14,7 +16,7 @@ namespace Fluxor
 		/// <see cref="IStore.Initialized"/>
 		public Task Initialized => InitializedCompletionSource.Task;
 
-		private readonly object SyncRoot = new object();
+		private SpinLock SpinLock = new SpinLock();
 		private readonly Dictionary<string, IFeature> FeaturesByName = new Dictionary<string, IFeature>(StringComparer.InvariantCultureIgnoreCase);
 		private readonly List<IEffect> Effects = new List<IEffect>();
 		private readonly List<IMiddleware> Middlewares = new List<IMiddleware>();
@@ -54,10 +56,10 @@ namespace Fluxor
 			if (feature == null)
 				throw new ArgumentNullException(nameof(feature));
 
-			lock (SyncRoot)
+			SpinLock.ExecuteLocked(() =>
 			{
 				FeaturesByName.Add(feature.GetName(), feature);
-			}
+			});
 		}
 
 		/// <see cref="IDispatcher.Dispatch(object)"/>
@@ -66,7 +68,7 @@ namespace Fluxor
 			if (action == null)
 				throw new ArgumentNullException(nameof(action));
 
-			lock (SyncRoot)
+			SpinLock.ExecuteLocked(() =>
 			{
 				// Do not allow task dispatching inside a middleware-change.
 				// These change cycles are for things like "jump to state" in Redux Dev Tools
@@ -91,19 +93,8 @@ namespace Fluxor
 					return;
 
 				DequeueActions();
-			}
+			});
 		}
-
-		public void OnAction<TAction>(object subscriber, Action<TAction> callback)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Unsubscribe(object subscriber)
-		{
-			throw new NotImplementedException();
-		}
-
 
 		/// <see cref="IStore.AddEffect(IEffect)"/>
 		public void AddEffect(IEffect effect)
@@ -111,16 +102,16 @@ namespace Fluxor
 			if (effect == null)
 				throw new ArgumentNullException(nameof(effect));
 
-			lock (SyncRoot)
+			SpinLock.ExecuteLocked(() =>
 			{
 				Effects.Add(effect);
-			}
+			});
 		}
 
 		/// <see cref="IStore.AddMiddleware(IMiddleware)"/>
 		public void AddMiddleware(IMiddleware middleware)
 		{
-			lock (SyncRoot)
+			SpinLock.ExecuteLocked(() =>
 			{
 				Middlewares.Add(middleware);
 				ReversedMiddlewares.Insert(0, middleware);
@@ -136,23 +127,24 @@ namespace Fluxor
 								middleware.AfterInitializeAllMiddlewares();
 						});
 				}
-			}
+			});
 		}
 
 		/// <see cref="IStore.BeginInternalMiddlewareChange"/>
 		public IDisposable BeginInternalMiddlewareChange()
 		{
-			lock (SyncRoot)
+			IDisposable[] disposables = null;
+			SpinLock.ExecuteLocked(() =>
 			{
 				BeginMiddlewareChangeCount++;
-				IDisposable[] disposables = Middlewares
+				disposables = Middlewares
 					.Select(x => x.BeginInternalMiddlewareChange())
 					.ToArray();
+			});
 
-				return new DisposableCallback(
-					id: $"{nameof(Store)}.{nameof(BeginInternalMiddlewareChange)}",
-					() => EndMiddlewareChange(disposables));
-			}
+			return new DisposableCallback(
+				id: $"{nameof(Store)}.{nameof(BeginInternalMiddlewareChange)}",
+				() => EndMiddlewareChange(disposables));
 		}
 
 		/// <see cref="IStore.InitializeAsync"/>
@@ -165,12 +157,12 @@ namespace Fluxor
 
 		private void EndMiddlewareChange(IDisposable[] disposables)
 		{
-			lock (SyncRoot)
+			SpinLock.ExecuteLocked(() =>
 			{
 				BeginMiddlewareChangeCount--;
 				if (BeginMiddlewareChangeCount == 0)
 					disposables.ToList().ForEach(x => x.Dispose());
-			}
+			});
 		}
 
 		private void TriggerEffects(object action)
@@ -207,12 +199,12 @@ namespace Fluxor
 
 			await InitializeMiddlewaresAsync();
 
-			lock (SyncRoot)
+			SpinLock.ExecuteLocked(() =>
 			{
 				HasActivatedStore = true;
 				DequeueActions();
 				InitializedCompletionSource.SetResult(true);
-			}
+			});
 		}
 
 		private void DequeueActions()
@@ -235,8 +227,8 @@ namespace Fluxor
 							IFeatureReceiveDispatchNotificationFromStore(featureInstance, nextActionToProcess);
 
 						ExecuteMiddlewareAfterDispatch(nextActionToProcess);
-
 						TriggerEffects(nextActionToProcess);
+						ActionSubscriber.Notify(nextActionToProcess);
 					}
 				}
 			}
@@ -251,12 +243,12 @@ namespace Fluxor
 			ActionSubscriber.SubscribeToAction(subscriber, callback);
 		}
 
-		public void CancelActionSubscriptions(object subscriber)
+		public void UnsubscribeFromAllActions(object subscriber)
 		{
-			ActionSubscriber.CancelActionSubscriptions(subscriber);
+			ActionSubscriber.UnsubscribeFromAllActions(subscriber);
 		}
 
-		public IDisposable GetIDisposableForActionSubscriptions(object subscriber) =>
-			ActionSubscriber.GetIDisposableForActionSubscriptions(subscriber);
+		public IDisposable GetActionUnsubscriberAsIDisposable(object subscriber) =>
+			ActionSubscriber.GetActionUnsubscriberAsIDisposable(subscriber);
 	}
 }

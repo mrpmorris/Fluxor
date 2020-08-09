@@ -14,8 +14,10 @@ namespace Fluxor.Extensions
 			bool lockTaken = false;
 			try
 			{
-				while (!lockTaken)
+				do
+				{
 					spinLock.Enter(ref lockTaken);
+				} while (!lockTaken);
 				callback();
 			}
 			finally

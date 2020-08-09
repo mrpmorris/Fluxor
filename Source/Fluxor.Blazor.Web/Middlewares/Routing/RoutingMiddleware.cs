@@ -13,7 +13,6 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		private readonly NavigationManager NavigationManager;
 		private readonly IFeature<RoutingState> Feature;
 		private IStore Store;
-		private IDispatcher Dispatcher;
 
 		/// <summary>
 		/// Creates a new instance of the routing middleware
@@ -28,12 +27,11 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		}
 
 		/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
-		public override Task InitializeAsync(IStore store, IDispatcher dispatcher)
+		public override Task InitializeAsync(IStore store)
 		{
 			Store = store;
-			Dispatcher = dispatcher;
 			// If the URL changed before we initialized then dispatch an action
-			.Dispatch(new GoAction(NavigationManager.Uri));
+			Store.Dispatch(new GoAction(NavigationManager.Uri));
 			return Task.CompletedTask;
 		}
 

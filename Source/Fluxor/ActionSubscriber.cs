@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
 namespace Fluxor
@@ -19,10 +18,10 @@ namespace Fluxor
 			SubscriptionsForType = new Dictionary<Type, List<ActionSubscription>>();
 		}
 
-		public IDisposable GetIDisposableForActionSubscriptions(object subscriber) =>
+		public IDisposable GetActionUnsubscriberAsIDisposable(object subscriber) =>
 			new DisposableCallback(
-				id: $"{nameof(ActionSubscriber)}.{nameof(GetIDisposableForActionSubscriptions)}",
-				action: () => CancelActionSubscriptions(subscriber));
+				id: $"{nameof(ActionSubscriber)}.{nameof(GetActionUnsubscriberAsIDisposable)}",
+				action: () => UnsubscribeFromAllActions(subscriber));
 
 		public void Notify(object action)
 		{
@@ -71,7 +70,7 @@ namespace Fluxor
 			});
 		}
 
-		public void CancelActionSubscriptions(object subscriber)
+		public void UnsubscribeFromAllActions(object subscriber)
 		{
 			if (subscriber == null)
 				throw new ArgumentNullException(nameof(subscriber));

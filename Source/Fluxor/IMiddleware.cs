@@ -13,9 +13,7 @@ namespace Fluxor
 		/// the middleware is added to the store (if the store has already been initialised)
 		/// </summary>
 		/// <param name="store">A reference to the store</param>
-		/// <param name="dispatcher">A reference to the dispatcher</param>
-		/// <param name"actionSubscriber">A reference to the action subscriber</param>
-		Task InitializeAsync(IStore store, IDispatcher dispatcher, IActionSubscriber actionSubscriber);
+		Task InitializeAsync(IStore store);
 
 		/// <summary>
 		/// Called exactly once by the store after <see cref="InitializeAsync(IStore)"/> has been
