@@ -5,7 +5,7 @@
 		<RazorLangVersion>3.0</RazorLangVersion>
 		<Authors>Peter Morris</Authors>
 		<Company />
-		<Version>3.2.0</Version>
+		<Version>3.3.0</Version>
 		<Description>A zero boilerplate Redux/Flux framework for Blazor</Description>
 		<Copyright>Peter Morris</Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -17,8 +17,8 @@
 		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents</PackageTags>
 		<Product>Fluxor for Blazor (Web)</Product>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<AssemblyVersion>3.2.0.0</AssemblyVersion>
-		<FileVersion>3.2.0.0</FileVersion>
+		<AssemblyVersion>3.3.0.0</AssemblyVersion>
+		<FileVersion>3.3.0.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>

@@ -8,6 +8,10 @@ One particularly useful example of this is when we wish to retrieve
 a mutable object from an API server that we can edit in our application
 without having to store that mutable object in our immutable state.
 
+Another is when an action such as `CustomerSearchAction` is dispatched
+and the UI needs to know when it is complete so it can set focus
+to a specific control.
+
 ### Goal
 This tutorial will demonstrate how to subscribe to be notified whenever
 a specific action is dispatched. When the subscriber is notified, a JSON
