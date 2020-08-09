@@ -21,17 +21,17 @@ in a separate assembly that is shared between the client and the server.
 ```C#
 public class CustomerEdit
 {
-	public int Id { get; private set; } = 42;
-	public byte[] RowVersion { get; private set; } = Array.Empty<byte>();
+	public int Id { get; set; } = 42;
+	public byte[] RowVersion { get; set; } = Array.Empty<byte>();
 	public string Name { get; set; }
 
+	public CustomerEdit() { }
 	public CustomerEdit(int id, byte[] rowVersion, string name)
 	{
 		Id = id;
 		RowVersion = rowVersion;
 		Name = name;
-	}
-}
+	}}
 ```
 
 Create a `Store` folder, and in that folder create a folder named `EditCustomerUseCase`. Within
