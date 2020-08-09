@@ -52,7 +52,7 @@ namespace BasicConcepts.ActionObserver
 			ActionSubscriber.SubscribeToAction<GetCustomerForEditResultAction>(this, action =>
 			{
 				string jsonToShowInConsole = JsonConvert.SerializeObject(action.Customer, Formatting.Indented);
-				Console.WriteLine("Action notification:");
+				Console.WriteLine("Action notification: " + action.GetType().Name);
 				Console.WriteLine(jsonToShowInConsole);
 			});
 		}

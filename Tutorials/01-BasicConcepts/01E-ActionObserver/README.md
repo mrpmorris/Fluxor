@@ -21,11 +21,11 @@ in a separate assembly that is shared between the client and the server.
 ```C#
 public class CustomerEdit
 {
-	public Guid Id { get; private set; } = Guid.NewGuid();
+	public int Id { get; private set; } = 42;
 	public byte[] RowVersion { get; private set; } = Array.Empty<byte>();
 	public string Name { get; set; }
 
-	public CustomerEdit(Guid id, byte[] rowVersion, string name)
+	public CustomerEdit(int id, byte[] rowVersion, string name)
 	{
 		Id = id;
 		RowVersion = rowVersion;
@@ -59,9 +59,9 @@ public class Feature : Feature<EditCustomerState>
 
 public class GetCustomerForEditAction
 {
-	public Guid Id { get; }
+	public int Id { get; }
 
-	public GetCustomerForEditAction(Guid id)
+	public GetCustomerForEditAction(int id)
 	{
 		Id = id;
 	}
@@ -93,12 +93,11 @@ public class Effects
 	[EffectMethod]
 	public async Task HandleGetCustomerForEditAction(GetCustomerForEditAction action, IDispatcher dispatcher)
 	{
-		string id = action.Id.ToString();
-		Console.WriteLine("Getting customer with Id: " + action.Id.ToString());
+		Console.WriteLine("Getting customer with Id: 42");
 
 		await Task.Delay(1000);
 
-		string jsonFromServer = $"{{\"Id\":\"{id}\",\"RowVersion\":\"AQIDBAUGBwgJCgsMDQ4PEA==\",\"Name\":\"Our first customer\"}}";
+		string jsonFromServer = $"{{\"Id\":42,\"RowVersion\":\"AQIDBAUGBwgJCgsMDQ4PEA==\",\"Name\":\"Our first customer\"}}";
 		var objectFromServer = JsonConvert.DeserializeObject<CustomerEdit>(jsonFromServer);
 		dispatcher.Dispatch(new GetCustomerForEditResultAction(objectFromServer));
 	}
@@ -138,7 +137,7 @@ public class App : IDisposable
 			switch (input.ToLowerInvariant())
 			{
 				case "1":
-					var getCustomerAction = new GetCustomerForEditAction(Guid.NewGuid());
+					var getCustomerAction = new GetCustomerForEditAction(42);
 					Dispatcher.Dispatch(getCustomerAction);
 					break;
 
@@ -191,7 +190,7 @@ private void SubscribeToResultAction()
 	{
 		// Show the object from the server in the console
 		string jsonToShowInConsole = JsonConvert.SerializeObject(action.Customer, Formatting.Indented);
-		Console.WriteLine("Action notification:");
+		Console.WriteLine("Action notification: " + action.GetType().Name);
 		Console.WriteLine(jsonToShowInConsole);
 	});
 }
@@ -209,9 +208,9 @@ If we run our app now, and select option 1 (and press enter), our
 console output should look something like this.
 
 ```
-> Action notification:
+> Action notification: GetCustomerForEditResultAction
 {
-  "Id": "038762ee-b00f-4065-91e6-75866657d370",
+  "Id": 42,
   "RowVersion": "AQIDBAUGBwgJCgsMDQ4PEA==",
   "Name": "Our first customer"
 }
