@@ -5,17 +5,28 @@ using System.Linq;
 using System.Reflection;
 using GetStateDelegate = System.Func<object, Fluxor.IState>;
 
-namespace Fluxor.Blazor.Web.Components
+namespace Fluxor
 {
-	internal static class StateSubscriber
+	/// <summary>
+	/// A utility class that automaticaly subscribes to all <see cref="IState{TState}"/> properties
+	/// on a specific object
+	/// </summary>
+	public static class StateSubscriber
 	{
-		private static readonly ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>> ValueDelegatesForType;
+		private static readonly ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>> ValueDelegatesByType;
 
 		static StateSubscriber()
 		{
-			ValueDelegatesForType = new ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>>();
+			ValueDelegatesByType = new ConcurrentDictionary<Type, IEnumerable<GetStateDelegate>>();
 		}
 
+		/// <summary>
+		/// Subscribes to all <see cref="IState{TState}"/> properties on the specified <paramref name="subject"/>
+		/// to ensure <paramref name="callback"/> is called whenever a state is modified
+		/// </summary>
+		/// <param name="subject">The object to scan for <see cref="IState{TState}"/> properties.</param>
+		/// <param name="callback">The action to execute when one of the states are modified</param>
+		/// <returns></returns>
 		public static IDisposable Subscribe(object subject, Action<IState> callback)
 		{
 			if (subject == null)
@@ -54,7 +65,7 @@ namespace Fluxor.Blazor.Web.Components
 
 		private static IEnumerable<GetStateDelegate> GetStateDelegatesForType(Type type)
 		{
-			return ValueDelegatesForType.GetOrAdd(type, _ =>
+			return ValueDelegatesByType.GetOrAdd(type, _ =>
 			{
 				var delegates = new List<GetStateDelegate>();
 				IEnumerable<PropertyInfo> stateProperties = GetStateProperties(type);

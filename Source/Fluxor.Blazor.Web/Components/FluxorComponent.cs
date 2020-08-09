@@ -9,8 +9,17 @@ namespace Fluxor.Blazor.Web.Components
 	/// </summary>
 	public class FluxorComponent : ComponentBase, IDisposable
 	{
+		[Inject]
+		private IActionSubscriber ActionSubscriber { get; set; }
+
 		private bool Disposed;
 		private IDisposable StateSubscription;
+
+		/// <see cref="IActionSubscriber.SubscribeToAction{TAction}(object, Action{TAction})"/>
+		public void SubscribeToAction<TAction>(Action<TAction> callback)
+		{
+			ActionSubscriber.SubscribeToAction<TAction>(this, action => callback(action));
+		}
 
 		/// <summary>
 		/// Disposes of the component and unsubscribes from any state
@@ -36,6 +45,7 @@ namespace Fluxor.Blazor.Web.Components
 				if (disposing)
 				{
 					StateSubscription.Dispose();
+					ActionSubscriber?.UnsubscribeFromAllActions(this);
 				}
 				Disposed = true;
 			}
