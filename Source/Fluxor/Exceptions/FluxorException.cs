@@ -5,7 +5,7 @@ namespace Fluxor.Exceptions
 	/// <summary>
 	/// Base exception class for Fluxor
 	/// </summary>
-	public class FluxorException : Exception
+	public abstract class FluxorException : Exception
 	{
 		/// <summary>
 		/// Creates a new instance of the exception
