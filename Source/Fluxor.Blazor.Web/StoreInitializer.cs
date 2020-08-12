@@ -12,8 +12,11 @@ namespace Fluxor.Blazor.Web
 	/// <summary>
 	/// Initializes the stoe for the current user. This should be placed in the App.razor component.
 	/// </summary>
-	public class StoreInitializer : ComponentBase
+	public class StoreInitializer : ComponentBase, IDisposable
 	{
+		[Parameter]
+		public EventCallback<Exceptions.UnhandledExceptionEventArgs> UnhandledException { get; set; }
+
 		[Inject]
 		private IStore Store { get; set; }
 
@@ -21,12 +24,15 @@ namespace Fluxor.Blazor.Web
 		private IJSRuntime JSRuntime { get; set; }
 
 		private string Scripts;
+		private bool IsDisposed;
 
 		/// <summary>
 		/// Retrieves supporting JavaScript for any Middleware
 		/// </summary>
 		protected override void OnInitialized()
 		{
+			Store.UnhandledException += OnUnhandledException;
+
 			var webMiddlewares = Store.GetMiddlewares().OfType<IWebMiddleware>();
 
 			var scriptBuilder = new StringBuilder();
@@ -89,6 +95,30 @@ namespace Fluxor.Blazor.Web
 					throw new StoreInitializationException("Store initialization error", err);
 				}
 			}
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!IsDisposed)
+			{
+				if (disposing)
+				{
+					Store.UnhandledException -= OnUnhandledException;
+				}
+				IsDisposed = true;
+			}
+		}
+
+		private void OnUnhandledException(object sender, Exceptions.UnhandledExceptionEventArgs args)
+		{
+			InvokeAsync(() => UnhandledException.InvokeAsync(args));
+		}
+
+		void IDisposable.Dispose()
+		{
+			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+			Dispose(disposing: true);
+			GC.SuppressFinalize(this);
 		}
 	}
 }
