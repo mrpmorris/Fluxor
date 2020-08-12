@@ -25,6 +25,7 @@ namespace Fluxor.Blazor.Web
 
 		private string Scripts;
 		private bool IsDisposed;
+		private Exception ExceptionToThrow;
 
 		/// <summary>
 		/// Retrieves supporting JavaScript for any Middleware
@@ -61,6 +62,17 @@ namespace Fluxor.Blazor.Web
 		{
 			base.BuildRenderTree(builder);
 			builder.AddMarkupContent(0, Scripts);
+		}
+
+		protected override void OnAfterRender(bool firstRender)
+		{
+			base.OnAfterRender(firstRender);
+			if (ExceptionToThrow != null)
+			{
+				Exception exception = ExceptionToThrow;
+				ExceptionToThrow = null;
+				throw exception;
+			}
 		}
 
 		/// <summary>
@@ -111,7 +123,24 @@ namespace Fluxor.Blazor.Web
 
 		private void OnUnhandledException(object sender, Exceptions.UnhandledExceptionEventArgs args)
 		{
-			InvokeAsync(() => UnhandledException.InvokeAsync(args));
+			InvokeAsync(async () =>
+			{
+				Exception exceptionThrownInHandler = null;
+				try
+				{
+					await UnhandledException.InvokeAsync(args).ConfigureAwait(false);
+				}
+				catch(Exception e)
+				{
+					exceptionThrownInHandler = e;
+				}
+
+				if (exceptionThrownInHandler != null || !args.WasHandled)
+				{
+					ExceptionToThrow = exceptionThrownInHandler ?? args.Exception;
+					StateHasChanged();
+				}
+			});
 		}
 
 		void IDisposable.Dispose()
