@@ -1,9 +1,8 @@
-﻿using Fluxor.Extensions;
+﻿using Fluxor.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fluxor
@@ -155,6 +154,24 @@ namespace Fluxor
 			await ActivateStoreAsync();
 		}
 
+		public event EventHandler<Exceptions.UnhandledExceptionEventArgs> UnhandledException;
+
+		/// <see cref="IActionSubscriber.SubscribeToAction{TAction}(object, Action{TAction})"/>
+		public void SubscribeToAction<TAction>(object subscriber, Action<TAction> callback)
+		{
+			ActionSubscriber.SubscribeToAction(subscriber, callback);
+		}
+
+		/// <see cref="IActionSubscriber.UnsubscribeFromAllActions(object)"/>
+		public void UnsubscribeFromAllActions(object subscriber)
+		{
+			ActionSubscriber.UnsubscribeFromAllActions(subscriber);
+		}
+
+		/// <see cref="IActionSubscriber.GetActionUnsubscriberAsIDisposable(object)"/>
+		public IDisposable GetActionUnsubscriberAsIDisposable(object subscriber) =>
+			ActionSubscriber.GetActionUnsubscriberAsIDisposable(subscriber);
+
 		private void EndMiddlewareChange(IDisposable[] disposables)
 		{
 			lock (SyncRoot)
@@ -167,9 +184,31 @@ namespace Fluxor
 
 		private void TriggerEffects(object action)
 		{
-			var effectsToTrigger = Effects.Where(x => x.ShouldReactToAction(action));
-			foreach (var effect in effectsToTrigger)
-				effect.HandleAsync(action, this);
+			Task.Run(async() =>
+			{
+				IEnumerable<Exception> exceptions = Array.Empty<Exception>();
+
+				try
+				{
+					var triggeredEffects = Effects
+						.Where(x => x.ShouldReactToAction(action))
+						.Select(x => x.HandleAsync(action, this))
+						.ToArray();
+
+					await Task.WhenAll(triggeredEffects);
+				}
+				catch (AggregateException e)
+				{
+					exceptions = e.Flatten().InnerExceptions;
+				}
+				catch (Exception e)
+				{
+					exceptions = new Exception[] { e };
+				}
+
+				foreach (Exception exception in exceptions)
+					UnhandledException?.Invoke(this, new Exceptions.UnhandledExceptionEventArgs(exception));
+			});
 		}
 
 		private async Task InitializeMiddlewaresAsync()
@@ -237,18 +276,5 @@ namespace Fluxor
 				IsDispatching = false;
 			}
 		}
-
-		public void SubscribeToAction<TAction>(object subscriber, Action<TAction> callback)
-		{
-			ActionSubscriber.SubscribeToAction(subscriber, callback);
-		}
-
-		public void UnsubscribeFromAllActions(object subscriber)
-		{
-			ActionSubscriber.UnsubscribeFromAllActions(subscriber);
-		}
-
-		public IDisposable GetActionUnsubscriberAsIDisposable(object subscriber) =>
-			ActionSubscriber.GetActionUnsubscriberAsIDisposable(subscriber);
 	}
 }

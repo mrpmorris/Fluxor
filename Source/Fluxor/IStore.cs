@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fluxor.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -88,5 +89,10 @@ namespace Fluxor
 		/// </summary>
 		/// <returns>Middleware instances currently registered</returns>
 		IEnumerable<IMiddleware> GetMiddlewares();
+		
+		/// <summary>
+		/// Executed when an exception is not handled
+		/// </summary>
+		event EventHandler<Exceptions.UnhandledExceptionEventArgs> UnhandledException;
 	}
 }
