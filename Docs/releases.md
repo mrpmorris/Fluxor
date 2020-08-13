@@ -1,4 +1,8 @@
-  # Releases
+# Releases
+
+### New in 3.4
+ * **Breaking change**: `FluxorException` is now an `abstract` class.
+ * Unhandled exceptions in Effects can now notify the UI.
 
 ### New in 3.3
  * **Breaking change**: `EffectMethod` and `ReducerMethod` decorated methods must now be public - although they can be methods of internal classes.
