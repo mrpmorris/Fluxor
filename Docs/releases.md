@@ -1,5 +1,8 @@
 # Releases
 
+### New in 3.5
+ * Bug fix for ([#74](https://github.com/mrpmorris/bfluxor/issues/74)) - Detect endless loop redirects
+
 ### New in 3.4
  * **Breaking change**: `FluxorException` is now an `abstract` class.
  * Unhandled exceptions in Effects can now notify the UI.

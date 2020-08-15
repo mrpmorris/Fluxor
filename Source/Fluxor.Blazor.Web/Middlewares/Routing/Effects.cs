@@ -8,6 +8,11 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 	{
 		private readonly NavigationManager NavigationManager;
 
+		public Effects(NavigationManager navigationManager)
+		{
+			NavigationManager = navigationManager;
+		}
+
 		[EffectMethod]
 		public Task HandleGoActionAsync(GoAction action, IDispatcher dispatcher)
 		{
@@ -18,11 +23,6 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 				NavigationManager.NavigateTo(action.NewUri);
 			}
 			return Task.CompletedTask;
-		}
-
-		public Effects(NavigationManager navigationManager)
-		{
-			NavigationManager = navigationManager;
 		}
 	}
 }
