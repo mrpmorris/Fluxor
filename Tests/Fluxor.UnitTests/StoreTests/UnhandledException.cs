@@ -15,13 +15,13 @@ namespace Fluxor.UnitTests.StoreTests
 		public UnhandledException()
 		{
 			Subject = new TestStore();
-			Subject.AddEffect(new SynchronousEffectThatThrowsSimpleException());
-			Subject.AddEffect(new SynchronousEffectThatThrowsAggregateException());
+			Subject.AddEffect(new EffectThatThrowsSimpleException());
+			Subject.AddEffect(new EffectThatThrowsAggregateException());
 			Subject.InitializeAsync().Wait();
 		}
 
 		[Fact]
-		public async Task WhenEffectThrowsUnhandledException_ThenEventIsTriggered()
+		public async Task WhenTriggerThrowsUnhandledException_ThenEventIsTriggered()
 		{
 			IEnumerable<Exception> exceptions = await SendAction(new ThrowSimpleExceptionAction());
 			Assert.Single(exceptions);
@@ -29,7 +29,7 @@ namespace Fluxor.UnitTests.StoreTests
 		}
 
 		[Fact]
-		public async Task WhenEffectThrowsUnhandledAggregateException_ThenEventIsTriggeredForEachEvent()
+		public async Task WhenTriggerThrowsUnhandledAggregateException_ThenEventIsTriggeredForEachEvent()
 		{
 			Type[] exceptionTypes = 
 				(await SendAction(new ThrowAggregateExceptionAction()))
