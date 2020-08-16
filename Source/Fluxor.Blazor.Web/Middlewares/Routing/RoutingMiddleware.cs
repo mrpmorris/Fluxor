@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.Middlewares.Routing
@@ -12,11 +10,9 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 	/// </summary>
 	internal class RoutingMiddleware : Middleware
 	{
-		private readonly TimeSpan LoopRedirectDetectionWindow;
 		private readonly NavigationManager NavigationManager;
 		private readonly IFeature<RoutingState> Feature;
 		private IStore Store;
-		private (string Url, DateTime NavigationTime)[] PreviousNavigations;
 
 		/// <summary>
 		/// Creates a new instance of the routing middleware
@@ -27,8 +23,6 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		{
 			NavigationManager = navigationManager;
 			Feature = feature;
-			LoopRedirectDetectionWindow = TimeSpan.FromMilliseconds(100);
-			PreviousNavigations = Array.Empty<(string Url, DateTime NavigationTime)>();
 			NavigationManager.LocationChanged += LocationChanged;
 		}
 
@@ -50,28 +44,8 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 
 		private void LocationChanged(object sender, LocationChangedEventArgs e)
 		{
-			if (Store != null
-				&& !IsInsideMiddlewareChange
-				&& e.Location != Feature.State.Uri
-				&& !LoopedRedirectDetected(e))
-			{
+			if (Store != null && !IsInsideMiddlewareChange && e.Location != Feature.State.Uri)
 				Store.Dispatch(new GoAction(e.Location));
-			}
-		}
-
-		private bool LoopedRedirectDetected(LocationChangedEventArgs e)
-		{
-			if (e.IsNavigationIntercepted)
-				return false;
-
-			DateTime cutoffTime = DateTime.UtcNow.Subtract(LoopRedirectDetectionWindow);
-			PreviousNavigations =
-				PreviousNavigations
-				.Where(x => x.NavigationTime >= cutoffTime)
-				.Append((e.Location, DateTime.UtcNow))
-				.ToArray();
-
-			return (PreviousNavigations.Count(x => x.Url == e.Location) >= 2);
 		}
 	}
 }

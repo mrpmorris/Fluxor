@@ -7,7 +7,7 @@ namespace Fluxor.UnitTests.SupportFiles
 	{
 		protected override async Task HandleAsync(ThrowSimpleExceptionAction action, IDispatcher dispatcher)
 		{
-			await Task.Delay(10).ConfigureAwait(false);
+			await Task.Delay(100);
 			try
 			{
 				throw new InvalidOperationException("This is a simple exception");

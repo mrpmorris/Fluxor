@@ -1,5 +1,4 @@
-﻿using Fluxor.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -184,29 +183,49 @@ namespace Fluxor
 
 		private void TriggerEffects(object action)
 		{
-			Task.Run(async() =>
-			{
-				IEnumerable<Exception> exceptions = Array.Empty<Exception>();
+			var recordedExceptions = new List<Exception>();
+			var effectsToExecute = Effects.Where(x => x.ShouldReactToAction(action));
+			var executedEffects = new List<Task>();
 
+			Action<Exception> collectExceptions = e =>
+			{
+				if (e is AggregateException aggregateException)
+					recordedExceptions.AddRange(aggregateException.Flatten().InnerExceptions);
+				else
+					recordedExceptions.Add(e);
+			};
+
+			// Execute all tasks. Some will execute synchronously and complete immediately,
+			// so we need to catch their exceptions in the loop so they don't prevent
+			// other effects from executing.
+			// It's then up to the UI to decide if any of those exceptions should cause
+			// the app to terminate or not.
+			foreach (IEffect effect in effectsToExecute)
+			{
 				try
 				{
-					var triggeredEffects = Effects
-						.Where(x => x.ShouldReactToAction(action))
-						.Select(x => x.HandleAsync(action, this))
-						.ToArray();
-
-					await Task.WhenAll(triggeredEffects);
-				}
-				catch (AggregateException e)
-				{
-					exceptions = e.Flatten().InnerExceptions;
+					executedEffects.Add(effect.HandleAsync(action, this));
 				}
 				catch (Exception e)
 				{
-					exceptions = new Exception[] { e };
+					collectExceptions(e);
+				}
+			}
+
+			Task.Run(async() =>
+			{
+				try
+				{
+					await Task.WhenAll(executedEffects);
+				}
+				catch (Exception e)
+				{
+					collectExceptions(e);
 				}
 
-				foreach (Exception exception in exceptions)
+				// Let the UI decide if it wishes to deal with any unhandled exceptions.
+				// By default it should throw the exception if it is not handled.
+				foreach (Exception exception in recordedExceptions)
 					UnhandledException?.Invoke(this, new Exceptions.UnhandledExceptionEventArgs(exception));
 			});
 		}
