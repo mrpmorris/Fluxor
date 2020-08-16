@@ -21,7 +21,7 @@ namespace Fluxor.UnitTests.StoreTests
 		}
 
 		[Fact]
-		public async Task WhenTriggerThrowsUnhandledException_ThenEventIsTriggered()
+		public async Task WhenEffectThrowsUnhandledException_ThenEventIsTriggered()
 		{
 			IEnumerable<Exception> exceptions = await SendAction(new ThrowSimpleExceptionAction());
 			Assert.Single(exceptions);
@@ -29,7 +29,7 @@ namespace Fluxor.UnitTests.StoreTests
 		}
 
 		[Fact]
-		public async Task WhenTriggerThrowsUnhandledAggregateException_ThenEventIsTriggeredForEachEvent()
+		public async Task WhenEffectThrowsUnhandledAggregateException_ThenEventIsTriggeredForEachEvent()
 		{
 			Type[] exceptionTypes = 
 				(await SendAction(new ThrowAggregateExceptionAction()))

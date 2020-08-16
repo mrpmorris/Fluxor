@@ -187,7 +187,7 @@ namespace Fluxor
 			var effectsToExecute = Effects.Where(x => x.ShouldReactToAction(action));
 			var executedEffects = new List<Task>();
 
-			Action<Exception> addUnhandledExceptions = e =>
+			Action<Exception> collectExceptions = e =>
 			{
 				if (e is AggregateException aggregateException)
 					recordedExceptions.AddRange(aggregateException.Flatten().InnerExceptions);
@@ -208,7 +208,7 @@ namespace Fluxor
 				}
 				catch (Exception e)
 				{
-					addUnhandledExceptions(e);
+					collectExceptions(e);
 				}
 			}
 
@@ -220,7 +220,7 @@ namespace Fluxor
 				}
 				catch (Exception e)
 				{
-					addUnhandledExceptions(e);
+					collectExceptions(e);
 				}
 
 				// Let the UI decide if it wishes to deal with any unhandled exceptions.
