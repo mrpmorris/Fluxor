@@ -3,11 +3,15 @@ using System.Threading.Tasks;
 
 namespace Fluxor.UnitTests.SupportFiles
 {
-	public class EffectThatThrowsSimpleException : Effect<ThrowSimpleExceptionAction>
+	public class AsynchronousEffectThatThrowsSimpleException : Effect<ThrowSimpleExceptionAction>
 	{
+		public bool WasExecuted { get; set; }
+
 		protected override async Task HandleAsync(ThrowSimpleExceptionAction action, IDispatcher dispatcher)
 		{
-			await Task.Delay(10).ConfigureAwait(false);
+			WasExecuted = true;
+
+			await Task.Delay(100);
 			try
 			{
 				throw new InvalidOperationException("This is a simple exception");

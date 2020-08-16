@@ -15,8 +15,8 @@ namespace Fluxor.UnitTests.StoreTests
 		public UnhandledException()
 		{
 			Subject = new TestStore();
-			Subject.AddEffect(new EffectThatThrowsSimpleException());
-			Subject.AddEffect(new EffectThatThrowsAggregateException());
+			Subject.AddEffect(new SynchronousEffectThatThrowsSimpleException());
+			Subject.AddEffect(new SynchronousEffectThatThrowsAggregateException());
 			Subject.InitializeAsync().Wait();
 		}
 
