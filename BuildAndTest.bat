@@ -1,2 +1,2 @@
 @call build.bat
-dotnet test Source\Fluxor.sln
+dotnet test -c Release Source\Fluxor.sln
