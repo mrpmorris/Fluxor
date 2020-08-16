@@ -1,7 +1,7 @@
 # Releases
 
 ### New in 3.6
- * Ensure synchronous effects are executed synchronously ([#75](https://github.com/mrpmorris/fluxor/issues/75)) -
+ * Ensure synchronous effects are executed synchronously ([#76](https://github.com/mrpmorris/fluxor/issues/76)) -
      Reverts changes for [(#74) Endless loop redirects](https://github.com/mrpmorris/Fluxor/issues/74) as
      these no longer occur.
 
