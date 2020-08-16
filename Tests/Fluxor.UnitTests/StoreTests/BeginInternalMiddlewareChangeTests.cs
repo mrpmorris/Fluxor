@@ -13,7 +13,9 @@ namespace Fluxor.UnitTests.StoreTests
 			var mockMiddleware = new Mock<IMiddleware>();
 			mockMiddleware
 				.Setup(x => x.BeginInternalMiddlewareChange())
-				.Returns(new DisposableCallback("Test", () => disposeCount++));
+				.Returns(new DisposableCallback(
+					$"{nameof(BeginInternalMiddlewareChangeTests)}.{nameof(WhenCalled_ThenExecutesOnAllRegisteredMiddlewares)}",
+					() => disposeCount++));
 
 			var subject = new TestStore();
 			subject.AddMiddleware(mockMiddleware.Object);

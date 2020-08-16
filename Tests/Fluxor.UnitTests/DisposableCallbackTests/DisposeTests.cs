@@ -10,7 +10,9 @@ namespace Fluxor.UnitTests.DisposableCallbackTests
 		{
 			bool wasCalled = false;
 			Action action = () => wasCalled = true;
-			var subject = new DisposableCallback("Test", action);
+			var subject = new DisposableCallback(
+				$"{nameof(DisposeTests)}.{nameof(WhenCalled_ThenCallsActionPassedInConstructor)}",
+				action);
 
 			Assert.False(wasCalled);
 			subject.Dispose();
@@ -20,7 +22,9 @@ namespace Fluxor.UnitTests.DisposableCallbackTests
 		[Fact]
 		public void WhenCalledTwice_ThenThrowsObjectDisposedException()
 		{
-			var subject = new DisposableCallback("Test", () => { });
+			var subject = new DisposableCallback(
+				$"{nameof(DisposeTests)}.{nameof(WhenCalledTwice_ThenThrowsObjectDisposedException)}",
+				() => { });
 			subject.Dispose();
 			Assert.Throws<ObjectDisposedException>(() => subject.Dispose());
 		}
