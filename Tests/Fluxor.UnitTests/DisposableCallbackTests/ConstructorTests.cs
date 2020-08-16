@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.DisposableCallbackTests
 {
-	public class Constructor
+	public class ConstructorTests
 	{
 		[Theory]
 		[InlineData(null)]

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.MiddlewareTests
 {
-	public class IsInsideMiddlewareChange
+	public class IsInsideMiddlewareChangeTests
 	{
 		[Fact]
 		public void WhenResultFromBeginInternalMiddlewareChangeIsNotDisposed_ThenReturnsTrue()

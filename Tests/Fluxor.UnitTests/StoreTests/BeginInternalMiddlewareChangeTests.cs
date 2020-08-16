@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests
 {
-	public class BeginInternalMiddlewareChange
+	public class BeginInternalMiddlewareChangeTests
 	{
 		[Fact]
 		public void WhenCalled_ThenExecutesOnAllRegisteredMiddlewares()

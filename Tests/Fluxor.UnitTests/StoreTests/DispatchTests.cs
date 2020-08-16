@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests
 {
-	public class Dispatch
+	public class DispatchTests
 	{
 		[Fact]
 		public void WhenActionIsNull_ThenThrowsArgumentNullException()
