@@ -1,7 +1,12 @@
 # Releases
 
+### New in 3.6
+ * Ensure synchronous effects are executed synchronously ([#75](https://github.com/mrpmorris/fluxor/issues/75)) -
+     Reverts changes for [(#74) Endless loop redirects](https://github.com/mrpmorris/Fluxor/issues/74) as
+     these no longer occur.
+
 ### New in 3.5
- * Bug fix for ([#74](https://github.com/mrpmorris/bfluxor/issues/74)) - Detect endless loop redirects
+ * Bug fix for ([#74](https://github.com/mrpmorris/Fluxor/issues/74)) - Handle endless loop redirects caused by Routing middleware.
 
 ### New in 3.4
  * **Breaking change**: `FluxorException` is now an `abstract` class.
