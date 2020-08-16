@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests
 {
-	public class AddFeature
+	public class AddFeatureTests
 	{
 		[Fact]
 		public void WhenFeatureNameIsUnique_ThenAddsFeatureToFeaturesDictionary()

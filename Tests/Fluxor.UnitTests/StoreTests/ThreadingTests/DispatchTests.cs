@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests.ThreadingTests
 {
-	public class Dispatch
+	public class DispatchTests
 	{
 		const int NumberOfThreads = 10;
 		const int NumberOfIncrementsPerThread = 1000;
@@ -50,7 +50,7 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests
 			}
 		}
 
-		public Dispatch()
+		public DispatchTests()
 		{
 			StartEvent = new ManualResetEvent(false);
 			Store = new TestStore();

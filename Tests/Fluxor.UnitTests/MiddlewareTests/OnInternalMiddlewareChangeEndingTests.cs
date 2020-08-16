@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.MiddlewareTests
 {
-	public class OnInternalMiddlewareChangeEnding
+	public class OnInternalMiddlewareChangeEndingTests
 	{
 		[Fact]
 		public void WhenLastInternalChangeCallHasCompleted_ThenShouldCallOnInternalMiddlewareChangeEnding()

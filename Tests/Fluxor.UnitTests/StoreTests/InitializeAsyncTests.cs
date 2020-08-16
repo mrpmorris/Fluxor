@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests
 {
-	public class InitializeAsync
+	public class InitializeAsyncTests
 	{
 		[Fact]
 		public async Task WhenCalled_ThenCallsInitializeAsyncOnRegisteredMiddlewares()

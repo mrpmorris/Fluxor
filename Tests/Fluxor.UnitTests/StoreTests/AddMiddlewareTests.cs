@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests
 {
-	public class AddMiddleware
+	public class AddMiddlewareTests
 	{
 		[Fact]
 		public async Task WhenStoreHasAlreadyBeenInitialized_ThenCallsAfterInitializeAllMiddlewares()

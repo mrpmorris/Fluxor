@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.DisposableCallbackTests
 {
-	public class Dispose
+	public class DisposeTests
 	{
 		[Fact]
 		public void WhenCalled_ThenCallsActionPassedInConstructor()
