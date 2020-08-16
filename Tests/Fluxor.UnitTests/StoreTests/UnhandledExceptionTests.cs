@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests
 {
-	public class UnhandledException
+	public class UnhandledExceptionTests
 	{
 		private TestStore Subject;
 
-		public UnhandledException()
+		public UnhandledExceptionTests()
 		{
 			Subject = new TestStore();
 			Subject.AddEffect(new EffectThatThrowsSimpleException());

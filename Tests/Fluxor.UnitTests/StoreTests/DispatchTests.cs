@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests
 {
-	public class Dispatch
+	public class DispatchTests
 	{
 		[Fact]
 		public void WhenActionIsNull_ThenThrowsArgumentNullException()
@@ -124,6 +124,34 @@ namespace Fluxor.UnitTests.StoreTests
 
 			mockIncompatibleEffect.Verify(x => x.HandleAsync(action, It.IsAny<IDispatcher>()), Times.Never);
 			mockCompatibleEffect.Verify(x => x.HandleAsync(action, It.IsAny<IDispatcher>()), Times.Once);
+		}
+
+		[Fact]
+		public async Task WhenSynchronousEffectThrowsException_ThenStillExecutesSubsequentEffects()
+		{
+			var subject = new TestStore();
+			var action = new object();
+
+			var mockSynchronousEffectThatThrows = new Mock<IEffect>();
+			mockSynchronousEffectThatThrows
+				.Setup(x => x.ShouldReactToAction(action))
+				.Returns(true);
+			mockSynchronousEffectThatThrows
+				.Setup(x => x.HandleAsync(action, subject))
+				.ThrowsAsync(new NotImplementedException());
+
+			var mockEffectThatFollows = new Mock<IEffect>();
+			mockEffectThatFollows
+				.Setup(x => x.ShouldReactToAction(action))
+				.Returns(true);
+
+			await subject.InitializeAsync();
+			subject.AddEffect(mockSynchronousEffectThatThrows.Object);
+			subject.AddEffect(mockEffectThatFollows.Object);
+			subject.Dispatch(action);
+
+			mockSynchronousEffectThatThrows.Verify(x => x.HandleAsync(action, subject));
+			mockEffectThatFollows.Verify(x => x.HandleAsync(action, subject));
 		}
 	}
 }

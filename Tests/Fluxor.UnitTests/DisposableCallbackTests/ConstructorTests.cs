@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.DisposableCallbackTests
 {
-	public class Constructor
+	public class ConstructorTests
 	{
 		[Theory]
 		[InlineData(null)]
@@ -17,7 +17,9 @@ namespace Fluxor.UnitTests.DisposableCallbackTests
 		[Fact]
 		public void WhenActionIsNull_ThenThrowsArgumentNullException()
 		{
-			Assert.Throws<ArgumentNullException>(() => new DisposableCallback("Test", action: null));
+			Assert.Throws<ArgumentNullException>(() => new DisposableCallback(
+				$"{nameof(ConstructorTests)}.{nameof(WhenActionIsNull_ThenThrowsArgumentNullException)}",
+				action: null));
 		}
 	}
 }

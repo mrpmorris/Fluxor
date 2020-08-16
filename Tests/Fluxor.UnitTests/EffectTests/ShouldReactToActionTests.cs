@@ -3,7 +3,7 @@ using Xunit;
 
 namespace Fluxor.UnitTests.EffectTests
 {
-	public class ShouldReactToAction
+	public class ShouldReactToActionTests
 	{
 		[Fact]
 		public void WhenTriggerActionIsSameAsActionType_ThenReturnsTrue()
