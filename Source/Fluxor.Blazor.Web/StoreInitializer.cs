@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Fluxor.Blazor.Web
 {
 	/// <summary>
-	/// Initializes the stoe for the current user. This should be placed in the App.razor component.
+	/// Initializes the store for the current user. This should be placed in the App.razor component.
 	/// </summary>
 	public class StoreInitializer : ComponentBase, IDisposable
 	{
