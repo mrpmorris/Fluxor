@@ -38,5 +38,24 @@ namespace Fluxor.UnitTests.ActionSubscriberTests
 			Assert.Null(actionReceivedBySubscriber1);
 			Assert.Same(dispatchedAction, actionReceivedBySubscriber2);
 		}
+
+		[Fact]
+		public void WhenExecutedFromSubscriptionCallback_ThenDoesNotThrowAnError()
+		{
+			int executionCount = 0;
+			var subscriber = new object();
+			var dispatchedAction = new TestAction();
+
+			Subject.SubscribeToAction<TestAction>(subscriber, x =>
+			{
+				executionCount++;
+				Subject.UnsubscribeFromAllActions(subscriber);
+			});
+
+			Subject.Dispatch(dispatchedAction);
+			Subject.Dispatch(dispatchedAction);
+
+			Assert.Equal(1, executionCount);
+		}
 	}
 }

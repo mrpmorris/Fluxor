@@ -34,7 +34,8 @@ namespace Fluxor
 					SubscriptionsForType
 						.Where(x => x.Key.IsAssignableFrom(action.GetType()))
 						.SelectMany(x => x.Value)
-						.Select(x => x.Callback);
+						.Select(x => x.Callback)
+						.ToArray();
 				foreach (Action<object> callback in callbacks)
 					callback(action);
 			});
