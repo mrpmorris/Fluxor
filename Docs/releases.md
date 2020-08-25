@@ -1,5 +1,10 @@
 # Releases
 
+### New in 3.7
+ * Fix for ([#84](https://github.com/mrpmorris/Fluxor/issues/84) - 
+   Allow observer to unsubscribe from all subscriptions whilst executing
+   the callback from a previous subscription
+
 ### New in 3.6
  * Ensure synchronous effects are executed synchronously ([#76](https://github.com/mrpmorris/fluxor/issues/76)) -
      Reverts changes for [(#74) Endless loop redirects](https://github.com/mrpmorris/Fluxor/issues/74) as
