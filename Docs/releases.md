@@ -4,6 +4,9 @@
  * Fix for ([#84](https://github.com/mrpmorris/Fluxor/issues/84) - 
    Allow observer to unsubscribe from all subscriptions whilst executing
    the callback from a previous subscription
+ * Fix for ([#82](https://github.com/mrpmorris/Fluxor/issues/82)) -
+   Throw an informative exception when `FluxorComponent` or `FluxorLayout`
+   has been inherited and the descendant doesn't call `base.OnInitialized()`.
 
 ### New in 3.6
  * Ensure synchronous effects are executed synchronously ([#76](https://github.com/mrpmorris/fluxor/issues/76)) -
