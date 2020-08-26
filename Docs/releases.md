@@ -7,11 +7,13 @@
  * Fix for ([#82](https://github.com/mrpmorris/Fluxor/issues/82)) -
    Throw an informative exception when `FluxorComponent` or `FluxorLayout`
    has been inherited and the descendant doesn't call `base.OnInitialized()`.
+ * Fix for ([#77](https://github.com/mrpmorris/Fluxor/issues/87)) -
+   Exception thrown initialising store in .NET 5.
 
 ### New in 3.6
  * Ensure synchronous effects are executed synchronously ([#76](https://github.com/mrpmorris/fluxor/issues/76)) -
-     Reverts changes for [(#74) Endless loop redirects](https://github.com/mrpmorris/Fluxor/issues/74) as
-     these are no longer occur.
+   Reverts changes for [(#74) Endless loop redirects](https://github.com/mrpmorris/Fluxor/issues/74) as
+   these are no longer occur.
 
 ### New in 3.5
  * Bug fix for ([#74](https://github.com/mrpmorris/Fluxor/issues/74)) - Handle endless loop redirects caused by Routing middleware.
