@@ -27,7 +27,6 @@ namespace Fluxor
 		private volatile int BeginMiddlewareChangeCount;
 		private volatile bool HasActivatedStore;
 		private bool IsInsideMiddlewareChange => BeginMiddlewareChangeCount > 0;
-		private Action<IFeature, object> IFeatureReceiveDispatchNotificationFromStore;
 
 		/// <summary>
 		/// Creates an instance of the store
@@ -35,13 +34,6 @@ namespace Fluxor
 		public Store()
 		{
 			ActionSubscriber = new ActionSubscriber();
-
-			MethodInfo dispatchNotifictionFromStoreMethodInfo =
-				typeof(IFeature)
-				.GetMethod(nameof(IFeature.ReceiveDispatchNotificationFromStore));
-			IFeatureReceiveDispatchNotificationFromStore = (Action<IFeature, object>)
-				Delegate.CreateDelegate(typeof(Action<IFeature, object>), dispatchNotifictionFromStoreMethodInfo);
-
 			Dispatch(new StoreInitializedAction());
 		}
 
@@ -283,7 +275,7 @@ namespace Fluxor
 
 						// Notify all features of this action
 						foreach (var featureInstance in FeaturesByName.Values)
-							IFeatureReceiveDispatchNotificationFromStore(featureInstance, nextActionToProcess);
+							featureInstance.ReceiveDispatchNotificationFromStore(nextActionToProcess);
 
 						ExecuteMiddlewareAfterDispatch(nextActionToProcess);
 						TriggerEffects(nextActionToProcess);
