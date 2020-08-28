@@ -201,19 +201,19 @@ signature, it will be used.
 public static class SomeReducerClass
 {
 	[ReducerMethod]
-	public static SomeState(SomeState state, SomeAction action) => new SomeState();
+	public static SomeState ReduceSomeAction(SomeState state, SomeAction action) => new SomeState();
 
 	[ReducerMethod]
-	public static SomeState(SomeState state, SomeAction2 action) => new SomeState();
+	public static SomeState ReduceSomeAction2(SomeState state, SomeAction2 action) => new SomeState();
 }
 
 public static class SomeOtherReducerClass
 {
 	[ReducerMethod]
-	public static SomeState(SomeState state, SomeAction3 action) => new SomeState();
+	public static SomeState ReduceSomeAction3(SomeState state, SomeAction3 action) => new SomeState();
 
 	[ReducerMethod]
-	public static SomeState(SomeState state, SomeAction4 action) => new SomeState();
+	public static SomeState ReduceSomeAction4(SomeState state, SomeAction4 action) => new SomeState();
 }
 ```
 
