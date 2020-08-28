@@ -44,6 +44,9 @@ namespace Fluxor.Blazor.Web.Components
 			{
 				if (disposing)
 				{
+					if (StateSubscription == null)
+						throw new NullReferenceException(ErrorMessages.ForgottenToCallBaseOnInitialized);
+
 					StateSubscription.Dispose();
 					ActionSubscriber?.UnsubscribeFromAllActions(this);
 				}
