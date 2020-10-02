@@ -18,7 +18,11 @@ namespace Fluxor.Blazor.Web.Components
 		/// <see cref="IActionSubscriber.SubscribeToAction{TAction}(object, Action{TAction})"/>
 		public void SubscribeToAction<TAction>(Action<TAction> callback)
 		{
-			ActionSubscriber.SubscribeToAction<TAction>(this, action => callback(action));
+			ActionSubscriber.SubscribeToAction<TAction>(this, action =>
+			{
+				if (!Disposed)
+					callback(action);
+			});
 		}
 
 		/// <summary>
@@ -35,13 +39,18 @@ namespace Fluxor.Blazor.Web.Components
 		protected override void OnInitialized()
 		{
 			base.OnInitialized();
-			StateSubscription = StateSubscriber.Subscribe(this, _ => InvokeAsync(StateHasChanged));
+			StateSubscription = StateSubscriber.Subscribe(this, _ =>
+			{
+				if (!Disposed)
+					InvokeAsync(StateHasChanged);
+			});
 		}
 
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!Disposed)
 			{
+				Disposed = true;
 				if (disposing)
 				{
 					if (StateSubscription == null)
@@ -50,7 +59,6 @@ namespace Fluxor.Blazor.Web.Components
 					StateSubscription.Dispose();
 					ActionSubscriber?.UnsubscribeFromAllActions(this);
 				}
-				Disposed = true;
 			}
 		}
 	}
