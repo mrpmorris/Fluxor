@@ -11,20 +11,16 @@ namespace Fluxor
 	/// </summary>
 	public static class ServiceCollectionExtensions
 	{
-		/// <summary>
-		/// Adds support to Blazor for the Fluxor library
-		/// </summary>
-		/// <param name="serviceCollection">The service collection</param>
-		/// <param name="configure">A callback used to configure options</param>
-		/// <returns>The service collection</returns>
-		/// <example>
-		///var serviceProvider = new BrowserServiceProvider(services =&gt;
-		///{
-		///	services.AddFluxor(options =&gt; options
-		///		.UseDependencyInjection(typeof(Program).Assembly)
-		///	);
-		///});
-		///</example>
+		///	<summary>
+		///		Adds support to Blazor for the Fluxor library
+		///	</summary>
+		///	<param name="serviceCollection">The service collection</param>
+		///	<param name="configure">A callback used to configure options</param>
+		///	<returns>The service collection</returns>
+		///	<example>
+		///		services.AddFluxor(options =&gt; options
+		///			.ScanAssemblies(typeof(Program).Assembly));
+		///	</example>
 		public static IServiceCollection AddFluxor(
 			this IServiceCollection serviceCollection,
 			Action<Options> configure = null)
