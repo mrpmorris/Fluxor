@@ -12,7 +12,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 		[Fact]
 		public void WhenActionIsNull_ThenThrowsArgumentNullException()
 		{
-			var subject = new TestStore();
+			var subject = new Store();
 			Assert.Throws<ArgumentNullException>(() => subject.Dispatch(null));
 		}
 
@@ -21,7 +21,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 		{
 			var mockMiddleware = MockMiddlewareFactory.Create();
 
-			var subject = new TestStore();
+			var subject = new Store();
 			await subject.InitializeAsync();
 			subject.AddMiddleware(mockMiddleware.Object);
 
@@ -43,7 +43,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 			mockMiddleware
 				.Setup(x => x.MayDispatchAction(testAction))
 				.Returns(false);
-			var subject = new TestStore();
+			var subject = new Store();
 			await subject.InitializeAsync();
 
 			subject.Dispatch(testAction);
@@ -57,7 +57,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 		{
 			var testAction = new TestAction();
 			var mockMiddleware = MockMiddlewareFactory.Create();
-			var subject = new TestStore();
+			var subject = new Store();
 			await subject.InitializeAsync();
 			subject.AddMiddleware(mockMiddleware.Object);
 
@@ -71,7 +71,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 		public async Task WhenCalled_ThenPassesActionOnToAllFeatures()
 		{
 			var mockFeature = MockFeatureFactory.Create();
-			var subject = new TestStore();
+			var subject = new Store();
 			subject.AddFeature(mockFeature.Object);
 			await subject.InitializeAsync();
 
@@ -89,7 +89,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 			var actionToEmit1 = new TestActionFromEffect1();
 			var actionToEmit2 = new TestActionFromEffect2();
 			var actionsToEmit = new object[] { actionToEmit1, actionToEmit2 };
-			var subject = new TestStore();
+			var subject = new Store();
 			await subject.InitializeAsync();
 			subject.AddFeature(mockFeature.Object);
 			subject.AddEffect(new EffectThatEmitsActions<TestAction>(actionsToEmit));
@@ -114,7 +114,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 				.Setup(x => x.ShouldReactToAction(It.IsAny<object>()))
 				.Returns(true);
 
-			var subject = new TestStore();
+			var subject = new Store();
 			await subject.InitializeAsync();
 			subject.AddEffect(mockIncompatibleEffect.Object);
 			subject.AddEffect(mockCompatibleEffect.Object);
@@ -129,7 +129,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 		[Fact]
 		public async Task WhenSynchronousEffectThrowsException_ThenStillExecutesSubsequentEffects()
 		{
-			var subject = new TestStore();
+			var subject = new Store();
 			var action = new object();
 
 			var mockSynchronousEffectThatThrows = new Mock<IEffect>();

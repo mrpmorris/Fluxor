@@ -1,5 +1,4 @@
-﻿using Fluxor.UnitTests.StoreTests.AddMiddlewareTests.SupportFiles;
-using Moq;
+﻿using Moq;
 using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests.BeginInternalMiddlewareChangeTests
@@ -17,7 +16,7 @@ namespace Fluxor.UnitTests.StoreTests.BeginInternalMiddlewareChangeTests
 					$"{nameof(BeginInternalMiddlewareChangeTests)}.{nameof(WhenCalled_ThenExecutesOnAllRegisteredMiddlewares)}",
 					() => disposeCount++));
 
-			var subject = new TestStore();
+			var subject = new Store();
 			subject.AddMiddleware(mockMiddleware.Object);
 
 			var disposable1 = subject.BeginInternalMiddlewareChange();

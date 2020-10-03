@@ -1,5 +1,4 @@
-﻿using Fluxor.UnitTests.StoreTests.AddMiddlewareTests.SupportFiles;
-using Moq;
+﻿using Moq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -10,7 +9,7 @@ namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests
 		[Fact]
 		public async Task WhenCalled_ThenCallsInitializeAsyncOnRegisteredMiddlewares()
 		{
-			var subject = new TestStore();
+			var subject = new Store();
 			await subject.InitializeAsync();
 			var mockMiddleware = new Mock<IMiddleware>();
 			subject.AddMiddleware(mockMiddleware.Object);
@@ -22,7 +21,7 @@ namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests
 		[Fact]
 		public async Task WhenCalled_ThenCallsAfterInitializeAllMiddlewaresOnRegisteredMiddlewares()
 		{
-			var subject = new TestStore();
+			var subject = new Store();
 			var mockMiddleware = new Mock<IMiddleware>();
 			subject.AddMiddleware(mockMiddleware.Object);
 
@@ -35,7 +34,7 @@ namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests
 		[Fact]
 		public async Task WhenStoreIsInitialized_ThenCallsInitializeAsyncOnAllRegisteredMiddlewares()
 		{
-			var subject = new TestStore();
+			var subject = new Store();
 			await subject.InitializeAsync();
 
 			var mockMiddleware = new Mock<IMiddleware>();

@@ -11,11 +11,11 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests
 {
 	public class UnhandledExceptionTests
 	{
-		private TestStore Subject;
+		private Store Subject;
 
 		public UnhandledExceptionTests()
 		{
-			Subject = new TestStore();
+			Subject = new Store();
 			Subject.AddEffect(new EffectThatThrowsSimpleException());
 			Subject.AddEffect(new EffectThatThrowsAggregateException());
 			Subject.InitializeAsync().Wait();

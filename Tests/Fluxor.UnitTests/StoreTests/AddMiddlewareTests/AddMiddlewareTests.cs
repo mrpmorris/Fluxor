@@ -1,5 +1,4 @@
-﻿using Fluxor.UnitTests.StoreTests.AddMiddlewareTests.SupportFiles;
-using Moq;
+﻿using Moq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +11,7 @@ namespace Fluxor.UnitTests.StoreTests.AddMiddlewareTests
 		[Fact]
 		public async Task WhenStoreHasAlreadyBeenInitialized_ThenCallsAfterInitializeAllMiddlewares()
 		{
-			var subject = new TestStore();
+			var subject = new Store();
 			var signal = new ManualResetEvent(false);
 			var mockMiddleware = new Mock<IMiddleware>();
 			mockMiddleware

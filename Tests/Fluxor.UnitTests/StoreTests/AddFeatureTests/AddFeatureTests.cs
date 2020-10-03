@@ -1,5 +1,4 @@
-﻿using Fluxor.UnitTests.StoreTests.AddFeatureTests.SupportFiles;
-using Moq;
+﻿using Moq;
 using System;
 using Xunit;
 
@@ -16,7 +15,7 @@ namespace Fluxor.UnitTests.StoreTests.AddFeatureTests
 				.Setup(x => x.GetName())
 				.Returns(featureName);
 
-			var subject = new TestStore();
+			var subject = new Store();
 			subject.AddFeature(mockFeature.Object);
 
 			Assert.Same(mockFeature.Object, subject.Features[featureName]);
@@ -31,7 +30,7 @@ namespace Fluxor.UnitTests.StoreTests.AddFeatureTests
 				.Setup(x => x.GetName())
 				.Returns(featureName);
 
-			var subject = new TestStore();
+			var subject = new Store();
 			subject.AddFeature(mockFeature.Object);
 
 			Assert.Throws<ArgumentException>(() =>
