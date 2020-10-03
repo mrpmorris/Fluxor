@@ -1,4 +1,4 @@
-﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.SupportFiles
+﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests.SupportFiles
 {
 	class CounterFeature : Feature<CounterState>
 	{

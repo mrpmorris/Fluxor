@@ -1,10 +1,10 @@
-﻿using Fluxor.UnitTests.StoreTests.ThreadingTests.SupportFiles;
+﻿using Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests.SupportFiles;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Fluxor.UnitTests.StoreTests.ThreadingTests
+namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests
 {
 	public class DispatchTests
 	{
