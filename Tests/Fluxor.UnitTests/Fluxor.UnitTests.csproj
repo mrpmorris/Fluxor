@@ -25,8 +25,4 @@
     <ProjectReference Include="..\..\Source\Fluxor\Fluxor.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SupportFiles\" />
-  </ItemGroup>
-
 </Project>
