@@ -1,7 +1,7 @@
-﻿using Fluxor.UnitTests.SupportFiles;
+﻿using Fluxor.UnitTests.EffectTests.ShouldReactToActionTests.SupportFiles;
 using Xunit;
 
-namespace Fluxor.UnitTests.EffectTests
+namespace Fluxor.UnitTests.EffectTests.ShouldReactToActionTests
 {
 	public class ShouldReactToActionTests
 	{
@@ -37,10 +37,4 @@ namespace Fluxor.UnitTests.EffectTests
 			Assert.False(subject.ShouldReactToAction(action));
 		}
 	}
-
-	public class ActionForEffect { }
-	public class ActionThatQualifiesViaInheritance : ActionForEffect { }
-	public class ActionNotForThisEffect { }
-	public interface IInterfaceForEffect { }
-	public class ActionThatQualifiesViaInterface : IInterfaceForEffect { }
 }

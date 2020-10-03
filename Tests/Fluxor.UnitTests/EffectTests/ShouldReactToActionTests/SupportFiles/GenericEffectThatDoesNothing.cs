@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Fluxor.UnitTests.SupportFiles
+namespace Fluxor.UnitTests.EffectTests.ShouldReactToActionTests.SupportFiles
 {
 	public class GenericEffectThatDoesNothing<TTriggerAction> : Effect<TTriggerAction>
 	{
