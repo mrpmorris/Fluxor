@@ -34,15 +34,16 @@ namespace Fluxor
 			configure?.Invoke(options);
 
 			// Register all middleware types with dependency injection
-			foreach (Type middlewareType in Options.MiddlewareTypes)
+			foreach (Type middlewareType in options.MiddlewareTypes)
 				serviceCollection.AddScoped(middlewareType);
 
-			IEnumerable<AssemblyScanSettings> scanIncludeList = Options.MiddlewareTypes
+			IEnumerable<AssemblyScanSettings> scanIncludeList = options.MiddlewareTypes
 				.Select(t => new AssemblyScanSettings(t.Assembly, t.Namespace));
 
 			DependencyScanner.Scan(
+				options: options,
 				serviceCollection: serviceCollection,
-				assembliesToScan: Options.AssembliesToScan,
+				assembliesToScan: options.AssembliesToScan,
 				scanIncludeList: scanIncludeList);
 			serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
 

@@ -11,6 +11,7 @@ namespace Fluxor.DependencyInjection
 	{
 		internal static void Scan(
 			this IServiceCollection serviceCollection,
+			Options options,
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
 		{
@@ -47,10 +48,11 @@ namespace Fluxor.DependencyInjection
 					discoveredReducerMethods: discoveredReducerMethods);
 
 			RegisterStore(
-				serviceCollection,
-				discoveredFeatureClasses,
-				discoveredEffectClasses,
-				discoveredEffectMethods);
+				serviceCollection: serviceCollection,
+				options: options,
+				discoveredFeatureClasses: discoveredFeatureClasses,
+				discoveredEffectClasses: discoveredEffectClasses,
+				discoveredEffectMethods: discoveredEffectMethods);
 		}
 
 		private static void GetCandidateTypes(
@@ -83,7 +85,9 @@ namespace Fluxor.DependencyInjection
 					.ToArray();
 		}
 
-		private static void RegisterStore(IServiceCollection serviceCollection,
+		private static void RegisterStore(
+			IServiceCollection serviceCollection,
+			Options options,
 			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses,
 			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses,
 			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods)
@@ -117,7 +121,7 @@ namespace Fluxor.DependencyInjection
 					store.AddEffect(effect);
 				}
 
-				foreach (Type middlewareType in Options.MiddlewareTypes)
+				foreach (Type middlewareType in options.MiddlewareTypes)
 				{
 					var middleware = (IMiddleware)serviceProvider.GetService(middlewareType);
 					store.AddMiddleware(middleware);

@@ -11,8 +11,8 @@ namespace Fluxor.DependencyInjection
 	/// </summary>
 	public class Options
 	{
-		internal static AssemblyScanSettings[] AssembliesToScan { get; private set; } = new AssemblyScanSettings[0];
-		internal static Type[] MiddlewareTypes = new Type[0];
+		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = new AssemblyScanSettings[0];
+		internal Type[] MiddlewareTypes = new Type[0];
 		/// <summary>
 		/// Service collection for registering services
 		/// </summary>

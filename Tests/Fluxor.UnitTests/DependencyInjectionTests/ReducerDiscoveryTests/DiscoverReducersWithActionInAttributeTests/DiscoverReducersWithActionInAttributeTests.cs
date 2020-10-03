@@ -1,11 +1,11 @@
-﻿using Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInMethodSignatureTests.SupportFiles;
+﻿using Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInAttributeTests.SupportFiles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
 
-namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInMethodSignatureTests
+namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInAttributeTests
 {
-	public class DiscoverReducersWithActionInMethodSignatureTests
+	public class DiscoverReducersWithActionInAttributeTests
 	{
 		private readonly IServiceProvider ServiceProvider;
 		private readonly IStore Store;
@@ -19,7 +19,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 			Assert.True(State.Value.ReducerWasExecuted);
 		}
 
-		public DiscoverReducersWithActionInMethodSignatureTests()
+		public DiscoverReducersWithActionInAttributeTests()
 		{
 			var services = new ServiceCollection();
 			services.AddFluxor(x => x
