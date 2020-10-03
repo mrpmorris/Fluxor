@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Fluxor.UnitTests.SupportFiles
+namespace Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles
 {
 	public class EffectThatEmitsActions<TTriggerAction> : Effect<TTriggerAction>
 	{

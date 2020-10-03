@@ -1,11 +1,12 @@
 ﻿using Fluxor.UnitTests.MockFactories;
+using Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles;
 using Fluxor.UnitTests.SupportFiles;
 using Moq;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Fluxor.UnitTests.StoreTests
+namespace Fluxor.UnitTests.StoreTests.DispatchTests
 {
 	public class DispatchTests
 	{
