@@ -20,26 +20,24 @@ namespace Fluxor.DependencyInjection
 
 			Assembly[] allCandidateAssemblies =
 				assembliesToScan
-				.Select(x => x.Assembly)
-				.Union(scanIncludeList.Select(x => x.Assembly))
-				.Distinct()
-				.ToArray();
-
-			Type[] allNonAbstractTypes =
-				assembliesToScan
-				.SelectMany(x => x.Assembly.GetTypes())
-				.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
-				.Distinct()
-				.Where(t => !t.IsAbstract)
-				.ToArray();
+					.Select(x => x.Assembly)
+					.Union(scanIncludeList.Select(x => x.Assembly))
+					.Distinct()
+					.ToArray();
 
 			AssemblyScanSettings[] scanExcludeList =
 				MiddlewareClassesDiscovery.FindMiddlewareLocations(allCandidateAssemblies);
 
 			Type[] allCandidateTypes = AssemblyScanSettings.FilterClasses(
-				types: allNonAbstractTypes,
 				scanExcludeList: scanExcludeList,
-				scanIncludeList: scanIncludeList);
+				scanIncludeList: scanIncludeList,
+				types:
+					allCandidateAssemblies
+						.SelectMany(x => x.GetTypes())
+						.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
+						.Distinct()
+						.Where(t => !t.IsAbstract)
+						.ToArray());
 
 			MethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
@@ -58,9 +56,9 @@ namespace Fluxor.DependencyInjection
 			DiscoveredFeatureClass[] discoveredFeatureClasses =
 				FeatureClassesDiscovery.DiscoverFeatureClasses(
 					serviceCollection,
-					allNonAbstractTypes,
+					allCandidateTypes,
 					discoveredReducerClasses,
-					discoveredReducerMethods);
+					discoveredReducerMethods); ; ;
 
 			RegisterStore(
 				serviceCollection,

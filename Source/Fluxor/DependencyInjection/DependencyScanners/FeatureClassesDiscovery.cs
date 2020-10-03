@@ -24,20 +24,21 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
 
-			DiscoveredFeatureClass[] discoveredFeatureClasses = allCandidateTypes
-				.Select(t =>
-					new
-					{
-						ImplementingType = t,
-						GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IFeature<>))
-					})
-				.Where(x => x.GenericParameterTypes != null)
-				.Select(x => new DiscoveredFeatureClass(
-					implementingType: x.ImplementingType,
-					stateType: x.GenericParameterTypes[0]
+			DiscoveredFeatureClass[] discoveredFeatureClasses =
+				allCandidateTypes
+					.Select(t =>
+						new
+						{
+							ImplementingType = t,
+							GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IFeature<>))
+						})
+					.Where(x => x.GenericParameterTypes != null)
+					.Select(x => new DiscoveredFeatureClass(
+						implementingType: x.ImplementingType,
+						stateType: x.GenericParameterTypes[0]
+						)
 					)
-				)
-				.ToArray();
+					.ToArray();
 
 			foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
 			{

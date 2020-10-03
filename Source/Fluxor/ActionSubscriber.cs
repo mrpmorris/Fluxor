@@ -82,9 +82,10 @@ namespace Fluxor
 				if (!SubscriptionsForInstance.TryGetValue(subscriber, out instanceSubscriptions))
 					return;
 
-				IEnumerable<Type> subscribedActionTypes = instanceSubscriptions
-					.Select(x => x.ActionType)
-					.Distinct();
+				IEnumerable<Type> subscribedActionTypes =
+					instanceSubscriptions
+						.Select(x => x.ActionType)
+						.Distinct();
 
 				foreach(Type actionType in subscribedActionTypes)
 				{
