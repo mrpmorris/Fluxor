@@ -1,9 +1,9 @@
-﻿using Fluxor.UnitTests.SupportFiles;
+﻿using Fluxor.UnitTests.StoreTests.AddFeatureTests.SupportFiles;
 using Moq;
 using System;
 using Xunit;
 
-namespace Fluxor.UnitTests.StoreTests
+namespace Fluxor.UnitTests.StoreTests.AddFeatureTests
 {
 	public class AddFeatureTests
 	{
