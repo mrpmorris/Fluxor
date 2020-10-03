@@ -1,6 +1,7 @@
 ﻿using Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInMethodSignatureTests.SupportFiles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Diagnostics;
 using Xunit;
 
 namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInMethodSignatureTests
@@ -29,6 +30,8 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 			ServiceProvider = services.BuildServiceProvider();
 			Store = ServiceProvider.GetRequiredService<IStore>();
 			State = ServiceProvider.GetRequiredService<IState<TestState>>();
+
+			Store.InitializeAsync().Wait();
 		}
 	}
 }
