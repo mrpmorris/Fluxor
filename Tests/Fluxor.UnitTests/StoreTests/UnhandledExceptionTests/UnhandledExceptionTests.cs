@@ -1,4 +1,4 @@
-﻿using Fluxor.UnitTests.SupportFiles;
+﻿using Fluxor.UnitTests.StoreTests.UnhandledExceptionTests.SupportFiles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Fluxor.UnitTests.StoreTests
+
+namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests
 {
 	public class UnhandledExceptionTests
 	{
