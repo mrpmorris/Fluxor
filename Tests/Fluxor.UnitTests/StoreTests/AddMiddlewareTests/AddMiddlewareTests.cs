@@ -1,11 +1,11 @@
-﻿using Fluxor.UnitTests.SupportFiles;
+﻿using Fluxor.UnitTests.StoreTests.AddMiddlewareTests.SupportFiles;
 using Moq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Fluxor.UnitTests.StoreTests
+namespace Fluxor.UnitTests.StoreTests.AddMiddlewareTests
 {
 	public class AddMiddlewareTests
 	{

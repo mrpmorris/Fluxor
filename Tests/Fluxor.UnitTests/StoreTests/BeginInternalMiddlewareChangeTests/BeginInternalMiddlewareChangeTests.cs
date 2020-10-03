@@ -1,8 +1,8 @@
-﻿using Fluxor.UnitTests.SupportFiles;
+﻿using Fluxor.UnitTests.StoreTests.AddMiddlewareTests.SupportFiles;
 using Moq;
 using Xunit;
 
-namespace Fluxor.UnitTests.StoreTests
+namespace Fluxor.UnitTests.StoreTests.BeginInternalMiddlewareChangeTests
 {
 	public class BeginInternalMiddlewareChangeTests
 	{
