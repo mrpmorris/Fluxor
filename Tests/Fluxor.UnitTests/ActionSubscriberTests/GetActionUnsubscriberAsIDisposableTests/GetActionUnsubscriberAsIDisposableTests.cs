@@ -1,8 +1,8 @@
-﻿using Fluxor.UnitTests.SupportFiles;
+﻿using Fluxor.UnitTests.ActionSubscriberTests.GetActionUnsubscriberAsIDisposableTests.SupportFiles;
 using System;
 using Xunit;
 
-namespace Fluxor.UnitTests.ActionSubscriberTests
+namespace Fluxor.UnitTests.ActionSubscriberTests.GetActionUnsubscriberAsIDisposableTests
 {
 	public class GetActionUnsubscriberAsIDisposableTests
 	{
