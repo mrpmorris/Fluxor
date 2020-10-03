@@ -16,8 +16,49 @@ namespace Fluxor.DependencyInjection
 		{
 			if (assembliesToScan == null || assembliesToScan.Count() == 0)
 				throw new ArgumentNullException(nameof(assembliesToScan));
-			scanIncludeList = scanIncludeList ?? new List<AssemblyScanSettings>();
 
+			GetCandidateTypes(
+				assembliesToScan: assembliesToScan,
+				scanIncludeList: scanIncludeList ?? new List<AssemblyScanSettings>(),
+				allCandidateTypes: out Type[] allCandidateTypes,
+				allNonAbstractCandidateTypes: out Type[] allNonAbstractCandidateTypes);
+
+			// Classes must not be abstract
+			DiscoveredReducerClass[] discoveredReducerClasses =
+				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allNonAbstractCandidateTypes);
+
+			DiscoveredEffectClass[] discoveredEffectClasses =
+				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
+
+			// Method reducer/effects may belong to abstract classes
+			MethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
+
+			DiscoveredReducerMethod[] discoveredReducerMethods =
+				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateMethods);
+
+			DiscoveredEffectMethod[] discoveredEffectMethods =
+				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateMethods);
+
+			DiscoveredFeatureClass[] discoveredFeatureClasses =
+				FeatureClassesDiscovery.DiscoverFeatureClasses(
+					serviceCollection: serviceCollection,
+					allCandidateTypes: allNonAbstractCandidateTypes,
+					discoveredReducerClasses: discoveredReducerClasses,
+					discoveredReducerMethods: discoveredReducerMethods);
+
+			RegisterStore(
+				serviceCollection,
+				discoveredFeatureClasses,
+				discoveredEffectClasses,
+				discoveredEffectMethods);
+		}
+
+		private static void GetCandidateTypes(
+			IEnumerable<AssemblyScanSettings> assembliesToScan,
+			IEnumerable<AssemblyScanSettings> scanIncludeList,
+			out Type[] allCandidateTypes,
+			out Type[] allNonAbstractCandidateTypes)
+		{
 			Assembly[] allCandidateAssemblies =
 				assembliesToScan
 					.Select(x => x.Assembly)
@@ -28,7 +69,7 @@ namespace Fluxor.DependencyInjection
 			AssemblyScanSettings[] scanExcludeList =
 				MiddlewareClassesDiscovery.FindMiddlewareLocations(allCandidateAssemblies);
 
-			Type[] allCandidateTypes = AssemblyScanSettings.FilterClasses(
+			allCandidateTypes = AssemblyScanSettings.FilterClasses(
 				scanExcludeList: scanExcludeList,
 				scanIncludeList: scanIncludeList,
 				types:
@@ -36,35 +77,10 @@ namespace Fluxor.DependencyInjection
 						.SelectMany(x => x.GetTypes())
 						.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
 						.Distinct()
-						.Where(t => !t.IsAbstract)
 						.ToArray());
-
-			MethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
-
-			DiscoveredReducerClass[] discoveredReducerClasses =
-				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allCandidateTypes);
-
-			DiscoveredReducerMethod[] discoveredReducerMethods =
-				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateMethods);
-
-			DiscoveredEffectClass[] discoveredEffectClasses =
-				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allCandidateTypes);
-
-			DiscoveredEffectMethod[] discoveredEffectMethods =
-				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateMethods);
-
-			DiscoveredFeatureClass[] discoveredFeatureClasses =
-				FeatureClassesDiscovery.DiscoverFeatureClasses(
-					serviceCollection,
-					allCandidateTypes,
-					discoveredReducerClasses,
-					discoveredReducerMethods); ; ;
-
-			RegisterStore(
-				serviceCollection,
-				discoveredFeatureClasses,
-				discoveredEffectClasses,
-				discoveredEffectMethods);
+			allNonAbstractCandidateTypes = allCandidateTypes
+					.Where(t => !t.IsAbstract)
+					.ToArray();
 		}
 
 		private static void RegisterStore(IServiceCollection serviceCollection,
