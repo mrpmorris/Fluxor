@@ -1,5 +1,4 @@
-﻿using Fluxor.UnitTests.StoreTests.ThreadingTests.CounterStore;
-using Fluxor.UnitTests.SupportFiles;
+﻿using Fluxor.UnitTests.StoreTests.ThreadingTests.SupportFiles;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

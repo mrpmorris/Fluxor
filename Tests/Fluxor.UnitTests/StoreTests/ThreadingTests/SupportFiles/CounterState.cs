@@ -1,4 +1,4 @@
-﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.CounterStore
+﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.SupportFiles
 {
 	public class CounterState
 	{
