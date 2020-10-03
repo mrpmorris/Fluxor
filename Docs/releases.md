@@ -1,5 +1,9 @@
 # Releases
 
+### New in 3.8
+ * Fix for ([#105](https://github.com/mrpmorris/Fluxor/issues/105)) - 
+     Allow FluxorComponent descendents to dispatch actions when overriding `Dispose(bool)`.
+
 ### New in 3.7
  * Fix for ([#84](https://github.com/mrpmorris/Fluxor/issues/84) - 
    Allow observer to unsubscribe from all subscriptions whilst executing
