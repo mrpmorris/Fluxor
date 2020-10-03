@@ -8,16 +8,17 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class ReducerMethodsDiscovery
 	{
-		internal static IEnumerable<DiscoveredReducerMethod> DiscoverReducerMethods(
+		internal static DiscoveredReducerMethod[] DiscoverReducerMethods(
 			IServiceCollection serviceCollection,
 			IEnumerable<MethodInfo> allCandidateMethods)
 		{
 			DiscoveredReducerMethod[] discoveredReducers = allCandidateMethods
-				.Select(m => new
-				{
-					MethodInfo = m,
-					ReducerAttribute = m.GetCustomAttribute<ReducerMethodAttribute>(false)
-				})
+				.Select(m =>
+					new
+					{
+						MethodInfo = m,
+						ReducerAttribute = m.GetCustomAttribute<ReducerMethodAttribute>(false)
+					})
 				.Where(x => x.ReducerAttribute != null)
 				.Select(x => new DiscoveredReducerMethod(
 					hostClassType: x.MethodInfo.DeclaringType,
@@ -32,8 +33,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 				.Distinct();
 
 			foreach (Type hostClassType in hostClassTypes)
-				if (!hostClassType.IsAbstract)
-					serviceCollection.AddScoped(hostClassType);
+				serviceCollection.AddScoped(hostClassType);
 
 			return discoveredReducers;
 		}

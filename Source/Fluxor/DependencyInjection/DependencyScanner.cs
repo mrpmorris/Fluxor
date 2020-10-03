@@ -18,51 +18,47 @@ namespace Fluxor.DependencyInjection
 				throw new ArgumentNullException(nameof(assembliesToScan));
 			scanIncludeList = scanIncludeList ?? new List<AssemblyScanSettings>();
 
-			IEnumerable<Type> allCandidateTypes =
-				assembliesToScan
-				.SelectMany(x => x.Assembly.GetTypes())
-				.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
-				.Distinct()
-				.ToArray();
-
-			IEnumerable<Type> allNonAbstractCandidateTypes =
-				allCandidateTypes
-				.Where(t => !t.IsAbstract)
-				.ToArray();
-
-			IEnumerable<Assembly> allCandidateAssemblies =
+			Assembly[] allCandidateAssemblies =
 				assembliesToScan
 				.Select(x => x.Assembly)
 				.Union(scanIncludeList.Select(x => x.Assembly))
 				.Distinct()
 				.ToArray();
 
-			IEnumerable<AssemblyScanSettings> scanExcludeList =
+			Type[] allNonAbstractTypes =
+				assembliesToScan
+				.SelectMany(x => x.Assembly.GetTypes())
+				.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
+				.Distinct()
+				.Where(t => !t.IsAbstract)
+				.ToArray();
+
+			AssemblyScanSettings[] scanExcludeList =
 				MiddlewareClassesDiscovery.FindMiddlewareLocations(allCandidateAssemblies);
 
-			allCandidateTypes = AssemblyScanSettings.FilterClasses(
-				types: allCandidateTypes,
+			Type[] allCandidateTypes = AssemblyScanSettings.FilterClasses(
+				types: allNonAbstractTypes,
 				scanExcludeList: scanExcludeList,
 				scanIncludeList: scanIncludeList);
 
-			IEnumerable<MethodInfo> allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
+			MethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
-			IEnumerable<DiscoveredReducerClass> discoveredReducerClasses =
-				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allNonAbstractCandidateTypes);
+			DiscoveredReducerClass[] discoveredReducerClasses =
+				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allCandidateTypes);
 
-			IEnumerable<DiscoveredReducerMethod> discoveredReducerMethods =
+			DiscoveredReducerMethod[] discoveredReducerMethods =
 				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateMethods);
 
-			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses =
-				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
+			DiscoveredEffectClass[] discoveredEffectClasses =
+				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allCandidateTypes);
 
-			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods =
+			DiscoveredEffectMethod[] discoveredEffectMethods =
 				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateMethods);
 
-			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses =
+			DiscoveredFeatureClass[] discoveredFeatureClasses =
 				FeatureClassesDiscovery.DiscoverFeatureClasses(
 					serviceCollection,
-					allNonAbstractCandidateTypes,
+					allNonAbstractTypes,
 					discoveredReducerClasses,
 					discoveredReducerMethods);
 

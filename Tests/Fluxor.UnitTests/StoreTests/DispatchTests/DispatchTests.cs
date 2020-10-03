@@ -92,7 +92,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 			var subject = new Store();
 			await subject.InitializeAsync();
 			subject.AddFeature(mockFeature.Object);
-			subject.AddEffect(new EffectThatEmitsActions<TestAction>(actionsToEmit));
+			subject.AddEffect(new EffectThatEmitsActions(actionsToEmit));
 
 			subject.Dispatch(new TestAction());
 

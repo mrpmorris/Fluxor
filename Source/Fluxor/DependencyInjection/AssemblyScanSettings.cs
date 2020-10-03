@@ -11,10 +11,6 @@ namespace Fluxor.DependencyInjection
 		public readonly string Namespace;
 
 		public AssemblyScanSettings(Assembly assembly) : this(assembly, null) { }
-		public bool Matches(Type type) =>
-			type.Assembly == Assembly
-			&& (Namespace == null || type.FullName.StartsWith(Namespace + "."));
-
 
 		public AssemblyScanSettings(Assembly assembly, string @namespace)
 		{
@@ -22,21 +18,31 @@ namespace Fluxor.DependencyInjection
 			Namespace = @namespace;
 		}
 
-		public static IEnumerable<Type> FilterClasses(IEnumerable<Type> types, IEnumerable<AssemblyScanSettings> scanExcludeList, 
+		public bool Matches(Type type) =>
+				type.Assembly == Assembly
+				&&
+				(
+					Namespace == null
+					|| type.FullName.StartsWith(Namespace + ".", StringComparison.InvariantCultureIgnoreCase)
+				);
+
+		public static Type[] FilterClasses(
+			IEnumerable<Type> types,
+			IEnumerable<AssemblyScanSettings> scanExcludeList,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
 			=> types
-				.Where(t =>
-					scanIncludeList.Any(wl => wl.Matches(t))
-					|| !scanExcludeList.Any(bl => bl.Matches(t)))
-				.ToArray();
+					.Where(t =>
+						scanIncludeList.Any(incl => incl.Matches(t))
+						|| !scanExcludeList.Any(excl => excl.Matches(t)))
+					.ToArray();
 
-		public static IEnumerable<MethodInfo> FilterMethods(IEnumerable<Type> allCandidateTypes) =>
+		public static MethodInfo[] FilterMethods(IEnumerable<Type> allCandidateTypes) =>
 			allCandidateTypes
-			.SelectMany(t =>
-				t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static))
-			.Where(m =>
-				m.GetCustomAttributes(false).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
-			.ToArray();
+				.SelectMany(t =>
+					t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Static))
+				.Where(m =>
+					m.GetCustomAttributes(false).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
+				.ToArray();
 
 		public override bool Equals(object obj)
 		{
@@ -44,7 +50,10 @@ namespace Fluxor.DependencyInjection
 			if (other == null)
 				return false;
 
-			return other.Assembly.FullName == Assembly.FullName && other.Namespace == Namespace;
+			return
+				other.Assembly.FullName == Assembly.FullName
+				&& other.Namespace != null
+				&& other.Namespace.Equals(Namespace, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		public override int GetHashCode()

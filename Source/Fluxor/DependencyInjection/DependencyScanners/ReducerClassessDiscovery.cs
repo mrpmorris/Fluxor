@@ -7,7 +7,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class ReducerClassessDiscovery
 	{
-		internal static IEnumerable<DiscoveredReducerClass> DiscoverReducerClasses(
+		internal static DiscoveredReducerClass[] DiscoverReducerClasses(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
 			DiscoveredReducerClass[] discoveredReducerInfos = allCandidateTypes

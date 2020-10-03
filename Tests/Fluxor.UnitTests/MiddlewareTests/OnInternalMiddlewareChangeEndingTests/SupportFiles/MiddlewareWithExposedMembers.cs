@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fluxor.UnitTests.SupportFiles
+namespace Fluxor.UnitTests.MiddlewareTests.OnInternalMiddlewareChangeEndingTests.SupportFiles
 {
 	public class MiddlewareWithExposedMembers : Middleware
 	{

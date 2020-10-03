@@ -7,7 +7,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class EffectClassessDiscovery
 	{
-		internal static IEnumerable<DiscoveredEffectClass> DiscoverEffectClasses(
+		internal static DiscoveredEffectClass[] DiscoverEffectClasses(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
 			DiscoveredEffectClass[] discoveredEffectInfos = allCandidateTypes

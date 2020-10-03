@@ -1,7 +1,7 @@
-﻿using Fluxor.UnitTests.SupportFiles;
+﻿using Fluxor.UnitTests.MiddlewareTests.OnInternalMiddlewareChangeEndingTests.SupportFiles;
 using Xunit;
 
-namespace Fluxor.UnitTests.MiddlewareTests
+namespace Fluxor.UnitTests.MiddlewareTests.OnInternalMiddlewareChangeEndingTests
 {
 	public class OnInternalMiddlewareChangeEndingTests
 	{
