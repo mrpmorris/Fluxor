@@ -2,8 +2,8 @@
 {
 	public static class TestReducers
 	{
-		[ReducerMethod]
-		public static TestState ReduceTestAction(TestState state, TestAction action) =>
+		[ReducerMethod(typeof(TestAction))]
+		public static TestState ReduceTestAction(TestState state) =>
 			new TestState(reducerWasExecuted: true);
 	}
 }

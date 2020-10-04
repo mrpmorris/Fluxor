@@ -21,11 +21,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 							ReducerAttribute = m.GetCustomAttribute<ReducerMethodAttribute>(false)
 						})
 					.Where(x => x.ReducerAttribute != null)
-					.Select(x => new DiscoveredReducerMethod(
-						hostClassType: x.MethodInfo.DeclaringType,
-						methodInfo: x.MethodInfo,
-						stateType: x.MethodInfo.GetParameters()[0].ParameterType,
-						actionType: x.MethodInfo.GetParameters()[1].ParameterType))
+					.Select(x => new DiscoveredReducerMethod(x.ReducerAttribute, x.MethodInfo))
 					.ToArray();
 
 			IEnumerable<Type> hostClassTypes =
