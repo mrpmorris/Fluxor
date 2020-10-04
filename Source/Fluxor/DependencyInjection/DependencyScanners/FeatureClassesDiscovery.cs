@@ -8,13 +8,13 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class FeatureClassesDiscovery
 	{
-		internal static IEnumerable<DiscoveredFeatureClass> DiscoverFeatureClasses(
-			IServiceCollection serviceCollection, 
+		internal static DiscoveredFeatureClass[] DiscoverFeatureClasses(
+			IServiceCollection serviceCollection,
 			IEnumerable<Type> allCandidateTypes,
 			IEnumerable<DiscoveredReducerClass> discoveredReducerClasses,
 			IEnumerable<DiscoveredReducerMethod> discoveredReducerMethods)
 		{
-			Dictionary<Type, IGrouping<Type, DiscoveredReducerClass>> discoveredReducerClassesByStateType = 
+			Dictionary<Type, IGrouping<Type, DiscoveredReducerClass>> discoveredReducerClassesByStateType =
 				discoveredReducerClasses
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
@@ -24,19 +24,21 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
 
-			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses = allCandidateTypes
-				.Select(t => new
-				{
-					ImplementingType = t,
-					GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IFeature<>))
-				})
-				.Where(x => x.GenericParameterTypes != null)
-				.Select(x => new DiscoveredFeatureClass(
-					implementingType: x.ImplementingType,
-					stateType: x.GenericParameterTypes[0]
+			DiscoveredFeatureClass[] discoveredFeatureClasses =
+				allCandidateTypes
+					.Select(t =>
+						new
+						{
+							ImplementingType = t,
+							GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IFeature<>))
+						})
+					.Where(x => x.GenericParameterTypes != null)
+					.Select(x => new DiscoveredFeatureClass(
+						implementingType: x.ImplementingType,
+						stateType: x.GenericParameterTypes[0]
+						)
 					)
-				)
-				.ToArray();
+					.ToArray();
 
 			foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
 			{
@@ -89,9 +91,9 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 
 				if (discoveredReducerMethodsForStateType != null)
 				{
-					foreach(DiscoveredReducerMethod reducerMethod in discoveredReducerMethodsForStateType)
+					foreach (DiscoveredReducerMethod discoveredReducerMethod in discoveredReducerMethodsForStateType)
 					{
-						object reducerWrapperInstance = ReducerWrapperFactory.Create(serviceProvider, reducerMethod);
+						object reducerWrapperInstance = ReducerWrapperFactory.Create(serviceProvider, discoveredReducerMethod);
 						featureAddReducerMethodInfo.Invoke(featureInstance, new object[] { reducerWrapperInstance });
 					}
 				}

@@ -1,9 +1,9 @@
-﻿using Fluxor.UnitTests.SupportFiles;
+﻿using Fluxor.UnitTests.MiddlewareTests.IsInsideMiddlewareChangeTests.SupportFiles;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Fluxor.UnitTests.MiddlewareTests
+namespace Fluxor.UnitTests.MiddlewareTests.IsInsideMiddlewareChangeTests
 {
 	public class IsInsideMiddlewareChangeTests
 	{

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles
 {
-	public class EffectThatEmitsActions<TTriggerAction> : Effect<TTriggerAction>
+	public class EffectThatEmitsActions : Effect<TestAction>
 	{
 		public readonly object[] ActionsToEmit;
 
@@ -11,7 +11,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles
 		{
 			ActionsToEmit = actionsToEmit ?? Array.Empty<object>();
 		}
-		protected override Task HandleAsync(TTriggerAction action, IDispatcher dispatcher)
+		protected override Task HandleAsync(TestAction action, IDispatcher dispatcher)
 		{
 			foreach (object actionToEmit in ActionsToEmit)
 				dispatcher.Dispatch(actionToEmit);

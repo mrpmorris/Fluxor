@@ -3,6 +3,43 @@
 ### New in 3.8
  * Fix for ([#105](https://github.com/mrpmorris/Fluxor/issues/105)) - 
      Allow FluxorComponent descendents to dispatch actions when overriding `Dispose(bool)`.
+ * Added an optional `actionType` to `[EffectMethod]` to avoid compiler warnings when the action is not used
+
+```c#
+public class SomeEffects
+{
+  [EffectMethod(typeof(RefreshDataAction))]
+  public Task CallItWhateverYouLike(IDispatcher dispatcher)
+  {
+    ... code here ...
+  }
+
+  // is equivalent to
+
+  [EffectMethod]
+  public Task CallItWhateverYouLike(RefreshDataAction unusedParameter, IDispatcher dispatcher)
+  {
+    ... code here ...
+  }
+}
+```
+
+ * Added an optional `actionType` to `[ReducerMethod]` to avoid compiler warnings when the action is not used
+
+```c#
+public class SomeReducers
+{
+  [ReducerMethod(typeof(IncrementCounterAction))]
+  public MyState CallItWhateverYouLike(MyState state) =>
+    new MyState(state.Count + 1);
+
+  // is equivalent to
+
+  [ReducerMethod]
+  public MyState CallItWhateverYouLike(MyState state, IncrementCounterAction unusedParameter) =>
+    new MyState(state.Count + 1);
+}
+```
 
 ### New in 3.7
  * Fix for ([#84](https://github.com/mrpmorris/Fluxor/issues/84) - 

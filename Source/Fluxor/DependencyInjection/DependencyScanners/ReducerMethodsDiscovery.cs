@@ -8,32 +8,30 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class ReducerMethodsDiscovery
 	{
-		internal static IEnumerable<DiscoveredReducerMethod> DiscoverReducerMethods(
+		internal static DiscoveredReducerMethod[] DiscoverReducerMethods(
 			IServiceCollection serviceCollection,
 			IEnumerable<MethodInfo> allCandidateMethods)
 		{
-			DiscoveredReducerMethod[] discoveredReducers = allCandidateMethods
-				.Select(m => new
-				{
-					MethodInfo = m,
-					ReducerAttribute = m.GetCustomAttribute<ReducerMethodAttribute>(false)
-				})
-				.Where(x => x.ReducerAttribute != null)
-				.Select(x => new DiscoveredReducerMethod(
-					hostClassType: x.MethodInfo.DeclaringType,
-					methodInfo: x.MethodInfo,
-					stateType: x.MethodInfo.GetParameters()[0].ParameterType,
-					actionType: x.MethodInfo.GetParameters()[1].ParameterType))
-				.ToArray();
+			DiscoveredReducerMethod[] discoveredReducers =
+				allCandidateMethods
+					.Select(m =>
+						new
+						{
+							MethodInfo = m,
+							ReducerAttribute = m.GetCustomAttribute<ReducerMethodAttribute>(false)
+						})
+					.Where(x => x.ReducerAttribute != null)
+					.Select(x => new DiscoveredReducerMethod(x.ReducerAttribute, x.MethodInfo))
+					.ToArray();
 
-			IEnumerable<Type> hostClassTypes = discoveredReducers
-				.Select(x => x.HostClassType)
-				.Where(t => !t.IsAbstract)
-				.Distinct();
+			IEnumerable<Type> hostClassTypes =
+				discoveredReducers
+					.Select(x => x.HostClassType)
+					.Where(t => !t.IsAbstract)
+					.Distinct();
 
 			foreach (Type hostClassType in hostClassTypes)
-				if (!hostClassType.IsAbstract)
-					serviceCollection.AddScoped(hostClassType);
+				serviceCollection.AddScoped(hostClassType);
 
 			return discoveredReducers;
 		}
