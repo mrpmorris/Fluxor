@@ -20,10 +20,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 							EffectAttribute = m.GetCustomAttribute<EffectMethodAttribute>(false)
 						})
 					.Where(x => x.EffectAttribute != null)
-					.Select(x => new DiscoveredEffectMethod(
-						hostClassType: x.MethodInfo.DeclaringType,
-						methodInfo: x.MethodInfo,
-						actionType: x.MethodInfo.GetParameters()[0].ParameterType))
+					.Select(x => new DiscoveredEffectMethod(x.EffectAttribute, x.MethodInfo))
 					.ToArray();
 
 			IEnumerable<Type> hostClassTypes =
