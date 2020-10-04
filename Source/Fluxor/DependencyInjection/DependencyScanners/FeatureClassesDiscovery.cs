@@ -91,9 +91,9 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 
 				if (discoveredReducerMethodsForStateType != null)
 				{
-					foreach (DiscoveredReducerMethod reducerMethod in discoveredReducerMethodsForStateType)
+					foreach (DiscoveredReducerMethod discoveredReducerMethod in discoveredReducerMethodsForStateType)
 					{
-						object reducerWrapperInstance = ReducerWrapperFactory.Create(serviceProvider, reducerMethod);
+						object reducerWrapperInstance = ReducerWrapperFactory.Create(serviceProvider, discoveredReducerMethod);
 						featureAddReducerMethodInfo.Invoke(featureInstance, new object[] { reducerWrapperInstance });
 					}
 				}

@@ -26,11 +26,16 @@ namespace Fluxor.DependencyInjection
 						+ $" when [{nameof(ReducerMethodAttribute)}] has an {nameof(ReducerMethodAttribute.ActionType)} specified.",
 					nameof(methodInfo));
 
+			if (methodInfo.ReturnType != methodParameters[0].ParameterType)
+				throw new ArgumentException(
+					$"Expected reducer method to return type {methodInfo.ReturnType.FullName}",
+					nameof(methodInfo));
+
 			HostClassType = methodInfo.DeclaringType;
 			MethodInfo = methodInfo;
 			StateType = methodParameters[0].ParameterType;
 			ActionType = attribute.ActionType ?? methodParameters[1].ParameterType;
-			RequiresActionParameterInMethod = attribute.ActionType != null;
+			RequiresActionParameterInMethod = attribute.ActionType == null;
 		}
 	}
 }
