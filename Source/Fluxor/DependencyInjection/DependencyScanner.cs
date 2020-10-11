@@ -78,6 +78,7 @@ namespace Fluxor.DependencyInjection
 					allCandidateAssemblies
 						.SelectMany(x => x.GetTypes())
 						.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
+						.Where(t => !t.IsGenericType)
 						.Distinct()
 						.ToArray());
 			allNonAbstractCandidateTypes = allCandidateTypes

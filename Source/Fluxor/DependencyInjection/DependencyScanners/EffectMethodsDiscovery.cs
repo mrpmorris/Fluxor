@@ -8,7 +8,8 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class EffectMethodsDiscovery
 	{
-		internal static DiscoveredEffectMethod[] DiscoverEffectMethods(IServiceCollection serviceCollection,
+		internal static DiscoveredEffectMethod[] DiscoverEffectMethods(
+			IServiceCollection serviceCollection,
 			IEnumerable<MethodInfo> allCandidateMethods)
 		{
 			DiscoveredEffectMethod[] discoveredEffects =
