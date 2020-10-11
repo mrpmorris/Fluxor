@@ -36,12 +36,23 @@ namespace Fluxor.DependencyInjection
 						|| !scanExcludeList.Any(excl => excl.Matches(t)))
 					.ToArray();
 
-		public static MethodInfo[] FilterMethods(IEnumerable<Type> allCandidateTypes) =>
+		public static TypeAndMethodInfo[] FilterMethods(IEnumerable<Type> allCandidateTypes) =>
 			allCandidateTypes
-				.SelectMany(t =>
-					t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy))
-				.Where(m =>
-					m.GetCustomAttributes(true).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
+				.Select(t =>
+					new
+					{
+						Type = t,
+						Methods = t
+							.GetMethods(
+								BindingFlags.Public
+								| BindingFlags.Instance
+								| BindingFlags.Static
+								| BindingFlags.FlattenHierarchy)
+							.Where(m =>
+								m.GetCustomAttributes(true).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
+					})
+				.SelectMany(x => x.Methods
+					.Select(m => new TypeAndMethodInfo(x.Type, m)))
 				.ToArray();
 
 		public override bool Equals(object obj)

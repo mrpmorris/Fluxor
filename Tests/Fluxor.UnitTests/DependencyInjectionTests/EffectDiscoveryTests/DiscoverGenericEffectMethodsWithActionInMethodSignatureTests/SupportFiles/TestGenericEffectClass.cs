@@ -19,7 +19,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 		}
 
 		[EffectMethod]
-		public static Task HandleAsync(T action, IDispatcher dispatcher)
+		public Task HandleAsync(T action, IDispatcher dispatcher)
 		{
 			InvokeCountService.IncrementCount();
 			return Task.CompletedTask;

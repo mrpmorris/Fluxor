@@ -32,7 +32,7 @@ namespace Fluxor.DependencyInjection
 				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
 
 			// Method reducer/effects may belong to abstract classes
-			MethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
+			TypeAndMethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
 			DiscoveredReducerMethod[] discoveredReducerMethods =
 				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateMethods);
