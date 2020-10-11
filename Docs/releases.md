@@ -41,6 +41,60 @@ public class SomeReducers
 }
 ```
 
+ * Added support for declaring `[ReducerMethod]` on generic classes
+
+```c#
+public class TestIntReducer: AbstractGenericStateReducers<int>
+{
+}
+
+public class TestStringReducer: AbstractGenericStateReducers<string>
+{
+}
+
+public abstract class AbstractGenericStateReducers<T>
+	where T : IEquatable<T>
+{
+	[ReducerMethod]
+	public static TestState<T> ReduceRemoveItemAction(TestState<T> state, RemoveItemAction<T> action) =>
+		new TestState<T>(state.Items.Where(x => !x.Equals(action.Item)).ToArray());
+}
+```
+
+ * Added support for declaring `[EffectMethod]` on generic classes
+
+```c#
+public class GenericEffectClassForMyAction : AbstractGenericEffectClass<MyAction>
+{
+	public GenericEffectClassForMyAction(SomeService someService) : base(someService)
+	{
+	}
+}
+
+public class GenericEffectClassForAnotherAction : AbstractGenericEffectClass<AnotherAction>
+{
+	public GenericEffectClassForAnotherAction(SomeService someService) : base(someService)
+	{
+	}
+}
+
+public abstract class AbstractGenericEffectClass<T> 
+{
+	private readonly ISomeService SomeService;
+
+	protected AbstractGenericEffectClass(ISomeService someService)
+	{
+		SomeService = someService;
+	}
+
+	[EffectMethod]
+	public Task HandleTheActionAsync(T action, IDispatcher dispatcher)
+	{
+		return SomeService.DoSomethingAsync(action);
+	}
+}
+```
+
 ### New in 3.7
  * Fix for ([#84](https://github.com/mrpmorris/Fluxor/issues/84) - 
    Allow observer to unsubscribe from all subscriptions whilst executing
