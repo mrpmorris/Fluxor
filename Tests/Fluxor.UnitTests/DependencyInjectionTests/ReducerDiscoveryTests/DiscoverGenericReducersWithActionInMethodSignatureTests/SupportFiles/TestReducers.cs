@@ -1,8 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverGenericReducersWithActionInMethodSignatureTests.SupportFiles
 {
-	public class TestReducers<T>
+	public class TestIntReducer: AbstractTestReducers<int>
+	{
+
+	}
+
+	public abstract class AbstractTestReducers<T>
+		where T : IEquatable<T>
 	{
 		[ReducerMethod]
 		public static TestState<T> ReduceTestAction(TestState<T> state, RemoveItemAction<T> action) =>

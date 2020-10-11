@@ -20,14 +20,9 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
 
-			var getReducerMethodKey = new Func<Type, string>(x =>
-				x.IsGenericType
-				? x.Name
-				: x.FullName);
-
-			Dictionary<string, IGrouping<string, DiscoveredReducerMethod>> discoveredReducerMethodsByStateType =
+			Dictionary<Type, IGrouping<Type, DiscoveredReducerMethod>> discoveredReducerMethodsByStateType =
 				discoveredReducerMethods
-					.GroupBy(x => getReducerMethodKey(x.StateType))
+					.GroupBy(x => x.StateType)
 					.ToDictionary(x => x.Key);
 
 			DiscoveredFeatureClass[] discoveredFeatureClasses =
@@ -53,8 +48,8 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 					out IGrouping<Type, DiscoveredReducerClass> discoveredReducerClassesForStateType);
 
 				discoveredReducerMethodsByStateType.TryGetValue(
-					getReducerMethodKey(discoveredFeatureClass.StateType),
-					out IGrouping<string, DiscoveredReducerMethod> discoveredReducerMethodsForStateType);
+					discoveredFeatureClass.StateType,
+					out IGrouping<Type, DiscoveredReducerMethod> discoveredReducerMethodsForStateType);
 
 				RegisterFeature(
 					serviceCollection,

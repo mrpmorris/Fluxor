@@ -39,9 +39,9 @@ namespace Fluxor.DependencyInjection
 		public static MethodInfo[] FilterMethods(IEnumerable<Type> allCandidateTypes) =>
 			allCandidateTypes
 				.SelectMany(t =>
-					t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static))
+					t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.FlattenHierarchy))
 				.Where(m =>
-					m.GetCustomAttributes(false).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
+					m.GetCustomAttributes(true).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
 				.ToArray();
 
 		public override bool Equals(object obj)
