@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Fluxor.DependencyInjection.DependencyScanners
 {
@@ -19,10 +20,15 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
 
-			Dictionary<Type, IGrouping<Type, DiscoveredReducerMethod>> discoveredReducerMethodsByStateType =
+			var getReducerMethodKey = new Func<Type, string>(x =>
+				x.IsGenericType
+				? x.Name
+				: x.FullName);
+
+			Dictionary<string, IGrouping<string, DiscoveredReducerMethod>> discoveredReducerMethodsByStateType =
 				discoveredReducerMethods
-				.GroupBy(x => x.StateType)
-				.ToDictionary(x => x.Key);
+					.GroupBy(x => getReducerMethodKey(x.StateType))
+					.ToDictionary(x => x.Key);
 
 			DiscoveredFeatureClass[] discoveredFeatureClasses =
 				allCandidateTypes
@@ -44,16 +50,16 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 			{
 				discoveredReducerClassesByStateType.TryGetValue(
 					discoveredFeatureClass.StateType,
-					out IGrouping<Type, DiscoveredReducerClass> discoveredFeatureClassesForStateType);
+					out IGrouping<Type, DiscoveredReducerClass> discoveredReducerClassesForStateType);
 
 				discoveredReducerMethodsByStateType.TryGetValue(
-					discoveredFeatureClass.StateType,
-					out IGrouping<Type, DiscoveredReducerMethod> discoveredReducerMethodsForStateType);
+					getReducerMethodKey(discoveredFeatureClass.StateType),
+					out IGrouping<string, DiscoveredReducerMethod> discoveredReducerMethodsForStateType);
 
 				RegisterFeature(
 					serviceCollection,
 					discoveredFeatureClass,
-					discoveredFeatureClassesForStateType,
+					discoveredReducerClassesForStateType,
 					discoveredReducerMethodsForStateType);
 			}
 

@@ -39,10 +39,7 @@ namespace Fluxor.DependencyInjection
 		public static MethodInfo[] FilterMethods(IEnumerable<Type> allCandidateTypes) =>
 			allCandidateTypes
 				.SelectMany(t =>
-					t.GetMethods(BindingFlags.Public | BindingFlags.Instance 
-						//TODO: PeteM - Remove DeclaredOnly
-						| BindingFlags.DeclaredOnly
-						| BindingFlags.Static))
+					t.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static))
 				.Where(m =>
 					m.GetCustomAttributes(false).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
 				.ToArray();
