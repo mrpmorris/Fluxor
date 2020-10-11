@@ -12,7 +12,7 @@ namespace Fluxor.DependencyInjection
 		public readonly Type ActionType;
 		public readonly bool RequiresActionParameterInMethod;
 
-		public DiscoveredReducerMethod(ReducerMethodAttribute attribute, MethodInfo methodInfo)
+		public DiscoveredReducerMethod(Type hostClassType, ReducerMethodAttribute attribute, MethodInfo methodInfo)
 		{
 			ParameterInfo[] methodParameters = methodInfo.GetParameters();
 			if (attribute.ActionType == null && methodParameters.Length != 2)
@@ -34,7 +34,7 @@ namespace Fluxor.DependencyInjection
 					$"Expected reducer method to return type {methodInfo.ReturnType.FullName}. " + methodInfo.GetClassNameAndMethodName(),
 					nameof(methodInfo));
 
-			HostClassType = methodInfo.DeclaringType;
+			HostClassType = hostClassType;
 			MethodInfo = methodInfo;
 			StateType = methodParameters[0].ParameterType;
 			ActionType = attribute.ActionType ?? methodParameters[1].ParameterType;

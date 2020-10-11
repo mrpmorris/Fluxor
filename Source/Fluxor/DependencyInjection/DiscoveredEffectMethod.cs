@@ -12,7 +12,10 @@ namespace Fluxor.DependencyInjection
 		public readonly Type ActionType;
 		public readonly bool RequiresActionParameterInMethod;
 
-		public DiscoveredEffectMethod(EffectMethodAttribute attribute, MethodInfo methodInfo)
+		public DiscoveredEffectMethod(
+			Type hostClassType,
+			EffectMethodAttribute attribute,
+			MethodInfo methodInfo)
 		{
 			ParameterInfo[] methodParameters = methodInfo.GetParameters();
 			if (attribute.ActionType == null && methodParameters.Length != 2)
@@ -42,7 +45,7 @@ namespace Fluxor.DependencyInjection
 					$"Effect methods must have a return type of {nameof(Task)}. " + methodInfo.GetClassNameAndMethodName(),
 					nameof(methodInfo));
 
-			HostClassType = methodInfo.DeclaringType;
+			HostClassType = hostClassType;
 			MethodInfo = methodInfo;
 			ActionType = attribute.ActionType ?? methodParameters[0].ParameterType;
 			RequiresActionParameterInMethod = attribute.ActionType == null;

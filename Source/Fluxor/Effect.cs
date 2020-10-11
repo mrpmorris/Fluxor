@@ -16,14 +16,10 @@ namespace Fluxor
 		/// <summary>
 		/// <see cref="IEffect.ShouldReactToAction(object)"/>
 		/// </summary>
-		public bool ShouldReactToAction(object action)
-		{
-			return action is TTriggerAction;
-		}
+		public bool ShouldReactToAction(object action) =>
+			action is TTriggerAction;
 
-		Task IEffect.HandleAsync(object action, IDispatcher dispatcher)
-		{
-			return HandleAsync((TTriggerAction)action, dispatcher);
-		}
+		Task IEffect.HandleAsync(object action, IDispatcher dispatcher) =>
+			HandleAsync((TTriggerAction)action, dispatcher);
 	}
 }

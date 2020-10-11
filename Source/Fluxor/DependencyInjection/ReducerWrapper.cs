@@ -11,6 +11,7 @@ namespace Fluxor.DependencyInjection
 		TState IReducer<TState>.Reduce(TState state, object action) => Reduce(state, (TAction)action);
 		bool IReducer<TState>.ShouldReduceStateForAction(object action) => action is TAction;
 
+		public ReducerWrapper() { }
 		public ReducerWrapper(object reducerHostInstance, DiscoveredReducerMethod discoveredReducerMethod)
 		{
 			Reduce =

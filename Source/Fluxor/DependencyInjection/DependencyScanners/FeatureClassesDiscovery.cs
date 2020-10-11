@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Fluxor.DependencyInjection.DependencyScanners
 {
@@ -21,8 +22,8 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 
 			Dictionary<Type, IGrouping<Type, DiscoveredReducerMethod>> discoveredReducerMethodsByStateType =
 				discoveredReducerMethods
-				.GroupBy(x => x.StateType)
-				.ToDictionary(x => x.Key);
+					.GroupBy(x => x.StateType)
+					.ToDictionary(x => x.Key);
 
 			DiscoveredFeatureClass[] discoveredFeatureClasses =
 				allCandidateTypes
@@ -44,7 +45,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 			{
 				discoveredReducerClassesByStateType.TryGetValue(
 					discoveredFeatureClass.StateType,
-					out IGrouping<Type, DiscoveredReducerClass> discoveredFeatureClassesForStateType);
+					out IGrouping<Type, DiscoveredReducerClass> discoveredReducerClassesForStateType);
 
 				discoveredReducerMethodsByStateType.TryGetValue(
 					discoveredFeatureClass.StateType,
@@ -53,7 +54,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 				RegisterFeature(
 					serviceCollection,
 					discoveredFeatureClass,
-					discoveredFeatureClassesForStateType,
+					discoveredReducerClassesForStateType,
 					discoveredReducerMethodsForStateType);
 			}
 
