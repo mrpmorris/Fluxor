@@ -131,6 +131,11 @@ namespace Fluxor
 				return;
 			}
 
+			// If waiting for a previously throttled notification to execute
+			// then ignore this notification request
+			if (NotificationTimer != null)
+				return;
+
 			int timeSinceLastNotificationMs =
 				(int)(DateTime.UtcNow - LastNotificationTime).TotalMilliseconds;
 
@@ -140,11 +145,6 @@ namespace Fluxor
 				OnStateChanged();
 				return;
 			}
-
-			// If waiting for a previously throttled notification to execute
-			// then ignore this notification request
-			if (NotificationTimer != null)
-				return;
 
 			// This is the first time we've been told to notify observers
 			// within the throttle window, so stop accepting requests to
@@ -160,6 +160,8 @@ namespace Fluxor
 
 		private void OnStateChanged()
 		{
+			NotificationTimer?.Dispose();
+			NotificationTimer = null;
 			LastNotificationTime = DateTime.UtcNow;
 			stateChanged?.Invoke(this, State);
 			untypedStateChanged?.Invoke(this, EventArgs.Empty);
