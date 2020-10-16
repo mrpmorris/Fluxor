@@ -96,6 +96,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01E-ActionSubscriber", "01E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.ActionSubscriber", "..\Tutorials\01-BasicConcepts\01E-ActionSubscriber\ActionSubscriber\BasicConcepts.ActionSubscriber.csproj", "{E7D0352B-16E1-4A89-8C29-ED119FF03316}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp1", "..\..\..\..\..\temp\BlazorApp1\BlazorApp1.csproj", "{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -334,6 +336,18 @@ Global
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316}.Release|iPhone.Build.0 = Release|Any CPU
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Release|iPhone.Build.0 = Release|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -365,6 +379,7 @@ Global
 		{5E423494-7C7A-485E-8E84-A5CD11F7C504} = {4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}
 		{6118BA67-8200-42C8-8A6D-B65E085E07A0} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316} = {6118BA67-8200-42C8-8A6D-B65E085E07A0}
+		{739BAFBC-4AE6-45C3-942B-0ADD3E3B597B} = {1A6663AC-4F1F-40AD-8D03-0B0977ED466D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}
