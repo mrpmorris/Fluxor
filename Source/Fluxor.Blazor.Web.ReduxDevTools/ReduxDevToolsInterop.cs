@@ -49,10 +49,9 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			}
 		}
 
-		internal void Dispatch(object action, IDictionary<string, object> state)
-		{
-			InvokeFluxorDevToolsMethodAsync<object>(ToJsDispatchMethodName, new ActionInfo(action), state);
-		}
+		internal async Task<object> DispatchAsync(object action, IDictionary<string, object> state) =>
+			await InvokeFluxorDevToolsMethodAsync<object>(ToJsDispatchMethodName, new ActionInfo(action), state)
+			 .ConfigureAwait(false);
 
 		/// <summary>
 		/// Called back from ReduxDevTools

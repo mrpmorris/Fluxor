@@ -1,5 +1,104 @@
 # Releases
 
+### New in 3.8
+ * Allow state notification throttling to reduce time spent rendering ([#114](https://github.com/mrpmorris/Fluxor/issues/114)) - see:
+   *  `FluxorComponent.MaximumStateChangedNotificationsPerSecond`
+   *  `FluxorLayout.MaximumStateChangedNotificationsPerSecond`
+   *  `Feature.MaximumStateChangedNotificationsPerSecond`
+ * Fix for ([#105](https://github.com/mrpmorris/Fluxor/issues/105)) - 
+     Allow FluxorComponent descendents to dispatch actions when overriding `Dispose(bool)`.
+ * Added an optional `actionType` to `[EffectMethod]` to avoid compiler warnings when the action is not used
+
+```c#
+public class SomeEffects
+{
+  [EffectMethod(typeof(RefreshDataAction))]
+  public Task CallItWhateverYouLike(IDispatcher dispatcher)
+  {
+    ... code here ...
+  }
+
+  // is equivalent to
+
+  [EffectMethod]
+  public Task CallItWhateverYouLike(RefreshDataAction unusedParameter, IDispatcher dispatcher)
+  {
+    ... code here ...
+  }
+}
+```
+
+ * Added an optional `actionType` to `[ReducerMethod]` to avoid compiler warnings when the action is not used
+
+```c#
+public class SomeReducers
+{
+  [ReducerMethod(typeof(IncrementCounterAction))]
+  public MyState CallItWhateverYouLike(MyState state) =>
+    new MyState(state.Count + 1);
+
+  // is equivalent to
+
+  [ReducerMethod]
+  public MyState CallItWhateverYouLike(MyState state, IncrementCounterAction unusedParameter) =>
+    new MyState(state.Count + 1);
+}
+```
+
+ * Added support for declaring `[ReducerMethod]` on generic classes
+
+```c#
+public class TestIntReducer: AbstractGenericStateReducers<int>
+{
+}
+
+public class TestStringReducer: AbstractGenericStateReducers<string>
+{
+}
+
+public abstract class AbstractGenericStateReducers<T>
+	where T : IEquatable<T>
+{
+	[ReducerMethod]
+	public static TestState<T> ReduceRemoveItemAction(TestState<T> state, RemoveItemAction<T> action) =>
+		new TestState<T>(state.Items.Where(x => !x.Equals(action.Item)).ToArray());
+}
+```
+
+ * Added support for declaring `[EffectMethod]` on generic classes
+
+```c#
+public class GenericEffectClassForMyAction : AbstractGenericEffectClass<MyAction>
+{
+	public GenericEffectClassForMyAction(SomeService someService) : base(someService)
+	{
+	}
+}
+
+public class GenericEffectClassForAnotherAction : AbstractGenericEffectClass<AnotherAction>
+{
+	public GenericEffectClassForAnotherAction(SomeService someService) : base(someService)
+	{
+	}
+}
+
+public abstract class AbstractGenericEffectClass<T> 
+{
+	private readonly ISomeService SomeService;
+
+	protected AbstractGenericEffectClass(ISomeService someService)
+	{
+		SomeService = someService;
+	}
+
+	[EffectMethod]
+	public Task HandleTheActionAsync(T action, IDispatcher dispatcher)
+	{
+		return SomeService.DoSomethingAsync(action);
+	}
+}
+```
+
 ### New in 3.7
  * Fix for ([#84](https://github.com/mrpmorris/Fluxor/issues/84) - 
    Allow observer to unsubscribe from all subscriptions whilst executing

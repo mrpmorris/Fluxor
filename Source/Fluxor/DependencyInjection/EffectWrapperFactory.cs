@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Fluxor.DependencyInjection
 {
@@ -8,7 +6,6 @@ namespace Fluxor.DependencyInjection
 	{
 		internal static IEffect Create(IServiceProvider serviceProvider, DiscoveredEffectMethod discoveredEffectMethod)
 		{
-			ValidateMethod(discoveredEffectMethod.MethodInfo);
 			Type actionType = discoveredEffectMethod.ActionType;
 
 			Type hostClassType = discoveredEffectMethod.HostClassType;
@@ -20,25 +17,8 @@ namespace Fluxor.DependencyInjection
 			var result = (IEffect)Activator.CreateInstance(
 				classGenericType,
 				effectHostInstance,
-				discoveredEffectMethod.MethodInfo);
+				discoveredEffectMethod);
 			return result;
-		}
-
-		private static bool ValidateMethod(MethodInfo methodInfo)
-		{
-			if (methodInfo == null)
-				throw new ArgumentNullException(nameof(methodInfo));
-
-			ParameterInfo[] parameters = methodInfo.GetParameters();
-			if (parameters.Length != 2
-				|| !typeof(IDispatcher).IsAssignableFrom(parameters[1].ParameterType)
-				|| methodInfo.ReturnType != typeof(Task))
-			{
-				throw new InvalidOperationException(
-					$"{nameof(EffectMethodAttribute)} can only decorate methods in the format\r\n" +
-					"public Task {NameOfMethod}({TypeOfAction} action, IDispatcher dispatcher)");
-			}
-			return true;
 		}
 	}
 }

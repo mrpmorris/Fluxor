@@ -1,7 +1,9 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects;
+using Fluxor.Extensions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools
@@ -11,6 +13,8 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 	/// </summary>
 	internal sealed class ReduxDevToolsMiddleware : WebMiddleware
 	{
+		private Task TailTask = Task.CompletedTask;
+		private SpinLock SpinLock = new SpinLock();
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;
 		private IStore Store;
@@ -43,7 +47,12 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// <see cref="IMiddleware.AfterDispatch(object)"/>
 		public override void AfterDispatch(object action)
 		{
-			ReduxDevToolsInterop.Dispatch(action, GetState());
+			SpinLock.ExecuteLocked(() =>
+				{
+					IDictionary<string, object> state = GetState();
+					TailTask = TailTask
+						.ContinueWith(_ => ReduxDevToolsInterop.DispatchAsync(action, state)).Unwrap();
+				});
 
 			// As actions can only be executed if not in a historical state (yes, "a" historical, pronounce your H!)
 			// ensure the latest is incremented, and the current = latest
@@ -61,12 +70,18 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 
 		private async Task OnCommit()
 		{
+			// Wait for fire+forget state notifications to ReduxDevTools to dequeue
+			await TailTask.ConfigureAwait(false);
+
 			await ReduxDevToolsInterop.InitializeAsync(GetState());
 			SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
 		}
 
-		private Task OnJumpToState(JumpToStateCallback callbackInfo)
+		private async Task OnJumpToState(JumpToStateCallback callbackInfo)
 		{
+			// Wait for fire+forget state notifications to ReduxDevTools to dequeue
+			await TailTask.ConfigureAwait(false);
+
 			SequenceNumberOfCurrentState = callbackInfo.payload.actionId;
 			using (Store.BeginInternalMiddlewareChange())
 			{
@@ -85,7 +100,6 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 					feature.RestoreState(stronglyTypedFeatureState);
 				}
 			}
-			return Task.CompletedTask;
 		}
 	}
 }

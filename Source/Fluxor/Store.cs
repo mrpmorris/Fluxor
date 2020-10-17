@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Fluxor
@@ -176,7 +175,9 @@ namespace Fluxor
 		private void TriggerEffects(object action)
 		{
 			var recordedExceptions = new List<Exception>();
-			var effectsToExecute = Effects.Where(x => x.ShouldReactToAction(action));
+			var effectsToExecute = Effects
+				.Where(x => x.ShouldReactToAction(action))
+				.ToArray();
 			var executedEffects = new List<Task>();
 
 			Action<Exception> collectExceptions = e =>
