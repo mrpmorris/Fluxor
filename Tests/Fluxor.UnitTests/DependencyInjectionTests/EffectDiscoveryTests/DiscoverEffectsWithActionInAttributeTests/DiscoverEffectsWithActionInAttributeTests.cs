@@ -9,28 +9,26 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 	{
 		private readonly IServiceProvider ServiceProvider;
 		private readonly IStore Store;
-		private readonly InvokeCountService InvokeCountService;
+		private readonly IState<TestState> State;
 
 		[Fact]
 		public void WhenActionIsDispatched_ThenEffectWithActionInMethodSignatureIsExecuted()
 		{
-			Assert.Equal(0, InvokeCountService.GetCount());
 			Store.Dispatch(new TestAction());
-			Assert.Equal(1, InvokeCountService.GetCount());
+			// Two effects, one static and one instance, so expect a value of 2
+			Assert.Equal(2, State.Value.Count);
 		}
 
 		public DiscoverEffectsWithActionInAttributeTests()
 		{
-			InvokeCountService = new InvokeCountService();
-
 			var services = new ServiceCollection();
-			services.AddScoped(_ => InvokeCountService);
 			services.AddFluxor(x => x
 				.ScanAssemblies(GetType().Assembly)
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();
 			Store = ServiceProvider.GetRequiredService<IStore>();
+			State = ServiceProvider.GetRequiredService<IState<TestState>>();
 
 			Store.InitializeAsync().Wait();
 		}

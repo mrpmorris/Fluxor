@@ -70,7 +70,7 @@ namespace Fluxor.DependencyInjection
 			=>
 				(HandleWithoutActionParameterAsyncHandler)
 					Delegate.CreateDelegate(
-						type: typeof(HandleWithActionParameterAsyncHandler),
+						type: typeof(HandleWithoutActionParameterAsyncHandler),
 						method: discoveredEffectMethod.MethodInfo);
 
 		private static HandleWithoutActionParameterAsyncHandler CreateInstanceHandlerWithoutActionParameter(

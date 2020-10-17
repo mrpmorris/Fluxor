@@ -1,13 +1,12 @@
 ﻿namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles
 {
-	public class InvokeCountService
+	public class TestState
 	{
-		private int Count;
+		public readonly int Count;
 
-		public int GetCount() => Count;
-		public void IncrementCount()
+		public TestState(int count)
 		{
-			Count++;
+			Count = count;
 		}
 	}
 }
