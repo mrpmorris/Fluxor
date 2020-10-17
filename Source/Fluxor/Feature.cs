@@ -1,4 +1,5 @@
 ﻿using Fluxor.Extensions;
+using Fluxor.UnsupportedClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace Fluxor
 	/// <see cref="IFeature{TState}"/>
 	public abstract class Feature<TState> : IFeature<TState>
 	{
+		/// <see cref="IFeature.MaximumStateChangedNotificationsPerSecond"/>
+		public byte MaximumStateChangedNotificationsPerSecond { get; set; }
+
 		/// <see cref="IFeature.GetName"/>
 		public abstract string GetName();
 
@@ -33,12 +37,14 @@ namespace Fluxor
 		protected readonly List<IReducer<TState>> Reducers = new List<IReducer<TState>>();
 
 		private SpinLock SpinLock = new SpinLock();
+		private ThrottledInvoker TriggerStateChangedCallbacksThrottler;
 
 		/// <summary>
 		/// Creates a new instance
 		/// </summary>
 		public Feature()
 		{
+			TriggerStateChangedCallbacksThrottler = new ThrottledInvoker(TriggerStateChangedCallbacks);
 			State = GetInitialState();
 		}
 
@@ -81,10 +87,13 @@ namespace Fluxor
 			get => _State;
 			protected set
 			{
-				bool stateHasChanged = !Object.ReferenceEquals(_State, value);
-				_State = value;
-				if (stateHasChanged)
-					TriggerStateChangedCallbacks(value);
+				SpinLock.ExecuteLocked(() =>
+				{
+					bool stateHasChanged = !Object.ReferenceEquals(_State, value);
+					_State = value;
+					if (stateHasChanged)
+						TriggerStateChangedCallbacksThrottler.Invoke(MaximumStateChangedNotificationsPerSecond);
+				});
 			}
 		}
 
@@ -111,9 +120,9 @@ namespace Fluxor
 			State = newState;
 		}
 
-		private void TriggerStateChangedCallbacks(TState newState)
+		private void TriggerStateChangedCallbacks()
 		{
-			stateChanged?.Invoke(this, newState);
+			stateChanged?.Invoke(this, State);
 			untypedStateChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}

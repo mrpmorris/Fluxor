@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Fluxor.Extensions
 {
-	internal static class SpinLockExtensions
+	public static class SpinLockExtensions
 	{
 		public static void ExecuteLocked(this SpinLock spinLock, Action callback)
 		{

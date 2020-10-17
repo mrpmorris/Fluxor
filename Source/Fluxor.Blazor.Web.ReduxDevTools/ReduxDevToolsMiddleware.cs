@@ -1,4 +1,5 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects;
+using Fluxor.Extensions;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,19 +47,12 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// <see cref="IMiddleware.AfterDispatch(object)"/>
 		public override void AfterDispatch(object action)
 		{
-			bool lockTaken = false;
-			while (!lockTaken)
-				SpinLock.Enter(ref lockTaken);
-			try
-			{
-				IDictionary<string, object> state = GetState();
-				TailTask = TailTask
-					.ContinueWith(_ => ReduxDevToolsInterop.DispatchAsync(action, state)).Unwrap();
-			}
-			finally
-			{
-				SpinLock.Exit();
-			};
+			SpinLock.ExecuteLocked(() =>
+				{
+					IDictionary<string, object> state = GetState();
+					TailTask = TailTask
+						.ContinueWith(_ => ReduxDevToolsInterop.DispatchAsync(action, state)).Unwrap();
+				});
 
 			// As actions can only be executed if not in a historical state (yes, "a" historical, pronounce your H!)
 			// ensure the latest is incremented, and the current = latest
