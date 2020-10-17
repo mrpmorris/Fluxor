@@ -15,8 +15,8 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 		public void WhenActionIsDispatched_ThenEffectWithActionInMethodSignatureIsExecuted()
 		{
 			Store.Dispatch(new TestAction());
-			// 4 effects. Static vs instance, action in method vs action in attribute
-			Assert.Equal(4, State.Value.Count);
+			// 2 effects. Static vs instance
+			Assert.Equal(2, State.Value.Count);
 		}
 
 		public DiscoverEffectsWithActionInAttributeTests()
