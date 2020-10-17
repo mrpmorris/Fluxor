@@ -4,17 +4,20 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 {
 	public class TestEffects
 	{
-		private readonly InvokeCountService InvokeCountService;
-
-		public TestEffects(InvokeCountService invokeCountService)
-		{
-			InvokeCountService = invokeCountService;
-		}
-
 		[EffectMethod]
 		public Task Handle(TestAction action, IDispatcher dispatcher)
 		{
-			InvokeCountService.IncrementCount();
+			dispatcher.Dispatch(new EffectDispatchedAction());
+			return Task.CompletedTask;
+		}
+	}
+
+	public static class StaticTestEffects
+	{
+		[EffectMethod]
+		public static Task Handle(TestAction action, IDispatcher dispatcher)
+		{
+			dispatcher.Dispatch(new EffectDispatchedAction());
 			return Task.CompletedTask;
 		}
 	}
