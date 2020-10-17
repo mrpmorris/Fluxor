@@ -96,8 +96,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01E-ActionSubscriber", "01E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.ActionSubscriber", "..\Tutorials\01-BasicConcepts\01E-ActionSubscriber\ActionSubscriber\BasicConcepts.ActionSubscriber.csproj", "{E7D0352B-16E1-4A89-8C29-ED119FF03316}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluxorDITest", "..\..\..\..\..\Users\x\source\repos\FluxorDITest\FluxorDITest.csproj", "{1BB126A0-5D06-4155-BA18-5B73506F096E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -336,18 +334,6 @@ Global
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316}.Release|iPhone.Build.0 = Release|Any CPU
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Release|iPhone.Build.0 = Release|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{1BB126A0-5D06-4155-BA18-5B73506F096E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
