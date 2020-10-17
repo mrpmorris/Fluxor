@@ -1,6 +1,10 @@
 # Releases
 
 ### New in 3.8
+ * Allow state notification throttling to reduce time spent rendering ([#114](https://github.com/mrpmorris/Fluxor/issues/114)) - see:
+   *  `FluxorComponent.MaximumStateChangedNotificationsPerSecond`
+   *  `FluxorLayout.MaximumStateChangedNotificationsPerSecond`
+   *  `Feature.MaximumStateChangedNotificationsPerSecond`
  * Fix for ([#105](https://github.com/mrpmorris/Fluxor/issues/105)) - 
      Allow FluxorComponent descendents to dispatch actions when overriding `Dispose(bool)`.
  * Added an optional `actionType` to `[EffectMethod]` to avoid compiler warnings when the action is not used
