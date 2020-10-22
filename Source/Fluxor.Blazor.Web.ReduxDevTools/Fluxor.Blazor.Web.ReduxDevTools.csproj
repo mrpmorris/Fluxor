@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<RazorLangVersion>3.0</RazorLangVersion>
-		<Version>3.8.0-rc1</Version>
+		<Version>3.8.0</Version>
 		<Authors>Peter Morris</Authors>
 		<Company />
 		<Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
