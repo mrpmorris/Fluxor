@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.0;netstandard2.1</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<RazorLangVersion>3.0</RazorLangVersion>
-		<Version>3.8.0</Version>
+		<Version>3.8.1-Beta-1</Version>
 		<Authors>Peter Morris</Authors>
 		<Company />
 		<Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
@@ -15,10 +15,10 @@
 		<PackageIconUrl />
 		<RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>.cs</PackageTags>
+		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<AssemblyVersion>3.8.0.0</AssemblyVersion>
-		<FileVersion>3.8.0.0</FileVersion>
+		<AssemblyVersion>3.8.1.0</AssemblyVersion>
+		<FileVersion>3.8.1.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
