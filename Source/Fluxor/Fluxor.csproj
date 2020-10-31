@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;netcoreapp3.1</TargetFrameworks>
-		<Version>3.8.0</Version>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+		<Version>3.8.1-Beta-1</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>Peter Morris</Authors>
 		<Company />
@@ -16,8 +16,8 @@
 		<PackageLicenseFile></PackageLicenseFile>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryType>git</RepositoryType>
-		<AssemblyVersion>3.8.0.0</AssemblyVersion>
-		<FileVersion>3.8.0.0</FileVersion>
+		<AssemblyVersion>3.8.1.0</AssemblyVersion>
+		<FileVersion>3.8.1.0</FileVersion>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>

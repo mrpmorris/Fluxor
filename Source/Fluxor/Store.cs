@@ -112,7 +112,7 @@ namespace Fluxor
 						.InitializeAsync(this)
 						.ContinueWith(t =>
 						{
-							if (t.IsCompletedSuccessfully)
+							if (!t.IsFaulted)
 								middleware.AfterInitializeAllMiddlewares();
 						});
 				}
@@ -266,8 +266,10 @@ namespace Fluxor
 			IsDispatching = true;
 			try
 			{
-				while (QueuedActions.TryDequeue(out object nextActionToProcess))
+				while (QueuedActions.Count > 0)
 				{
+					object nextActionToProcess = QueuedActions.Dequeue();
+
 					// Only process the action if no middleware vetos it
 					if (Middlewares.All(x => x.MayDispatchAction(nextActionToProcess)))
 					{
