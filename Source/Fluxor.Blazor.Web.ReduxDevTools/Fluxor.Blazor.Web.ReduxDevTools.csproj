@@ -15,7 +15,7 @@
 		<PackageIconUrl />
 		<RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>.cs</PackageTags>
+		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<AssemblyVersion>3.8.1.0</AssemblyVersion>
 		<FileVersion>3.8.1.0</FileVersion>
