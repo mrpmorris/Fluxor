@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp2.0;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
 		<Version>3.8.1-Beta-1</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>Peter Morris</Authors>
 		<Company />
-		<Description>A zero boilerplate Redux/Flux framework for DotNet</Description>
+		<Description>A zero boilerplate Redux/Flux framework for .NET</Description>
 		<Copyright>Peter Morris</Copyright>
 		<PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
 		<PackageIcon>fluxor-small-logo.png</PackageIcon>
