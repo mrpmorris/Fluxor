@@ -1,5 +1,8 @@
 # Releases
 
+### New in 3.9
+ * Support added for .NET 5.0
+
 ### New in 3.8
  * Allow state notification throttling to reduce time spent rendering ([#114](https://github.com/mrpmorris/Fluxor/issues/114)) - see:
    *  `FluxorComponent.MaximumStateChangedNotificationsPerSecond`
