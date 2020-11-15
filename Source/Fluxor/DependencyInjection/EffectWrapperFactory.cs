@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Fluxor.DependencyInjection
 {
@@ -11,7 +12,7 @@ namespace Fluxor.DependencyInjection
 			Type hostClassType = discoveredEffectMethod.HostClassType;
 			object effectHostInstance = discoveredEffectMethod.MethodInfo.IsStatic
 				? null
-				: serviceProvider.GetService(hostClassType);
+				: serviceProvider.GetRequiredService(hostClassType);
 
 			Type classGenericType = typeof(EffectWrapper<>).MakeGenericType(actionType);
 			var result = (IEffect)Activator.CreateInstance(

@@ -78,14 +78,14 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 			serviceCollection.AddScoped(discoveredFeatureClass.FeatureInterfaceGenericType, serviceProvider =>
 			{
 				// Create an instance of the implementing type
-				var featureInstance = (IFeature)serviceProvider.GetService(discoveredFeatureClass.ImplementingType);
+				var featureInstance = (IFeature)serviceProvider.GetRequiredService(discoveredFeatureClass.ImplementingType);
 
 				if (discoveredReducerClassesForStateType != null)
 				{
 
 					foreach (DiscoveredReducerClass reducerClass in discoveredReducerClassesForStateType)
 					{
-						object reducerInstance = serviceProvider.GetService(reducerClass.ImplementingType);
+						object reducerInstance = serviceProvider.GetRequiredService(reducerClass.ImplementingType);
 						featureAddReducerMethodInfo.Invoke(featureInstance, new object[] { reducerInstance });
 					}
 				}

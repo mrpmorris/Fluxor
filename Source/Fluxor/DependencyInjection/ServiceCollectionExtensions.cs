@@ -29,6 +29,7 @@ namespace Fluxor
 			var options = new Options(serviceCollection);
 			configure?.Invoke(options);
 
+			// TODO: PeteM - Register these elsewhere, to include autoload middlewares
 			// Register all middleware types with dependency injection
 			foreach (Type middlewareType in options.MiddlewareTypes)
 				serviceCollection.AddScoped(middlewareType);

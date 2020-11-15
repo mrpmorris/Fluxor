@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Fluxor.DependencyInjection
 {
@@ -12,7 +13,7 @@ namespace Fluxor.DependencyInjection
 			Type hostClassType = discoveredReducerMethod.HostClassType;
 			object reducerHostInstance = discoveredReducerMethod.MethodInfo.IsStatic
 				? null
-				: serviceProvider.GetService(hostClassType);
+				: serviceProvider.GetRequiredService(hostClassType);
 
 			Type classGenericType = typeof(ReducerWrapper<,>).MakeGenericType(stateType, actionType);
 			var result = Activator.CreateInstance(

@@ -6,12 +6,14 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class MiddlewareClassesDiscovery
 	{
-		internal static AssemblyScanSettings[] FindMiddlewareLocations(IEnumerable<Assembly> assembliesToScan)
+		internal static DiscoveredMiddleware[] FindMiddlewares(IEnumerable<Assembly> assembliesToScan)
 		{
 			return assembliesToScan
-				.SelectMany(x => x.GetTypes().Where(t => t.GetInterfaces().Any(i => i == typeof(IMiddleware))))
-				.Select(x => new AssemblyScanSettings(x.Assembly, x.Namespace))
-				.Distinct()
+				.SelectMany(a => a.GetTypes().Where(t => t.GetInterfaces().Any(i => i == typeof(IMiddleware))))
+				.Select(t => 
+					new DiscoveredMiddleware(
+						implementingType: t,
+						autoLoaded: t.GetCustomAttribute(typeof(AutoLoadMiddlewareAttribute)) != null))
 				.ToArray();
 		}
 	}
