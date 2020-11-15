@@ -21,7 +21,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 						implementingType: t,
 						autoLoaded: 
 							manuallyIncludedMiddlewares.Contains(t)
-							|| t.GetCustomAttribute(typeof(AutoLoadMiddlewareAttribute)) != null))
+							|| t.GetCustomAttribute(typeof(AutomaticallyIncludeMiddlewareAttribute)) != null))
 				.ToArray();
 
 			foreach (DiscoveredMiddleware discoveredMiddleware in discoveredMiddlewares)
