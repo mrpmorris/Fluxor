@@ -10,7 +10,7 @@ namespace Fluxor.DependencyInjection
 	internal static class DependencyScanner
 	{
 		internal static void Scan(
-			this IServiceCollection serviceCollection,
+			this IServiceCollection services,
 			Options options,
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
@@ -18,9 +18,19 @@ namespace Fluxor.DependencyInjection
 			if (assembliesToScan == null || assembliesToScan.Count() == 0)
 				throw new ArgumentNullException(nameof(assembliesToScan));
 
+			assembliesToScan = assembliesToScan
+				.Distinct()
+				.ToArray();
+
+			scanIncludeList = scanIncludeList
+				.Distinct()
+				.ToArray();
+
 			DiscoveredMiddleware[] discoveredMiddlewares =
 				MiddlewareClassesDiscovery.FindMiddlewares(
-					assembliesToScan.Select(x => x.Assembly));
+					services: services,
+					assembliesToScan: assembliesToScan.Select(x => x.Assembly),
+					manuallyIncludedMiddlewares: options.MiddlewareTypes);
 
 			GetCandidateTypes(
 				assembliesToScan: assembliesToScan,
@@ -31,29 +41,29 @@ namespace Fluxor.DependencyInjection
 
 			// Classes must not be abstract
 			DiscoveredReducerClass[] discoveredReducerClasses =
-				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allNonAbstractCandidateTypes);
+				ReducerClassessDiscovery.DiscoverReducerClasses(services, allNonAbstractCandidateTypes);
 
 			DiscoveredEffectClass[] discoveredEffectClasses =
-				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
+				EffectClassessDiscovery.DiscoverEffectClasses(services, allNonAbstractCandidateTypes);
 
 			// Method reducer/effects may belong to abstract classes
 			TypeAndMethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
 			DiscoveredReducerMethod[] discoveredReducerMethods =
-				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateMethods);
+				ReducerMethodsDiscovery.DiscoverReducerMethods(services, allCandidateMethods);
 
 			DiscoveredEffectMethod[] discoveredEffectMethods =
-				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateMethods);
+				EffectMethodsDiscovery.DiscoverEffectMethods(services, allCandidateMethods);
 
 			DiscoveredFeatureClass[] discoveredFeatureClasses =
 				FeatureClassesDiscovery.DiscoverFeatureClasses(
-					serviceCollection: serviceCollection,
+					serviceCollection: services,
 					allCandidateTypes: allNonAbstractCandidateTypes,
 					discoveredReducerClasses: discoveredReducerClasses,
 					discoveredReducerMethods: discoveredReducerMethods);
 
 			RegisterStore(
-				serviceCollection: serviceCollection,
+				serviceCollection: services,
 				options: options,
 				discoveredMiddlewares: discoveredMiddlewares,
 				discoveredFeatureClasses: discoveredFeatureClasses,
