@@ -53,7 +53,7 @@ namespace Fluxor
 		{
 			add
 			{
-				SpinLock.ExecuteLocked(() => untypedStateChanged += value );
+				SpinLock.ExecuteLocked(() => untypedStateChanged += value);
 			}
 
 			remove
@@ -65,6 +65,7 @@ namespace Fluxor
 		private TState _State;
 
 		private EventHandler<TState> stateChanged;
+
 		/// <summary>
 		/// Event that is executed whenever the state changes
 		/// </summary>

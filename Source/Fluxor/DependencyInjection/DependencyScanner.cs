@@ -10,7 +10,7 @@ namespace Fluxor.DependencyInjection
 	internal static class DependencyScanner
 	{
 		internal static void Scan(
-			this IServiceCollection serviceCollection,
+			this IServiceCollection services,
 			Options options,
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
@@ -18,38 +18,54 @@ namespace Fluxor.DependencyInjection
 			if (assembliesToScan == null || assembliesToScan.Count() == 0)
 				throw new ArgumentNullException(nameof(assembliesToScan));
 
+			assembliesToScan = assembliesToScan
+				.Distinct()
+				.ToArray();
+
+			scanIncludeList = scanIncludeList
+				.Distinct()
+				.ToArray();
+
+			DiscoveredMiddleware[] discoveredMiddlewares =
+				MiddlewareClassesDiscovery.FindMiddlewares(
+					services: services,
+					assembliesToScan: assembliesToScan.Select(x => x.Assembly),
+					manuallyIncludedMiddlewares: options.MiddlewareTypes);
+
 			GetCandidateTypes(
 				assembliesToScan: assembliesToScan,
 				scanIncludeList: scanIncludeList ?? new List<AssemblyScanSettings>(),
+				discoveredMiddlewares: discoveredMiddlewares,
 				allCandidateTypes: out Type[] allCandidateTypes,
 				allNonAbstractCandidateTypes: out Type[] allNonAbstractCandidateTypes);
 
 			// Classes must not be abstract
 			DiscoveredReducerClass[] discoveredReducerClasses =
-				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allNonAbstractCandidateTypes);
+				ReducerClassessDiscovery.DiscoverReducerClasses(services, allNonAbstractCandidateTypes);
 
 			DiscoveredEffectClass[] discoveredEffectClasses =
-				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
+				EffectClassessDiscovery.DiscoverEffectClasses(services, allNonAbstractCandidateTypes);
 
 			// Method reducer/effects may belong to abstract classes
 			TypeAndMethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
 			DiscoveredReducerMethod[] discoveredReducerMethods =
-				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateMethods);
+				ReducerMethodsDiscovery.DiscoverReducerMethods(services, allCandidateMethods);
 
 			DiscoveredEffectMethod[] discoveredEffectMethods =
-				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateMethods);
+				EffectMethodsDiscovery.DiscoverEffectMethods(services, allCandidateMethods);
 
 			DiscoveredFeatureClass[] discoveredFeatureClasses =
 				FeatureClassesDiscovery.DiscoverFeatureClasses(
-					serviceCollection: serviceCollection,
+					serviceCollection: services,
 					allCandidateTypes: allNonAbstractCandidateTypes,
 					discoveredReducerClasses: discoveredReducerClasses,
 					discoveredReducerMethods: discoveredReducerMethods);
 
 			RegisterStore(
-				serviceCollection: serviceCollection,
+				serviceCollection: services,
 				options: options,
+				discoveredMiddlewares: discoveredMiddlewares,
 				discoveredFeatureClasses: discoveredFeatureClasses,
 				discoveredEffectClasses: discoveredEffectClasses,
 				discoveredEffectMethods: discoveredEffectMethods);
@@ -58,6 +74,7 @@ namespace Fluxor.DependencyInjection
 		private static void GetCandidateTypes(
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList,
+			IEnumerable<DiscoveredMiddleware> discoveredMiddlewares,
 			out Type[] allCandidateTypes,
 			out Type[] allNonAbstractCandidateTypes)
 		{
@@ -68,8 +85,18 @@ namespace Fluxor.DependencyInjection
 					.Distinct()
 					.ToArray();
 
-			AssemblyScanSettings[] scanExcludeList =
-				MiddlewareClassesDiscovery.FindMiddlewareLocations(allCandidateAssemblies);
+			AssemblyScanSettings[] autoLoadedMiddlewareLocations = discoveredMiddlewares
+				.Where(x => x.AutoLoaded)
+				.Select(x => x.ScanSettings)
+				.Distinct()
+				.ToArray();
+
+			AssemblyScanSettings[] scanExcludeList = discoveredMiddlewares
+				.Where(x => !x.AutoLoaded)
+				.Select(x => x.ScanSettings)
+				.Except(autoLoadedMiddlewareLocations)
+				.Distinct()
+				.ToArray();
 
 			allCandidateTypes = AssemblyScanSettings.FilterClasses(
 				scanExcludeList: scanExcludeList,
@@ -89,16 +116,17 @@ namespace Fluxor.DependencyInjection
 		private static void RegisterStore(
 			IServiceCollection serviceCollection,
 			Options options,
+			IEnumerable<DiscoveredMiddleware> discoveredMiddlewares,
 			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses,
 			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses,
 			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods)
 		{
 			// Register IDispatcher as an alias to Store
-			serviceCollection.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetService<Store>());
+			serviceCollection.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetRequiredService<Store>());
 			// Register IActionSubscriber as an alias to Store
-			serviceCollection.AddScoped<IActionSubscriber>(serviceProvider => serviceProvider.GetService<Store>());
+			serviceCollection.AddScoped<IActionSubscriber>(serviceProvider => serviceProvider.GetRequiredService<Store>());
 			// Register IStore as an alias to Store
-			serviceCollection.AddScoped<IStore>(serviceProvider => serviceProvider.GetService<Store>());
+			serviceCollection.AddScoped<IStore>(serviceProvider => serviceProvider.GetRequiredService<Store>());
 
 			// Register a custom factory for building IStore that will inject all effects
 			serviceCollection.AddScoped(typeof(Store), serviceProvider =>
@@ -106,13 +134,13 @@ namespace Fluxor.DependencyInjection
 				var store = new Store();
 				foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
 				{
-					var feature = (IFeature)serviceProvider.GetService(discoveredFeatureClass.FeatureInterfaceGenericType);
+					var feature = (IFeature)serviceProvider.GetRequiredService(discoveredFeatureClass.FeatureInterfaceGenericType);
 					store.AddFeature(feature);
 				}
 
 				foreach (DiscoveredEffectClass discoveredEffectClass in discoveredEffectClasses)
 				{
-					var effect = (IEffect)serviceProvider.GetService(discoveredEffectClass.ImplementingType);
+					var effect = (IEffect)serviceProvider.GetRequiredService(discoveredEffectClass.ImplementingType);
 					store.AddEffect(effect);
 				}
 
@@ -122,9 +150,20 @@ namespace Fluxor.DependencyInjection
 					store.AddEffect(effect);
 				}
 
-				foreach (Type middlewareType in options.MiddlewareTypes)
+				Type[] autoLoadedMiddlewareTypes = discoveredMiddlewares
+					.Where(x => x.AutoLoaded)
+					.Select(x => x.ImplementingType)
+					.Distinct()
+					.ToArray();
+
+				Type[] middlewareTypes = options.MiddlewareTypes
+					.Union(autoLoadedMiddlewareTypes)
+					.Distinct()
+					.ToArray();
+
+				foreach (Type middlewareType in middlewareTypes)
 				{
-					var middleware = (IMiddleware)serviceProvider.GetService(middlewareType);
+					var middleware = (IMiddleware)serviceProvider.GetRequiredService(middlewareType);
 					store.AddMiddleware(middleware);
 				}
 

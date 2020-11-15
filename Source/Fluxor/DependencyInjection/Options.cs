@@ -61,21 +61,24 @@ namespace Fluxor.DependencyInjection
 			if (Array.IndexOf(MiddlewareTypes, typeof(TMiddleware)) > -1)
 				return this;
 
-			Services.AddScoped(typeof(TMiddleware));
 			Assembly assembly = typeof(TMiddleware).Assembly;
 			string @namespace = typeof(TMiddleware).Namespace;
 
-			AssembliesToScan = new List<AssemblyScanSettings>(AssembliesToScan)
-			{
-				new AssemblyScanSettings(assembly, @namespace)
-			}
-			.ToArray();
+			AssembliesToScan =
+				new List<AssemblyScanSettings>(AssembliesToScan)
+				{
+					new AssemblyScanSettings(assembly, @namespace)
+				}
+				.Distinct()
+				.ToArray();
 
-			MiddlewareTypes = new List<Type>(MiddlewareTypes)
-			{
-				typeof(TMiddleware)
-			}
-			.ToArray();
+			MiddlewareTypes =
+				new List<Type>(MiddlewareTypes)
+				{
+					typeof(TMiddleware)
+				}
+				.Distinct()
+				.ToArray();
 			return this;
 		}
 	}

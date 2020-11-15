@@ -1,5 +1,19 @@
 # Releases
 
+### New in 4.0
+ * Added support for automatically including middlewares.
+
+By adding the attribute `[AutomaticallyIncludeMiddleware]` to a Middlware, Fluxor
+will automatically include it in the store rather than having to manually
+adding it like so.
+
+```c#
+services.AddFluxor(x => x
+	.ScanAssemblies(GetType().Assembly)
+	.AddMiddleware<MyMiddleware>());
+```
+
+
 ### New in 3.9
  * Support added for .NET 5.0
 

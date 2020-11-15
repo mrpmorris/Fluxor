@@ -39,7 +39,7 @@ namespace BasicConcepts.MiddlewareTutorial.Store.Middlewares.Logging
 			Log("\t===========STATE AFTER DISPATCH===========");
 			foreach (KeyValuePair<string, IFeature> feature in Store.Features)
 			{
-				string json = JsonConvert.SerializeObject(feature.Value, Formatting.Indented)
+				string json = JsonConvert.SerializeObject(feature.Value.GetState(), Formatting.Indented)
 					.Replace("\n", "\n\t");
 				Log("\r\n\t" + feature.Key + ": " + json);
 			}
