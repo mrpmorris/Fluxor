@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -18,6 +16,14 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.MiddlewareDiscoveryTests
 		{
 			Assert.Single(Store.GetMiddlewares());
 			Assert.IsType<AutoMiddleware>(Store.GetMiddlewares().Single());
+		}
+
+		[Fact]
+		public void WhenMiddlewareHasAutomaticallyIncludedMiddlewareAttribute_ThenClassesInSameNamespaceAreAlsoIncluded()
+		{
+			Effects.WasExecuted = false;
+			Store.Dispatch("Hello");
+			Assert.True(Effects.WasExecuted);
 		}
 
 		[Fact]
