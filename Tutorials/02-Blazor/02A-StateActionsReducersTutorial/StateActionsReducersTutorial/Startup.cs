@@ -1,4 +1,4 @@
-using Fluxor;
+using Fluxor.DependencyInjection.Microsoft;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

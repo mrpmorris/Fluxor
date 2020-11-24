@@ -1,4 +1,5 @@
-﻿using Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverGenericEffectMethodsWithActionInMethodSignatureTests.SupportFiles;
+﻿using Fluxor.DependencyInjection.Microsoft;
+using Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverGenericEffectMethodsWithActionInMethodSignatureTests.SupportFiles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;

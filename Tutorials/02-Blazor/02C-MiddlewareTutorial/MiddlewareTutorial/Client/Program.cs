@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Fluxor;
+using Fluxor.DependencyInjection.Microsoft;
 using FluxorBlazorWeb.MiddlewareTutorial.Client.Middlewares.Logging;
 using System.Net.Http;
 using System;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.Microsoft
 {
 	internal class AssemblyScanSettings
 	{

@@ -1,4 +1,4 @@
-﻿using Fluxor;
+﻿using Fluxor.DependencyInjection.Microsoft;
 using BasicConcepts.EffectsTutorial.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;

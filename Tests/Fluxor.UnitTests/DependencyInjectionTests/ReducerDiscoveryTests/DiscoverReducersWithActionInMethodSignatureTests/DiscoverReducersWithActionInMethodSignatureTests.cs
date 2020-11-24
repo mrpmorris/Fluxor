@@ -1,4 +1,5 @@
-﻿using Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInMethodSignatureTests.SupportFiles;
+﻿using Fluxor.DependencyInjection.Microsoft;
+using Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInMethodSignatureTests.SupportFiles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;

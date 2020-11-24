@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Fluxor.Extensions
+namespace Fluxor.DependencyInjection.Microsoft.Extensions
 {
 	internal static class MethodInfoExtentions
 	{

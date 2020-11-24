@@ -1,10 +1,9 @@
-﻿using Fluxor.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Fluxor
+namespace Fluxor.DependencyInjection.Microsoft
 {
 	/// <summary>
 	/// Extensions for <see cref="IServiceCollection"/>

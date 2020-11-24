@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.Microsoft
 {
 	/// <summary>
 	/// An options class for configuring Fluxor

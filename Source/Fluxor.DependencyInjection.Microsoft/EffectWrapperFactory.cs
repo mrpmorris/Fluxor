@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.Microsoft
 {
 	internal static class EffectWrapperFactory
 	{

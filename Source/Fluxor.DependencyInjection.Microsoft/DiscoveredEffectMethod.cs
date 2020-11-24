@@ -1,9 +1,9 @@
-﻿using Fluxor.Extensions;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using Fluxor.DependencyInjection.Microsoft.Extensions;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.Microsoft
 {
 	internal class DiscoveredEffectMethod
 	{

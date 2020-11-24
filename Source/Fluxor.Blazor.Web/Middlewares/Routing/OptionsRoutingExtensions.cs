@@ -1,5 +1,5 @@
 ﻿using Fluxor.Blazor.Web.Middlewares.Routing;
-using Fluxor.DependencyInjection;
+using Fluxor.DependencyInjection.Microsoft;
 
 namespace Fluxor
 {

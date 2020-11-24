@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fluxor
+namespace Fluxor.DependencyInjection.Microsoft
 {
 	internal static class TypeHelper
 	{

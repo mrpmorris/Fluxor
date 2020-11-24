@@ -1,11 +1,11 @@
-﻿using Fluxor.DependencyInjection.DependencyScanners;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Fluxor.DependencyInjection.Microsoft.DependencyScanners;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.Microsoft
 {
 	internal static class DependencyScanner
 	{

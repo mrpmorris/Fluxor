@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.Microsoft
 {
 	internal struct TypeAndMethodInfo
 	{

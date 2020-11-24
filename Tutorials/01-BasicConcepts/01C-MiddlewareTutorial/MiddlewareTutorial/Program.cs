@@ -1,4 +1,4 @@
-﻿using Fluxor;
+﻿using Fluxor.DependencyInjection.Microsoft;
 using BasicConcepts.MiddlewareTutorial.Services;
 using BasicConcepts.MiddlewareTutorial.Store.Middlewares.Logging;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,5 +1,5 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools;
-using Fluxor.DependencyInjection;
+using Fluxor.DependencyInjection.Microsoft;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fluxor

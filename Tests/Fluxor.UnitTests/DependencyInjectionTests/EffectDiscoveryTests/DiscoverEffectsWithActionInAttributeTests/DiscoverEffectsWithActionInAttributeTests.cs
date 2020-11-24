@@ -1,4 +1,5 @@
 ﻿using Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles;
+using Fluxor.DependencyInjection.Microsoft;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;

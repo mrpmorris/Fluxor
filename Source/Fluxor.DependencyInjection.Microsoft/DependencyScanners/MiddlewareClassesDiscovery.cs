@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Fluxor.DependencyInjection.DependencyScanners
+namespace Fluxor.DependencyInjection.Microsoft.DependencyScanners
 {
 	internal static class MiddlewareClassesDiscovery
 	{
