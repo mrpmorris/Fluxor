@@ -1,8 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
+
     <Description>A zero boilerplate Redux/Flux framework for .NET. This package holds bindings for Microsoft.Extensions.DependencyInjection.Abstractions</Description>
+    <PackageTags>Redux Flux DotNet CSharp DependencyInjection Dependency Injection</PackageTags>
+
   </PropertyGroup>
 
   <ItemGroup>

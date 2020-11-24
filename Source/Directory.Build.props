@@ -1,30 +1,32 @@
 <Project>
 
   <PropertyGroup>
+
     <Version>4.0.0</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <FileVersion>4.0.0.0</FileVersion>
+
     <Authors>Peter Morris</Authors>
     <Company />
     <Copyright>Peter Morris</Copyright>
-    <PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
+
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseFile></PackageLicenseFile>
     <PackageIcon>fluxor-small-logo.png</PackageIcon>
     <PackageIconUrl />
+    <PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
+
     <RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
-    <PackageTags>Redux Flux DotNet CSharp</PackageTags>
-    <PackageLicenseFile></PackageLicenseFile>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <FileVersion>4.0.0.0</FileVersion>
+
     <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
     <AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
 
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <DelaySign>false</DelaySign>
-  </PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-  <PropertyGroup>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">

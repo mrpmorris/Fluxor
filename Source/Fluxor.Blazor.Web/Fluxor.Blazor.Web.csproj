@@ -1,31 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
+  <PropertyGroup>
+
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
     <RazorLangVersion>3.0</RazorLangVersion>
+
+    <Product>Fluxor for Blazor (Web)</Product>
     <Description>A zero boilerplate Redux/Flux framework for Blazor Web</Description>
-	<PackageTags>Blazor RazorComponents</PackageTags>
-	<Product>Fluxor for Blazor (Web)</Product>
+    <PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents</PackageTags>
+
   </PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
-	</ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
+  </ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
-	</ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
+  </ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<SupportedPlatform Include="browser" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
-	</ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <SupportedPlatform Include="browser" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
+  </ItemGroup>
 
   <ItemGroup>
-		<ProjectReference Include="..\Fluxor.DependencyInjection.Microsoft\Fluxor.DependencyInjection.Microsoft.csproj" />
-		<ProjectReference Include="..\Fluxor\Fluxor.csproj" />
-	</ItemGroup>
+    <ProjectReference Include="..\Fluxor.DependencyInjection.Microsoft\Fluxor.DependencyInjection.Microsoft.csproj" />
+    <ProjectReference Include="..\Fluxor\Fluxor.csproj" />
+  </ItemGroup>
 
 </Project>
