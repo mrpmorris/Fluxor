@@ -1,0 +1,42 @@
+<Project>
+
+  <PropertyGroup>
+    <Version>3.9.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Peter Morris</Authors>
+    <Company />
+    <Copyright>Peter Morris</Copyright>
+    <PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
+    <PackageIcon>fluxor-small-logo.png</PackageIcon>
+    <PackageIconUrl />
+    <RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
+    <PackageTags>Redux Flux DotNet CSharp</PackageTags>
+    <PackageLicenseFile></PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>3.9.0.0</AssemblyVersion>
+    <FileVersion>3.9.0.0</FileVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
+
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <WarningsAsErrors></WarningsAsErrors>
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Images\fluxor-small-logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
