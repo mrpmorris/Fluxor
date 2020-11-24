@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Source\Fluxor.DependencyInjection.Microsoft\Fluxor.DependencyInjection.Microsoft.csproj" />
     <ProjectReference Include="..\..\Source\Fluxor\Fluxor.csproj" />
   </ItemGroup>
 

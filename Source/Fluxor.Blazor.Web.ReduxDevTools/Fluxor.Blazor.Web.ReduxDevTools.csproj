@@ -51,7 +51,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
 	</ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
 		<ProjectReference Include="..\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
 		<ProjectReference Include="..\Fluxor\Fluxor.csproj" />
 	</ItemGroup>
