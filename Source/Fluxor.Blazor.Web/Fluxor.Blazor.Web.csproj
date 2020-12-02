@@ -1,47 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
-		<RazorLangVersion>3.0</RazorLangVersion>
-		<Authors>Peter Morris</Authors>
-		<Company />
-		<Version>3.8.0</Version>
-		<Description>A zero boilerplate Redux/Flux framework for Blazor</Description>
-		<Copyright>Peter Morris</Copyright>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
-		<PackageIcon>fluxor-blazor-logo-small.png</PackageIcon>
-		<PackageIconUrl />
-		<RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents</PackageTags>
-		<Product>Fluxor for Blazor (Web)</Product>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<AssemblyVersion>3.8.0.0</AssemblyVersion>
-		<FileVersion>3.8.0.0</FileVersion>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
-	</PropertyGroup>
+  <PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
-	</ItemGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RazorLangVersion>3.0</RazorLangVersion>
 
-	<PropertyGroup>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-	</PropertyGroup>
+    <Product>Fluxor for Blazor (Web)</Product>
+    <Description>A zero boilerplate Redux/Flux framework for Blazor</Description>
+    <PackageIcon>fluxor-blazor-logo-small.png</PackageIcon>
+    <PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents</PackageTags>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Fluxor\Fluxor.csproj" />
-	</ItemGroup>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fluxor\Fluxor.csproj" />
+  </ItemGroup>
 
 
-	<ItemGroup>
-		<None Include="..\..\Images\fluxor-blazor-logo-small.png">
-			<Pack>True</Pack>
-			<PackagePath></PackagePath>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Images\fluxor-blazor-logo-small.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

@@ -1,27 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>netstandard2.1</TargetFramework>
+
+    <TargetFramework>netstandard2.1</TargetFramework>
 		<RazorLangVersion>3.0</RazorLangVersion>
-		<Version>3.8.0</Version>
-		<Authors>Peter Morris</Authors>
-		<Company />
-		<Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
+
+    <Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
 		<Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
-		<Copyright>Peter Morris</Copyright>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
-		<PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
-		<PackageIconUrl />
-		<RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<AssemblyVersion>3.8.0.0</AssemblyVersion>
-		<FileVersion>3.8.0.0</FileVersion>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
-	</PropertyGroup>
+    <PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
+    <PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
+
+  </PropertyGroup>
 
 	<PropertyGroup>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
