@@ -18,7 +18,7 @@ namespace Fluxor.UnitTests.StoreTests.AddMiddlewareTests
 				.Setup(x => x.AfterInitializeAllMiddlewares())
 				.Callback(() => signal.Set());
 
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 			subject.AddMiddleware(mockMiddleware.Object);
 
 			// Wait no more than 1 second for AfterInitializeAllMiddlewares to be executed

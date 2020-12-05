@@ -1,5 +1,4 @@
-﻿using Fluxor.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,7 +8,7 @@ namespace Fluxor
 	/// Identifies a store, which is a collection of features. It is recommended that you do not create your
 	/// own classes that implement this interface as the <see cref="Store"/> class does this for you.
 	/// </summary>
-	public interface IStore : IDispatcher, IActionSubscriber
+	public interface IStore : IActionSubscriber
 	{
 		/// <summary>
 		/// This method will register an effect so that it

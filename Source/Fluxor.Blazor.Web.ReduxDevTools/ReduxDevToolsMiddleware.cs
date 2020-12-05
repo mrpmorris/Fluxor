@@ -1,6 +1,7 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects;
 using Fluxor.Extensions;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -17,6 +18,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		private SpinLock SpinLock = new SpinLock();
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;
+		private IDispatcher Dispatcher;
 		private IStore Store;
 		private readonly ReduxDevToolsInterop ReduxDevToolsInterop;
 
@@ -33,11 +35,12 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// <see cref="IMiddleware.GetClientScripts"/>
 		public override string GetClientScripts() => ReduxDevToolsInterop.GetClientScripts();
 
-		/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
-		public async override Task InitializeAsync(IStore store)
+		/// <see cref="IMiddleware.InitializeAsync(IDispatcher, IStore)"/>
+		public async override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 		{
-			Store = store;
-			await ReduxDevToolsInterop.InitializeAsync(GetState());
+			Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
+			Store = store ?? throw new ArgumentNullException(nameof(store));
+			await ReduxDevToolsInterop.InitializeAsync(GetState()).ConfigureAwait(false);
 		}
 
 		/// <see cref="IMiddleware.MayDispatchAction(object)"/>
@@ -73,7 +76,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			// Wait for fire+forget state notifications to ReduxDevTools to dequeue
 			await TailTask.ConfigureAwait(false);
 
-			await ReduxDevToolsInterop.InitializeAsync(GetState());
+			await ReduxDevToolsInterop.InitializeAsync(GetState()).ConfigureAwait(false);
 			SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
 		}
 

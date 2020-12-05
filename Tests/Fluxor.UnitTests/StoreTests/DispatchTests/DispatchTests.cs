@@ -22,7 +22,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 			var mockMiddleware = MockMiddlewareFactory.Create();
 
 			var subject = new Store();
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 			subject.AddMiddleware(mockMiddleware.Object);
 
 			var testAction = new TestAction();
@@ -44,7 +44,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 				.Setup(x => x.MayDispatchAction(testAction))
 				.Returns(false);
 			var subject = new Store();
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 
 			subject.Dispatch(testAction);
 
@@ -58,7 +58,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 			var testAction = new TestAction();
 			var mockMiddleware = MockMiddlewareFactory.Create();
 			var subject = new Store();
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 			subject.AddMiddleware(mockMiddleware.Object);
 
 			subject.Dispatch(testAction);
@@ -73,7 +73,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 			var mockFeature = MockFeatureFactory.Create();
 			var subject = new Store();
 			subject.AddFeature(mockFeature.Object);
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 
 			var testAction = new TestAction();
 			subject.Dispatch(testAction);
@@ -90,7 +90,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 			var actionToEmit2 = new TestActionFromEffect2();
 			var actionsToEmit = new object[] { actionToEmit1, actionToEmit2 };
 			var subject = new Store();
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 			subject.AddFeature(mockFeature.Object);
 			subject.AddEffect(new EffectThatEmitsActions(actionsToEmit));
 
@@ -115,7 +115,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 				.Returns(true);
 
 			var subject = new Store();
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 			subject.AddEffect(mockIncompatibleEffect.Object);
 			subject.AddEffect(mockCompatibleEffect.Object);
 
@@ -145,7 +145,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 				.Setup(x => x.ShouldReactToAction(action))
 				.Returns(true);
 
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 			subject.AddEffect(mockSynchronousEffectThatThrows.Object);
 			subject.AddEffect(mockEffectThatFollows.Object);
 			subject.Dispatch(action);

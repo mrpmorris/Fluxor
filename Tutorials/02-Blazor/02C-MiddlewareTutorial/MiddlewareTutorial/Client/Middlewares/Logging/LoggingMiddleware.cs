@@ -1,6 +1,5 @@
 ﻿using Fluxor;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -8,11 +7,8 @@ namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Middlewares.Logging
 {
 	public class LoggingMiddleware : Middleware
 	{
-		private IStore Store;
-
-		public override Task InitializeAsync(IStore store)
+		public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 		{
-			Store = store;
 			Debug.WriteLine(nameof(InitializeAsync));
 			return Task.CompletedTask;
 		}

@@ -19,7 +19,7 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests
 		[Fact]
 		public async Task WhenExecutedByMultipleThreads_ThenSynchronizesStateUpdates()
 		{
-			await Store.InitializeAsync();
+			await Store.InitializeAsync().ConfigureAwait(false);
 
 			var threads = new List<Thread>();
 			for (int i = 0; i < NumberOfThreads; i++)

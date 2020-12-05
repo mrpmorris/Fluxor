@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using System;
 using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.Middlewares.Routing
@@ -12,7 +13,7 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 	{
 		private readonly NavigationManager NavigationManager;
 		private readonly IFeature<RoutingState> Feature;
-		private IStore Store;
+		private IDispatcher Dispatcher;
 
 		/// <summary>
 		/// Creates a new instance of the routing middleware
@@ -27,11 +28,11 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		}
 
 		/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
-		public override Task InitializeAsync(IStore store)
+		public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 		{
-			Store = store;
+			Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 			// If the URL changed before we initialized then dispatch an action
-			Store.Dispatch(new GoAction(NavigationManager.Uri));
+			Dispatcher.Dispatch(new GoAction(NavigationManager.Uri));
 			return Task.CompletedTask;
 		}
 
@@ -44,8 +45,8 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 
 		private void LocationChanged(object sender, LocationChangedEventArgs e)
 		{
-			if (Store != null && !IsInsideMiddlewareChange && e.Location != Feature.State.Uri)
-				Store.Dispatch(new GoAction(e.Location));
+			if (Dispatcher != null && !IsInsideMiddlewareChange && e.Location != Feature.State.Uri)
+				Dispatcher.Dispatch(new GoAction(e.Location));
 		}
 	}
 }

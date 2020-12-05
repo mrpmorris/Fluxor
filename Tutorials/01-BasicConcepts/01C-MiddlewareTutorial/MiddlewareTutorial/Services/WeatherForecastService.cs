@@ -19,7 +19,7 @@ namespace BasicConcepts.MiddlewareTutorial.Services
 
 		public async Task<WeatherForecast[]> GetForecastAsync(DateTime startDate)
 		{
-			await Task.Delay(1000);
+			await Task.Delay(1000).ConfigureAwait(false);
 			var rng = new Random();
 			return Enumerable.Range(1, 2).Select(index => new WeatherForecast
 				{

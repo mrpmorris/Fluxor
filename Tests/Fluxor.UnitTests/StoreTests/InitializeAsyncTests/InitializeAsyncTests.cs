@@ -10,7 +10,7 @@ namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests
 		public async Task WhenCalled_ThenCallsInitializeAsyncOnRegisteredMiddlewares()
 		{
 			var subject = new Store();
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 			var mockMiddleware = new Mock<IMiddleware>();
 			subject.AddMiddleware(mockMiddleware.Object);
 
@@ -25,7 +25,7 @@ namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests
 			var mockMiddleware = new Mock<IMiddleware>();
 			subject.AddMiddleware(mockMiddleware.Object);
 
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 
 			mockMiddleware
 				.Verify(x => x.AfterInitializeAllMiddlewares());
@@ -35,7 +35,7 @@ namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests
 		public async Task WhenStoreIsInitialized_ThenCallsInitializeAsyncOnAllRegisteredMiddlewares()
 		{
 			var subject = new Store();
-			await subject.InitializeAsync();
+			await subject.InitializeAsync().ConfigureAwait(false);
 
 			var mockMiddleware = new Mock<IMiddleware>();
 			subject.AddMiddleware(mockMiddleware.Object);
