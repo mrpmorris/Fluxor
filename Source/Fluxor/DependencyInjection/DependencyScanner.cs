@@ -122,7 +122,7 @@ namespace Fluxor.DependencyInjection
 			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods)
 		{
 			// Register IDispatcher as an alias to Store
-			serviceCollection.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetRequiredService<Store>());
+			serviceCollection.AddScoped<IDispatcher, Dispatcher>();
 			// Register IActionSubscriber as an alias to Store
 			serviceCollection.AddScoped<IActionSubscriber>(serviceProvider => serviceProvider.GetRequiredService<Store>());
 			// Register IStore as an alias to Store
@@ -131,7 +131,8 @@ namespace Fluxor.DependencyInjection
 			// Register a custom factory for building IStore that will inject all effects
 			serviceCollection.AddScoped(typeof(Store), serviceProvider =>
 			{
-				var store = new Store();
+				var dispatcher = serviceProvider.GetRequiredService<IDispatcher>();
+				var store = new Store(dispatcher);
 				foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
 				{
 					var feature = (IFeature)serviceProvider.GetRequiredService(discoveredFeatureClass.FeatureInterfaceGenericType);

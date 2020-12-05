@@ -10,7 +10,7 @@ namespace BasicConcepts.MiddlewareTutorial.Store.Middlewares.Logging
 	{
 		private IStore Store;
 
-		public override Task InitializeAsync(IStore store)
+		public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 		{
 			Store = store;
 			Log(nameof(InitializeAsync));

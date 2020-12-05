@@ -2,6 +2,8 @@
 
 ### New in 4.0
  * Added support for automatically including middlewares.
+ * IStore no longer implements IDispatcher
+ * IMiddleware.InitializeAsync accepts an additional `IDispatcher` parameter
 
 By adding the attribute `[AutomaticallyIncludeMiddleware]` to a Middlware, Fluxor
 will automatically include it in the store rather than having to manually

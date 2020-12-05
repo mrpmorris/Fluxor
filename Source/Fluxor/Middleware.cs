@@ -18,7 +18,7 @@ namespace Fluxor
 		protected bool IsInsideMiddlewareChange => BeginMiddlewareChangeCount > 0;
 
 		/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
-		public virtual Task InitializeAsync(IStore store) => Task.CompletedTask;
+		public virtual Task InitializeAsync(IDispatcher dispatcher, IStore store) => Task.CompletedTask;
 
 		/// <see cref="IMiddleware.AfterInitializeAllMiddlewares"/>
 		public virtual void AfterInitializeAllMiddlewares() { }

@@ -8,6 +8,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 	public class DiscoverReducersWithActionInAttributeTests
 	{
 		private readonly IServiceProvider ServiceProvider;
+		private readonly IDispatcher Dispatcher;
 		private readonly IStore Store;
 		private readonly IState<TestState> State;
 
@@ -15,7 +16,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 		public void WhenActionIsDispatched_ThenReducerWithActionInMethodSignatureIsExecuted()
 		{
 			Assert.False(State.Value.ReducerWasExecuted);
-			Store.Dispatch(new TestAction());
+			Dispatcher.Dispatch(new TestAction());
 			Assert.True(State.Value.ReducerWasExecuted);
 		}
 
@@ -27,6 +28,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();
+			Dispatcher = ServiceProvider.GetRequiredService<IDispatcher>();
 			Store = ServiceProvider.GetRequiredService<IStore>();
 			State = ServiceProvider.GetRequiredService<IState<TestState>>();
 

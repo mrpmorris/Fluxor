@@ -18,7 +18,9 @@ namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client.Store.WeatherUseCase
 		[EffectMethod]
 		public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
 		{
-			var forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+			var forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast")
+				.ConfigureAwait(false);
+
 			dispatcher.Dispatch(new FetchDataResultAction(forecasts));
 		}
 	}

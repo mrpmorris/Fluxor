@@ -11,11 +11,13 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests
 {
 	public class UnhandledExceptionTests
 	{
+		private Dispatcher Dispatcher;
 		private Store Subject;
 
 		public UnhandledExceptionTests()
 		{
-			Subject = new Store();
+			Dispatcher = new Dispatcher();
+			Subject = new Store(Dispatcher);
 			Subject.AddEffect(new EffectThatThrowsSimpleException());
 			Subject.AddEffect(new EffectThatThrowsAggregateException());
 			Subject.InitializeAsync().Wait();
@@ -24,16 +26,18 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests
 		[Fact]
 		public async Task WhenTriggerThrowsUnhandledException_ThenEventIsTriggered()
 		{
-			IEnumerable<Exception> exceptions = await SendAction(new ThrowSimpleExceptionAction());
+			IEnumerable<Exception> exceptions = await SendAction(new ThrowSimpleExceptionAction())
+				.ConfigureAwait(false);
+
 			Assert.Single(exceptions);
 			Assert.IsType<InvalidOperationException>(exceptions.First());
 		}
 
 		[Fact]
-		public async Task WhenTriggerThrowsUnhandledAggregateException_ThenEventIsTriggeredForEachEvent()
+		public async Task WhenTriggerThrowsUnhandledAggregateException_ThenEventIsTriggeredForEachException()
 		{
 			Type[] exceptionTypes = 
-				(await SendAction(new ThrowAggregateExceptionAction()))
+				(await SendAction(new ThrowAggregateExceptionAction()).ConfigureAwait(false))
 				.Select(x => x.GetType())
 				.ToArray();
 
@@ -56,7 +60,7 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests
 
 			Task effectTask = Task.Run(() =>
 			{
-				Subject.Dispatch(action);
+				Dispatcher.Dispatch(action);
 				// Wait for Effect to say it is ready, 1 second timeout
 				resetEvent.WaitOne(1000);
 			});

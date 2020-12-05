@@ -13,7 +13,7 @@ namespace BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase
 		{
 			Console.WriteLine("Getting customer with Id: 42");
 
-			await Task.Delay(1000);
+			await Task.Delay(1000).ConfigureAwait(false);
 
 			string jsonFromServer = $"{{\"Id\":42,\"RowVersion\":\"AQIDBAUGBwgJCgsMDQ4PEA==\",\"Name\":\"Our first customer\"}}";
 			var objectFromServer = JsonConvert.DeserializeObject<CustomerEdit>(jsonFromServer);

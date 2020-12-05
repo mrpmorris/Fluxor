@@ -1,4 +1,6 @@
-﻿namespace Fluxor
+﻿using System;
+
+namespace Fluxor
 {
 	/// <summary>
 	/// Interface that blazor components/pages should use to dispatch actions
@@ -12,5 +14,7 @@
 		/// </summary>
 		/// <param name="action">The action to dispatch to all features</param>
 		void Dispatch(object action);
+
+		event EventHandler<ActionDispatchingEventArgs> ActionDispatching;
 	}
 }

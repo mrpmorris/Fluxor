@@ -11,7 +11,7 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests.SupportFiles
 			var exception2 = new InvalidCastException("Second embedded exception");
 			var exception3 = new InvalidProgramException("Third embedded exception");
 
-			await Task.Delay(100);
+			await Task.Delay(100).ConfigureAwait(false);
 			try
 			{
 				throw new AggregateException(

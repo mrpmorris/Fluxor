@@ -44,7 +44,7 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		{
 			Subject.ThrottleWindowMs = 50;
 			Subject.Invoke();
-			await Task.Delay(50);
+			await Task.Delay(50).ConfigureAwait(false);
 			Subject.Invoke();
 
 			Assert.Equal(2, InvokeCount);
@@ -107,7 +107,7 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 			// Start the test
 			startTestEvent.Set();
 
-			await Task.Delay(Subject.ThrottleWindowMs * 4);
+			await Task.Delay(Subject.ThrottleWindowMs * 4).ConfigureAwait(false);
 
 			testCompleted = true;
 

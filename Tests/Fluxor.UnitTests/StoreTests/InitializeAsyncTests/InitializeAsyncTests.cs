@@ -6,26 +6,27 @@ namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests
 {
 	public class InitializeAsyncTests
 	{
+		private IDispatcher Dispatcher;
+		private IStore Subject;
+
 		[Fact]
 		public async Task WhenCalled_ThenCallsInitializeAsyncOnRegisteredMiddlewares()
 		{
-			var subject = new Store();
-			await subject.InitializeAsync();
+			await Subject.InitializeAsync().ConfigureAwait(false);
 			var mockMiddleware = new Mock<IMiddleware>();
-			subject.AddMiddleware(mockMiddleware.Object);
+			Subject.AddMiddleware(mockMiddleware.Object);
 
 			mockMiddleware
-				.Verify(x => x.InitializeAsync(subject));
+				.Verify(x => x.InitializeAsync(Dispatcher, Subject));
 		}
 
 		[Fact]
 		public async Task WhenCalled_ThenCallsAfterInitializeAllMiddlewaresOnRegisteredMiddlewares()
 		{
-			var subject = new Store();
 			var mockMiddleware = new Mock<IMiddleware>();
-			subject.AddMiddleware(mockMiddleware.Object);
+			Subject.AddMiddleware(mockMiddleware.Object);
 
-			await subject.InitializeAsync();
+			await Subject.InitializeAsync().ConfigureAwait(false);
 
 			mockMiddleware
 				.Verify(x => x.AfterInitializeAllMiddlewares());
@@ -34,14 +35,19 @@ namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests
 		[Fact]
 		public async Task WhenStoreIsInitialized_ThenCallsInitializeAsyncOnAllRegisteredMiddlewares()
 		{
-			var subject = new Store();
-			await subject.InitializeAsync();
+			await Subject.InitializeAsync().ConfigureAwait(false);
 
 			var mockMiddleware = new Mock<IMiddleware>();
-			subject.AddMiddleware(mockMiddleware.Object);
+			Subject.AddMiddleware(mockMiddleware.Object);
 
 			mockMiddleware
-				.Verify(x => x.InitializeAsync(subject));
+				.Verify(x => x.InitializeAsync(Dispatcher, Subject));
+		}
+
+		public InitializeAsyncTests()
+		{
+			Dispatcher = new Dispatcher();
+			Subject = new Store(Dispatcher);
 		}
 	}
 }

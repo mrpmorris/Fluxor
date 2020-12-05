@@ -9,6 +9,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.MiddlewareDiscoveryTests
 	public class AutomaticallyIncludedMiddlewareDetectionTests
 	{
 		private readonly IServiceProvider ServiceProvider;
+		private readonly IDispatcher Dispatcher;
 		private readonly IStore Store;
 
 		[Fact]
@@ -22,7 +23,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.MiddlewareDiscoveryTests
 		public void WhenMiddlewareHasAutomaticallyIncludedMiddlewareAttribute_ThenClassesInSameNamespaceAreAlsoIncluded()
 		{
 			Effects.WasExecuted = false;
-			Store.Dispatch("Hello");
+			Dispatcher.Dispatch("Hello");
 			Assert.True(Effects.WasExecuted);
 		}
 
@@ -50,10 +51,10 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.MiddlewareDiscoveryTests
 				.ScanAssemblies(GetType().Assembly));
 
 			ServiceProvider = services.BuildServiceProvider();
+			Dispatcher = ServiceProvider.GetRequiredService<IDispatcher>();
 			Store = ServiceProvider.GetRequiredService<IStore>();
 
 			Store.InitializeAsync().Wait();
 		}
-
 	}
 }

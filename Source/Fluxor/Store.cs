@@ -6,12 +6,22 @@ using System.Threading.Tasks;
 namespace Fluxor
 {
 	/// <see cref="IStore"/>
-	public class Store : IStore, IDispatcher, IActionSubscriber
+	public class Store : IStore, IActionSubscriber
 	{
 		/// <see cref="IStore.Features"/>
 		public IReadOnlyDictionary<string, IFeature> Features => FeaturesByName;
 		/// <see cref="IStore.Initialized"/>
 		public Task Initialized => InitializedCompletionSource.Task;
+
+		/// <summary>
+		/// The Dispatcher this store listens to
+		/// </summary>
+		public IDispatcher Dispatcher { get; }
+
+		/// <summary>
+		/// An event that is raised when an unhandled exception occurs
+		/// </summary>
+		public event EventHandler<Exceptions.UnhandledExceptionEventArgs> UnhandledException;
 
 		private object SyncRoot = new object();
 		private readonly Dictionary<string, IFeature> FeaturesByName = new Dictionary<string, IFeature>(StringComparer.InvariantCultureIgnoreCase);
@@ -30,8 +40,13 @@ namespace Fluxor
 		/// <summary>
 		/// Creates an instance of the store
 		/// </summary>
-		public Store()
+		public Store(IDispatcher dispatcher)
 		{
+			if (dispatcher == null)
+				throw new ArgumentNullException(nameof(dispatcher));
+
+			Dispatcher = dispatcher;
+			Dispatcher.ActionDispatching += DispatcherActionDispatching;
 			ActionSubscriber = new ActionSubscriber();
 			Dispatch(new StoreInitializedAction());
 		}
@@ -49,40 +64,6 @@ namespace Fluxor
 			{
 				FeaturesByName.Add(feature.GetName(), feature);
 			}
-		}
-
-		/// <see cref="IDispatcher.Dispatch(object)"/>
-		public void Dispatch(object action)
-		{
-			if (action == null)
-				throw new ArgumentNullException(nameof(action));
-
-			lock (SyncRoot)
-			{
-				// Do not allow task dispatching inside a middleware-change.
-				// These change cycles are for things like "jump to state" in Redux Dev Tools
-				// and should be short lived.
-				// We avoid dispatching inside a middleware change because we don't want UI events (like component Init)
-				// that trigger actions (such as fetching data from a server) to execute
-				if (IsInsideMiddlewareChange)
-					return;
-
-				// If a dequeue is already in progress, we will just
-				// let this new action be added to the queue and then exit
-				// Note: This is to cater for the following scenario
-				//	1: An action is dispatched
-				//	2: An effect is triggered
-				//	3: The effect immediately dispatches a new action
-				// The Queue ensures it is processed after its triggering action has completed rather than immediately
-				QueuedActions.Enqueue(action);
-
-				// HasActivatedStore is set to true when the page finishes loading
-				// At which point DequeueActions will be called
-				if (!HasActivatedStore)
-					return;
-
-				DequeueActions();
-			};
 		}
 
 		/// <see cref="IStore.AddEffect(IEffect)"/>
@@ -109,7 +90,7 @@ namespace Fluxor
 				if (HasActivatedStore)
 				{
 					middleware
-						.InitializeAsync(this)
+						.InitializeAsync(Dispatcher, this)
 						.ContinueWith(t =>
 						{
 							if (!t.IsFaulted)
@@ -141,10 +122,8 @@ namespace Fluxor
 		{
 			if (HasActivatedStore)
 				return;
-			await ActivateStoreAsync();
+			await ActivateStoreAsync().ConfigureAwait(false);
 		}
-
-		public event EventHandler<Exceptions.UnhandledExceptionEventArgs> UnhandledException;
 
 		/// <see cref="IActionSubscriber.SubscribeToAction{TAction}(object, Action{TAction})"/>
 		public void SubscribeToAction<TAction>(object subscriber, Action<TAction> callback)
@@ -161,6 +140,44 @@ namespace Fluxor
 		/// <see cref="IActionSubscriber.GetActionUnsubscriberAsIDisposable(object)"/>
 		public IDisposable GetActionUnsubscriberAsIDisposable(object subscriber) =>
 			ActionSubscriber.GetActionUnsubscriberAsIDisposable(subscriber);
+
+		private void DispatcherActionDispatching(object sender, ActionDispatchingEventArgs e)
+		{
+			Dispatch(e.Action);
+		}
+
+		private void Dispatch(object action)
+		{
+			if (action == null)
+				throw new ArgumentNullException(nameof(action));
+
+			lock (SyncRoot)
+			{
+				// Do not allow task dispatching inside a middleware-change.
+				// These change cycles are for things like "jump to state" in Redux Dev Tools
+				// and should be short lived.
+				// We avoid dispatching inside a middleware change because we don't want UI events (like component Init)
+				// that trigger actions (such as fetching data from a server) to execute
+				if (IsInsideMiddlewareChange)
+					return;
+
+				// If a dequeue is already in progress, we will just
+				// let this new action be added to the queue and then exit
+				// Note: This is to cater for the following scenario
+				//	1: An action is dispatched
+				//	2: An effect is triggered
+				//	3: The effect immediately dispatches a new action
+				// The Queue ensures it is processed after its triggering action has completed rather than immediately
+				QueuedActions.Enqueue(action);
+
+				// HasActivatedStore is set to true when the page finishes loading
+				// At which point DequeueActions will be called
+				if (!HasActivatedStore)
+					return;
+
+				DequeueActions();
+			};
+		}
 
 		private void EndMiddlewareChange(IDisposable[] disposables)
 		{
@@ -197,7 +214,7 @@ namespace Fluxor
 			{
 				try
 				{
-					executedEffects.Add(effect.HandleAsync(action, this));
+					executedEffects.Add(effect.HandleAsync(action, Dispatcher));
 				}
 				catch (Exception e)
 				{
@@ -209,7 +226,7 @@ namespace Fluxor
 			{
 				try
 				{
-					await Task.WhenAll(executedEffects);
+					await Task.WhenAll(executedEffects).ConfigureAwait(false);
 				}
 				catch (Exception e)
 				{
@@ -227,7 +244,7 @@ namespace Fluxor
 		{
 			foreach (IMiddleware middleware in Middlewares)
 			{
-				await middleware.InitializeAsync(this);
+				await middleware.InitializeAsync(Dispatcher, this).ConfigureAwait(false);
 			}
 			Middlewares.ForEach(x => x.AfterInitializeAllMiddlewares());
 		}
@@ -248,7 +265,7 @@ namespace Fluxor
 			if (HasActivatedStore)
 				return;
 
-			await InitializeMiddlewaresAsync();
+			await InitializeMiddlewaresAsync().ConfigureAwait(false);
 
 			lock (SyncRoot)
 			{

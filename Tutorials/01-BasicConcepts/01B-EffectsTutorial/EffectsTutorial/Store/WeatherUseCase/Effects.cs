@@ -17,7 +17,9 @@ namespace BasicConcepts.EffectsTutorial.Client.Store.WeatherUseCase
 		[EffectMethod]
 		public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
 		{
-			var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
+			var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now)
+				.ConfigureAwait(false);
+
 			dispatcher.Dispatch(new FetchDataResultAction(forecasts));
 		}
 	}

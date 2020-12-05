@@ -80,16 +80,18 @@ namespace Fluxor.Blazor.Web
 		/// </summary>
 		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
-			await base.OnAfterRenderAsync(firstRender);
+			await base.OnAfterRenderAsync(firstRender).ConfigureAwait(false);
 			if (firstRender)
 			{
 				try
 				{
-					bool success = await JSRuntime.InvokeAsync<bool>("tryInitializeFluxor");
+					bool success = await JSRuntime.InvokeAsync<bool>("tryInitializeFluxor")
+						.ConfigureAwait(false);
+
 					if (!success)
 						throw new StoreInitializationException("Failed to initialize store");
 
-					await Store.InitializeAsync();
+					await Store.InitializeAsync().ConfigureAwait(false);
 				}
 				catch (JSException err)
 				{

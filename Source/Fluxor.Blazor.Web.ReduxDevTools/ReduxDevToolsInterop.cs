@@ -41,7 +41,8 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			IsInitializing = true;
 			try
 			{
-				await InvokeFluxorDevToolsMethodAsync<object>(ToJsInitMethodName, DotNetRef, state);
+				await InvokeFluxorDevToolsMethodAsync<object>(ToJsInitMethodName, DotNetRef, state)
+					.ConfigureAwait(false);
 			}
 			finally
 			{
@@ -76,7 +77,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 					{
 						Task task = commit();
 						if (task != null)
-							await task;
+							await task.ConfigureAwait(false);
 					}
 					break;
 
@@ -88,7 +89,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 						var callbackInfo = JsonConvert.DeserializeObject<JumpToStateCallback>(messageAsJson);
 						Task task = jumpToState(callbackInfo);
 						if (task != null)
-							await task;
+							await task.ConfigureAwait(false);
 					}
 					break;
 			}
