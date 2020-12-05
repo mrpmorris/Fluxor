@@ -23,6 +23,9 @@ namespace Fluxor
 
 		public void Dispatch(object action)
 		{
+			if (action == null)
+				throw new ArgumentNullException(nameof(action));
+
 			actionDispatching?.Invoke(this, new ActionDispatchingEventArgs(action));
 		}
 	}

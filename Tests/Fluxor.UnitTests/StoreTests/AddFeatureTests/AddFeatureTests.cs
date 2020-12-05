@@ -15,7 +15,7 @@ namespace Fluxor.UnitTests.StoreTests.AddFeatureTests
 				.Setup(x => x.GetName())
 				.Returns(featureName);
 
-			var subject = new Store();
+			var subject = new Store(new Dispatcher());
 			subject.AddFeature(mockFeature.Object);
 
 			Assert.Same(mockFeature.Object, subject.Features[featureName]);
@@ -30,7 +30,7 @@ namespace Fluxor.UnitTests.StoreTests.AddFeatureTests
 				.Setup(x => x.GetName())
 				.Returns(featureName);
 
-			var subject = new Store();
+			var subject = new Store(new Dispatcher());
 			subject.AddFeature(mockFeature.Object);
 
 			Assert.Throws<ArgumentException>(() =>

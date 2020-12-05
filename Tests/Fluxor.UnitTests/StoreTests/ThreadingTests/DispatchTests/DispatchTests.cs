@@ -13,6 +13,7 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests
 		volatile int NumberOfThreadsWaitingToStart = NumberOfThreads;
 
 		Store Store;
+		Dispatcher Dispatcher;
 		IFeature<CounterState> Feature;
 		ManualResetEvent StartEvent;
 
@@ -45,14 +46,15 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests
 			var action = new IncrementCounterAction();
 			for (int i = 0; i < NumberOfIncrementsPerThread; i++)
 			{
-				Store.Dispatch(action);
+				Dispatcher.Dispatch(action);
 			}
 		}
 
 		public DispatchTests()
 		{
 			StartEvent = new ManualResetEvent(false);
-			Store = new Store();
+			Dispatcher = new Dispatcher();
+			Store = new Store(Dispatcher);
 
 			Feature = new CounterFeature();
 			Store.AddFeature(Feature);

@@ -8,13 +8,14 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 	public class DiscoverEffectsWithActionInAttributeTests
 	{
 		private readonly IServiceProvider ServiceProvider;
+		private readonly IDispatcher Dispatcher;
 		private readonly IStore Store;
 		private readonly IState<TestState> State;
 
 		[Fact]
 		public void WhenActionIsDispatched_ThenEffectWithActionInMethodSignatureIsExecuted()
 		{
-			Store.Dispatch(new TestAction());
+			Dispatcher.Dispatch(new TestAction());
 			// 2 effects. Static vs instance
 			Assert.Equal(2, State.Value.Count);
 		}
@@ -27,6 +28,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();
+			Dispatcher = ServiceProvider.GetRequiredService<IDispatcher>();
 			Store = ServiceProvider.GetRequiredService<IStore>();
 			State = ServiceProvider.GetRequiredService<IState<TestState>>();
 

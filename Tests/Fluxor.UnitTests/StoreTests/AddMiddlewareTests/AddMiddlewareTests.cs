@@ -11,7 +11,7 @@ namespace Fluxor.UnitTests.StoreTests.AddMiddlewareTests
 		[Fact]
 		public async Task WhenStoreHasAlreadyBeenInitialized_ThenCallsAfterInitializeAllMiddlewares()
 		{
-			var subject = new Store();
+			var subject = new Store(new Dispatcher());
 			var signal = new ManualResetEvent(false);
 			var mockMiddleware = new Mock<IMiddleware>();
 			mockMiddleware

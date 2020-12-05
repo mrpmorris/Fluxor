@@ -8,6 +8,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 	public class DiscoverGenericEffectClassesTests
 	{
 		private readonly IServiceProvider ServiceProvider;
+		private readonly IDispatcher Dispatcher;
 		private readonly IStore Store;
 		private readonly InvokeCountService InvokeCountService;
 
@@ -15,7 +16,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 		public void WhenActionIsDispatched_ThenGenericEffectClassIsExecuted()
 		{
 			Assert.Equal(0, InvokeCountService.GetCount());
-			Store.Dispatch(new TestAction());
+			Dispatcher.Dispatch(new TestAction());
 			Assert.Equal(1, InvokeCountService.GetCount());
 		}
 
@@ -29,6 +30,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();
+			Dispatcher = ServiceProvider.GetRequiredService<IDispatcher>();
 			Store = ServiceProvider.GetRequiredService<IStore>();
 
 			Store.InitializeAsync().Wait();
