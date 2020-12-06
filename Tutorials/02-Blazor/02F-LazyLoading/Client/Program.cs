@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using Fluxor;
 
 namespace BlazorLazyLoading.Client
 {
@@ -18,6 +15,7 @@ namespace BlazorLazyLoading.Client
 			builder.RootComponents.Add<App>("#app");
 
 			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+			builder.Services.AddFluxor(x => x.ScanAssemblies(typeof(Program).Assembly));
 
 			await builder.Build().RunAsync();
 		}

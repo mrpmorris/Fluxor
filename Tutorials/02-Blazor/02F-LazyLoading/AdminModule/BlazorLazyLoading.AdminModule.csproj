@@ -12,4 +12,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\..\Source\Fluxor\Fluxor.csproj" />
+	</ItemGroup>
+
 </Project>

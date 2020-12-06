@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Fluxor;
+using Fluxor.Modularlization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.WebAssembly.Services;
 using System;
@@ -16,6 +18,12 @@ namespace BlazorLazyLoading.Client
 		[Inject]
 		private LazyAssemblyLoader AssemblyLoader { get; set; }
 
+		[Inject]
+		public IStore Store { get; set; }
+
+		[Inject]
+		private ModuleLoader ModuleLoader { get; set; }
+
 		private async Task OnNavigateAsync(NavigationContext args)
 		{
 			Console.WriteLine("Navigating to " + args.Path);
@@ -24,6 +32,7 @@ namespace BlazorLazyLoading.Client
 				IEnumerable<Assembly> assemblies = await AssemblyLoader
 					.LoadAssembliesAsync(new[] { "BlazorLazyLoading.AdminModule.dll" })
 					.ConfigureAwait(false);
+				ModuleLoader.Load(Store, assemblies);
 				Console.WriteLine($"Loaded {assemblies.Count()} assemblies");
 				LazyLoadedAssemblies.AddRange(assemblies);
 			}

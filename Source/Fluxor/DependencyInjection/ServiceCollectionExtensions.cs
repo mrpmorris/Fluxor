@@ -1,8 +1,7 @@
 ﻿using Fluxor.DependencyInjection;
+using Fluxor.Modularlization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Fluxor
 {
@@ -29,14 +28,8 @@ namespace Fluxor
 			var options = new Options(serviceCollection);
 			configure?.Invoke(options);
 
-			IEnumerable<AssemblyScanSettings> scanIncludeList = options.MiddlewareTypes
-				.Select(t => new AssemblyScanSettings(t.Assembly, t.Namespace));
-
-			DependencyScanner.Scan(
-				options: options,
-				services: serviceCollection,
-				assembliesToScan: options.AssembliesToScan,
-				scanIncludeList: scanIncludeList);
+			DependencyScanner.Scan(serviceCollection, options);
+			serviceCollection.AddScoped<ModuleLoader>();
 			serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
 
 			return serviceCollection;

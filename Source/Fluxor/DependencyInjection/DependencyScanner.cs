@@ -9,20 +9,21 @@ namespace Fluxor.DependencyInjection
 {
 	internal static class DependencyScanner
 	{
-		internal static void Scan(
-			this IServiceCollection services,
-			Options options,
-			IEnumerable<AssemblyScanSettings> assembliesToScan,
-			IEnumerable<AssemblyScanSettings> scanIncludeList)
+		internal static void Scan(this IServiceCollection services, Options options)
 		{
-			if (assembliesToScan == null || assembliesToScan.Count() == 0)
-				throw new ArgumentNullException(nameof(assembliesToScan));
+			if (options == null)
+				throw new ArgumentNullException(nameof(options));
+			if (options.AssembliesToScan == null || options.AssembliesToScan.Count() == 0)
+				throw new ArgumentException("At least one assembly is required", nameof(options));
 
-			assembliesToScan = assembliesToScan
+
+			AssemblyScanSettings[] assembliesToScan = options
+				.AssembliesToScan
 				.Distinct()
 				.ToArray();
 
-			scanIncludeList = scanIncludeList
+			IEnumerable<AssemblyScanSettings> scanIncludeList = options.MiddlewareTypes
+				.Select(t => new AssemblyScanSettings(t.Assembly, t.Namespace))
 				.Distinct()
 				.ToArray();
 
