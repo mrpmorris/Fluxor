@@ -97,6 +97,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01E-ActionSubscriber", "01E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.ActionSubscriber", "..\Tutorials\01-BasicConcepts\01E-ActionSubscriber\ActionSubscriber\BasicConcepts.ActionSubscriber.csproj", "{E7D0352B-16E1-4A89-8C29-ED119FF03316}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02F-LazyLoading", "02F-LazyLoading", "{D4C0B273-B45D-473D-806A-EF67C5C9C827}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorLazyLoading.Server", "..\Tutorials\02-Blazor\02F-LazyLoading\Server\BlazorLazyLoading.Server.csproj", "{298203E5-7255-439B-9F29-4B94E014F04F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorLazyLoading.Client", "..\Tutorials\02-Blazor\02F-LazyLoading\Client\BlazorLazyLoading.Client.csproj", "{78582FA6-E782-453E-962C-5B1F95ADDBD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -335,6 +341,30 @@ Global
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316}.Release|iPhone.Build.0 = Release|Any CPU
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Release|iPhone.Build.0 = Release|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{298203E5-7255-439B-9F29-4B94E014F04F}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Release|iPhone.Build.0 = Release|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -366,6 +396,9 @@ Global
 		{5E423494-7C7A-485E-8E84-A5CD11F7C504} = {4DB29E0A-3D0F-4CD5-AD58-3701BF3C23CC}
 		{6118BA67-8200-42C8-8A6D-B65E085E07A0} = {755410A3-91C0-4CD3-B234-1DEAE35F19DA}
 		{E7D0352B-16E1-4A89-8C29-ED119FF03316} = {6118BA67-8200-42C8-8A6D-B65E085E07A0}
+		{D4C0B273-B45D-473D-806A-EF67C5C9C827} = {A143115C-F0CD-42A5-9DBB-31F4857D8729}
+		{298203E5-7255-439B-9F29-4B94E014F04F} = {D4C0B273-B45D-473D-806A-EF67C5C9C827}
+		{78582FA6-E782-453E-962C-5B1F95ADDBD3} = {D4C0B273-B45D-473D-806A-EF67C5C9C827}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}
