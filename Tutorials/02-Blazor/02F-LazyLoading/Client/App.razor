@@ -1,4 +1,10 @@
-<Router AppAssembly="@typeof(Program).Assembly">
+<Router
+        AppAssembly="@typeof(Program).Assembly"
+        AdditionalAssemblies=LazyLoadedAssemblies
+        OnNavigateAsync=@OnNavigateAsync>
+    <Navigating>
+        <h1>Loading...</h1>
+    </Navigating>
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
