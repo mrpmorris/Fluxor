@@ -22,7 +22,7 @@ namespace BlazorLazyLoading.Client
 		public IStore Store { get; set; }
 
 		[Inject]
-		private ModuleLoader ModuleLoader { get; set; }
+		private IModuleLoader ModuleLoader { get; set; }
 
 		private async Task OnNavigateAsync(NavigationContext args)
 		{

@@ -10,7 +10,6 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 	internal static class FeatureClassesDiscovery
 	{
 		internal static DiscoveredFeatureClass[] DiscoverFeatureClasses(
-			IServiceCollection serviceCollection,
 			IEnumerable<Type> allCandidateTypes,
 			IEnumerable<DiscoveredReducerClass> discoveredReducerClasses,
 			IEnumerable<DiscoveredReducerMethod> discoveredReducerMethods)
@@ -51,11 +50,12 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 					discoveredFeatureClass.StateType,
 					out IGrouping<Type, DiscoveredReducerMethod> discoveredReducerMethodsForStateType);
 
-				RegisterFeature(
-					serviceCollection,
-					discoveredFeatureClass,
-					discoveredReducerClassesForStateType,
-					discoveredReducerMethodsForStateType);
+				// TODO: PeteM - Implement
+				//RegisterFeature(
+				//	serviceCollection,
+				//	discoveredFeatureClass,
+				//	discoveredReducerClassesForStateType,
+				//	discoveredReducerMethodsForStateType);
 			}
 
 			return discoveredFeatureClasses;

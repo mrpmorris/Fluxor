@@ -9,13 +9,41 @@ namespace Fluxor.DependencyInjection
 {
 	internal static class DependencyScanner
 	{
+
 		internal static void Scan(this IServiceCollection services, Options options)
+		{
+			Scan(
+				options,
+				out DiscoveredReducerClass[] discoveredReducerClasses,
+				out DiscoveredReducerMethod[] discoveredReducerMethods,
+				out DiscoveredEffectClass[] discoveredEffectClasses,
+				out DiscoveredEffectMethod[] discoveredEffectMethods,
+				out DiscoveredFeatureClass[] discoveredFeatureClasses,
+				out DiscoveredMiddleware[] discoveredMiddlewares);
+
+			// TODO: PeteM - Reimplement
+			//RegisterStore(
+			//	serviceCollection: services,
+			//	options: options,
+			//	discoveredMiddlewares: discoveredMiddlewares,
+			//	discoveredFeatureClasses: discoveredFeatureClasses,
+			//	discoveredEffectClasses: discoveredEffectClasses,
+			//	discoveredEffectMethods: discoveredEffectMethods);
+		}
+
+		internal static void Scan(
+			Options options,
+			out DiscoveredReducerClass[] discoveredReducerClasses,
+			out DiscoveredReducerMethod[] discoveredReducerMethods,
+			out DiscoveredEffectClass[] discoveredEffectClasses,
+			out DiscoveredEffectMethod[] discoveredEffectMethods,
+			out DiscoveredFeatureClass[] discoveredFeatureClasses,
+			out DiscoveredMiddleware[] discoveredMiddlewares)
 		{
 			if (options == null)
 				throw new ArgumentNullException(nameof(options));
 			if (options.AssembliesToScan == null || options.AssembliesToScan.Count() == 0)
 				throw new ArgumentException("At least one assembly is required", nameof(options));
-
 
 			AssemblyScanSettings[] assembliesToScan = options
 				.AssembliesToScan
@@ -27,9 +55,8 @@ namespace Fluxor.DependencyInjection
 				.Distinct()
 				.ToArray();
 
-			DiscoveredMiddleware[] discoveredMiddlewares =
+			discoveredMiddlewares =
 				MiddlewareClassesDiscovery.FindMiddlewares(
-					services: services,
 					assembliesToScan: assembliesToScan.Select(x => x.Assembly),
 					manuallyIncludedMiddlewares: options.MiddlewareTypes);
 
@@ -41,36 +68,28 @@ namespace Fluxor.DependencyInjection
 				allNonAbstractCandidateTypes: out Type[] allNonAbstractCandidateTypes);
 
 			// Classes must not be abstract
-			DiscoveredReducerClass[] discoveredReducerClasses =
-				ReducerClassessDiscovery.DiscoverReducerClasses(services, allNonAbstractCandidateTypes);
+			discoveredReducerClasses =
+				ReducerClassessDiscovery.DiscoverReducerClasses(allNonAbstractCandidateTypes);
 
-			DiscoveredEffectClass[] discoveredEffectClasses =
-				EffectClassessDiscovery.DiscoverEffectClasses(services, allNonAbstractCandidateTypes);
+			discoveredEffectClasses =
+				EffectClassessDiscovery.DiscoverEffectClasses(allNonAbstractCandidateTypes);
 
 			// Method reducer/effects may belong to abstract classes
 			TypeAndMethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
-			DiscoveredReducerMethod[] discoveredReducerMethods =
-				ReducerMethodsDiscovery.DiscoverReducerMethods(services, allCandidateMethods);
+			discoveredReducerMethods =
+				ReducerMethodsDiscovery.DiscoverReducerMethods(allCandidateMethods);
 
-			DiscoveredEffectMethod[] discoveredEffectMethods =
-				EffectMethodsDiscovery.DiscoverEffectMethods(services, allCandidateMethods);
+			discoveredEffectMethods =
+				EffectMethodsDiscovery.DiscoverEffectMethods(allCandidateMethods);
 
-			DiscoveredFeatureClass[] discoveredFeatureClasses =
+			discoveredFeatureClasses =
 				FeatureClassesDiscovery.DiscoverFeatureClasses(
-					serviceCollection: services,
 					allCandidateTypes: allNonAbstractCandidateTypes,
 					discoveredReducerClasses: discoveredReducerClasses,
 					discoveredReducerMethods: discoveredReducerMethods);
-
-			RegisterStore(
-				serviceCollection: services,
-				options: options,
-				discoveredMiddlewares: discoveredMiddlewares,
-				discoveredFeatureClasses: discoveredFeatureClasses,
-				discoveredEffectClasses: discoveredEffectClasses,
-				discoveredEffectMethods: discoveredEffectMethods);
 		}
+
 
 		private static void GetCandidateTypes(
 			IEnumerable<AssemblyScanSettings> assembliesToScan,

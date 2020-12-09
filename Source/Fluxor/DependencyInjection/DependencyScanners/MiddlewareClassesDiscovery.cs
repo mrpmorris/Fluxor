@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +8,6 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 	internal static class MiddlewareClassesDiscovery
 	{
 		internal static DiscoveredMiddleware[] FindMiddlewares(
-			IServiceCollection services,
 			IEnumerable<Assembly> assembliesToScan,
 			IEnumerable<Type> manuallyIncludedMiddlewares)
 		{
@@ -23,10 +21,6 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 							manuallyIncludedMiddlewares.Contains(t)
 							|| t.GetCustomAttribute(typeof(AutomaticallyIncludeMiddlewareAttribute)) != null))
 				.ToArray();
-
-			foreach (DiscoveredMiddleware discoveredMiddleware in discoveredMiddlewares)
-				if (discoveredMiddleware.AutoLoaded)
-					services.AddScoped(discoveredMiddleware.ImplementingType);
 			return discoveredMiddlewares;
 		}
 	}
