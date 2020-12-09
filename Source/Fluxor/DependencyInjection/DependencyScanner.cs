@@ -42,7 +42,7 @@ namespace Fluxor.DependencyInjection
 		{
 			if (options == null)
 				throw new ArgumentNullException(nameof(options));
-			if (options.AssembliesToScan == null || options.AssembliesToScan.Count() == 0)
+			if (options.AssembliesToScan == null || !options.AssembliesToScan.Any())
 				throw new ArgumentException("At least one assembly is required", nameof(options));
 
 			AssemblyScanSettings[] assembliesToScan = options
