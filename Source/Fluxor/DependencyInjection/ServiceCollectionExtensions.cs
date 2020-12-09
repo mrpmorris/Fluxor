@@ -29,7 +29,7 @@ namespace Fluxor
 			configure?.Invoke(options);
 
 			DependencyScanner.Scan(serviceCollection, options);
-			serviceCollection.AddScoped<ModuleLoader>();
+			serviceCollection.AddScoped<IModuleLoader, ModuleLoader>();
 			serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
 
 			return serviceCollection;

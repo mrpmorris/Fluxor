@@ -1,17 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
-		
+		<TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1</TargetFrameworks>
 		<Product>Fluxor</Product>
 		<Description>A zero boilerplate Redux/Flux framework for .NET</Description>
-    <PackageIcon>fluxor-small-logo.png</PackageIcon>
-    <PackageTags>Redux Flux DotNet CSharp</PackageTags>
-
+		<PackageIcon>fluxor-small-logo.png</PackageIcon>
+		<PackageTags>Redux Flux DotNet CSharp</PackageTags>
 	</PropertyGroup>
 
-  <ItemGroup>
+	<ItemGroup>
 		<None Include="..\..\Images\fluxor-small-logo.png">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>

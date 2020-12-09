@@ -32,7 +32,7 @@ namespace BlazorLazyLoading.Client
 				IEnumerable<Assembly> assemblies = await AssemblyLoader
 					.LoadAssembliesAsync(new[] { "BlazorLazyLoading.AdminModule.dll" })
 					.ConfigureAwait(false);
-				ModuleLoader.Load(Store, assemblies);
+				//ModuleLoader.Load(Store, assemblies);
 				Console.WriteLine($"Loaded {assemblies.Count()} assemblies");
 				LazyLoadedAssemblies.AddRange(assemblies);
 			}

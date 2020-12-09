@@ -6,8 +6,15 @@ using System.Reflection;
 
 namespace Fluxor.Modularlization
 {
-	public class ModuleLoader
+	internal class ModuleLoader : IModuleLoader
 	{
+		private readonly IServiceProvider ServiceProvider;
+
+		public ModuleLoader(IServiceProvider serviceProvider)
+		{
+			ServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+		}
+
 		public void Load(IStore store, Assembly assemblyToScan) =>
 			Load(store, new List<Assembly> { assemblyToScan });
 
