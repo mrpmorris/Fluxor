@@ -31,6 +31,8 @@ namespace Fluxor.DependencyInjection
 			if (Cache.TryGetValue(type, out object result))
 				return result;
 
+			buildPath.Push(type);
+
 			if (buildPath.Contains(type))
 			{
 				string path = string.Join(" -> ", buildPath.Reverse().Select(x => x.Name));
@@ -39,8 +41,6 @@ namespace Fluxor.DependencyInjection
 					$"\r\n{path}");
 			}
 			
-			buildPath.Push(type);
-
 			ConstructorInfo constructor = GetGreediestConstructor(type);
 			if (constructor == null)
 				throw new ArgumentException($"Type '{type.FullName}' has no constructor", nameof(type));
@@ -55,10 +55,11 @@ namespace Fluxor.DependencyInjection
 					value = Build(parameterType, buildPath);
 				parameterValues.Add(value);
 			}
-			buildPath.Pop();
 
 			result = constructor.Invoke(parameterValues.ToArray());
 			Cache[type] = result;
+
+			buildPath.Pop();
 			return result;
 		}
 
