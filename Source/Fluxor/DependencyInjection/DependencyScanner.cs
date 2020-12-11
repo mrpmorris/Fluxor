@@ -9,60 +9,33 @@ namespace Fluxor.DependencyInjection
 {
 	internal static class DependencyScanner
 	{
-
-		internal static void Scan(this IServiceCollection services, Options options)
-		{
-			Scan(
-				options,
-				out DiscoveredReducerClass[] discoveredReducerClasses,
-				out DiscoveredReducerMethod[] discoveredReducerMethods,
-				out DiscoveredEffectClass[] discoveredEffectClasses,
-				out DiscoveredEffectMethod[] discoveredEffectMethods,
-				out DiscoveredFeatureClass[] discoveredFeatureClasses,
-				out DiscoveredMiddleware[] discoveredMiddlewares);
-
-			// TODO: PeteM - Reimplement
-			//RegisterStore(
-			//	serviceCollection: services,
-			//	options: options,
-			//	discoveredMiddlewares: discoveredMiddlewares,
-			//	discoveredFeatureClasses: discoveredFeatureClasses,
-			//	discoveredEffectClasses: discoveredEffectClasses,
-			//	discoveredEffectMethods: discoveredEffectMethods);
-		}
-
 		internal static void Scan(
-			Options options,
+			IEnumerable<Assembly> assembliesToScan,
+			IEnumerable<Type> middlewareTypes,
+			out DiscoveredFeatureClass[] discoveredFeatureClasses,
 			out DiscoveredReducerClass[] discoveredReducerClasses,
 			out DiscoveredReducerMethod[] discoveredReducerMethods,
 			out DiscoveredEffectClass[] discoveredEffectClasses,
 			out DiscoveredEffectMethod[] discoveredEffectMethods,
-			out DiscoveredFeatureClass[] discoveredFeatureClasses,
 			out DiscoveredMiddleware[] discoveredMiddlewares)
 		{
-			if (options == null)
-				throw new ArgumentNullException(nameof(options));
-			if (options.AssembliesToScan == null || !options.AssembliesToScan.Any())
-				throw new ArgumentException("At least one assembly is required", nameof(options));
-
-			AssemblyScanSettings[] assembliesToScan = options
-				.AssembliesToScan
-				.Distinct()
+			AssemblyScanSettings[] assemblyScanSettings = assembliesToScan
+				.Select(x => new AssemblyScanSettings(x))
 				.ToArray();
 
-			IEnumerable<AssemblyScanSettings> scanIncludeList = options.MiddlewareTypes
+			AssemblyScanSettings[] scanIncludeList = middlewareTypes
 				.Select(t => new AssemblyScanSettings(t.Assembly, t.Namespace))
 				.Distinct()
 				.ToArray();
 
 			discoveredMiddlewares =
 				MiddlewareClassesDiscovery.FindMiddlewares(
-					assembliesToScan: assembliesToScan.Select(x => x.Assembly),
-					manuallyIncludedMiddlewares: options.MiddlewareTypes);
+					assembliesToScan: assemblyScanSettings.Select(x => x.Assembly),
+					manuallyIncludedMiddlewares: middlewareTypes);
 
 			GetCandidateTypes(
-				assembliesToScan: assembliesToScan,
-				scanIncludeList: scanIncludeList ?? new List<AssemblyScanSettings>(),
+				assembliesToScan: assemblyScanSettings,
+				scanIncludeList: scanIncludeList,
 				discoveredMiddlewares: discoveredMiddlewares,
 				allCandidateTypes: out Type[] allCandidateTypes,
 				allNonAbstractCandidateTypes: out Type[] allNonAbstractCandidateTypes);

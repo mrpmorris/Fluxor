@@ -11,8 +11,8 @@ namespace Fluxor.DependencyInjection
 	/// </summary>
 	public class Options
 	{
-		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = new AssemblyScanSettings[0];
-		internal Type[] MiddlewareTypes = new Type[0];
+		internal List<Assembly> AssembliesToScan { get; private set; } = new List<Assembly>();
+		internal List<Type> MiddlewareTypes = new List<Type>();
 		/// <summary>
 		/// Service collection for registering services
 		/// </summary>
@@ -40,11 +40,6 @@ namespace Fluxor.DependencyInjection
 			var allAssemblies = new List<Assembly> { assemblyToScan };
 			if (additionalAssembliesToScan != null)
 				allAssemblies.AddRange(additionalAssembliesToScan);
-
-			var newAssembliesToScan = allAssemblies.Select(x => new AssemblyScanSettings(x)).ToList();
-			newAssembliesToScan.AddRange(AssembliesToScan);
-			AssembliesToScan = newAssembliesToScan.ToArray();
-
 			return this;
 		}
 
@@ -58,27 +53,18 @@ namespace Fluxor.DependencyInjection
 		public Options AddMiddleware<TMiddleware>()
 			where TMiddleware : IMiddleware
 		{
-			if (Array.IndexOf(MiddlewareTypes, typeof(TMiddleware)) > -1)
+			if (MiddlewareTypes.Contains(typeof(TMiddleware)))
 				return this;
 
-			Assembly assembly = typeof(TMiddleware).Assembly;
-			string @namespace = typeof(TMiddleware).Namespace;
-
 			AssembliesToScan =
-				new List<AssemblyScanSettings>(AssembliesToScan)
+				new List<Assembly>(AssembliesToScan)
 				{
-					new AssemblyScanSettings(assembly, @namespace)
+					typeof(TMiddleware).Assembly
 				}
 				.Distinct()
-				.ToArray();
+				.ToList();
 
-			MiddlewareTypes =
-				new List<Type>(MiddlewareTypes)
-				{
-					typeof(TMiddleware)
-				}
-				.Distinct()
-				.ToArray();
+			MiddlewareTypes.Add(typeof(TMiddleware));
 			return this;
 		}
 	}

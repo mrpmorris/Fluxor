@@ -15,26 +15,25 @@ namespace Fluxor.Modularlization
 			ServiceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 		}
 
-		public void Load(IStore store, Assembly assemblyToScan) =>
-			Load(store, new List<Assembly> { assemblyToScan });
-
-		public void Load(IStore store, IEnumerable<Assembly> assembliesToScan)
+		public void Load(
+			IStore store,
+			IEnumerable<Assembly> assembliesToScan,
+			IEnumerable<Type> middlewareTypes)
 		{
 			if (assembliesToScan == null)
 				throw new ArgumentNullException(nameof(assembliesToScan));
 			if (!assembliesToScan.Any())
 				throw new ArgumentException("At least one assembly is required", nameof(assembliesToScan));
 
-			var options = new Options(null);
-			options.ScanAssemblies(assembliesToScan.First(), assembliesToScan.Skip(1).ToArray());
-
+			middlewareTypes = middlewareTypes ?? Array.Empty<Type>();
 			DependencyScanner.Scan(
-				options,
+				assembliesToScan,
+				middlewareTypes,
+				out DiscoveredFeatureClass[] discoveredFeatureClasses,
 				out DiscoveredReducerClass[] discoveredReducerClasses,
 				out DiscoveredReducerMethod[] discoveredReducerMethods,
 				out DiscoveredEffectClass[] discoveredEffectClasses,
 				out DiscoveredEffectMethod[] discoveredEffectMethods,
-				out DiscoveredFeatureClass[] discoveredFeatureClasses,
 				out DiscoveredMiddleware[] discoveredMiddlewares);
 
 			// TODO: Build and add to store

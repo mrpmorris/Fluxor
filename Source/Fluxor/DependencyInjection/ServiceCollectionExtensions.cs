@@ -28,11 +28,20 @@ namespace Fluxor
 			var options = new Options(serviceCollection);
 			configure?.Invoke(options);
 
-			DependencyScanner.Scan(serviceCollection, options);
+			serviceCollection.AddScoped<IDispatcher, Dispatcher>();
 			serviceCollection.AddScoped<IModuleLoader, ModuleLoader>();
 			serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
-
+			serviceCollection.AddScoped(sp => CreateStore(sp, options));
 			return serviceCollection;
+		}
+
+		private static IStore CreateStore(IServiceProvider sp, Options options)
+		{
+			var dispatcher = sp.GetRequiredService<IDispatcher>();
+			var store = new Store(dispatcher);
+			var moduleLoader = sp.GetRequiredService<IModuleLoader>();
+			moduleLoader.Load(store, options.AssembliesToScan, options.MiddlewareTypes);
+			return store;
 		}
 	}
 }
