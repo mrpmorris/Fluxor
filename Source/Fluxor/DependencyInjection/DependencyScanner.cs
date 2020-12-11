@@ -57,12 +57,8 @@ namespace Fluxor.DependencyInjection
 				EffectMethodsDiscovery.DiscoverEffectMethods(allCandidateMethods);
 
 			discoveredFeatureClasses =
-				FeatureClassesDiscovery.DiscoverFeatureClasses(
-					allCandidateTypes: allNonAbstractCandidateTypes,
-					discoveredReducerClasses: discoveredReducerClasses,
-					discoveredReducerMethods: discoveredReducerMethods);
+				FeatureClassesDiscovery.DiscoverFeatureClasses(allNonAbstractCandidateTypes);
 		}
-
 
 		private static void GetCandidateTypes(
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
@@ -104,65 +100,6 @@ namespace Fluxor.DependencyInjection
 			allNonAbstractCandidateTypes = allCandidateTypes
 					.Where(t => !t.IsAbstract)
 					.ToArray();
-		}
-
-		private static void RegisterStore(
-			IServiceCollection serviceCollection,
-			Options options,
-			IEnumerable<DiscoveredMiddleware> discoveredMiddlewares,
-			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses,
-			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses,
-			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods)
-		{
-			// Register IDispatcher as an alias to Store
-			serviceCollection.AddScoped<IDispatcher, Dispatcher>();
-			// Register IActionSubscriber as an alias to Store
-			serviceCollection.AddScoped<IActionSubscriber>(serviceProvider => serviceProvider.GetRequiredService<Store>());
-			// Register IStore as an alias to Store
-			serviceCollection.AddScoped<IStore>(serviceProvider => serviceProvider.GetRequiredService<Store>());
-
-			// Register a custom factory for building IStore that will inject all effects
-			serviceCollection.AddScoped(typeof(Store), serviceProvider =>
-			{
-				var dispatcher = serviceProvider.GetRequiredService<IDispatcher>();
-				var store = new Store(dispatcher);
-				foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
-				{
-					var feature = (IFeature)serviceProvider.GetRequiredService(discoveredFeatureClass.FeatureInterfaceGenericType);
-					store.AddFeature(feature);
-				}
-
-				foreach (DiscoveredEffectClass discoveredEffectClass in discoveredEffectClasses)
-				{
-					var effect = (IEffect)serviceProvider.GetRequiredService(discoveredEffectClass.ImplementingType);
-					store.AddEffect(effect);
-				}
-
-				foreach (DiscoveredEffectMethod discoveredEffectMethod in discoveredEffectMethods)
-				{
-					IEffect effect = EffectWrapperFactory.Create(serviceProvider, discoveredEffectMethod);
-					store.AddEffect(effect);
-				}
-
-				Type[] autoLoadedMiddlewareTypes = discoveredMiddlewares
-					.Where(x => x.AutoLoaded)
-					.Select(x => x.ImplementingType)
-					.Distinct()
-					.ToArray();
-
-				Type[] middlewareTypes = options.MiddlewareTypes
-					.Union(autoLoadedMiddlewareTypes)
-					.Distinct()
-					.ToArray();
-
-				foreach (Type middlewareType in middlewareTypes)
-				{
-					var middleware = (IMiddleware)serviceProvider.GetRequiredService(middlewareType);
-					store.AddMiddleware(middleware);
-				}
-
-				return store;
-			});
 		}
 	}
 }
