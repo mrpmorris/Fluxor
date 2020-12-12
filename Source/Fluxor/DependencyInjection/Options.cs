@@ -11,8 +11,8 @@ namespace Fluxor.DependencyInjection
 	/// </summary>
 	public class Options
 	{
-		internal List<Assembly> AssembliesToScan { get; private set; } = new List<Assembly>();
-		internal List<Type> MiddlewareTypes = new List<Type>();
+		internal readonly List<Assembly> AssembliesToScan = new List<Assembly>();
+		internal readonly List<Type> MiddlewareTypes = new List<Type>();
 		/// <summary>
 		/// Service collection for registering services
 		/// </summary>
@@ -40,6 +40,8 @@ namespace Fluxor.DependencyInjection
 			var allAssemblies = new List<Assembly> { assemblyToScan };
 			if (additionalAssembliesToScan != null)
 				allAssemblies.AddRange(additionalAssembliesToScan);
+
+			AssembliesToScan.AddRange(allAssemblies);
 			return this;
 		}
 
@@ -56,14 +58,7 @@ namespace Fluxor.DependencyInjection
 			if (MiddlewareTypes.Contains(typeof(TMiddleware)))
 				return this;
 
-			AssembliesToScan =
-				new List<Assembly>(AssembliesToScan)
-				{
-					typeof(TMiddleware).Assembly
-				}
-				.Distinct()
-				.ToList();
-
+			AssembliesToScan.Add(typeof(TMiddleware).Assembly);
 			MiddlewareTypes.Add(typeof(TMiddleware));
 			return this;
 		}

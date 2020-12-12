@@ -27,9 +27,12 @@ namespace Fluxor.Modularlization
 			if (!assembliesToScan.Any())
 				throw new ArgumentException("At least one assembly is required", nameof(assembliesToScan));
 
+			middlewareTypes = middlewareTypes ?? Array.Empty<Type>();
+			assembliesToScan = assembliesToScan.Distinct().ToArray();
+			middlewareTypes = middlewareTypes.Distinct().ToArray();
+
 			lock (SyncRoot)
 			{
-				middlewareTypes = middlewareTypes ?? Array.Empty<Type>();
 				DependencyScanner.Scan(
 					assembliesToScan,
 					middlewareTypes,
