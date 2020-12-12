@@ -30,28 +30,12 @@ namespace Fluxor.DependencyInjection
 			IEnumerable<Type> types,
 			IEnumerable<AssemblyScanSettings> scanExcludeList,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
-		{
-			foreach(Type type in types)
-			{
-				bool exclude = scanExcludeList.Any(x => x.Matches(type));
-				bool include = scanIncludeList.Any(x => x.Matches(type));
-				string reason = "Default";
-				if (include)
-					reason = "Include";
-				else if (exclude)
-					reason = null;
-				if (reason != null)
-					System.Diagnostics.Debug.WriteLine($"{reason}: {type.FullName}");
-			}
-
-			var result = types
+		=>
+			types
 				.Where(t =>
 					scanIncludeList.Any(incl => incl.Matches(t))
 					|| !scanExcludeList.Any(excl => excl.Matches(t)))
 				.ToArray();
-
-			return result;
-		}
 
 		public static TypeAndMethodInfo[] FilterMethods(IEnumerable<Type> allCandidateTypes) =>
 			allCandidateTypes

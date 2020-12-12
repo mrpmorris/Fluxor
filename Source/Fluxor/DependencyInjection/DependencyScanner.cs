@@ -28,7 +28,7 @@ namespace Fluxor.DependencyInjection
 				.Distinct()
 				.ToArray();
 
-			discoveredMiddlewares =
+			var allDiscoveredMiddlewares =
 				MiddlewareClassesDiscovery.FindMiddlewares(
 					assembliesToScan: assemblyScanSettings.Select(x => x.Assembly),
 					manuallyIncludedMiddlewares: middlewareTypes);
@@ -36,9 +36,15 @@ namespace Fluxor.DependencyInjection
 			GetCandidateTypes(
 				assembliesToScan: assemblyScanSettings,
 				scanIncludeList: scanIncludeList,
-				discoveredMiddlewares: discoveredMiddlewares,
+				discoveredMiddlewares: allDiscoveredMiddlewares,
 				allCandidateTypes: out Type[] allCandidateTypes,
 				allNonAbstractCandidateTypes: out Type[] allNonAbstractCandidateTypes);
+
+			// Only allowed middlewares
+			discoveredMiddlewares =
+				allDiscoveredMiddlewares
+				.Where(x => allNonAbstractCandidateTypes.Contains(x.ImplementingType))
+				.ToArray();
 
 			// Classes must not be abstract
 			discoveredReducerClasses =

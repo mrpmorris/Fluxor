@@ -34,53 +34,53 @@ namespace Fluxor.DependencyInjection
 		private static ReduceWithActionParameterHandler CreateReducerWithActionParameter(
 			object reducerHostInstance,
 			DiscoveredReducerMethod discoveredReducerMethod)
-			=>
-				reducerHostInstance == null
-				? CreateStaticReducerWithActionParameter(discoveredReducerMethod)
-				: CreateInstanceReducerWithActionParameter(reducerHostInstance, discoveredReducerMethod);
+		=>
+			reducerHostInstance == null
+			? CreateStaticReducerWithActionParameter(discoveredReducerMethod)
+			: CreateInstanceReducerWithActionParameter(reducerHostInstance, discoveredReducerMethod);
 
 		private static ReduceWithActionParameterHandler CreateStaticReducerWithActionParameter(
 			DiscoveredReducerMethod discoveredReducerMethod)
-			=>
-				(ReduceWithActionParameterHandler)
-					Delegate.CreateDelegate(
-						type: typeof(ReduceWithActionParameterHandler),
-						method: discoveredReducerMethod.MethodInfo);
+		=>
+			(ReduceWithActionParameterHandler)
+				Delegate.CreateDelegate(
+					type: typeof(ReduceWithActionParameterHandler),
+					method: discoveredReducerMethod.MethodInfo);
 
 		private static ReduceWithActionParameterHandler CreateInstanceReducerWithActionParameter(
 			object reducerHostInstance,
 			DiscoveredReducerMethod discoveredReducerMethod)
-			=>
-				(ReduceWithActionParameterHandler)
-					Delegate.CreateDelegate(
-						type: typeof(ReduceWithActionParameterHandler),
-						firstArgument: reducerHostInstance,
-						method: discoveredReducerMethod.MethodInfo);
+		=>
+			(ReduceWithActionParameterHandler)
+				Delegate.CreateDelegate(
+					type: typeof(ReduceWithActionParameterHandler),
+					firstArgument: reducerHostInstance,
+					method: discoveredReducerMethod.MethodInfo);
 
 		private static ReduceWithoutActionParameterHandler CreateReducerWithoutActionParameter(
 			object reducerHostInstance,
 			DiscoveredReducerMethod discoveredReducerMethod)
-			=>
-				reducerHostInstance == null
-				? CreateStaticReducerWithoutActionParameter(discoveredReducerMethod)
-				: CreateInstanceReducerWithoutActionParameter(reducerHostInstance, discoveredReducerMethod);
+		=>
+			reducerHostInstance == null
+			? CreateStaticReducerWithoutActionParameter(discoveredReducerMethod)
+			: CreateInstanceReducerWithoutActionParameter(reducerHostInstance, discoveredReducerMethod);
 
 		private static ReduceWithoutActionParameterHandler CreateStaticReducerWithoutActionParameter(
 			DiscoveredReducerMethod discoveredReducerMethod)
-			=>
-				(ReduceWithoutActionParameterHandler)
-					Delegate.CreateDelegate(
-						type: typeof(ReduceWithoutActionParameterHandler),
-						method: discoveredReducerMethod.MethodInfo);
+		=>
+			(ReduceWithoutActionParameterHandler)
+				Delegate.CreateDelegate(
+					type: typeof(ReduceWithoutActionParameterHandler),
+					method: discoveredReducerMethod.MethodInfo);
 
 		private static ReduceWithoutActionParameterHandler CreateInstanceReducerWithoutActionParameter(
 			object reducerHostInstance,
 			DiscoveredReducerMethod discoveredReducerMethod)
-			=>
-				(ReduceWithoutActionParameterHandler)
-					Delegate.CreateDelegate(
-						type: typeof(ReduceWithoutActionParameterHandler),
-						firstArgument: reducerHostInstance,
-						method: discoveredReducerMethod.MethodInfo);
+		=>
+			(ReduceWithoutActionParameterHandler)
+				Delegate.CreateDelegate(
+					type: typeof(ReduceWithoutActionParameterHandler),
+					firstArgument: reducerHostInstance,
+					method: discoveredReducerMethod.MethodInfo);
 	}
 }
