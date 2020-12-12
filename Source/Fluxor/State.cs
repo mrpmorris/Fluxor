@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Fluxor
 {
@@ -14,10 +16,25 @@ namespace Fluxor
 		/// <summary>
 		/// Creates an instance of the state holder
 		/// </summary>
-		/// <param name="feature">The feature that contains the state</param>
-		public State(IFeature<TState> feature)
+		/// <param name="store">The store that contains the state</param>
+		public State(IStore store)
 		{
-			Feature = feature;
+			if (store == null)
+				throw new ArgumentNullException(nameof(store));
+
+			IFeature[] compatibleFeatures = store.Features
+				.Select(x => x.Value)
+				.Where(x => x.GetStateType() == typeof(TState))
+				.ToArray();
+
+			if (compatibleFeatures.Length == 0)
+				throw new KeyNotFoundException(
+					$"Store does not contain a feature with state type '{typeof(TState).FullName}'");
+			if (compatibleFeatures.Length > 1)
+				throw new KeyNotFoundException(
+					$"Store contains more than one feature with state type '{typeof(TState).FullName}'");
+
+			Feature = (IFeature<TState>)compatibleFeatures[0];
 		}
 
 		/// <see cref="IState{TState}.Value"/>
