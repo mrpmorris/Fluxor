@@ -5,8 +5,14 @@ using System.Reflection;
 
 namespace Fluxor.DependencyInjection
 {
-	internal class ObjectBuilder
+	internal interface IObjectBuilder
 	{
+		object Build(Type type);
+	}
+
+	internal class ObjectBuilder : IObjectBuilder
+	{
+		private readonly object SyncRoot = new object();
 		private IServiceProvider ServiceProvider;
 		private Dictionary<Type, object> Cache = new Dictionary<Type, object>();
 
@@ -22,16 +28,17 @@ namespace Fluxor.DependencyInjection
 			if (!type.IsClass || type.IsAbstract)
 				throw new ArgumentException($"Type '{type.FullName}' must be a concrete class", nameof(type));
 
-			var buildPath = new Stack<Type>();
-			return Build(type, buildPath);
+			lock (SyncRoot)
+			{
+				var buildPath = new Stack<Type>();
+				return Build(type, buildPath);
+			}
 		}
 
 		private object Build(Type type, Stack<Type> buildPath)
 		{
 			if (Cache.TryGetValue(type, out object result))
 				return result;
-
-			buildPath.Push(type);
 
 			if (buildPath.Contains(type))
 			{
@@ -40,7 +47,9 @@ namespace Fluxor.DependencyInjection
 					$"A circular dependency was detected for the service of type '{type.FullName}'" +
 					$"\r\n{path}");
 			}
-			
+
+			buildPath.Push(type);
+
 			ConstructorInfo constructor = GetGreediestConstructor(type);
 			if (constructor == null)
 				throw new ArgumentException($"Type '{type.FullName}' has no constructor", nameof(type));

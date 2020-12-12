@@ -29,7 +29,9 @@ namespace Fluxor
 			configure?.Invoke(options);
 
 			serviceCollection.AddScoped<IDispatcher, Dispatcher>();
+			serviceCollection.AddScoped<IActionSubscriber, Store>();
 			serviceCollection.AddScoped<IModuleLoader, ModuleLoader>();
+			serviceCollection.AddScoped<IObjectBuilder, ObjectBuilder>();
 			serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
 			serviceCollection.AddScoped(sp => CreateStore(sp, options));
 			return serviceCollection;

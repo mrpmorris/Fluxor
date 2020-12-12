@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 
 namespace Fluxor.DependencyInjection
 {
 	internal static class ReducerWrapperFactory
 	{
-		internal static object Create(IServiceProvider serviceProvider, DiscoveredReducerMethod discoveredReducerMethod)
+		internal static object Create(IObjectBuilder objectBuilder, DiscoveredReducerMethod discoveredReducerMethod)
 		{
 			Type stateType = discoveredReducerMethod.StateType;
 			Type actionType = discoveredReducerMethod.ActionType;
@@ -13,7 +12,7 @@ namespace Fluxor.DependencyInjection
 			Type hostClassType = discoveredReducerMethod.HostClassType;
 			object reducerHostInstance = discoveredReducerMethod.MethodInfo.IsStatic
 				? null
-				: serviceProvider.GetRequiredService(hostClassType);
+				: objectBuilder.Build(hostClassType);
 
 			Type classGenericType = typeof(ReducerWrapper<,>).MakeGenericType(stateType, actionType);
 			var result = Activator.CreateInstance(
