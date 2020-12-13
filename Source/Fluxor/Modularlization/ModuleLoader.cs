@@ -75,6 +75,28 @@ namespace Fluxor.Modularlization
 				store.AddEffect(effect);
 			}
 
+			var newFeatures = new List<IFeature>();
+			foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
+			{
+				var feature = (IFeature)ObjectBuilder.Build(discoveredFeatureClass.ImplementingType);
+				newFeatures.Add(feature);
+			}
+			AddReducers(newFeatures, discoveredReducerClasses, discoveredReducerMethods);
+			// Only add features once they have their reducers in place.
+			// There is no particular reason for this except it seems right
+			// to ensure the feature is in a complete state before adding
+			// it to the store.
+			foreach (IFeature newFeature in newFeatures)
+				store.AddFeature(newFeature);
+
+			// Note: We have no way of knowing what a Middleware needs access to
+			// (Store, features, etc) - so add Middlewares last to ensure everything
+			// is in place before they are initialised
+			AddMiddlewares(store, discoveredMiddlewares);
+		}
+
+		private void AddMiddlewares(IStore store, DiscoveredMiddleware[] discoveredMiddlewares)
+		{
 			Type[] autoLoadedMiddlewareTypes = discoveredMiddlewares
 				.Where(x => x.AutoLoaded)
 				.Select(x => x.ImplementingType)
@@ -92,19 +114,9 @@ namespace Fluxor.Modularlization
 				var middleware = (IMiddleware)ObjectBuilder.Build(middlewareType);
 				store.AddMiddleware(middleware);
 			}
-
-			var newFeatures = new List<IFeature>();
-			foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
-			{
-				var feature = (IFeature)ObjectBuilder.Build(discoveredFeatureClass.ImplementingType);
-				store.AddFeature(feature);
-				newFeatures.Add(feature);
-			}
-
-			FixupReducers(newFeatures, discoveredReducerClasses, discoveredReducerMethods);
 		}
 
-		private void FixupReducers(IEnumerable<IFeature> newFeatures, DiscoveredReducerClass[] discoveredReducerClasses, DiscoveredReducerMethod[] discoveredReducerMethods)
+		private void AddReducers(IEnumerable<IFeature> newFeatures, DiscoveredReducerClass[] discoveredReducerClasses, DiscoveredReducerMethod[] discoveredReducerMethods)
 		{
 			Dictionary<Type, IGrouping<Type, DiscoveredReducerClass>> discoveredReducerClassesByStateType =
 				discoveredReducerClasses
