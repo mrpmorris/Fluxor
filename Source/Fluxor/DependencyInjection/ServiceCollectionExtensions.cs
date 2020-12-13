@@ -2,6 +2,7 @@
 using Fluxor.Modularlization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace Fluxor
 {
@@ -33,6 +34,7 @@ namespace Fluxor
 			serviceCollection.AddScoped<IModuleLoader, ModuleLoader>();
 			serviceCollection.AddScoped<IObjectBuilder, ObjectBuilder>();
 			serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
+			serviceCollection.AddScoped(typeof(IFeature<>), typeof(FeatureWrapper<>));
 			serviceCollection.AddScoped(sp => CreateStore(sp, options));
 			return serviceCollection;
 		}
@@ -41,8 +43,8 @@ namespace Fluxor
 		{
 			var dispatcher = sp.GetRequiredService<IDispatcher>();
 			var store = new Store(dispatcher);
-			var moduleLoader = sp.GetRequiredService<IModuleLoader>();
-			moduleLoader.Load(store, options.AssembliesToScan, options.MiddlewareTypes);
+			var objectBuilder = sp.GetRequiredService<IObjectBuilder>();
+			objectBuilder.Register<IStore>(store);
 			return store;
 		}
 	}

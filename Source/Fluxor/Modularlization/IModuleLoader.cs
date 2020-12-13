@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace Fluxor.Modularlization
 {
+	// TODO: Document
 	public interface IModuleLoader
 	{
 		void Load(

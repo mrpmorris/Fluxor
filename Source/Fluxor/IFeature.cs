@@ -7,6 +7,8 @@ namespace Fluxor
 	/// </summary>
 	public interface IFeature
 	{
+		// TODO: PeteM - Docs
+		void Initialize(IStore store);
 		/// <summary>
 		/// The unique name to use for this feature when building up the composite state. E.g. if this returns "Cart" then
 		/// the composite state returned would contain a property "Cart" with a value that represents the contents of State.

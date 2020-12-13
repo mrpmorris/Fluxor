@@ -10,6 +10,14 @@ namespace Fluxor
 	/// <see cref="IFeature{TState}"/>
 	public abstract class Feature<TState> : IFeature<TState>
 	{
+		protected IStore Store { get; private set; }
+
+		/// <see cref="IFeature.Initialize(IStore)"/>
+		public void Initialize(IStore store)
+		{
+			Store = store ?? throw new ArgumentNullException(nameof(store));
+		}
+
 		/// <see cref="IFeature.MaximumStateChangedNotificationsPerSecond"/>
 		public byte MaximumStateChangedNotificationsPerSecond { get; set; }
 

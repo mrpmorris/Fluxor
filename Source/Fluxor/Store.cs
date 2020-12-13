@@ -63,6 +63,7 @@ namespace Fluxor
 			lock (SyncRoot)
 			{
 				FeaturesByName.Add(feature.GetName(), feature);
+				feature.Initialize(this);
 			}
 		}
 

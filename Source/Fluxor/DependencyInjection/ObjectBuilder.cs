@@ -8,6 +8,7 @@ namespace Fluxor.DependencyInjection
 	internal interface IObjectBuilder
 	{
 		object Build(Type type);
+		void Register<T>(T instance);
 	}
 
 	internal class ObjectBuilder : IObjectBuilder
@@ -35,10 +36,27 @@ namespace Fluxor.DependencyInjection
 			}
 		}
 
+		public void Register<T>(T instance)
+		{
+			if (instance == null)
+				throw new ArgumentNullException(nameof(instance));
+			Cache.Add(typeof(T), instance);
+		}
+
 		private object Build(Type type, Stack<Type> buildPath)
 		{
 			if (Cache.TryGetValue(type, out object result))
+			{
+				// TODO: PeteM - D1
+				Console.WriteLine("Cached: " + type.FullName);
 				return result;
+			}
+			// TODO: PeteM - DB
+			{
+				Console.WriteLine("Building: " + type.FullName);
+				foreach (Type cached in Cache.Keys)
+					Console.WriteLine("  Cached=" + cached.FullName);
+			}
 
 			if (buildPath.Contains(type))
 			{
