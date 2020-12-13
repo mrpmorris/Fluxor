@@ -1,67 +1,39 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup>
-		<TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
-		<RazorLangVersion>3.0</RazorLangVersion>
-		<Version>3.9.0</Version>
-		<Authors>Peter Morris</Authors>
-		<Company />
-		<Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
-		<Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
-		<Copyright>Peter Morris</Copyright>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
-		<PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
-		<PackageIconUrl />
-		<RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
-		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<AssemblyVersion>3.9.0.0</AssemblyVersion>
-		<FileVersion>3.9.0.0</FileVersion>
-		<SignAssembly>true</SignAssembly>
-		<AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
-	</PropertyGroup>
+  <PropertyGroup>
 
-	<PropertyGroup>
-		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-		<DelaySign>false</DelaySign>
-	</PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
+    <RazorLangVersion>3.0</RazorLangVersion>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-	  <WarningsAsErrors></WarningsAsErrors>
-	</PropertyGroup>
+    <Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
+    <Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
+    <PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
+    <PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
 
-	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-	</ItemGroup>
+  </PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
-	</ItemGroup>
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-		<SupportedPlatform Include="browser" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
-		<ProjectReference Include="..\Fluxor\Fluxor.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
 
 
-	<ItemGroup>
-		<None Include="..\..\Images\fluxor-blazor-reduxdevtools-small.png">
-			<Pack>True</Pack>
-			<PackagePath></PackagePath>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
+    <ProjectReference Include="..\Fluxor\Fluxor.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Include="..\..\Images\fluxor-blazor-reduxdevtools-small.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
