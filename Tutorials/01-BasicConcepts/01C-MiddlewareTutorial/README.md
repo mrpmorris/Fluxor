@@ -8,7 +8,7 @@ of which states are affected by that action.
 Two examples of Middleware in Fluxor are
 1. [Routing Middleware][1] for Blazor Web UI, to ensure navigation events have a corresponding action
 that reducers can hook into.
-2. [Redux Dev Tools Middleware][1] for Blazor Web UI, which integrates with the
+2. [Redux Dev Tools Middleware][2] for Blazor Web UI, which integrates with the
 [Redux Dev Tools][3] plugin for Google Chrome.
 
 ### Goal
@@ -303,4 +303,4 @@ history.
   [2]: <https://github.com/mrpmorris/Fluxor/tree/master/Source/Fluxor.Blazor.Web.ReduxDevTools>
   [3]: <https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd>
   [4]: <https://github.com/mrpmorris/Fluxor/tree/master/Tutorials/01-BasicConcepts/01B-EffectsTutorial>
-	[5]: <https://github.com/mrpmorris/Fluxor/blob/master/Source/Fluxor.Blazor.Web.ReduxDevTools/ReduxDevToolsMiddleware.cs>
+  [5]: <https://github.com/mrpmorris/Fluxor/blob/master/Source/Fluxor.Blazor.Web.ReduxDevTools/ReduxDevToolsMiddleware.cs>
