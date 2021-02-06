@@ -1,5 +1,9 @@
 # Releases
 
+### New in 4.0
+ * Changed `Effect<T>.HandleAsync` from `protected` to `public` to make unit testing easier
+ * Added `Options` to `.UseReduxDevTools()` middleware extension
+
 ### New in 3.9
  * Support added for .NET 5.0
 

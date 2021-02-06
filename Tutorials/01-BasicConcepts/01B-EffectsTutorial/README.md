@@ -233,7 +233,7 @@ public class FetchDataActionEffect : Effect<FetchDataAction>
 		WeatherForecastService = weatherForecastService;
 	}
 
-	protected override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
+	public override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
 	{
 		var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
 		dispatcher.Dispatch(new FetchDataResultAction(forecasts));
