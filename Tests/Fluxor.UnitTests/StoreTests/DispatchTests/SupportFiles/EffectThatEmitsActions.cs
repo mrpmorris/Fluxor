@@ -11,7 +11,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles
 		{
 			ActionsToEmit = actionsToEmit ?? Array.Empty<object>();
 		}
-		protected override Task HandleAsync(TestAction action, IDispatcher dispatcher)
+		public override Task HandleAsync(TestAction action, IDispatcher dispatcher)
 		{
 			foreach (object actionToEmit in ActionsToEmit)
 				dispatcher.Dispatch(actionToEmit);
