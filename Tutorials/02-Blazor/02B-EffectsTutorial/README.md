@@ -156,7 +156,7 @@ public class FetchDataActionEffect : Effect<FetchDataAction>
 		Http = http;
 	}
 
-	protected override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
+	public override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
 	{
 		var forecasts = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
 		dispatcher.Dispatch(new FetchDataResultAction(forecasts));

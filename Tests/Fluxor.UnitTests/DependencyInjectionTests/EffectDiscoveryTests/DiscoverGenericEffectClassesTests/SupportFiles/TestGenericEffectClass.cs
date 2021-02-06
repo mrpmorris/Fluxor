@@ -18,7 +18,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 			InvokeCountService = invokeCountService;
 		}
 
-		protected override Task HandleAsync(T action, IDispatcher dispatcher)
+		public override Task HandleAsync(T action, IDispatcher dispatcher)
 		{
 			InvokeCountService.IncrementCount();
 			return Task.CompletedTask;

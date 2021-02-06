@@ -11,7 +11,7 @@ namespace Fluxor
 		/// <summary>
 		/// <see cref="IEffect.HandleAsync(object, IDispatcher)"/>
 		/// </summary>
-		protected abstract Task HandleAsync(TTriggerAction action, IDispatcher dispatcher);
+		public abstract Task HandleAsync(TTriggerAction action, IDispatcher dispatcher);
 
 		/// <summary>
 		/// <see cref="IEffect.ShouldReactToAction(object)"/>
