@@ -26,4 +26,4 @@ state combined with the changes expected for the action.
 
 * [State, actions, and reducers](../Tutorials/02-Blazor/02A-StateActionsReducersTutorial/README.md)
 * [Effects](../Tutorials/02-Blazor/02B-EffectsTutorial/README.md)
-* [TODO - Redux Dev Tools](../Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/README.md)
+* [Redux Dev Tools](../Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/README.md)
