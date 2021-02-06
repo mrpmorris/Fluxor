@@ -37,6 +37,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02B-EffectsTutorial", "02B-
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02D-ReduxDevToolsTutorial", "02D-ReduxDevToolsTutorial", "{0555A496-56DB-45D0-9618-BEF456ABA67B}"
+	ProjectSection(SolutionItems) = preProject
+		..\Tutorials\02-Blazor\02D-ReduxDevToolsTutorial\README.md = ..\Tutorials\02-Blazor\02D-ReduxDevToolsTutorial\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevTools", "Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools.csproj", "{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}"
 EndProject
