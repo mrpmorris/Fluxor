@@ -22,18 +22,20 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		private const string FromJsDevToolsDetectedActionTypeName = "detected";
 		private const string ToJsDispatchMethodName = "dispatch";
 		private const string ToJsInitMethodName = "init";
-		private readonly IJSRuntime JSRuntime;
 		private bool IsInitializing;
+		private ReduxDevToolsMiddlewareOptions Options;
+		private readonly IJSRuntime JSRuntime;
 		private DotNetObjectReference<ReduxDevToolsInterop> DotNetRef;
 
 		/// <summary>
 		/// Creates an instance of the dev tools interop
 		/// </summary>
 		/// <param name="jsRuntime"></param>
-		public ReduxDevToolsInterop(IJSRuntime jsRuntime)
+		public ReduxDevToolsInterop(IJSRuntime jsRuntime, ReduxDevToolsMiddlewareOptions options)
 		{
 			JSRuntime = jsRuntime;
 			DotNetRef = DotNetObjectReference.Create(this);
+			Options = options;
 		}
 
 		internal async ValueTask InitializeAsync(IDictionary<string, object> state)
@@ -125,9 +127,10 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			return JSRuntime.InvokeAsync<TResult>(fullIdentifier, args);
 		}
 
-		internal static string GetClientScripts()
+		internal static string GetClientScripts(ReduxDevToolsMiddlewareOptions options)
 		{
 			string assemblyName = typeof(ReduxDevToolsInterop).Assembly.GetName().Name;
+			string optionsJson = BuildOptionsJson(options);
 
 			return $@"
 window.{FluxorDevToolsId} = new (function() {{
@@ -135,7 +138,7 @@ window.{FluxorDevToolsId} = new (function() {{
 	this.{ToJsInitMethodName} = function() {{}};
 
 	if (reduxDevTools !== undefined && reduxDevTools !== null) {{
-		const fluxorDevTools = reduxDevTools.connect({{ name: 'Fluxor' }});
+		const fluxorDevTools = reduxDevTools.connect({{ {optionsJson} }});
 		if (fluxorDevTools !== undefined && fluxorDevTools !== null) {{
 			fluxorDevTools.subscribe((message) => {{ 
 				if (window.fluxorDevToolsDotNetInterop) {{
@@ -171,6 +174,15 @@ window.{FluxorDevToolsId} = new (function() {{
 	}}
 }})();
 ";
+		}
+
+		private static string BuildOptionsJson(ReduxDevToolsMiddlewareOptions options)
+		{
+			var values = new List<string>();
+			values.Add($"name:\"{options.Name}\"");
+			values.Add($"maxAge:{options.MaximumHistoryLength}");
+			values.Add($"latency:{options.Latency.TotalMilliseconds}");
+			return string.Join(",", values);
 		}
 	}
 }

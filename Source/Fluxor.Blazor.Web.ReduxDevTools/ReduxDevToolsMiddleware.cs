@@ -17,21 +17,25 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		private SpinLock SpinLock = new SpinLock();
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;
+		private ReduxDevToolsMiddlewareOptions Options;
 		private IStore Store;
 		private readonly ReduxDevToolsInterop ReduxDevToolsInterop;
 
 		/// <summary>
 		/// Creates a new instance of the middleware
 		/// </summary>
-		public ReduxDevToolsMiddleware(ReduxDevToolsInterop reduxDevToolsInterop)
+		public ReduxDevToolsMiddleware(
+			ReduxDevToolsInterop reduxDevToolsInterop,
+			ReduxDevToolsMiddlewareOptions options)
 		{
+			Options = options;
 			ReduxDevToolsInterop = reduxDevToolsInterop;
 			ReduxDevToolsInterop.OnJumpToState = OnJumpToState;
 			ReduxDevToolsInterop.OnCommit = OnCommit;
 		}
 
 		/// <see cref="IMiddleware.GetClientScripts"/>
-		public override string GetClientScripts() => ReduxDevToolsInterop.GetClientScripts();
+		public override string GetClientScripts() => ReduxDevToolsInterop.GetClientScripts(Options);
 
 		/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
 		public async override Task InitializeAsync(IStore store)
