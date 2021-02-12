@@ -45,7 +45,6 @@ namespace Fluxor
 		public Feature()
 		{
 			TriggerStateChangedCallbacksThrottler = new ThrottledInvoker(TriggerStateChangedCallbacks);
-			State = GetInitialState();
 		}
 
 		private EventHandler untypedStateChanged;
@@ -84,7 +83,12 @@ namespace Fluxor
 		/// <see cref="IFeature{TState}.State"/>
 		public virtual TState State
 		{
-			get => _State;
+			get
+			{
+				if (_State == null)
+					State = GetInitialState();
+				return _State;
+			}
 			protected set
 			{
 				SpinLock.ExecuteLocked(() =>
