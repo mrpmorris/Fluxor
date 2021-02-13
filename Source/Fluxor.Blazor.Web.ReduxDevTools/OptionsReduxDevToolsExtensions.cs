@@ -7,6 +7,12 @@ namespace Fluxor
 {
 	public static class OptionsReduxDevToolsExtensions
 	{
+		/// <summary>
+		/// Enables interaction with the brower tool Redux Dev Tools
+		/// </summary>
+		/// <param name="options">The current options</param>
+		/// <param name="updateReduxOptions">An action to update the options</param>
+		/// <returns></returns>
 		public static FluxorOptions UseReduxDevTools(
 			this FluxorOptions options,
 			Action<ReduxDevToolsMiddlewareOptions> updateReduxOptions = null)
