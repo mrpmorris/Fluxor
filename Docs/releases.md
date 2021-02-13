@@ -69,11 +69,11 @@ public class TestStringReducer: AbstractGenericStateReducers<string>
 }
 
 public abstract class AbstractGenericStateReducers<T>
-	where T : IEquatable<T>
+  where T : IEquatable<T>
 {
-	[ReducerMethod]
-	public static TestState<T> ReduceRemoveItemAction(TestState<T> state, RemoveItemAction<T> action) =>
-		new TestState<T>(state.Items.Where(x => !x.Equals(action.Item)).ToArray());
+  [ReducerMethod]
+  public static TestState<T> ReduceRemoveItemAction(TestState<T> state, RemoveItemAction<T> action) =>
+    new TestState<T>(state.Items.Where(x => !x.Equals(action.Item)).ToArray());
 }
 ```
 
@@ -82,32 +82,32 @@ public abstract class AbstractGenericStateReducers<T>
 ```c#
 public class GenericEffectClassForMyAction : AbstractGenericEffectClass<MyAction>
 {
-	public GenericEffectClassForMyAction(SomeService someService) : base(someService)
-	{
-	}
+  public GenericEffectClassForMyAction(SomeService someService) : base(someService)
+  {
+  }
 }
 
 public class GenericEffectClassForAnotherAction : AbstractGenericEffectClass<AnotherAction>
 {
-	public GenericEffectClassForAnotherAction(SomeService someService) : base(someService)
-	{
-	}
+  public GenericEffectClassForAnotherAction(SomeService someService) : base(someService)
+  {
+  }
 }
 
 public abstract class AbstractGenericEffectClass<T> 
 {
-	private readonly ISomeService SomeService;
+  private readonly ISomeService SomeService;
 
-	protected AbstractGenericEffectClass(ISomeService someService)
-	{
-		SomeService = someService;
-	}
+  protected AbstractGenericEffectClass(ISomeService someService)
+  {
+    SomeService = someService;
+  }
 
-	[EffectMethod]
-	public Task HandleTheActionAsync(T action, IDispatcher dispatcher)
-	{
-		return SomeService.DoSomethingAsync(action);
-	}
+  [EffectMethod]
+  public Task HandleTheActionAsync(T action, IDispatcher dispatcher)
+  {
+    return SomeService.DoSomethingAsync(action);
+  }
 }
 ```
 

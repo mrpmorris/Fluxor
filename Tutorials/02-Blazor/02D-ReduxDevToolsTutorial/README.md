@@ -13,8 +13,8 @@ To enable Fluxor integration, follow these steps
 
 ```c#
 services.AddFluxor(o =>
-	o.ScanAssemblies(typeof(SomeType).Assembly),
-	o.UseReduxDevTools());
+  o.ScanAssemblies(typeof(SomeType).Assembly),
+  o.UseReduxDevTools());
 ```
 
  3. When you run your application, click the icon for the Redux Dev Tools extension.
@@ -28,11 +28,11 @@ Redux Dev Tools browser plugin.
 
 ```c#
 services.AddFluxor(o =>
-	o.ScanAssemblies(typeof(SomeType).Assembly),
-	o.UseReduxDevTools(rdt =>
-		{
-			rdt.Name = "My application";
-		}));
+  o.ScanAssemblies(typeof(SomeType).Assembly),
+  o.UseReduxDevTools(rdt =>
+    {
+      rdt.Name = "My application";
+    }));
 ```
 
 
@@ -55,17 +55,17 @@ it to use `camelCase` property names in the generated JSON.
 
 ```c#
 services.AddFluxor(o =>
-	o.ScanAssemblies(typeof(SomeType).Assembly),
-	o.UseReduxDevTools(rdt =>
-		{
-			rdt.UseSystemTextJson(_ =>
-				new System.Text.Json.JsonSerializerOptions
-				{
-					PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
-				}
-			);
-		}
-	)
+  o.ScanAssemblies(typeof(SomeType).Assembly),
+  o.UseReduxDevTools(rdt =>
+    {
+      rdt.UseSystemTextJson(_ =>
+        new System.Text.Json.JsonSerializerOptions
+        {
+          PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+        }
+      );
+    }
+  )
 );
 ```
 
@@ -74,20 +74,20 @@ the same goal.
 
 ```c#
 services.AddFluxor(o =>
-	o.ScanAssemblies(typeof(SomeType).Assembly),
-	o.UseReduxDevTools(rdt =>
-		{
-			rdt.UseNewtonsoftJson(_ =>
-				new Newtonsoft.Json.JsonSerializerSettings
-				{
-					ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
-					{
-						NamingStrategy = new Newtonsoft.Json.Serialization.CamelCaseNamingStrategy()
-					}
-				}
-			);
-		}
-	)
+  o.ScanAssemblies(typeof(SomeType).Assembly),
+  o.UseReduxDevTools(rdt =>
+    {
+      rdt.UseNewtonsoftJson(_ =>
+        new Newtonsoft.Json.JsonSerializerSettings
+        {
+          ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
+          {
+            NamingStrategy = new Newtonsoft.Json.Serialization.CamelCaseNamingStrategy()
+          }
+        }
+      );
+    }
+  )
 );
 ```
 
@@ -104,11 +104,11 @@ the implementor of that interface udring the Dependency Injection phase.
 // JSON library adapter class
 public class MyJsonLibAdapter : IJsonSerialization
 {
-	public object Deserialize(string json, Type type) =>
-		MyJsonLib.DeserializeObject(json, type);
+  public object Deserialize(string json, Type type) =>
+    MyJsonLib.DeserializeObject(json, type);
 
-	public string Serialize(object source, Type type) =>
-		MyJsonLib.SerializeObject(source, type);	
+  public string Serialize(object source, Type type) =>
+    MyJsonLib.SerializeObject(source, type);  
 }
 ```
 

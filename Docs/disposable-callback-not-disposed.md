@@ -16,7 +16,7 @@ or `FluxorLayout` and not called `base.Dispose(disposed)`.
 
 **Fix:** If you override a method, make sure you call the base method.
 
-```C#
+```c#
 protected override void Dispose(bool disposed)
 {
   base.Dispose(disposed);
@@ -32,10 +32,10 @@ disposing the result.
 make sure you dispose it. Note that the following example is for
 advanced use cases only (middleware).
 
-```C#
+```c#
 using (Store.BeginMiddlewareChange())
 {
-	//etc
+  //etc
 }
 ```
 
