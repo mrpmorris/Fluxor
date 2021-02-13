@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Fluxor.DependencyInjection;
+using System;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools
 {
 	public class ReduxDevToolsMiddlewareOptions
 	{
+		private readonly FluxorOptions FluxorOptions;
+
 		/// <summary>
 		/// The name to display in the Redux Dev Tools window
 		/// </summary>
@@ -19,5 +20,10 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// Default is 50.
 		/// </summary>
 		public ushort MaximumHistoryLength { get; set; } = 50;
+
+		public ReduxDevToolsMiddlewareOptions(FluxorOptions fluxorOptions)
+		{
+			FluxorOptions = fluxorOptions;
+		}
 	}
 }
