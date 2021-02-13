@@ -1,13 +1,16 @@
 # Releases
 
-### New in 4.0
+## New in 4.1
+ * Allow custom control over JSON serialisation in Redux Dev Tools
+
+## New in 4.0
  * Changed `Effect<T>.HandleAsync` from `protected` to `public` to make unit testing easier
  * Added `Options` to `.UseReduxDevTools()` middleware extension
 
-### New in 3.9
+## New in 3.9
  * Support added for .NET 5.0
 
-### New in 3.8
+## New in 3.8
  * Allow state notification throttling to reduce time spent rendering ([#114](https://github.com/mrpmorris/Fluxor/issues/114)) - see:
    *  `FluxorComponent.MaximumStateChangedNotificationsPerSecond`
    *  `FluxorLayout.MaximumStateChangedNotificationsPerSecond`
@@ -106,7 +109,7 @@ public abstract class AbstractGenericEffectClass<T>
 }
 ```
 
-### New in 3.7
+## New in 3.7
  * Fix for ([#84](https://github.com/mrpmorris/Fluxor/issues/84) - 
    Allow observer to unsubscribe from all subscriptions whilst executing
    the callback from a previous subscription
@@ -116,42 +119,42 @@ public abstract class AbstractGenericEffectClass<T>
  * Fix for ([#77](https://github.com/mrpmorris/Fluxor/issues/87)) -
    Exception thrown initialising store in .NET 5.
 
-### New in 3.6
+## New in 3.6
  * Ensure synchronous effects are executed synchronously ([#76](https://github.com/mrpmorris/fluxor/issues/76)) -
    Reverts changes for [(#74) Endless loop redirects](https://github.com/mrpmorris/Fluxor/issues/74) as
    these are no longer occur.
 
-### New in 3.5
+## New in 3.5
  * Bug fix for ([#74](https://github.com/mrpmorris/Fluxor/issues/74)) - Handle endless loop redirects caused by Routing middleware.
 
-### New in 3.4
+## New in 3.4
  * **Breaking change**: `FluxorException` is now an `abstract` class.
  * Unhandled exceptions in Effects can now notify the UI.
 
-### New in 3.3
+## New in 3.3
  * **Breaking change**: `EffectMethod` and `ReducerMethod` decorated methods must now be public - although they can be methods of internal classes.
  * New `IActionSubscriber` to receive notifications before actions are reduced into state and before Effects are triggered
  * More speed improvements in `options.ScanAssemblies`
  * Subscriptions to the `StateChanged` event will now be triggered before FluxorComponent/FluxorLayout notified of changes (so manual subscriptions are executed before rendering)
  * Added link with more information for when `DisposableCallback` throws an error because it has not been disposed
 
-### New in 3.2
+## New in 3.2
  * Improved speed of app start-up when using `options.ScanAssemblies`
  * Assemblies are now signed
  * Set project options to treat all warnings as errors
 
-### New in 3.1.1
+## New in 3.1.1
  * Fixed bug that caused exception when using `.ConfigureAwait` in an Effect ([#20](https://github.com/mrpmorris/Fluxor/issues/20))
  * Ensured add/remove on events are thread safe ([#23](https://github.com/mrpmorris/Fluxor/issues/23))
  * Made it easier to find the source of DisposableCallback instances that are not disposed ([#24](https://github.com/mrpmorris/Fluxor/issues/24))
  * State properties were not discovered if they were declared as private in a base class ([#25](https://github.com/mrpmorris/Fluxor/issues/25))
  * Handle disposing of partially created DisposableAction ([#29](https://github.com/mrpmorris/Fluxor/issues/29))
 
-### New in 3.1.0
+## New in 3.1.0
   * Used Newtonsoft entirely for JS interop to ReduxDevTools to prevent serialization errors ([#7](https://github.com/mrpmorris/Fluxor/issues/7))
   * Added new FluxorLayout for auto-subscribing to state ([#8](https://github.com/mrpmorris/Fluxor/issues/8))
 
-### New in 3.0.2
+## New in 3.0.2
   * Bug fix for ([#134](https://github.com/mrpmorris/blazor-fluxor/issues/134)) - URLs not taking into account query parameters
   * Update NuGet package icons.
 

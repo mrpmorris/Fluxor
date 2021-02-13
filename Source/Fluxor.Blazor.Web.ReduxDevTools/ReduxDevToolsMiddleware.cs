@@ -1,6 +1,5 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects;
 using Fluxor.Extensions;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -20,18 +19,21 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		private ReduxDevToolsMiddlewareOptions Options;
 		private IStore Store;
 		private readonly ReduxDevToolsInterop ReduxDevToolsInterop;
+		private readonly IJsonSerialization JsonSerialization;
 
 		/// <summary>
 		/// Creates a new instance of the middleware
 		/// </summary>
 		public ReduxDevToolsMiddleware(
 			ReduxDevToolsInterop reduxDevToolsInterop,
-			ReduxDevToolsMiddlewareOptions options)
+			ReduxDevToolsMiddlewareOptions options,
+			IJsonSerialization jsonSerialization = null)
 		{
 			Options = options;
 			ReduxDevToolsInterop = reduxDevToolsInterop;
 			ReduxDevToolsInterop.OnJumpToState = OnJumpToState;
 			ReduxDevToolsInterop.OnCommit = OnCommit;
+			JsonSerialization = jsonSerialization ?? new Serialization.NewtonsoftSerialization();
 		}
 
 		/// <see cref="IMiddleware.GetClientScripts"/>
@@ -89,16 +91,17 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			SequenceNumberOfCurrentState = callbackInfo.payload.actionId;
 			using (Store.BeginInternalMiddlewareChange())
 			{
-				var newFeatureStates = JsonConvert.DeserializeObject<Dictionary<string, object>>(callbackInfo.state);
+				var newFeatureStates = JsonSerialization.Deserialize<Dictionary<string, object>>(callbackInfo.state);
 				foreach (KeyValuePair<string, object> newFeatureState in newFeatureStates)
 				{
 					// Get the feature with the given name
 					if (!Store.Features.TryGetValue(newFeatureState.Key, out IFeature feature))
 						continue;
 
-					object stronglyTypedFeatureState = JsonConvert.DeserializeObject(
-						value: newFeatureState.Value.ToString(),
-						type: feature.GetStateType());
+					object stronglyTypedFeatureState = JsonSerialization
+						.Deserialize(
+							json: newFeatureState.Value.ToString(),
+							type: feature.GetStateType());
 
 					// Now set the feature's state to the deserialized object
 					feature.RestoreState(stronglyTypedFeatureState);
