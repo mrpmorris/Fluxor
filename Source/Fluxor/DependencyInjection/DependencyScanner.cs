@@ -11,7 +11,7 @@ namespace Fluxor.DependencyInjection
 	{
 		internal static void Scan(
 			this IServiceCollection serviceCollection,
-			Options options,
+			FluxorOptions options,
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
 		{
@@ -88,7 +88,7 @@ namespace Fluxor.DependencyInjection
 
 		private static void RegisterStore(
 			IServiceCollection serviceCollection,
-			Options options,
+			FluxorOptions options,
 			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses,
 			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses,
 			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods)
