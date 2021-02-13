@@ -3,11 +3,11 @@ using System.Text.Json;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools.Serialization
 {
-	public class SystemTextSerialization : IJsonSerialization
+	public class SystemTextJsonAdapter : IJsonSerialization
 	{
 		private readonly JsonSerializerOptions Options;
 
-		public SystemTextSerialization(JsonSerializerOptions options = null)
+		public SystemTextJsonAdapter(JsonSerializerOptions options = null)
 		{
 			Options = options;
 		}

@@ -33,7 +33,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			ReduxDevToolsInterop = reduxDevToolsInterop;
 			ReduxDevToolsInterop.OnJumpToState = OnJumpToState;
 			ReduxDevToolsInterop.OnCommit = OnCommit;
-			JsonSerialization = jsonSerialization ?? new Serialization.NewtonsoftSerialization();
+			JsonSerialization = jsonSerialization ?? new Serialization.NewtonsoftJsonAdapter();
 		}
 
 		/// <see cref="IMiddleware.GetClientScripts"/>

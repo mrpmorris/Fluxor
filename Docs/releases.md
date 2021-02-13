@@ -1,7 +1,9 @@
 # Releases
 
 ## New in 4.1
- * Allow custom control over JSON serialisation in Redux Dev Tools
+ * Allow custom control over JSON serialisation in Redux Dev Tools - see 
+   [Redux Dev Tools](../Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/README.md) docs.
+
 
 ## New in 4.0
  * Changed `Effect<T>.HandleAsync` from `protected` to `public` to make unit testing easier

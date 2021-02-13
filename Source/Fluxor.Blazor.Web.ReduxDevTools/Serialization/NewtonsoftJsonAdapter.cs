@@ -3,11 +3,11 @@ using System;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools.Serialization
 {
-	public class NewtonsoftSerialization : IJsonSerialization
+	public class NewtonsoftJsonAdapter : IJsonSerialization
 	{
 		private readonly JsonSerializerSettings Settings;
 
-		public NewtonsoftSerialization(JsonSerializerSettings settings = null)
+		public NewtonsoftJsonAdapter(JsonSerializerSettings settings = null)
 		{
 			Settings = settings;
 		}

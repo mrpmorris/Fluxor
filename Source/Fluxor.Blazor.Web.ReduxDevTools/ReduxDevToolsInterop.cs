@@ -35,7 +35,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			IJsonSerialization jsonSerialization = null)
 		{
 			JSRuntime = jsRuntime;
-			JsonSerialization = jsonSerialization ?? new Serialization.NewtonsoftSerialization();
+			JsonSerialization = jsonSerialization ?? new Serialization.NewtonsoftJsonAdapter();
 			DotNetRef = DotNetObjectReference.Create(this);
 		}
 
