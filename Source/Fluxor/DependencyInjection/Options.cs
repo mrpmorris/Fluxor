@@ -49,6 +49,22 @@ namespace Fluxor.DependencyInjection
 		}
 
 		/// <summary>
+		/// Enables automatic discovery of features/effects/reducers
+		/// </summary>
+		/// <param name="assemblyToScan">The assembly to be scanned</param>
+		/// <param name="namespace">The namespace in which to discover features/effects/reducers.</param>
+		/// <returns>Options</returns>
+		public Options ScanAssembly(Assembly assemblyToScan, string @namespace = null)
+		{
+			if (assemblyToScan == null)
+				throw new ArgumentNullException(nameof(assemblyToScan));
+
+			AssembliesToScan = AssembliesToScan.Append(new AssemblyScanSettings(assemblyToScan, @namespace)).ToArray();
+
+			return this;
+		}
+
+		/// <summary>
 		/// Enables the developer to specify a class that implements <see cref="IMiddleware"/>
 		/// which should be injected into the <see cref="IStore.AddMiddleware(IMiddleware)"/> method
 		/// after dependency injection has completed.
