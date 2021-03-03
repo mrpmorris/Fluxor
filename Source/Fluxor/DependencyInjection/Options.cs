@@ -54,10 +54,12 @@ namespace Fluxor.DependencyInjection
 		/// <param name="assemblyToScan">The assembly to be scanned</param>
 		/// <param name="namespace">The namespace in which to discover features/effects/reducers.</param>
 		/// <returns>Options</returns>
-		public Options ScanAssembly(Assembly assemblyToScan, string @namespace = null)
+		public Options ScanAssembly(Assembly assemblyToScan, string @namespace)
 		{
 			if (assemblyToScan == null)
 				throw new ArgumentNullException(nameof(assemblyToScan));
+			if (@namespace == null)
+				throw new ArgumentNullException(nameof(@namespace));
 
 			AssembliesToScan = AssembliesToScan.Append(new AssemblyScanSettings(assemblyToScan, @namespace)).ToArray();
 
