@@ -13,7 +13,7 @@ To enable Fluxor integration, follow these steps
 
 ```c#
 services.AddFluxor(o => o
-    .ScanAssemblies(currentAssembly)
+    .ScanAssemblies(typeof(SomeType).Assembly)
     .UseReduxDevTools());
 ```
 
