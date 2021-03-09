@@ -8,13 +8,13 @@
 ![](./../../../images/redux-dev-tools.jpg)
 
 To enable Fluxor integration, follow these steps
- 1. Add Fluxor.Blazor.Web.ReduxDevTools nuget package to your project.
+ 1. Add the [Fluxor.Blazor.Web.ReduxDevTools][ReduxDevToolsLink] nuget package to your project.
  2. Use the `UseReduxDevTools` extension on the Fluxor options.
 
 ```c#
-services.AddFluxor(o =>
-	o.ScanAssemblies(typeof(SomeType).Assembly),
-	o.UseReduxDevTools());
+services.AddFluxor(o => o
+    .ScanAssemblies(currentAssembly)
+    .UseReduxDevTools());
 ```
 
  3. When you run your application, click the icon for the Redux Dev Tools extension.
@@ -33,3 +33,4 @@ Redux Dev Tools browser plugin.
  [ReduxDevToolsLink]: https://github.com/zalmoxisus/redux-devtools-extension
  [ChromePluginLink]: https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en
  [FirefoxPluginLink]: https://addons.mozilla.org/en-GB/firefox/addon/reduxdevtools/
+ [ReduxDevToolsLink]: https://www.nuget.org/packages/Fluxor.Blazor.Web.ReduxDevTools/
