@@ -20,7 +20,7 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 			if (fullUri.ToString() != NavigationManager.Uri)
 			{
 				// Only navigate if we are not already at the URI specified
-				NavigationManager.NavigateTo(action.NewUri);
+				NavigationManager.NavigateTo(action.NewUri, action.ForceLoad);
 			}
 			return Task.CompletedTask;
 		}
