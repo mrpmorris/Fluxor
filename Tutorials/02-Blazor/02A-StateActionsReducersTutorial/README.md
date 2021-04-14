@@ -33,11 +33,11 @@ using Fluxor;
 
 public void ConfigureServices(IServiceCollection services)
 {
-	...
+  ...
 
-	// Add the following
-	var currentAssembly = typeof(Startup).Assembly;
-	services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
+  // Add the following
+  var currentAssembly = typeof(Startup).Assembly;
+  services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
 }
 ```
 
@@ -47,14 +47,14 @@ using Fluxor;
 
 public static async Task Main(string[] args)
 {
-	...
+  ...
 
-	// Add the following
-	var currentAssembly = typeof(Program).Assembly;
-	builder.Services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
+  // Add the following
+  var currentAssembly = typeof(Program).Assembly;
+  builder.Services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
 
-	// This line already exists and should come last
-	await builder.Build().RunAsync();
+  // This line already exists and should come last
+  await builder.Build().RunAsync();
 }
 ```
 
@@ -80,12 +80,12 @@ will hold the values of your state to be displayed in your application.
 ```c#
 public class CounterState
 {
-	public int ClickCount { get; }
+  public int ClickCount { get; }
 
-	public CounterState(int clickCount)
-	{
-		ClickCount = clickCount;
-	}
+  public CounterState(int clickCount)
+  {
+    ClickCount = clickCount;
+  }
 }
 ```
 
@@ -96,9 +96,9 @@ public class CounterState
 ```c#
 public class Feature : Feature<CounterState>
 {
-	public override string GetName() => "Counter";
-	protected override CounterState GetInitialState() =>
-		new CounterState(clickCount: 0);
+  public override string GetName() => "Counter";
+  protected override CounterState GetInitialState() =>
+    new CounterState(clickCount: 0);
 }
 ```
 
@@ -122,8 +122,8 @@ using YourAppName.Store.CounterUseCase;
 ```c#
 public partial class Counter
 {
-	[Inject]
-	private IState<CounterState> CounterState { get; set; }
+  [Inject]
+  private IState<CounterState> CounterState { get; set; }
 }
 ```
 
@@ -155,17 +155,17 @@ of our new `IncrementCounterAction` when the button is clicked.
 ```c#
 public partial class Counter
 {
-	[Inject]
-	private IState<CounterState> CounterState { get; set; }
+  [Inject]
+  private IState<CounterState> CounterState { get; set; }
 
-	[Inject]
-	public IDispatcher Dispatcher { get; set; }
+  [Inject]
+  public IDispatcher Dispatcher { get; set; }
 
-	private void IncrementCount()
-	{
-		var action = new IncrementCounterAction();
-		Dispatcher.Dispatch(action);
-	}
+  private void IncrementCount()
+  {
+    var action = new IncrementCounterAction();
+    Dispatcher.Dispatch(action);
+  }
 }
 ```
 
@@ -181,9 +181,9 @@ we do not handle this action. We will fix that next.
 ```c#
 public static class Reducers
 {
-	[ReducerMethod]
-	public static CounterState ReduceIncrementCounterAction(CounterState state, IncrementCounterAction action) =>
-		new CounterState(clickCount: state.ClickCount + 1);
+  [ReducerMethod]
+  public static CounterState ReduceIncrementCounterAction(CounterState state, IncrementCounterAction action) =>
+    new CounterState(clickCount: state.ClickCount + 1);
 }
 ```
 
@@ -200,20 +200,20 @@ signature, it will be used.
 ```c#
 public static class SomeReducerClass
 {
-	[ReducerMethod]
-	public static SomeState ReduceSomeAction(SomeState state, SomeAction action) => new SomeState();
+  [ReducerMethod]
+  public static SomeState ReduceSomeAction(SomeState state, SomeAction action) => new SomeState();
 
-	[ReducerMethod]
-	public static SomeState ReduceSomeAction2(SomeState state, SomeAction2 action) => new SomeState();
+  [ReducerMethod]
+  public static SomeState ReduceSomeAction2(SomeState state, SomeAction2 action) => new SomeState();
 }
 
 public static class SomeOtherReducerClass
 {
-	[ReducerMethod]
-	public static SomeState ReduceSomeAction3(SomeState state, SomeAction3 action) => new SomeState();
+  [ReducerMethod]
+  public static SomeState ReduceSomeAction3(SomeState state, SomeAction3 action) => new SomeState();
 
-	[ReducerMethod]
-	public static SomeState ReduceSomeAction4(SomeState state, SomeAction4 action) => new SomeState();
+  [ReducerMethod]
+  public static SomeState ReduceSomeAction4(SomeState state, SomeAction4 action) => new SomeState();
 }
 ```
 
@@ -236,8 +236,8 @@ It is also possible to create a reducer per state+action combination like this..
 ```c#
 public class IncrementCounterReducer : Reducer<CounterState, IncrementCounterAction>
 {
-	public override CounterState Reduce(CounterState state, IncrementCounterAction action) =>
-		new CounterState(clickCount: state.ClickCount + 1);
+  public override CounterState Reduce(CounterState state, IncrementCounterAction action) =>
+    new CounterState(clickCount: state.ClickCount + 1);
 }
 ```
 

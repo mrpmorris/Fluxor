@@ -28,10 +28,10 @@ to use when communicating with a server.
 ```c#
 public class WeatherForecast
 {
-	public DateTime Date { get; set; }
-	public int TemperatureC { get; set; }
-	public string Summary { get; set; }
-	public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+  public DateTime Date { get; set; }
+  public int TemperatureC { get; set; }
+  public string Summary { get; set; }
+  public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
 ```
 
@@ -44,28 +44,28 @@ using YourAppName.Store.Shared;
 
 public interface IWeatherForecastService
 {
-	Task<WeatherForecast[]> GetForecastAsync(DateTime startDate);
+  Task<WeatherForecast[]> GetForecastAsync(DateTime startDate);
 }
 
 public class WeatherForecastService : IWeatherForecastService
 {
-	private static readonly string[] Summaries = new[]
-	{
-		"Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-	};
+  private static readonly string[] Summaries = new[]
+  {
+    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+  };
 
-	public async Task<WeatherForecast[]> GetForecastAsync(DateTime startDate)
-	{
-		await Task.Delay(1000); // Simulate a 1 second response time
-		var rng = new Random();
-		return Enumerable.Range(1, 2).Select(index => new WeatherForecast
-			{
-				Date = startDate.AddDays(index),
-				TemperatureC = rng.Next(-20, 55),
-				Summary = Summaries[rng.Next(Summaries.Length)]
-			})
-			.ToArray();
-	}
+  public async Task<WeatherForecast[]> GetForecastAsync(DateTime startDate)
+  {
+    await Task.Delay(1000); // Simulate a 1 second response time
+    var rng = new Random();
+    return Enumerable.Range(1, 2).Select(index => new WeatherForecast
+      {
+        Date = startDate.AddDays(index),
+        TemperatureC = rng.Next(-20, 55),
+        Summary = Summaries[rng.Next(Summaries.Length)]
+      })
+      .ToArray();
+  }
 }
 ```
 
@@ -85,14 +85,14 @@ using YourAppName.Store.Shared;
 
 public class WeatherState
 {
-	public bool IsLoading { get; }
-	public IEnumerable<WeatherForecast> Forecasts { get; }
+  public bool IsLoading { get; }
+  public IEnumerable<WeatherForecast> Forecasts { get; }
 
-	public WeatherState(bool isLoading, IEnumerable<WeatherForecast> forecasts)
-	{
-		IsLoading = isLoading;
-		Forecasts = forecasts ?? Array.Empty<WeatherForecast>();
-	}
+  public WeatherState(bool isLoading, IEnumerable<WeatherForecast> forecasts)
+  {
+    IsLoading = isLoading;
+    Forecasts = forecasts ?? Array.Empty<WeatherForecast>();
+  }
 }
 ```
 
@@ -106,11 +106,11 @@ the server, and an enumerable holding zero to many `WeatherForecast` objects.
 ```c#
 public class Feature : Feature<WeatherState>
 {
-	public override string GetName() => "Weather";
-	protected override WeatherState GetInitialState() =>
-		new WeatherState(
-			isLoading: false,
-			forecasts: null);
+  public override string GetName() => "Weather";
+  protected override WeatherState GetInitialState() =>
+    new WeatherState(
+      isLoading: false,
+      forecasts: null);
 }
 ```
 
@@ -120,20 +120,20 @@ public class Feature : Feature<WeatherState>
 ```c#
 public class App
 {
-	public class App
-	{
-		...
-		private readonly IState<WeatherState> WeatherState;
+  public class App
+  {
+    ...
+    private readonly IState<WeatherState> WeatherState;
 
-		public App(
-			...
-			IState<WeatherState> weatherState)
-		{
-			...
-			WeatherState = weatherState;
-			WeatherState.StateChanged += WeatherState_StateChanged;
-		}
-
+    public App(
+      ...
+      IState<WeatherState> weatherState)
+    {
+      ...
+      WeatherState = weatherState;
+      WeatherState.StateChanged += WeatherState_StateChanged;
+    }
+  }
 }
 ```
 
@@ -142,21 +142,21 @@ public class App
 ```c#
 private void WeatherState_StateChanged(object sender, WeatherState e)
 {
-	Console.WriteLine("");
-	Console.WriteLine("=========================> WeatherState");
-	Console.WriteLine("IsLoading: " + WeatherState.Value.IsLoading);
-	if (!WeatherState.Value.Forecasts.Any())
-	{
-		Console.WriteLine("--- No weather forecasts");
-	}
-	else
-	{
-		Console.WriteLine("Temp C\tTemp F\tSummary");
-		foreach (WeatherForecast forecast in WeatherState.Value.Forecasts)
-			Console.WriteLine($"{forecast.TemperatureC}\t{forecast.TemperatureF}\t{forecast.Summary}");
-	}
-	Console.WriteLine("<========================== WeatherState");
-	Console.WriteLine("");
+  Console.WriteLine("");
+  Console.WriteLine("=========================> WeatherState");
+  Console.WriteLine("IsLoading: " + WeatherState.Value.IsLoading);
+  if (!WeatherState.Value.Forecasts.Any())
+  {
+    Console.WriteLine("--- No weather forecasts");
+  }
+  else
+  {
+    Console.WriteLine("Temp C\tTemp F\tSummary");
+    foreach (WeatherForecast forecast in WeatherState.Value.Forecasts)
+      Console.WriteLine($"{forecast.TemperatureC}\t{forecast.TemperatureF}\t{forecast.Summary}");
+  }
+  Console.WriteLine("<========================== WeatherState");
+  Console.WriteLine("");
 }
 ```
 
@@ -174,42 +174,40 @@ updated*.
 ```c#
 public static class Reducers
 {
-	[ReducerMethod]
-	public static WeatherState ReduceFetchDataAction(WeatherState state, FetchDataAction action) =>
-		new WeatherState(
-			isLoading: true,
-			forecasts: null);
+  [ReducerMethod]
+  public static WeatherState ReduceFetchDataAction(WeatherState state, FetchDataAction action) =>
+    new WeatherState(
+      isLoading: true,
+      forecasts: null);
 }
 ```
 
 - In our `App` class add code to dispatch the action when option 2 is chosen.
 
-
-
 ```c#
 public void Run()
 {
-	...
-	Console.WriteLine("2: Fetch data");
-	...
-		switch(input.ToLowerInvariant())
-		{
-			case "1":
-				var incrementCounterActionction = new IncrementCounterAction();
-				Dispatcher.Dispatch(incrementCounterActionction);
-				break;
+  ...
+  Console.WriteLine("2: Fetch data");
+  ...
+    switch(input.ToLowerInvariant())
+    {
+      case "1":
+        var incrementCounterActionction = new IncrementCounterAction();
+        Dispatcher.Dispatch(incrementCounterActionction);
+        break;
 
-			case "2":
-				var fetchDataAction = new FetchDataAction();
-				Dispatcher.Dispatch(fetchDataAction);
-				break;
+      case "2":
+        var fetchDataAction = new FetchDataAction();
+        Dispatcher.Dispatch(fetchDataAction);
+        break;
 
-			case "x":
-				Console.WriteLine("Program terminated");
-				return;
-		}
+      case "x":
+        Console.WriteLine("Program terminated");
+        return;
+    }
 
-	...
+  ...
 }
 ```
 
@@ -226,18 +224,18 @@ identifies the type of action that should trigger this `Effect`.
 ```c#
 public class FetchDataActionEffect : Effect<FetchDataAction>
 {
-	private readonly IWeatherForecastService WeatherForecastService;
+  private readonly IWeatherForecastService WeatherForecastService;
 
-	public FetchDataActionEffect(IWeatherForecastService weatherForecastService)
-	{
-		WeatherForecastService = weatherForecastService;
-	}
+  public FetchDataActionEffect(IWeatherForecastService weatherForecastService)
+  {
+    WeatherForecastService = weatherForecastService;
+  }
 
-	public override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
-	{
-		var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
-		dispatcher.Dispatch(new FetchDataResultAction(forecasts));
-	}
+  public override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
+  {
+    var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
+    dispatcher.Dispatch(new FetchDataResultAction(forecasts));
+  }
 }
 ```
 
@@ -247,19 +245,19 @@ method are unimportant.
 ```c#
 public class Effects
 {
-	private readonly IWeatherForecastService WeatherForecastService;
+  private readonly IWeatherForecastService WeatherForecastService;
 
-	public Effects(IWeatherForecastService weatherForecastService)
-	{
-		WeatherForecastService = weatherForecastService;
-	}
+  public Effects(IWeatherForecastService weatherForecastService)
+  {
+    WeatherForecastService = weatherForecastService;
+  }
 
-	[EffectMethod]
-	public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
-	{
-		var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
-		dispatcher.Dispatch(new FetchDataResultAction(forecasts));
-	}
+  [EffectMethod]
+  public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
+  {
+    var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
+    dispatcher.Dispatch(new FetchDataResultAction(forecasts));
+  }
 }
 ```
 
@@ -275,12 +273,12 @@ so they can be "reduced" into our application state.
 ```c#
 public class FetchDataResultAction
 {
-	public IEnumerable<WeatherForecast> Forecasts { get; }
+  public IEnumerable<WeatherForecast> Forecasts { get; }
 
-	public FetchDataResultAction(IEnumerable<WeatherForecast> forecasts)
-	{
-		Forecasts = forecasts;
-	}
+  public FetchDataResultAction(IEnumerable<WeatherForecast> forecasts)
+  {
+    Forecasts = forecasts;
+  }
 }
 ```
 
@@ -293,9 +291,9 @@ action into state.
 ```c#
 [ReducerMethod]
 public static WeatherState ReduceFetchDataResultAction(WeatherState state, FetchDataResultAction action) =>
-	new WeatherState(
-		isLoading: false,
-		forecasts: action.Forecasts);
+  new WeatherState(
+    isLoading: false,
+    forecasts: action.Forecasts);
 ```
 
 This reducer simply sets the `IsLoading` state back to false, and sets the `Forecasts` state to the

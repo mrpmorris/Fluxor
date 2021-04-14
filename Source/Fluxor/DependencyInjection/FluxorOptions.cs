@@ -9,7 +9,7 @@ namespace Fluxor.DependencyInjection
 	/// <summary>
 	/// An options class for configuring Fluxor
 	/// </summary>
-	public class Options
+	public class FluxorOptions
 	{
 		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = new AssemblyScanSettings[0];
 		internal Type[] MiddlewareTypes = new Type[0];
@@ -22,7 +22,7 @@ namespace Fluxor.DependencyInjection
 		/// Creates a new instance
 		/// </summary>
 		/// <param name="services"></param>
-		public Options(IServiceCollection services)
+		public FluxorOptions(IServiceCollection services)
 		{
 			Services = services;
 		}
@@ -32,7 +32,9 @@ namespace Fluxor.DependencyInjection
 		/// </summary>
 		/// <param name="additionalAssembliesToScan">A collection of assemblies to scan</param>
 		/// <returns>Options</returns>
-		public Options ScanAssemblies(Assembly assemblyToScan, params Assembly[] additionalAssembliesToScan)
+		public FluxorOptions ScanAssemblies(
+			Assembly assemblyToScan,
+			params Assembly[] additionalAssembliesToScan)
 		{
 			if (assemblyToScan == null)
 				throw new ArgumentNullException(nameof(assemblyToScan));
@@ -55,7 +57,7 @@ namespace Fluxor.DependencyInjection
 		/// </summary>
 		/// <typeparam name="TMiddleware">The Middleware type</typeparam>
 		/// <returns>Options</returns>
-		public Options AddMiddleware<TMiddleware>()
+		public FluxorOptions AddMiddleware<TMiddleware>()
 			where TMiddleware : IMiddleware
 		{
 			if (Array.IndexOf(MiddlewareTypes, typeof(TMiddleware)) > -1)

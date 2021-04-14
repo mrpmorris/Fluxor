@@ -5,7 +5,7 @@ namespace Fluxor
 {
 	public static class OptionsRoutingExtensions
 	{
-		public static Options UseRouting(this Options options)
+		public static FluxorOptions UseRouting(this FluxorOptions options)
 		{
 			options.AddMiddleware<RoutingMiddleware>();
 			return options;

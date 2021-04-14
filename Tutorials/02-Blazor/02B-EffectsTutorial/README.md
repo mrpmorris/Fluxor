@@ -20,14 +20,14 @@ This tutorial will recreate the `Fetch data` page in a standard Blazor app.
 ```c#
 public class WeatherState
 {
-	public bool IsLoading { get; }
-	public IEnumerable<WeatherForecast> Forecasts { get; }
+  public bool IsLoading { get; }
+  public IEnumerable<WeatherForecast> Forecasts { get; }
 
-	public WeatherState(bool isLoading, IEnumerable<WeatherForecast> forecasts)
-	{
-		IsLoading = isLoading;
-		Forecasts = forecasts ?? Array.Empty<WeatherForecast>();
-	}
+  public WeatherState(bool isLoading, IEnumerable<WeatherForecast> forecasts)
+  {
+    IsLoading = isLoading;
+    Forecasts = forecasts ?? Array.Empty<WeatherForecast>();
+  }
 }
 ```
 
@@ -41,11 +41,11 @@ the server, and an enumerable holding zero to many `WeatherForecast` objects.
 ```c#
 public class Feature : Feature<WeatherState>
 {
-	public override string GetName() => "Weather";
-	protected override WeatherState GetInitialState() =>
-		new WeatherState(
-			isLoading: false,
-			forecasts: null);
+  public override string GetName() => "Weather";
+  protected override WeatherState GetInitialState() =>
+    new WeatherState(
+      isLoading: false,
+      forecasts: null);
 }
 ```
 
@@ -66,8 +66,8 @@ using YourAppName.Store.WeatherUseCase;
 ```c#
 public partial class FetchData
 {
-	[Inject]
-	private IState<WeatherState> WeatherState { get; set; }
+  [Inject]
+  private IState<WeatherState> WeatherState { get; set; }
 }
 ```
 
@@ -109,11 +109,11 @@ to
 ```c#
 public static class Reducers
 {
-	[ReducerMethod]
-	public static WeatherState ReduceFetchDataAction(WeatherState state, FetchDataAction action) =>
-		new WeatherState(
-			isLoading: true,
-			forecasts: null);
+  [ReducerMethod]
+  public static WeatherState ReduceFetchDataAction(WeatherState state, FetchDataAction action) =>
+    new WeatherState(
+      isLoading: true,
+      forecasts: null);
 }
 ```
 
@@ -123,17 +123,17 @@ lifecycle method. The code-behind class should now look like this
 ```c#
 public partial class FetchData
 {
-	[Inject]
-	private IState<WeatherState> WeatherState { get; set; }
+  [Inject]
+  private IState<WeatherState> WeatherState { get; set; }
 
-	[Inject]
-	private IDispatcher Dispatcher { get; set; }
+  [Inject]
+  private IDispatcher Dispatcher { get; set; }
 
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		Dispatcher.Dispatch(new FetchDataAction());
-	}
+  protected override void OnInitialized()
+  {
+    base.OnInitialized();
+    Dispatcher.Dispatch(new FetchDataAction());
+  }
 }
 ```
 
@@ -149,18 +149,18 @@ Effect handlers can be written in one of two ways.
 ```c#
 public class FetchDataActionEffect : Effect<FetchDataAction>
 {
-	private readonly HttpClient Http;
+  private readonly HttpClient Http;
 
-	public FetchDataActionEffect(HttpClient http)
-	{
-		Http = http;
-	}
+  public FetchDataActionEffect(HttpClient http)
+  {
+    Http = http;
+  }
 
-	public override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
-	{
-		var forecasts = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
-		dispatcher.Dispatch(new FetchDataResultAction(forecasts));
-	}
+  public override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
+  {
+    var forecasts = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
+    dispatcher.Dispatch(new FetchDataResultAction(forecasts));
+  }
 }
 ```
 
@@ -170,19 +170,19 @@ method are unimportant.
 ```c#
 public class Effects
 {
-	private readonly HttpClient Http;
+  private readonly HttpClient Http;
 
-	public Effects(HttpClient http)
-	{
-		Http = http;
-	}
+  public Effects(HttpClient http)
+  {
+    Http = http;
+  }
 
-	[EffectMethod]
-	public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
-	{
-		var forecasts = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
-		dispatcher.Dispatch(new FetchDataResultAction(forecasts));
-	}
+  [EffectMethod]
+  public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
+  {
+    var forecasts = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
+    dispatcher.Dispatch(new FetchDataResultAction(forecasts));
+  }
 }
 ```
 
@@ -198,12 +198,12 @@ so they can be "reduced" into our application state.
 ```c#
 public class FetchDataResultAction
 {
-	public IEnumerable<WeatherForecast> Forecasts { get; }
+  public IEnumerable<WeatherForecast> Forecasts { get; }
 
-	public FetchDataResultAction(IEnumerable<WeatherForecast> forecasts)
-	{
-		Forecasts = forecasts;
-	}
+  public FetchDataResultAction(IEnumerable<WeatherForecast> forecasts)
+  {
+    Forecasts = forecasts;
+  }
 }
 ```
 
@@ -216,9 +216,9 @@ action into state.
 ```c#
 [ReducerMethod]
 public static WeatherState ReduceFetchDataResultAction(WeatherState state, FetchDataResultAction action) =>
-	new WeatherState(
-		isLoading: false,
-		forecasts: action.Forecasts);
+  new WeatherState(
+    isLoading: false,
+    forecasts: action.Forecasts);
 ```
 
 This reducer simply sets the `IsLoading` state back to false, and sets the `Forecasts` state to the
