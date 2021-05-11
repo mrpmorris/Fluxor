@@ -41,26 +41,12 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		public ReduxDevToolsMiddlewareOptions UseNewtonsoftJson(
 			Func<IServiceProvider, JsonSerializerSettings> getSettings = null)
 		{
-			FluxorOptions.Services.AddScoped<IJsonSerialization, NewtonsoftJsonAdapter>(
-				(Func<IServiceProvider, NewtonsoftJsonAdapter>)(				sp =>
-				{
-					JsonSerializerSettings settings = getSettings?.Invoke(sp);
-
-/* Unmerged change from project 'Fluxor.Blazor.Web.ReduxDevTools (netstandard2.1)'
-Before:
-					return new NewtonsoftSerialization(settings);
-After:
-					return new Serialization.NewtonsoftSerialization(settings);
-*/
-
-/* Unmerged change from project 'Fluxor.Blazor.Web.ReduxDevTools (net5.0)'
-Before:
-					return new NewtonsoftSerialization(settings);
-After:
-					return new Serialization.NewtonsoftSerialization(settings);
-*/
-					return (NewtonsoftJsonAdapter)new NewtonsoftJsonAdapter(settings);
-				}));
+			var implementationFactory = new Func<IServiceProvider, NewtonsoftJsonAdapter>(sp =>
+			{
+				JsonSerializerSettings settings = getSettings?.Invoke(sp);
+				return new NewtonsoftJsonAdapter(settings);
+			});
+			FluxorOptions.Services.AddScoped<IJsonSerialization, NewtonsoftJsonAdapter>(implementationFactory);
 			return this;
 		}
 
@@ -72,26 +58,12 @@ After:
 		public ReduxDevToolsMiddlewareOptions UseSystemTextJson(
 			Func<IServiceProvider, JsonSerializerOptions> getOptions = null)
 		{
-			FluxorOptions.Services.AddScoped<IJsonSerialization, SystemTextJsonAdapter>(
-				(Func<IServiceProvider, SystemTextJsonAdapter>)(				sp =>
-				{
-					JsonSerializerOptions jsonOptions = getOptions?.Invoke(sp);
-
-/* Unmerged change from project 'Fluxor.Blazor.Web.ReduxDevTools (netstandard2.1)'
-Before:
-					return new SystemTextSerialization(jsonOptions);
-After:
-					return new Serialization.SystemTextSerialization(jsonOptions);
-*/
-
-/* Unmerged change from project 'Fluxor.Blazor.Web.ReduxDevTools (net5.0)'
-Before:
-					return new SystemTextSerialization(jsonOptions);
-After:
-					return new Serialization.SystemTextSerialization(jsonOptions);
-*/
-					return (SystemTextJsonAdapter)new SystemTextJsonAdapter(jsonOptions);
-				}));
+			var implementationFactory = new Func<IServiceProvider, SystemTextJsonAdapter>(sp =>
+			{
+				JsonSerializerOptions jsonOptions = getOptions?.Invoke(sp);
+				return new SystemTextJsonAdapter(jsonOptions);
+			});
+			FluxorOptions.Services.AddScoped<IJsonSerialization, SystemTextJsonAdapter>(implementationFactory);
 			return this;
 		}
 	}
