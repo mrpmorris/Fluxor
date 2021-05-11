@@ -12,9 +12,15 @@ To enable Fluxor integration, follow these steps
  2. Use the `UseReduxDevTools` extension on the Fluxor options.
 
 ```c#
+<<<<<<< HEAD
+services.AddFluxor(o =>
+  o.ScanAssemblies(typeof(SomeType).Assembly),
+  o.UseReduxDevTools());
+=======
 services.AddFluxor(o => o
     .ScanAssemblies(typeof(SomeType).Assembly)
     .UseReduxDevTools());
+>>>>>>> 0fb6404e297838aa66054c2bcdea99cb8c0f8495
 ```
 
  3. When you run your application, click the icon for the Redux Dev Tools extension.
