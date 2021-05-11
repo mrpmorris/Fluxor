@@ -18,6 +18,8 @@ Which includes tutorials that are numbered in an order recommended for learning 
 
 There is also [this great introductory video](https://www.youtube.com/watch?v=sAyH-O0dFaI) by [Chris Clement](https://twitter.com/christo_ment) 
 
+An [introduction](https://betweentwobrackets.dev/posts/2020/06/state-management-with-blazor-using-fluxor-part-1/) by Joey McKenzie
+
 ## Installation
 You can download the latest release / pre-release NuGet packages from the official Fluxor nuget pages.
 
