@@ -23,10 +23,10 @@ namespace Fluxor
 		///	</example>
 		public static IServiceCollection AddFluxor(
 			this IServiceCollection serviceCollection,
-			Action<Options> configure = null)
+			Action<FluxorOptions> configure = null)
 		{
 			// We only use an instance so middleware can create extensions to the Options
-			var options = new Options(serviceCollection);
+			var options = new FluxorOptions(serviceCollection);
 			configure?.Invoke(options);
 
 			// Register all middleware types with dependency injection

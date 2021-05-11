@@ -35,14 +35,14 @@ reference to the `IStore`.
 ```c#
 public class LoggingMiddleware : Middleware
 {
-	private IStore Store;
+  private IStore Store;
 
-	public override Task InitializeAsync(IStore store)
-	{
-		Store = store;
-		Console.WriteLine(nameof(InitializeAsync));
-		return Task.CompletedTask;
-	}
+  public override Task InitializeAsync(IStore store)
+  {
+    Store = store;
+    Console.WriteLine(nameof(InitializeAsync));
+    return Task.CompletedTask;
+  }
 }
 ```
 
@@ -52,8 +52,8 @@ In the `Program` class, look for the code that calls `services.AddFluxor`. After
 
 ```c#
 services.AddFluxor(o => o
-	.ScanAssemblies(typeof(Program).Assembly)
-	.AddMiddleware<LoggingMiddleware>());
+  .ScanAssemblies(typeof(Program).Assembly)
+  .AddMiddleware<LoggingMiddleware>());
 ```
 
 Run the application now, and we should see the following console output
@@ -90,7 +90,7 @@ serialize any object into JSON so it can be displayed in the console window.
 
 ```c#
 private string ObjectInfo(object obj)
-	=> ": " + obj.GetType().Name + " " + JsonConvert.SerializeObject(obj, Formatting.Indented);
+  => ": " + obj.GetType().Name + " " + JsonConvert.SerializeObject(obj, Formatting.Indented);
 ```
 
 With some additional `Console.WriteLine` calls in our methods, we end up with a `LoggingMiddleware` that
@@ -99,39 +99,39 @@ looks like this.
 ```c#
 public class LoggingMiddleware : Middleware
 {
-	private IStore Store;
+  private IStore Store;
 
-	public override Task InitializeAsync(IStore store)
-	{
-		Store = store;
-		Console.WriteLine(nameof(InitializeAsync));
-		return Task.CompletedTask;
-	}
+  public override Task InitializeAsync(IStore store)
+  {
+    Store = store;
+    Console.WriteLine(nameof(InitializeAsync));
+    return Task.CompletedTask;
+  }
 
-	public override void AfterInitializeAllMiddlewares()
-	{
-		Console.WriteLine(nameof(AfterInitializeAllMiddlewares));
-	}
+  public override void AfterInitializeAllMiddlewares()
+  {
+    Console.WriteLine(nameof(AfterInitializeAllMiddlewares));
+  }
 
-	public override bool MayDispatchAction(object action)
-	{
-		Console.WriteLine(nameof(MayDispatchAction) + ObjectInfo(action));
-		return true;
-	}
+  public override bool MayDispatchAction(object action)
+  {
+    Console.WriteLine(nameof(MayDispatchAction) + ObjectInfo(action));
+    return true;
+  }
 
-	public override void BeforeDispatch(object action)
-	{
-		Console.WriteLine(nameof(BeforeDispatch) + ObjectInfo(action));
-	}
+  public override void BeforeDispatch(object action)
+  {
+    Console.WriteLine(nameof(BeforeDispatch) + ObjectInfo(action));
+  }
 
-	public override void AfterDispatch(object action)
-	{
-		Console.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
-		Console.WriteLine();
-	}
+  public override void AfterDispatch(object action)
+  {
+    Console.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
+    Console.WriteLine();
+  }
 
-	private string ObjectInfo(object obj)
-		=> ": " + obj.GetType().Name + " " + JsonConvert.SerializeObject(obj, Formatting.Indented);
+  private string ObjectInfo(object obj)
+    => ": " + obj.GetType().Name + " " + JsonConvert.SerializeObject(obj, Formatting.Indented);
 }
 ```
 
@@ -221,15 +221,15 @@ within the store and output their state too.
 ```c#
 public override void AfterDispatch(object action)
 {
-	Console.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
-	Console.WriteLine("\t===========STATE AFTER DISPATCH===========");
-	foreach (KeyValuePair<string, IFeature> feature in Store.Features)
-	{
-		string json = JsonConvert.SerializeObject(feature.Value, Formatting.Indented)
-			.Replace("\n", "\n\t");
-		Console.WriteLine("\t" + feature.Key + ": " + json);
-	}
-	Console.WriteLine();
+  Console.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
+  Console.WriteLine("\t===========STATE AFTER DISPATCH===========");
+  foreach (KeyValuePair<string, IFeature> feature in Store.Features)
+  {
+    string json = JsonConvert.SerializeObject(feature.Value, Formatting.Indented)
+      .Replace("\n", "\n\t");
+    Console.WriteLine("\t" + feature.Key + ": " + json);
+  }
+  Console.WriteLine();
 }
 ```
 
@@ -242,18 +242,18 @@ AfterInitializeAllMiddlewares
 MayDispatchAction: StoreInitializedAction {}
 BeforeDispatch: StoreInitializedAction {}
 AfterDispatch: StoreInitializedAction {}
-        ===========STATE AFTER DISPATCH===========
-        Weather: {
-          "State": {
-            "IsLoading": false,
-            "Forecasts": []
-          }
-        }
-        Counter: {
-          "State": {
-            "ClickCount": 0
-          }
-        }
+    ===========STATE AFTER DISPATCH===========
+    Weather: {
+     "State": {
+      "IsLoading": false,
+      "Forecasts": []
+     }
+    }
+    Counter: {
+     "State": {
+      "ClickCount": 0
+     }
+    }
 
 1: Increment counter
 2: Fetch data
@@ -262,18 +262,18 @@ x: Exit
 MayDispatchAction: IncrementCounterAction {}
 BeforeDispatch: IncrementCounterAction {}
 AfterDispatch: IncrementCounterAction {}
-        ===========STATE AFTER DISPATCH===========
-        Weather: {
-          "State": {
-            "IsLoading": false,
-            "Forecasts": []
-          }
-        }
-        Counter: {
-          "State": {
-            "ClickCount": 1
-          }
-        }
+    ===========STATE AFTER DISPATCH===========
+    Weather: {
+     "State": {
+      "IsLoading": false,
+      "Forecasts": []
+     }
+    }
+    Counter: {
+     "State": {
+      "ClickCount": 1
+     }
+    }
 
 1: Increment counter
 2: Fetch data

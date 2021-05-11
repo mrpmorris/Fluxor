@@ -16,18 +16,18 @@ To do this we will create a console application, as this will avoid as much UI s
 ```c#
 class Program
 {
-	static void Main(string[] args)
-	{
-		var services = new ServiceCollection();
-		services.AddScoped<App>();
-		services.AddFluxor(o => o
-			.ScanAssemblies(typeof(Program).Assembly));
+  static void Main(string[] args)
+  {
+    var services = new ServiceCollection();
+    services.AddScoped<App>();
+    services.AddFluxor(o => o
+      .ScanAssemblies(typeof(Program).Assembly));
 
-		IServiceProvider serviceProvider = services.BuildServiceProvider();
+    IServiceProvider serviceProvider = services.BuildServiceProvider();
 
-		var app = serviceProvider.GetRequiredService<App>();
-		app.Run();
-	}
+    var app = serviceProvider.GetRequiredService<App>();
+    app.Run();
+  }
 }
 ```
 
@@ -40,13 +40,11 @@ an example of a UI element that has dependencies injected. For now, we can just 
 ```c#
 public class App
 {
-	public void Run()
-	{
-	}
+  public void Run()
+  {
+  }
 }
 ```
-
-
 
 #### Initialise the store
 - Edit `App.cs`. Inject `IStore` and initialise it.
@@ -56,19 +54,19 @@ using Fluxor;
 
 public class App
 {
-	private readonly IStore Store;
+  private readonly IStore Store;
 
-	public App(IStore store)
-	{
-		Store = store;
-	}
+  public App(IStore store)
+  {
+    Store = store;
+  }
 
-	public void Run()
-	{
-		Console.Clear();
-		Console.WriteLine("Initializing store");
-		Store.InitializeAsync().Wait();
-	}
+  public void Run()
+  {
+    Console.Clear();
+    Console.WriteLine("Initializing store");
+    Store.InitializeAsync().Wait();
+  }
 }
 ```
 
@@ -87,12 +85,12 @@ will hold the values of your state to be displayed in your application.
 ```c#
 public class CounterState
 {
-	public int ClickCount { get; }
+  public int ClickCount { get; }
 
-	public CounterState(int clickCount)
-	{
-		ClickCount = clickCount;
-	}
+  public CounterState(int clickCount)
+  {
+    ClickCount = clickCount;
+  }
 }
 ```
 
@@ -103,9 +101,9 @@ public class CounterState
 ```c#
 public class Feature : Feature<CounterState>
 {
-	public override string GetName() => "Counter";
-	protected override CounterState GetInitialState() =>
-		new CounterState(clickCount: 0);
+  public override string GetName() => "Counter";
+  protected override CounterState GetInitialState() =>
+    new CounterState(clickCount: 0);
 }
 ```
 
@@ -119,17 +117,17 @@ using YourAppName.Store.CounterUseCase;
 
 public class App
 {
-	private readonly IStore Store;
-	private readonly IState<CounterState> CounterState;
+  private readonly IStore Store;
+  private readonly IState<CounterState> CounterState;
 
-	public App(IStore store, IState<CounterState> counterState)
-	{
-		Store = store;
-		CounterState = counterState;
-		CounterState.StateChanged += CounterState_StateChanged;
-	}
+  public App(IStore store, IState<CounterState> counterState)
+  {
+    Store = store;
+    CounterState = counterState;
+    CounterState.StateChanged += CounterState_StateChanged;
+  }
 
-	...
+  ...
 ```
 
 - Add a method to show the contents of the state whenever it changes
@@ -137,11 +135,11 @@ public class App
 ```c#
 private void CounterState_StateChanged(object sender, CounterState e)
 {
-	Console.WriteLine("");
-	Console.WriteLine("==========================> CounterState");
-	Console.WriteLine("ClickCount is " + CounterState.Value.ClickCount);
-	Console.WriteLine("<========================== CounterState");
-	Console.WriteLine("");
+  Console.WriteLine("");
+  Console.WriteLine("==========================> CounterState");
+  Console.WriteLine("ClickCount is " + CounterState.Value.ClickCount);
+  Console.WriteLine("<========================== CounterState");
+  Console.WriteLine("");
 }
 ```
 
@@ -165,54 +163,54 @@ The `App` class should now look like the following code:
 ```c#
 public class App
 {
-	private readonly IStore Store;
-	public readonly IDispatcher Dispatcher;
-	public readonly IState<CounterState> CounterState;
+  private readonly IStore Store;
+  public readonly IDispatcher Dispatcher;
+  public readonly IState<CounterState> CounterState;
 
-	public App(IStore store, IDispatcher dispatcher, IState<CounterState> counterState)
-	{
-		Store = store;
-		Dispatcher = dispatcher;
-		CounterState = counterState;
-		CounterState.StateChanged += CounterState_StateChanged;
-	}
+  public App(IStore store, IDispatcher dispatcher, IState<CounterState> counterState)
+  {
+    Store = store;
+    Dispatcher = dispatcher;
+    CounterState = counterState;
+    CounterState.StateChanged += CounterState_StateChanged;
+  }
 
-	private void CounterState_StateChanged(object sender, CounterState e)
-	{
-		Console.WriteLine("");
-		Console.WriteLine("==========================> CounterState");
-		Console.WriteLine("ClickCount is " + CounterState.Value.ClickCount);
-		Console.WriteLine("<========================== CounterState");
-		Console.WriteLine("");
-	}
+  private void CounterState_StateChanged(object sender, CounterState e)
+  {
+    Console.WriteLine("");
+    Console.WriteLine("==========================> CounterState");
+    Console.WriteLine("ClickCount is " + CounterState.Value.ClickCount);
+    Console.WriteLine("<========================== CounterState");
+    Console.WriteLine("");
+  }
 
-	public void Run()
-	{
-		Console.Clear();
-		Console.WriteLine("Initializing store");
-		Store.InitializeAsync().Wait();
-		string input = "";
-		do
-		{
-			Console.WriteLine("1: Increment counter");
-			Console.WriteLine("x: Exit");
-			Console.Write("> ");
-			input = Console.ReadLine();
+  public void Run()
+  {
+    Console.Clear();
+    Console.WriteLine("Initializing store");
+    Store.InitializeAsync().Wait();
+    string input = "";
+    do
+    {
+      Console.WriteLine("1: Increment counter");
+      Console.WriteLine("x: Exit");
+      Console.Write("> ");
+      input = Console.ReadLine();
 
-			switch(input.ToLowerInvariant())
-			{
-				case "1":
-					var action = new IncrementCounterAction();
-					Dispatcher.Dispatch(action);
-					break;
+      switch(input.ToLowerInvariant())
+      {
+        case "1":
+          var action = new IncrementCounterAction();
+          Dispatcher.Dispatch(action);
+          break;
 
-				case "x":
-					Console.WriteLine("Program terminated");
-					return;
-			}
+        case "x":
+          Console.WriteLine("Program terminated");
+          return;
+      }
 
-		} while (true);
-	}
+    } while (true);
+  }
 }
 ```
 
@@ -226,9 +224,9 @@ we do not handle this action. We will fix that next.
 ```c#
 public static class Reducers
 {
-	[ReducerMethod]
-	public static CounterState ReduceIncrementCounterAction(CounterState state, IncrementCounterAction action) =>
-		new CounterState(clickCount: state.ClickCount + 1);
+  [ReducerMethod]
+  public static CounterState ReduceIncrementCounterAction(CounterState state, IncrementCounterAction action) =>
+    new CounterState(clickCount: state.ClickCount + 1);
 }
 ```
 
@@ -245,20 +243,20 @@ with `[ReducerMethod]` and has the correct signature, it will be used.
 ```c#
 public static class SomeReducerClass
 {
-	[ReducerMethod]
-	public static SomeState ReduceSomeAction(SomeState state, SomeAction action) => new SomeState();
+  [ReducerMethod]
+  public static SomeState ReduceSomeAction(SomeState state, SomeAction action) => new SomeState();
 
-	[ReducerMethod]
-	public static SomeState ReduceSomeAction2(SomeState state, SomeAction2 action) => new SomeState();
+  [ReducerMethod]
+  public static SomeState ReduceSomeAction2(SomeState state, SomeAction2 action) => new SomeState();
 }
 
 public static class SomeOtherReducerClass
 {
-	[ReducerMethod]
-	public static SomeState ReduceSomeAction3(SomeState state, SomeAction3 action) => new SomeState();
+  [ReducerMethod]
+  public static SomeState ReduceSomeAction3(SomeState state, SomeAction3 action) => new SomeState();
 
-	[ReducerMethod]
-	public static SomeState ReduceSomeAction4(SomeState state, SomeAction4 action) => new SomeState();
+  [ReducerMethod]
+  public static SomeState ReduceSomeAction4(SomeState state, SomeAction4 action) => new SomeState();
 }
 ```
 
@@ -281,8 +279,8 @@ It is also possible to create a reducer per state+action combination like this..
 ```c#
 public class IncrementCounterReducer : Reducer<CounterState, IncrementCounterAction>
 {
-	public override CounterState Reduce(CounterState state, IncrementCounterAction action) =>
-		new CounterState(clickCount: state.ClickCount + 1);
+  public override CounterState Reduce(CounterState state, IncrementCounterAction action) =>
+    new CounterState(clickCount: state.ClickCount + 1);
 }
 ```
 
