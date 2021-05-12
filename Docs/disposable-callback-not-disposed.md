@@ -44,3 +44,8 @@ using (Store.BeginMiddlewareChange())
 not called `Dispose()` on the result.
 
 **Fix:** You must call `Dispose`
+
+
+### Mismatch Between Async/Sync Initialization methods
+
+If you use `OnInitializedAsync` you should call `base.OnInitializedAsync()` and not the `base.OnInitialized()`.
