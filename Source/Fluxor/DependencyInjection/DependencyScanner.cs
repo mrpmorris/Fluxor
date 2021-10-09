@@ -12,14 +12,20 @@ namespace Fluxor.DependencyInjection
 		internal static void Scan(
 			this IServiceCollection serviceCollection,
 			FluxorOptions options,
+			IEnumerable<Type> typesToScan,
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
 		{
-			if (assembliesToScan == null || assembliesToScan.Count() == 0)
-				throw new ArgumentNullException(nameof(assembliesToScan));
+			int totalScanSources = 0;
+			totalScanSources += assembliesToScan?.Count() ?? 0;
+			totalScanSources += typesToScan?.Count() ?? 0;
+
+			if (totalScanSources < 1)
+				throw new ArgumentException($"Must supply either {typesToScan} or {assembliesToScan}");
 
 			GetCandidateTypes(
 				assembliesToScan: assembliesToScan,
+				typesToScan: typesToScan,
 				scanIncludeList: scanIncludeList ?? new List<AssemblyScanSettings>(),
 				allCandidateTypes: out Type[] allCandidateTypes,
 				allNonAbstractCandidateTypes: out Type[] allNonAbstractCandidateTypes);
@@ -57,6 +63,7 @@ namespace Fluxor.DependencyInjection
 
 		private static void GetCandidateTypes(
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
+			IEnumerable<Type> typesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList,
 			out Type[] allCandidateTypes,
 			out Type[] allNonAbstractCandidateTypes)
@@ -80,7 +87,10 @@ namespace Fluxor.DependencyInjection
 						.Union(scanIncludeList.SelectMany(x => x.Assembly.GetTypes()))
 						.Where(t => !t.IsGenericType)
 						.Distinct()
-						.ToArray());
+						.ToArray()
+				)
+				.Union(typesToScan)
+				.ToArray();
 			allNonAbstractCandidateTypes = allCandidateTypes
 					.Where(t => !t.IsAbstract)
 					.ToArray();

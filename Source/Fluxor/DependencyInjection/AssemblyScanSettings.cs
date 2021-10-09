@@ -19,12 +19,12 @@ namespace Fluxor.DependencyInjection
 		}
 
 		public bool Matches(Type type) =>
-				type.Assembly == Assembly
-				&&
-				(
-					Namespace == null
-					|| type.FullName.StartsWith(Namespace + ".", StringComparison.InvariantCultureIgnoreCase)
-				);
+			type.Assembly == Assembly
+			&&
+			(
+				Namespace == null
+				|| type.FullName.StartsWith(Namespace + ".", StringComparison.InvariantCultureIgnoreCase)
+			);
 
 		public static Type[] FilterClasses(
 			IEnumerable<Type> types,
@@ -57,7 +57,7 @@ namespace Fluxor.DependencyInjection
 
 		public override bool Equals(object obj)
 		{
-			AssemblyScanSettings other = obj as AssemblyScanSettings;
+			var other = obj as AssemblyScanSettings;
 			if (other == null)
 				return false;
 

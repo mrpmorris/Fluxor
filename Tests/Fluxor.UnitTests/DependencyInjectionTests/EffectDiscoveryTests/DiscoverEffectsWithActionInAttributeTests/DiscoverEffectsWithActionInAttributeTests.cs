@@ -15,8 +15,10 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 		public void WhenActionIsDispatched_ThenEffectWithActionInMethodSignatureIsExecuted()
 		{
 			Store.Dispatch(new TestAction());
-			// 2 effects. Static vs instance
-			Assert.Equal(2, State.Value.Count);
+			// 4 effects.
+			// Static & Instance
+			// Assembly scanned + ExplicitlyScannedTypes
+			Assert.Equal(4, State.Value.Count);
 		}
 
 		public DiscoverEffectsWithActionInAttributeTests()
@@ -24,6 +26,10 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 			var services = new ServiceCollection();
 			services.AddFluxor(x => x
 				.ScanAssemblies(GetType().Assembly)
+				.ScanTypes(
+					typeof(TypesThatShouldOnlyBeScannedExplicitly.InstanceTestEffects),
+					typeof(TypesThatShouldOnlyBeScannedExplicitly.StaticTestEffects)
+				)
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();
