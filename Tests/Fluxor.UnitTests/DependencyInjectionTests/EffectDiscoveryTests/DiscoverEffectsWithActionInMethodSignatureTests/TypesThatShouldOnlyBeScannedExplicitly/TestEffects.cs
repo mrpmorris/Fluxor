@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInMethodSignatureTests.SupportFiles;
+using System.Threading.Tasks;
 
-namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInMethodSignatureTests.SupportFiles
+namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInMethodSignatureTests.TypesThatShouldOnlyBeScannedExplicitly
 {
 	public class InstanceTestEffects
 	{
