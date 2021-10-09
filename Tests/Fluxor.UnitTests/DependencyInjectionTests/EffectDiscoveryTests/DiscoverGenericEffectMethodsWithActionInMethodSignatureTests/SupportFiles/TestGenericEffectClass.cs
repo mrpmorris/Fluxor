@@ -9,11 +9,11 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 		}
 	}
 
-	public abstract class AbstractTestGenericEffectClass<T> 
+	public class AbstractTestGenericEffectClass<T> 
 	{
 		private readonly InvokeCountService InvokeCountService;
 
-		protected AbstractTestGenericEffectClass(InvokeCountService invokeCountService)
+		public AbstractTestGenericEffectClass(InvokeCountService invokeCountService)
 		{
 			InvokeCountService = invokeCountService;
 		}

@@ -41,7 +41,7 @@ namespace Fluxor.DependencyInjection
 
 			string genericTypeNames = string.Join(",",
 				allTypes
-					.Where(x => x.IsGenericType)
+					.Where(x => x.IsGenericTypeDefinition)
 					.Select(x => x.Name));
 			if (genericTypeNames != string.Empty)
 				throw new InvalidOperationException($"The following types cannot be generic: {genericTypeNames}");
