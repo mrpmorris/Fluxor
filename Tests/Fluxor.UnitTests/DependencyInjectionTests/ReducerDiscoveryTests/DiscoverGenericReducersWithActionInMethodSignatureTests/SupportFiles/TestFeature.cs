@@ -1,9 +1,15 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverGenericReducersWithActionInMethodSignatureTests.SupportFiles
+﻿using System.Collections.Generic;
+
+namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverGenericReducersWithActionInMethodSignatureTests.SupportFiles
 {
-	public class TestFeature : Feature<TestState<int>>
+	public class TestFeature : Feature<TestState<char>>
 	{
 		public override string GetName() => "Test";
-		protected override TestState<int> GetInitialState() =>
-			new TestState<int>(new int[] { 1, 2, 3, 5, 8, 13 });
+		protected override TestState<char> GetInitialState() =>
+			new TestState<char>(new Dictionary<char, int>
+			{
+				['A'] = 0,
+				['B'] = 0
+			});
 	}
 }

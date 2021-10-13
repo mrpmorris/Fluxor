@@ -9,14 +9,19 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 	{
 		private readonly IServiceProvider ServiceProvider;
 		private readonly IStore Store;
-		private readonly IState<TestState<int>> State;
+		private readonly IState<TestState<char>> State;
 
 		[Fact]
 		public void WhenActionIsDispatched_ThenReducerWithActionInMethodSignatureIsExecuted()
 		{
-			Assert.Contains(8, State.Value.Items);
-			Store.Dispatch(new RemoveItemAction<int>(8));
-			Assert.DoesNotContain(8, State.Value.Items);
+			Assert.Equal(0, State.Value.Counters['A']);
+			Assert.Equal(0, State.Value.Counters['B']);
+			Store.Dispatch(new IncrementItemAction<char>('A'));
+			// 2 Reducers
+			// 1 descendant of the generic
+			// + 1 explicitly specified closed generic
+			Assert.Equal(2, State.Value.Counters['A']);
+			Assert.Equal(0, State.Value.Counters['B']);
 		}
 
 		public DiscoverGenericReducersWithActionInMethodSignatureTests()
@@ -24,11 +29,12 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 			var services = new ServiceCollection();
 			services.AddFluxor(x => x
 				.ScanAssemblies(GetType().Assembly)
+				.ScanTypes(typeof(OpenGenericReducers<char>))
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();
 			Store = ServiceProvider.GetRequiredService<IStore>();
-			State = ServiceProvider.GetRequiredService<IState<TestState<int>>>();
+			State = ServiceProvider.GetRequiredService<IState<TestState<char>>>();
 
 			Store.InitializeAsync().Wait();
 		}
