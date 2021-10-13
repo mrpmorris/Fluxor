@@ -17,6 +17,8 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 			Assert.False(State.Value.ReducerWasExecuted);
 			Store.Dispatch(new TestAction());
 			Assert.True(State.Value.ReducerWasExecuted);
+			Assert.False(true); // TODO
+			// Also create a test to ensure features are discovered
 		}
 
 		public DiscoverReducersWithActionInMethodSignatureTests()

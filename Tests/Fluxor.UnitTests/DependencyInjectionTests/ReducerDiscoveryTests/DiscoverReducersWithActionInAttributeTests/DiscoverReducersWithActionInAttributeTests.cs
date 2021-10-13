@@ -17,8 +17,8 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 			Assert.Equal(0, State.Value.Counter);
 			Store.Dispatch(new TestAction());
 			// 2 Reducers
-			// 1 assembly scanned
-			// + 1 type scanned
+			// 1 assembly scanned (generic descendant)
+			// + 1 type scanned (closed generic)
 			Assert.Equal(2, State.Value.Counter);
 		}
 

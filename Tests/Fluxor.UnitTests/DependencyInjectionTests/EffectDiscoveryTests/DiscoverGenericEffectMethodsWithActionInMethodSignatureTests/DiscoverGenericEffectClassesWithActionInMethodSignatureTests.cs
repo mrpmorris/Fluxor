@@ -17,8 +17,8 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 			Assert.Equal(0, InvokeCountService.GetCount());
 			Store.Dispatch(new TestAction());
 			// 2 Effects
-			// 1 descendant of the generic
-			// + 1 explicitly specified closed generic
+			// 1 assembly scanned (generic descendant)
+			// + 1 type scanned (closed generic)
 			Assert.Equal(2, InvokeCountService.GetCount());
 		}
 
