@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.TypesThatShouldOnlyBeScannedExplicitly
 {
-	public class InstanceTestEffects
+	public class ExplicitlyScannedInstanceTestEffects
 	{
 		[EffectMethod(typeof(TestAction))]
 		public Task Handle(IDispatcher dispatcher)
@@ -13,7 +13,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 		}
 	}
 
-	public static class StaticTestEffects
+	public static class ExplicitlyScannedStaticTestEffects
 	{
 		[EffectMethod(typeof(TestAction))]
 		public static Task Handle(IDispatcher dispatcher)

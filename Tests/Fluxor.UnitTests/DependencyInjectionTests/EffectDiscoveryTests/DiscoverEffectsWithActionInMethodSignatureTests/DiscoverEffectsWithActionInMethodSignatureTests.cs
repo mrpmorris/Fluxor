@@ -17,7 +17,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 			Store.Dispatch(new TestAction());
 			// 4 effects.
 			// Static & Instance
-			// Assembly scanned types + Explicitly specfied types
+			// Assembly scanned types + Explicitly scanned types
 			Assert.Equal(4, State.Value.Count);
 		}
 
@@ -27,8 +27,8 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 			services.AddFluxor(x => x
 				.ScanAssemblies(GetType().Assembly)
 				.ScanTypes(
-					typeof(TypesThatShouldOnlyBeScannedExplicitly.InstanceTestEffects),
-					typeof(TypesThatShouldOnlyBeScannedExplicitly.StaticTestEffects)
+					typeof(TypesThatShouldOnlyBeScannedExplicitly.ExplicitlyScannedInstanceTestEffects),
+					typeof(TypesThatShouldOnlyBeScannedExplicitly.ExplicitlyScannedStaticTestEffects)
 				)
 				.AddMiddleware<IsolatedTests>());
 
