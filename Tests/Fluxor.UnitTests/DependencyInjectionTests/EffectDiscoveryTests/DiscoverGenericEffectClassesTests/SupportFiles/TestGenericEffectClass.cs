@@ -2,18 +2,18 @@
 
 namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverGenericEffectClassesTests.SupportFiles
 {
-	public class TestGenericEffectClass : AbstractTestGenericEffectClass<TestAction>
+	public class DescendantGenericEffectClass : OpenGenericEffectClass<TestAction>
 	{
-		public TestGenericEffectClass(InvokeCountService invokeCountService) : base(invokeCountService)
+		public DescendantGenericEffectClass(InvokeCountService invokeCountService) : base(invokeCountService)
 		{
 		}
 	}
 
-	public class AbstractTestGenericEffectClass<T> : Effect<T>
+	public class OpenGenericEffectClass<T> : Effect<T>
 	{
 		private readonly InvokeCountService InvokeCountService;
 
-		public AbstractTestGenericEffectClass(InvokeCountService invokeCountService)
+		public OpenGenericEffectClass(InvokeCountService invokeCountService)
 		{
 			InvokeCountService = invokeCountService;
 		}
