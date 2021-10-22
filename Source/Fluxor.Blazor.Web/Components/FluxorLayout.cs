@@ -8,7 +8,7 @@ namespace Fluxor.Blazor.Web.Components
 	/// A layout that auto-subscribes to state changes on all <see cref="IState"/> properties
 	/// and ensures <see cref="LayoutComponentBase.StateHasChanged"/> is called
 	/// </summary>
-	public class FluxorLayout : LayoutComponentBase, IDisposable
+	public abstract class FluxorLayout : LayoutComponentBase, IDisposable
 	{
 		[Inject]
 		private IActionSubscriber ActionSubscriber { get; set; }
