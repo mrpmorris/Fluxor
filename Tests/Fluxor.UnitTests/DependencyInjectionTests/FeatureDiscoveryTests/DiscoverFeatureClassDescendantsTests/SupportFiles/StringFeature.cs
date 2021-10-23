@@ -1,4 +1,4 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.SupportFiles
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureClassDescendantsTests.SupportFiles
 {
 	public class StringFeature : Feature<string>
 	{

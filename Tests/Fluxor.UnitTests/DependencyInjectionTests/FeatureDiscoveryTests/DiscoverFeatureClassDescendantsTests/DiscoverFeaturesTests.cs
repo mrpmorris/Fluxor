@@ -1,13 +1,11 @@
-﻿using Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.SupportFiles;
+﻿using Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureClassDescendantsTests.SupportFiles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using Xunit;
 
-namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests
+namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureClassDescendantsTests
 {
 	public class DiscoverFeaturesTests
 	{

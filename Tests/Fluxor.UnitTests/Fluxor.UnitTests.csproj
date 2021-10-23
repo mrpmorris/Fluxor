@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\Source\Fluxor\Fluxor.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureClassDescendantsTests\" />
+  </ItemGroup>
+
 </Project>
