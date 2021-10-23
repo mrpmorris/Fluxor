@@ -3,6 +3,6 @@
 	public class TestFeature : Feature<TestState>
 	{
 		public override string GetName() => "Test";
-		protected override TestState GetInitialState() => new TestState(reducerWasExecuted: false);
+		protected override TestState GetInitialState() => new TestState(count: 0);
 	}
 }

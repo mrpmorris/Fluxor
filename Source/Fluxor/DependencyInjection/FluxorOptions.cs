@@ -12,6 +12,7 @@ namespace Fluxor.DependencyInjection
 	public class FluxorOptions
 	{
 		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = new AssemblyScanSettings[0];
+		internal Type[] TypesToScan { get; private set; } = new Type[0];
 		internal Type[] MiddlewareTypes = new Type[0];
 		/// <summary>
 		/// Service collection for registering services
@@ -25,6 +26,31 @@ namespace Fluxor.DependencyInjection
 		public FluxorOptions(IServiceCollection services)
 		{
 			Services = services;
+		}
+
+		public FluxorOptions ScanTypes(
+			Type typeToScan,
+			params Type[] additionalTypesToScan)
+		{
+			if (typeToScan == null)
+				throw new ArgumentNullException(nameof(typeToScan));
+
+			var allTypes = new List<Type> { typeToScan };
+			if (additionalTypesToScan != null)
+				allTypes.AddRange(additionalTypesToScan);
+
+			string genericTypeNames = string.Join(",",
+				allTypes
+					.Where(x => x.IsGenericTypeDefinition)
+					.Select(x => x.Name));
+			if (genericTypeNames != string.Empty)
+				throw new InvalidOperationException($"The following types cannot be generic: {genericTypeNames}");
+
+			TypesToScan = TypesToScan
+				.Union(allTypes)
+				.ToArray();
+
+			return this;
 		}
 
 		/// <summary>

@@ -2,11 +2,11 @@
 {
 	public class TestState
 	{
-		public bool ReducerWasExecuted { get; private set; }
+		public int Count { get; private set; }
 
-		public TestState(bool reducerWasExecuted)
+		public TestState(int count)
 		{
-			ReducerWasExecuted = reducerWasExecuted;
+			Count = count;
 		}
 	}
 }

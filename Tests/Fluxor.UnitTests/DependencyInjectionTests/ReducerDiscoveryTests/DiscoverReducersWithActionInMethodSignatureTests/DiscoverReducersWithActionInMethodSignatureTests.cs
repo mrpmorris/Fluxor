@@ -14,9 +14,12 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 		[Fact]
 		public void WhenActionIsDispatched_ThenReducerWithActionInMethodSignatureIsExecuted()
 		{
-			Assert.False(State.Value.ReducerWasExecuted);
+			Assert.Equal(0, State.Value.Counter);
 			Store.Dispatch(new TestAction());
-			Assert.True(State.Value.ReducerWasExecuted);
+			// 2 Reducers
+			// 1 assembly scanned (generic descendant)
+			// + 1 type scanned (closed generic)
+			Assert.Equal(2, State.Value.Counter);
 		}
 
 		public DiscoverReducersWithActionInMethodSignatureTests()
@@ -24,6 +27,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 			var services = new ServiceCollection();
 			services.AddFluxor(x => x
 				.ScanAssemblies(GetType().Assembly)
+				.ScanTypes(typeof(TypesThatShouldOnlyBeScannedExplicitly.ExplicitlyScannedReducers))
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();
