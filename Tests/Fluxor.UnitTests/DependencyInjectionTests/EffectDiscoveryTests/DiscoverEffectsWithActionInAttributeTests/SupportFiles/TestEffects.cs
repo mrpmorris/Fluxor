@@ -2,7 +2,7 @@
 
 namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles
 {
-	public class TestEffects
+	public class InstanceTestEffects
 	{
 		[EffectMethod(typeof(TestAction))]
 		public Task Handle(IDispatcher dispatcher)

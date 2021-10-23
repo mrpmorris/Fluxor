@@ -1,10 +1,10 @@
 ﻿namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverGenericReducersWithActionInMethodSignatureTests.SupportFiles
 {
-	public class RemoveItemAction<T>
+	public class IncrementItemAction<T>
 	{
 		public readonly T Item;
 
-		public RemoveItemAction(T item)
+		public IncrementItemAction(T item)
 		{
 			Item = item;
 		}

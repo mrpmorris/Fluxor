@@ -16,7 +16,10 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 		{
 			Assert.Equal(0, InvokeCountService.GetCount());
 			Store.Dispatch(new TestAction());
-			Assert.Equal(1, InvokeCountService.GetCount());
+			// 2 Effects
+			// 1 assembly scanned (generic descendant)
+			// + 1 type scanned (closed generic)
+			Assert.Equal(2, InvokeCountService.GetCount());
 		}
 
 		public DiscoverGenericEffectMethodsWithActionInMethodSignatureTests()
@@ -26,6 +29,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 			services.AddScoped(_ => InvokeCountService);
 			services.AddFluxor(x => x
 				.ScanAssemblies(GetType().Assembly)
+				.ScanTypes(typeof(OpenTestGenericEffectClass<TestAction>))
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();

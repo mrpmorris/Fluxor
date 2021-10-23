@@ -40,6 +40,7 @@ namespace Fluxor
 				options: options,
 				serviceCollection: serviceCollection,
 				assembliesToScan: options.AssembliesToScan,
+				typesToScan: options.TypesToScan,
 				scanIncludeList: scanIncludeList);
 			serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
 
