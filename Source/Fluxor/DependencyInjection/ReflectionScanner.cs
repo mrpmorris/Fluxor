@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Fluxor.DependencyInjection
 {
-	internal static class DependencyScanner
+	internal static class ReflectionScanner
 	{
 		internal static void Scan(
 			this IServiceCollection serviceCollection,
