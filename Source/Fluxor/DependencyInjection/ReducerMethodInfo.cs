@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Fluxor.DependencyInjection
 {
-	internal class DiscoveredReducerMethod
+	internal class ReducerMethodInfo
 	{
 		public readonly Type HostClassType;
 		public readonly MethodInfo MethodInfo;
@@ -12,7 +12,7 @@ namespace Fluxor.DependencyInjection
 		public readonly Type ActionType;
 		public readonly bool RequiresActionParameterInMethod;
 
-		public DiscoveredReducerMethod(Type hostClassType, ReducerMethodAttribute attribute, MethodInfo methodInfo)
+		public ReducerMethodInfo(Type hostClassType, ReducerMethodAttribute attribute, MethodInfo methodInfo)
 		{
 			ParameterInfo[] methodParameters = methodInfo.GetParameters();
 			if (attribute.ActionType == null && methodParameters.Length != 2)

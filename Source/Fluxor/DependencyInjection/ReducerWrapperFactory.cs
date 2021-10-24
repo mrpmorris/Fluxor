@@ -4,7 +4,7 @@ namespace Fluxor.DependencyInjection
 {
 	internal static class ReducerWrapperFactory
 	{
-		internal static object Create(IServiceProvider serviceProvider, DiscoveredReducerMethod discoveredReducerMethod)
+		internal static object Create(IServiceProvider serviceProvider, ReducerMethodInfo discoveredReducerMethod)
 		{
 			Type stateType = discoveredReducerMethod.StateType;
 			Type actionType = discoveredReducerMethod.ActionType;

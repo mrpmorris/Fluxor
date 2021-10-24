@@ -8,11 +8,11 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class EffectMethodsDiscovery
 	{
-		internal static DiscoveredEffectMethod[] DiscoverEffectMethods(
+		internal static EffectMethodInfo[] DiscoverEffectMethods(
 			IServiceCollection serviceCollection,
 			IEnumerable<TypeAndMethodInfo> allCandidateMethods)
 		{
-			DiscoveredEffectMethod[] discoveredEffects =
+			EffectMethodInfo[] discoveredEffects =
 				allCandidateMethods
 					.Select(c =>
 						new
@@ -23,7 +23,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 						})
 					.Where(x => x.EffectAttribute != null)
 					.Select(x =>
-						new DiscoveredEffectMethod(
+						new EffectMethodInfo(
 							x.HostClassType,
 							x.EffectAttribute, 
 							x.MethodInfo))

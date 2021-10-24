@@ -7,10 +7,10 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal static class ReducerClassessDiscovery
 	{
-		internal static DiscoveredReducerClass[] DiscoverReducerClasses(
+		internal static ReducerClassInfo[] DiscoverReducerClasses(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
-			DiscoveredReducerClass[] discoveredReducerInfos =
+			ReducerClassInfo[] discoveredReducerInfos =
 				allCandidateTypes
 					.Where(t => t != typeof(ReducerWrapper<,>))
 					.Select(t =>
@@ -20,12 +20,12 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 							GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IReducer<>))
 						})
 					.Where(x => x.GenericParameterTypes != null)
-					.Select(x => new DiscoveredReducerClass(
+					.Select(x => new ReducerClassInfo(
 						implementingType: x.ImplementingType,
 						stateType: x.GenericParameterTypes[0]))
 					.ToArray();
 
-			foreach (DiscoveredReducerClass discoveredReducerInfo in discoveredReducerInfos)
+			foreach (ReducerClassInfo discoveredReducerInfo in discoveredReducerInfos)
 				serviceCollection.AddScoped(serviceType: discoveredReducerInfo.ImplementingType);
 
 			return discoveredReducerInfos;

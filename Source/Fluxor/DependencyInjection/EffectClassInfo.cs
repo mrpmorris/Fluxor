@@ -2,11 +2,11 @@
 
 namespace Fluxor.DependencyInjection
 {
-	internal class DiscoveredEffectClass
+	internal class EffectClassInfo
 	{
 		public readonly Type ImplementingType;
 
-		public DiscoveredEffectClass(Type implementingType)
+		public EffectClassInfo(Type implementingType)
 		{
 			ImplementingType = implementingType;
 		}

@@ -12,7 +12,7 @@ namespace Fluxor.DependencyInjection
 		bool IReducer<TState>.ShouldReduceStateForAction(object action) => action is TAction;
 
 		public ReducerWrapper() { }
-		public ReducerWrapper(object reducerHostInstance, DiscoveredReducerMethod discoveredReducerMethod)
+		public ReducerWrapper(object reducerHostInstance, ReducerMethodInfo discoveredReducerMethod)
 		{
 			Reduce =
 				discoveredReducerMethod.RequiresActionParameterInMethod
@@ -22,7 +22,7 @@ namespace Fluxor.DependencyInjection
 
 		private static ReduceWithActionParameterHandler WrapReducerWithoutActionParameter(
 			object reducerHostInstance,
-			DiscoveredReducerMethod discoveredReducerMethod)
+			ReducerMethodInfo discoveredReducerMethod)
 		{
 			ReduceWithoutActionParameterHandler handler = CreateReducerWithoutActionParameter(
 				reducerHostInstance,
@@ -33,14 +33,14 @@ namespace Fluxor.DependencyInjection
 
 		private static ReduceWithActionParameterHandler CreateReducerWithActionParameter(
 			object reducerHostInstance,
-			DiscoveredReducerMethod discoveredReducerMethod)
+			ReducerMethodInfo discoveredReducerMethod)
 			=>
 				reducerHostInstance == null
 				? CreateStaticReducerWithActionParameter(discoveredReducerMethod)
 				: CreateInstanceReducerWithActionParameter(reducerHostInstance, discoveredReducerMethod);
 
 		private static ReduceWithActionParameterHandler CreateStaticReducerWithActionParameter(
-			DiscoveredReducerMethod discoveredReducerMethod)
+			ReducerMethodInfo discoveredReducerMethod)
 			=>
 				(ReduceWithActionParameterHandler)
 					Delegate.CreateDelegate(
@@ -49,7 +49,7 @@ namespace Fluxor.DependencyInjection
 
 		private static ReduceWithActionParameterHandler CreateInstanceReducerWithActionParameter(
 			object reducerHostInstance,
-			DiscoveredReducerMethod discoveredReducerMethod)
+			ReducerMethodInfo discoveredReducerMethod)
 			=>
 				(ReduceWithActionParameterHandler)
 					Delegate.CreateDelegate(
@@ -59,14 +59,14 @@ namespace Fluxor.DependencyInjection
 
 		private static ReduceWithoutActionParameterHandler CreateReducerWithoutActionParameter(
 			object reducerHostInstance,
-			DiscoveredReducerMethod discoveredReducerMethod)
+			ReducerMethodInfo discoveredReducerMethod)
 			=>
 				reducerHostInstance == null
 				? CreateStaticReducerWithoutActionParameter(discoveredReducerMethod)
 				: CreateInstanceReducerWithoutActionParameter(reducerHostInstance, discoveredReducerMethod);
 
 		private static ReduceWithoutActionParameterHandler CreateStaticReducerWithoutActionParameter(
-			DiscoveredReducerMethod discoveredReducerMethod)
+			ReducerMethodInfo discoveredReducerMethod)
 			=>
 				(ReduceWithoutActionParameterHandler)
 					Delegate.CreateDelegate(
@@ -75,7 +75,7 @@ namespace Fluxor.DependencyInjection
 
 		private static ReduceWithoutActionParameterHandler CreateInstanceReducerWithoutActionParameter(
 			object reducerHostInstance,
-			DiscoveredReducerMethod discoveredReducerMethod)
+			ReducerMethodInfo discoveredReducerMethod)
 			=>
 				(ReduceWithoutActionParameterHandler)
 					Delegate.CreateDelegate(

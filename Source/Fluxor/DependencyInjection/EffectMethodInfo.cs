@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace Fluxor.DependencyInjection
 {
-	internal class DiscoveredEffectMethod
+	internal class EffectMethodInfo
 	{
 		public readonly Type HostClassType;
 		public readonly MethodInfo MethodInfo;
 		public readonly Type ActionType;
 		public readonly bool RequiresActionParameterInMethod;
 
-		public DiscoveredEffectMethod(
+		public EffectMethodInfo(
 			Type hostClassType,
 			EffectMethodAttribute attribute,
 			MethodInfo methodInfo)

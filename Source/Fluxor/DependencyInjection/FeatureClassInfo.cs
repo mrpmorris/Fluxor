@@ -2,13 +2,13 @@
 
 namespace Fluxor.DependencyInjection
 {
-	internal class DiscoveredFeatureClass
+	internal class FeatureClassInfo
 	{
 		public readonly Type FeatureInterfaceGenericType;
 		public readonly Type ImplementingType;
 		public readonly Type StateType;
 
-		public DiscoveredFeatureClass(Type implementingType, Type stateType)
+		public FeatureClassInfo(Type implementingType, Type stateType)
 		{
 			FeatureInterfaceGenericType = typeof(IFeature<>).MakeGenericType(stateType);
 			ImplementingType = implementingType;

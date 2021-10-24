@@ -4,7 +4,7 @@ namespace Fluxor.DependencyInjection
 {
 	internal static class EffectWrapperFactory
 	{
-		internal static IEffect Create(IServiceProvider serviceProvider, DiscoveredEffectMethod discoveredEffectMethod)
+		internal static IEffect Create(IServiceProvider serviceProvider, EffectMethodInfo discoveredEffectMethod)
 		{
 			Type actionType = discoveredEffectMethod.ActionType;
 

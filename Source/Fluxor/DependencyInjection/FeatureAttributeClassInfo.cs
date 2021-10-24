@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace Fluxor.DependencyInjection
 {
-	internal class DiscoveredFeatureAttributeDecoratedClass
+	internal class FeatureAttributeClassInfo
 	{
 		public readonly Type StateType;
 		public readonly Type FeatureInterfaceGenericType;
 		public readonly Func<IFeature> CreateFeature;
 
-		public DiscoveredFeatureAttributeDecoratedClass(
+		public FeatureAttributeClassInfo(
 			FeatureAttribute featureAttribute,
 			Type stateType)
 		{
@@ -39,7 +37,7 @@ namespace Fluxor.DependencyInjection
 			if (constructor == null)
 				ThrowConstructorException();
 
-			MethodInfo createMethod = typeof(DiscoveredFeatureAttributeDecoratedClass)
+			MethodInfo createMethod = typeof(FeatureAttributeClassInfo)
 				.GetMethod(
 					nameof(CreateStateUsingParameterlessConstructor),
 					BindingFlags.NonPublic | BindingFlags.Static)

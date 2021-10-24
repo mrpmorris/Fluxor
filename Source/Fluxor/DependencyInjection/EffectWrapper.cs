@@ -12,7 +12,7 @@ namespace Fluxor.DependencyInjection
 		Task IEffect.HandleAsync(object action, IDispatcher dispatcher) => HandleAsync((TAction)action, dispatcher);
 		bool IEffect.ShouldReactToAction(object action) => action is TAction;
 
-		public EffectWrapper(object effectHostInstance, DiscoveredEffectMethod discoveredEffectMethod)
+		public EffectWrapper(object effectHostInstance, EffectMethodInfo discoveredEffectMethod)
 		{
 			HandleAsync =
 				discoveredEffectMethod.RequiresActionParameterInMethod
@@ -22,7 +22,7 @@ namespace Fluxor.DependencyInjection
 
 		private static HandleWithActionParameterAsyncHandler WrapEffectWithoutActionParameter(
 			object effectHostInstance,
-			DiscoveredEffectMethod discoveredEffectMethod)
+			EffectMethodInfo discoveredEffectMethod)
 		{
 			HandleWithoutActionParameterAsyncHandler handler = CreateHandlerWithoutActionParameter(
 				effectHostInstance,
@@ -33,14 +33,14 @@ namespace Fluxor.DependencyInjection
 
 		private static HandleWithActionParameterAsyncHandler CreateHandlerWithActionParameter(
 			object effectHostInstance,
-			DiscoveredEffectMethod discoveredEffectMethod)
+			EffectMethodInfo discoveredEffectMethod)
 			=>
 				effectHostInstance == null
 				? CreateStaticHandlerWithActionParameter(discoveredEffectMethod)
 				: CreateInstanceHandlerWithActionParameter(effectHostInstance, discoveredEffectMethod);
 
 		private static HandleWithActionParameterAsyncHandler CreateStaticHandlerWithActionParameter(
-			DiscoveredEffectMethod discoveredEffectMethod)
+			EffectMethodInfo discoveredEffectMethod)
 			=>
 				(HandleWithActionParameterAsyncHandler)
 					Delegate.CreateDelegate(
@@ -49,7 +49,7 @@ namespace Fluxor.DependencyInjection
 
 		private static HandleWithActionParameterAsyncHandler CreateInstanceHandlerWithActionParameter(
 			object effectHostInstance,
-			DiscoveredEffectMethod discoveredEffectMethod)
+			EffectMethodInfo discoveredEffectMethod)
 			=>
 				(HandleWithActionParameterAsyncHandler)
 					Delegate.CreateDelegate(
@@ -59,14 +59,14 @@ namespace Fluxor.DependencyInjection
 
 		private static HandleWithoutActionParameterAsyncHandler CreateHandlerWithoutActionParameter(
 			object effectHostInstance,
-			DiscoveredEffectMethod discoveredEffectMethod)
+			EffectMethodInfo discoveredEffectMethod)
 			=>
 				effectHostInstance == null
 				? CreateStaticHandlerWithoutActionParameter(discoveredEffectMethod)
 				: CreateInstanceHandlerWithoutActionParameter(effectHostInstance, discoveredEffectMethod);
 
 		private static HandleWithoutActionParameterAsyncHandler CreateStaticHandlerWithoutActionParameter(
-			DiscoveredEffectMethod discoveredEffectMethod)
+			EffectMethodInfo discoveredEffectMethod)
 			=>
 				(HandleWithoutActionParameterAsyncHandler)
 					Delegate.CreateDelegate(
@@ -75,7 +75,7 @@ namespace Fluxor.DependencyInjection
 
 		private static HandleWithoutActionParameterAsyncHandler CreateInstanceHandlerWithoutActionParameter(
 			object effectHostInstance,
-			DiscoveredEffectMethod discoveredEffectMethod)
+			EffectMethodInfo discoveredEffectMethod)
 			=>
 				(HandleWithoutActionParameterAsyncHandler)
 					Delegate.CreateDelegate(

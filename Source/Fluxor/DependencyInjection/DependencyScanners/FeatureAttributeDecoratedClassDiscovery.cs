@@ -8,7 +8,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 {
 	internal class FeatureAttributeDecoratedClassDiscovery
 	{
-		internal static DiscoveredFeatureAttributeDecoratedClass[] DiscoverFeatureAttributeDecoratedClasses(
+		internal static FeatureAttributeClassInfo[] DiscoverFeatureAttributeDecoratedClasses(
 			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
 		{
 			(Type stateType, FeatureAttribute attr)[] discoveredClasses = allCandidateTypes

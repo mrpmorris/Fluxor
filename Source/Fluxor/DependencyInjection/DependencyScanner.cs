@@ -31,22 +31,22 @@ namespace Fluxor.DependencyInjection
 				allNonAbstractCandidateTypes: out Type[] allNonAbstractCandidateTypes);
 
 			// Classes must not be abstract
-			DiscoveredReducerClass[] discoveredReducerClasses =
+			ReducerClassInfo[] discoveredReducerClasses =
 				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allNonAbstractCandidateTypes);
 
-			DiscoveredEffectClass[] discoveredEffectClasses =
+			EffectClassInfo[] discoveredEffectClasses =
 				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
 
 			// Method reducer/effects may belong to abstract classes
 			TypeAndMethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
-			DiscoveredReducerMethod[] discoveredReducerMethods =
+			ReducerMethodInfo[] discoveredReducerMethods =
 				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateMethods);
 
-			DiscoveredEffectMethod[] discoveredEffectMethods =
+			EffectMethodInfo[] discoveredEffectMethods =
 				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateMethods);
 
-			DiscoveredFeatureClass[] discoveredFeatureClasses =
+			FeatureClassInfo[] discoveredFeatureClasses =
 				FeatureClassesDiscovery.DiscoverFeatureClasses(
 					serviceCollection: serviceCollection,
 					allCandidateTypes: allNonAbstractCandidateTypes,
@@ -99,9 +99,9 @@ namespace Fluxor.DependencyInjection
 		private static void RegisterStore(
 			IServiceCollection serviceCollection,
 			FluxorOptions options,
-			IEnumerable<DiscoveredFeatureClass> discoveredFeatureClasses,
-			IEnumerable<DiscoveredEffectClass> discoveredEffectClasses,
-			IEnumerable<DiscoveredEffectMethod> discoveredEffectMethods)
+			IEnumerable<FeatureClassInfo> discoveredFeatureClasses,
+			IEnumerable<EffectClassInfo> discoveredEffectClasses,
+			IEnumerable<EffectMethodInfo> discoveredEffectMethods)
 		{
 			// Register IDispatcher as an alias to Store
 			serviceCollection.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetService<Store>());
@@ -114,19 +114,19 @@ namespace Fluxor.DependencyInjection
 			serviceCollection.AddScoped(typeof(Store), serviceProvider =>
 			{
 				var store = new Store();
-				foreach (DiscoveredFeatureClass discoveredFeatureClass in discoveredFeatureClasses)
+				foreach (FeatureClassInfo discoveredFeatureClass in discoveredFeatureClasses)
 				{
 					var feature = (IFeature)serviceProvider.GetService(discoveredFeatureClass.FeatureInterfaceGenericType);
 					store.AddFeature(feature);
 				}
 
-				foreach (DiscoveredEffectClass discoveredEffectClass in discoveredEffectClasses)
+				foreach (EffectClassInfo discoveredEffectClass in discoveredEffectClasses)
 				{
 					var effect = (IEffect)serviceProvider.GetService(discoveredEffectClass.ImplementingType);
 					store.AddEffect(effect);
 				}
 
-				foreach (DiscoveredEffectMethod discoveredEffectMethod in discoveredEffectMethods)
+				foreach (EffectMethodInfo discoveredEffectMethod in discoveredEffectMethods)
 				{
 					IEffect effect = EffectWrapperFactory.Create(serviceProvider, discoveredEffectMethod);
 					store.AddEffect(effect);
