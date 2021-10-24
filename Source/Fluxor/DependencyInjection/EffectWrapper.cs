@@ -12,75 +12,75 @@ namespace Fluxor.DependencyInjection
 		Task IEffect.HandleAsync(object action, IDispatcher dispatcher) => HandleAsync((TAction)action, dispatcher);
 		bool IEffect.ShouldReactToAction(object action) => action is TAction;
 
-		public EffectWrapper(object effectHostInstance, EffectMethodInfo discoveredEffectMethod)
+		public EffectWrapper(object effectHostInstance, EffectMethodInfo effectMethodInfos)
 		{
 			HandleAsync =
-				discoveredEffectMethod.RequiresActionParameterInMethod
-				? CreateHandlerWithActionParameter(effectHostInstance, discoveredEffectMethod)
-				: WrapEffectWithoutActionParameter(effectHostInstance, discoveredEffectMethod); ;
+				effectMethodInfos.RequiresActionParameterInMethod
+				? CreateHandlerWithActionParameter(effectHostInstance, effectMethodInfos)
+				: WrapEffectWithoutActionParameter(effectHostInstance, effectMethodInfos); ;
 		}
 
 		private static HandleWithActionParameterAsyncHandler WrapEffectWithoutActionParameter(
 			object effectHostInstance,
-			EffectMethodInfo discoveredEffectMethod)
+			EffectMethodInfo effectMethodInfos)
 		{
 			HandleWithoutActionParameterAsyncHandler handler = CreateHandlerWithoutActionParameter(
 				effectHostInstance,
-				discoveredEffectMethod);
+				effectMethodInfos);
 
 			return new HandleWithActionParameterAsyncHandler((action, dispatcher) => handler.Invoke(dispatcher));
 		}
 
 		private static HandleWithActionParameterAsyncHandler CreateHandlerWithActionParameter(
 			object effectHostInstance,
-			EffectMethodInfo discoveredEffectMethod)
+			EffectMethodInfo effectMethodInfos)
 			=>
 				effectHostInstance == null
-				? CreateStaticHandlerWithActionParameter(discoveredEffectMethod)
-				: CreateInstanceHandlerWithActionParameter(effectHostInstance, discoveredEffectMethod);
+				? CreateStaticHandlerWithActionParameter(effectMethodInfos)
+				: CreateInstanceHandlerWithActionParameter(effectHostInstance, effectMethodInfos);
 
 		private static HandleWithActionParameterAsyncHandler CreateStaticHandlerWithActionParameter(
-			EffectMethodInfo discoveredEffectMethod)
+			EffectMethodInfo effectMethodInfo)
 			=>
 				(HandleWithActionParameterAsyncHandler)
 					Delegate.CreateDelegate(
 						type: typeof(HandleWithActionParameterAsyncHandler),
-						method: discoveredEffectMethod.MethodInfo);
+						method: effectMethodInfo.MethodInfo);
 
 		private static HandleWithActionParameterAsyncHandler CreateInstanceHandlerWithActionParameter(
 			object effectHostInstance,
-			EffectMethodInfo discoveredEffectMethod)
+			EffectMethodInfo effectMethodInfo)
 			=>
 				(HandleWithActionParameterAsyncHandler)
 					Delegate.CreateDelegate(
 						type: typeof(HandleWithActionParameterAsyncHandler),
 						firstArgument: effectHostInstance,
-						method: discoveredEffectMethod.MethodInfo);
+						method: effectMethodInfo.MethodInfo);
 
 		private static HandleWithoutActionParameterAsyncHandler CreateHandlerWithoutActionParameter(
 			object effectHostInstance,
-			EffectMethodInfo discoveredEffectMethod)
+			EffectMethodInfo effectMethodInfo)
 			=>
 				effectHostInstance == null
-				? CreateStaticHandlerWithoutActionParameter(discoveredEffectMethod)
-				: CreateInstanceHandlerWithoutActionParameter(effectHostInstance, discoveredEffectMethod);
+				? CreateStaticHandlerWithoutActionParameter(effectMethodInfo)
+				: CreateInstanceHandlerWithoutActionParameter(effectHostInstance, effectMethodInfo);
 
 		private static HandleWithoutActionParameterAsyncHandler CreateStaticHandlerWithoutActionParameter(
-			EffectMethodInfo discoveredEffectMethod)
+			EffectMethodInfo effectMethodInfo)
 			=>
 				(HandleWithoutActionParameterAsyncHandler)
 					Delegate.CreateDelegate(
 						type: typeof(HandleWithoutActionParameterAsyncHandler),
-						method: discoveredEffectMethod.MethodInfo);
+						method: effectMethodInfo.MethodInfo);
 
 		private static HandleWithoutActionParameterAsyncHandler CreateInstanceHandlerWithoutActionParameter(
 			object effectHostInstance,
-			EffectMethodInfo discoveredEffectMethod)
+			EffectMethodInfo effectMethodInfo)
 			=>
 				(HandleWithoutActionParameterAsyncHandler)
 					Delegate.CreateDelegate(
 						type: typeof(HandleWithoutActionParameterAsyncHandler),
 						firstArgument: effectHostInstance,
-						method: discoveredEffectMethod.MethodInfo);
+						method: effectMethodInfo.MethodInfo);
 	}
 }

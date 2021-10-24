@@ -11,7 +11,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 			IServiceCollection serviceCollection,
 			IEnumerable<Type> allCandidateTypes)
 		{
-			ReducerClassInfo[] discoveredReducerInfos =
+			ReducerClassInfo[] reducerClassInfos =
 				allCandidateTypes
 					.Where(t => t != typeof(ReducerWrapper<,>))
 					.Select(t =>
@@ -26,10 +26,10 @@ namespace Fluxor.DependencyInjection.InfoFactories
 						stateType: x.GenericParameterTypes[0]))
 					.ToArray();
 
-			foreach (ReducerClassInfo discoveredReducerInfo in discoveredReducerInfos)
-				serviceCollection.AddScoped(serviceType: discoveredReducerInfo.ImplementingType);
+			foreach (ReducerClassInfo reducerClassInfo in reducerClassInfos)
+				serviceCollection.AddScoped(serviceType: reducerClassInfo.ImplementingType);
 
-			return discoveredReducerInfos;
+			return reducerClassInfos;
 		}
 	}
 }

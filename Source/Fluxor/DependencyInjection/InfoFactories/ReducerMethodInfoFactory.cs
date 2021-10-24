@@ -12,7 +12,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 			IServiceCollection serviceCollection,
 			IEnumerable<TypeAndMethodInfo> allCandidateMethods)
 		{
-			ReducerMethodInfo[] discoveredReducers =
+			ReducerMethodInfo[] reducerMethodInfos =
 				allCandidateMethods
 					.Select(c =>
 						new
@@ -29,7 +29,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 					.ToArray();
 
 			IEnumerable<Type> hostClassTypes =
-				discoveredReducers
+				reducerMethodInfos
 					.Select(x => x.HostClassType)
 					.Where(t => !t.IsAbstract)
 					.Distinct();
@@ -37,7 +37,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 			foreach (Type hostClassType in hostClassTypes)
 				serviceCollection.AddScoped(hostClassType);
 
-			return discoveredReducers;
+			return reducerMethodInfos;
 		}
 	}
 }

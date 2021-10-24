@@ -11,20 +11,20 @@ namespace Fluxor.DependencyInjection.InfoFactories
 		internal static FeatureClassInfo[] Create(
 			IServiceCollection serviceCollection,
 			IEnumerable<Type> allCandidateTypes,
-			IEnumerable<ReducerClassInfo> discoveredReducerClasses,
-			IEnumerable<ReducerMethodInfo> discoveredReducerMethods)
+			IEnumerable<ReducerClassInfo> reducerClassInfos,
+			IEnumerable<ReducerMethodInfo> reducerMethodInfos)
 		{
-			Dictionary<Type, IGrouping<Type, ReducerClassInfo>> discoveredReducerClassesByStateType =
-				discoveredReducerClasses
+			Dictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType =
+				reducerClassInfos
 				.GroupBy(x => x.StateType)
 				.ToDictionary(x => x.Key);
 
-			Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> discoveredReducerMethodsByStateType =
-				discoveredReducerMethods
+			Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType =
+				reducerMethodInfos
 					.GroupBy(x => x.StateType)
 					.ToDictionary(x => x.Key);
 
-			FeatureClassInfo[] discoveredFeatureClasses =
+			FeatureClassInfo[] featureClassInfos =
 				allCandidateTypes
 					.Select(t =>
 						new
@@ -40,60 +40,60 @@ namespace Fluxor.DependencyInjection.InfoFactories
 					)
 					.ToArray();
 
-			foreach (FeatureClassInfo discoveredFeatureClass in discoveredFeatureClasses)
+			foreach (FeatureClassInfo featureClassInfo in featureClassInfos)
 			{
-				discoveredReducerClassesByStateType.TryGetValue(
-					discoveredFeatureClass.StateType,
-					out IGrouping<Type, ReducerClassInfo> discoveredReducerClassesForStateType);
+				reducerClassInfoByStateType.TryGetValue(
+					featureClassInfo.StateType,
+					out IGrouping<Type, ReducerClassInfo> reducerClassInfosForStateType);
 
-				discoveredReducerMethodsByStateType.TryGetValue(
-					discoveredFeatureClass.StateType,
-					out IGrouping<Type, ReducerMethodInfo> discoveredReducerMethodsForStateType);
+				reducerMethodInfoByStateType.TryGetValue(
+					featureClassInfo.StateType,
+					out IGrouping<Type, ReducerMethodInfo> reducerMethodInfosForStateType);
 
 				RegisterFeature(
 					serviceCollection,
-					discoveredFeatureClass,
-					discoveredReducerClassesForStateType,
-					discoveredReducerMethodsForStateType);
+					featureClassInfo,
+					reducerClassInfosForStateType,
+					reducerMethodInfosForStateType);
 			}
 
-			return discoveredFeatureClasses;
+			return featureClassInfos;
 		}
 
 		private static void RegisterFeature(
 			IServiceCollection serviceCollection,
-			FeatureClassInfo discoveredFeatureClass,
-			IEnumerable<ReducerClassInfo> discoveredReducerClassesForStateType,
-			IEnumerable<ReducerMethodInfo> discoveredReducerMethodsForStateType)
+			FeatureClassInfo featureClassInfo,
+			IEnumerable<ReducerClassInfo> reducerClassInfosForStateType,
+			IEnumerable<ReducerMethodInfo> reducerMethodInfosForStateType)
 		{
 			string addReducerMethodName = nameof(IFeature<object>.AddReducer);
 			MethodInfo featureAddReducerMethodInfo =
-				discoveredFeatureClass.ImplementingType.GetMethod(addReducerMethodName);
+				featureClassInfo.ImplementingType.GetMethod(addReducerMethodName);
 
 			// Register the implementing type so we can get an instance from the service provider
-			serviceCollection.AddScoped(discoveredFeatureClass.ImplementingType);
+			serviceCollection.AddScoped(featureClassInfo.ImplementingType);
 
 			// Register a factory for creating instance of this feature type when requested via the generic IFeature interface
-			serviceCollection.AddScoped(discoveredFeatureClass.FeatureInterfaceGenericType, serviceProvider =>
+			serviceCollection.AddScoped(featureClassInfo.FeatureInterfaceGenericType, serviceProvider =>
 			{
 				// Create an instance of the implementing type
-				var featureInstance = (IFeature)serviceProvider.GetService(discoveredFeatureClass.ImplementingType);
+				var featureInstance = (IFeature)serviceProvider.GetService(featureClassInfo.ImplementingType);
 
-				if (discoveredReducerClassesForStateType != null)
+				if (reducerClassInfosForStateType != null)
 				{
 
-					foreach (ReducerClassInfo reducerClass in discoveredReducerClassesForStateType)
+					foreach (ReducerClassInfo reducerClass in reducerClassInfosForStateType)
 					{
 						object reducerInstance = serviceProvider.GetService(reducerClass.ImplementingType);
 						featureAddReducerMethodInfo.Invoke(featureInstance, new object[] { reducerInstance });
 					}
 				}
 
-				if (discoveredReducerMethodsForStateType != null)
+				if (reducerMethodInfosForStateType != null)
 				{
-					foreach (ReducerMethodInfo discoveredReducerMethod in discoveredReducerMethodsForStateType)
+					foreach (ReducerMethodInfo reducerMethodInfo in reducerMethodInfosForStateType)
 					{
-						object reducerWrapperInstance = ReducerWrapperFactory.Create(serviceProvider, discoveredReducerMethod);
+						object reducerWrapperInstance = ReducerWrapperFactory.Create(serviceProvider, reducerMethodInfo);
 						featureAddReducerMethodInfo.Invoke(featureInstance, new object[] { reducerWrapperInstance });
 					}
 				}

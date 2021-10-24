@@ -11,17 +11,17 @@ namespace Fluxor.DependencyInjection.InfoFactories
 			IServiceCollection serviceCollection,
 			IEnumerable<Type> allCandidateTypes)
 		{
-			EffectClassInfo[] discoveredEffectInfos =
+			EffectClassInfo[] effectClassInfos =
 				allCandidateTypes
 					.Where(t => typeof(IEffect).IsAssignableFrom(t))
 					.Where(t => t != typeof(EffectWrapper<>))
 					.Select(t => new EffectClassInfo(implementingType: t))
 					.ToArray();
 
-			foreach (EffectClassInfo discoveredEffectInfo in discoveredEffectInfos)
-				serviceCollection.AddScoped(discoveredEffectInfo.ImplementingType);
+			foreach (EffectClassInfo effectClassInfo in effectClassInfos)
+				serviceCollection.AddScoped(effectClassInfo.ImplementingType);
 
-			return discoveredEffectInfos;
+			return effectClassInfos;
 		}
 	}
 }

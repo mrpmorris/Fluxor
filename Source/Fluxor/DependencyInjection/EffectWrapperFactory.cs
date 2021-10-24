@@ -4,12 +4,14 @@ namespace Fluxor.DependencyInjection
 {
 	internal static class EffectWrapperFactory
 	{
-		internal static IEffect Create(IServiceProvider serviceProvider, EffectMethodInfo discoveredEffectMethod)
+		internal static IEffect Create(
+			IServiceProvider serviceProvider,
+			EffectMethodInfo effectMethodInfo)
 		{
-			Type actionType = discoveredEffectMethod.ActionType;
+			Type actionType = effectMethodInfo.ActionType;
 
-			Type hostClassType = discoveredEffectMethod.HostClassType;
-			object effectHostInstance = discoveredEffectMethod.MethodInfo.IsStatic
+			Type hostClassType = effectMethodInfo.HostClassType;
+			object effectHostInstance = effectMethodInfo.MethodInfo.IsStatic
 				? null
 				: serviceProvider.GetService(hostClassType);
 
@@ -17,7 +19,7 @@ namespace Fluxor.DependencyInjection
 			var result = (IEffect)Activator.CreateInstance(
 				classGenericType,
 				effectHostInstance,
-				discoveredEffectMethod);
+				effectMethodInfo);
 			return result;
 		}
 	}
