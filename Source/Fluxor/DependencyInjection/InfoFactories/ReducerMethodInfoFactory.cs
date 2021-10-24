@@ -4,33 +4,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Fluxor.DependencyInjection.DependencyScanners
+namespace Fluxor.DependencyInjection.InfoFactories
 {
-	internal static class EffectMethodsDiscovery
+	internal static class ReducerMethodInfoFactory
 	{
-		internal static EffectMethodInfo[] DiscoverEffectMethods(
+		internal static ReducerMethodInfo[] Create(
 			IServiceCollection serviceCollection,
 			IEnumerable<TypeAndMethodInfo> allCandidateMethods)
 		{
-			EffectMethodInfo[] discoveredEffects =
+			ReducerMethodInfo[] discoveredReducers =
 				allCandidateMethods
 					.Select(c =>
 						new
 						{
-							HostClassType = c.Type,
+							HostClassType = c.Type, 
 							c.MethodInfo,
-							EffectAttribute = c.MethodInfo.GetCustomAttribute<EffectMethodAttribute>(false)
+							ReducerAttribute = c.MethodInfo.GetCustomAttribute<ReducerMethodAttribute>(false)
 						})
-					.Where(x => x.EffectAttribute != null)
-					.Select(x =>
-						new EffectMethodInfo(
-							x.HostClassType,
-							x.EffectAttribute, 
-							x.MethodInfo))
+					.Where(x => x.ReducerAttribute != null)
+					.Select(x => new ReducerMethodInfo(
+						x.HostClassType,
+						x.ReducerAttribute,
+						x.MethodInfo))
 					.ToArray();
 
 			IEnumerable<Type> hostClassTypes =
-				discoveredEffects
+				discoveredReducers
 					.Select(x => x.HostClassType)
 					.Where(t => !t.IsAbstract)
 					.Distinct();
@@ -38,7 +37,7 @@ namespace Fluxor.DependencyInjection.DependencyScanners
 			foreach (Type hostClassType in hostClassTypes)
 				serviceCollection.AddScoped(hostClassType);
 
-			return discoveredEffects;
+			return discoveredReducers;
 		}
 	}
 }

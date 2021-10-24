@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fluxor.DependencyInjection.DependencyScanners
+namespace Fluxor.DependencyInjection.InfoFactories
 {
-	internal static class EffectClassessDiscovery
+	internal static class EffectClassInfoFactory
 	{
-		internal static EffectClassInfo[] DiscoverEffectClasses(
-			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
+		internal static EffectClassInfo[] Create(
+			IServiceCollection serviceCollection,
+			IEnumerable<Type> allCandidateTypes)
 		{
 			EffectClassInfo[] discoveredEffectInfos =
 				allCandidateTypes

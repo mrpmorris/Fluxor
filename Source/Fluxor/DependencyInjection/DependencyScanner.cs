@@ -1,4 +1,4 @@
-﻿using Fluxor.DependencyInjection.DependencyScanners;
+﻿using Fluxor.DependencyInjection.InfoFactories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -32,22 +32,22 @@ namespace Fluxor.DependencyInjection
 
 			// Classes must not be abstract
 			ReducerClassInfo[] discoveredReducerClasses =
-				ReducerClassessDiscovery.DiscoverReducerClasses(serviceCollection, allNonAbstractCandidateTypes);
+				ReducerClassInfoFactory.Create(serviceCollection, allNonAbstractCandidateTypes);
 
 			EffectClassInfo[] discoveredEffectClasses =
-				EffectClassessDiscovery.DiscoverEffectClasses(serviceCollection, allNonAbstractCandidateTypes);
+				EffectClassInfoFactory.Create(serviceCollection, allNonAbstractCandidateTypes);
 
 			// Method reducer/effects may belong to abstract classes
 			TypeAndMethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
 			ReducerMethodInfo[] discoveredReducerMethods =
-				ReducerMethodsDiscovery.DiscoverReducerMethods(serviceCollection, allCandidateMethods);
+				ReducerMethodInfoFactory.Create(serviceCollection, allCandidateMethods);
 
 			EffectMethodInfo[] discoveredEffectMethods =
-				EffectMethodsDiscovery.DiscoverEffectMethods(serviceCollection, allCandidateMethods);
+				EffectMethodInfoFactory.Create(serviceCollection, allCandidateMethods);
 
 			FeatureClassInfo[] discoveredFeatureClasses =
-				FeatureClassesDiscovery.DiscoverFeatureClasses(
+				FeatureClassInfoFactory.Create(
 					serviceCollection: serviceCollection,
 					allCandidateTypes: allNonAbstractCandidateTypes,
 					discoveredReducerClasses: discoveredReducerClasses,

@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 
-namespace Fluxor.DependencyInjection.DependencyScanners
+namespace Fluxor.DependencyInjection.InfoFactories
 {
-	internal static class FeatureClassesDiscovery
+	internal static class FeatureClassInfoFactory
 	{
-		internal static FeatureClassInfo[] DiscoverFeatureClasses(
+		internal static FeatureClassInfo[] Create(
 			IServiceCollection serviceCollection,
 			IEnumerable<Type> allCandidateTypes,
 			IEnumerable<ReducerClassInfo> discoveredReducerClasses,

@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Fluxor.DependencyInjection.DependencyScanners
+namespace Fluxor.DependencyInjection.InfoFactories
 {
-	internal class FeatureAttributeDecoratedClassDiscovery
+	internal class FeatureAttributeClassInfoFactory
 	{
-		internal static FeatureAttributeClassInfo[] DiscoverFeatureAttributeDecoratedClasses(
-			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
+		internal static FeatureAttributeClassInfo[] Create(
+			IServiceCollection serviceCollection,
+			IEnumerable<Type> allCandidateTypes)
 		{
 			(Type stateType, FeatureAttribute attr)[] discoveredClasses = allCandidateTypes
 				.Select(x => new

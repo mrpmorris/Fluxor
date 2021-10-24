@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fluxor.DependencyInjection.DependencyScanners
+namespace Fluxor.DependencyInjection.InfoFactories
 {
-	internal static class ReducerClassessDiscovery
+	internal static class ReducerClassInfoFactory
 	{
-		internal static ReducerClassInfo[] DiscoverReducerClasses(
-			IServiceCollection serviceCollection, IEnumerable<Type> allCandidateTypes)
+		internal static ReducerClassInfo[] Create(
+			IServiceCollection serviceCollection,
+			IEnumerable<Type> allCandidateTypes)
 		{
 			ReducerClassInfo[] discoveredReducerInfos =
 				allCandidateTypes
