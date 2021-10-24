@@ -9,36 +9,23 @@ namespace Fluxor.DependencyInjection.InfoFactories
 	internal static class EffectMethodInfoFactory
 	{
 		internal static EffectMethodInfo[] Create(
-			IServiceCollection serviceCollection,
+			IServiceCollection services,
 			IEnumerable<TypeAndMethodInfo> allCandidateMethods)
-		{
-			EffectMethodInfo[] effectMethodInfos =
-				allCandidateMethods
-					.Select(c =>
-						new
-						{
-							HostClassType = c.Type,
-							c.MethodInfo,
-							EffectAttribute = c.MethodInfo.GetCustomAttribute<EffectMethodAttribute>(false)
-						})
-					.Where(x => x.EffectAttribute != null)
-					.Select(x =>
-						new EffectMethodInfo(
-							x.HostClassType,
-							x.EffectAttribute, 
-							x.MethodInfo))
-					.ToArray();
-
-			IEnumerable<Type> hostClassTypes =
-				effectMethodInfos
-					.Select(x => x.HostClassType)
-					.Where(t => !t.IsAbstract)
-					.Distinct();
-
-			foreach (Type hostClassType in hostClassTypes)
-				serviceCollection.AddScoped(hostClassType);
-
-			return effectMethodInfos;
-		}
+		=>
+			allCandidateMethods
+				.Select(c =>
+					new
+					{
+						HostClassType = c.Type,
+						c.MethodInfo,
+						EffectAttribute = c.MethodInfo.GetCustomAttribute<EffectMethodAttribute>(false)
+					})
+				.Where(x => x.EffectAttribute != null)
+				.Select(x =>
+					new EffectMethodInfo(
+						x.HostClassType,
+						x.EffectAttribute, 
+						x.MethodInfo))
+				.ToArray();
 	}
 }

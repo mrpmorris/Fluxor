@@ -12,5 +12,10 @@ namespace Fluxor.DependencyInjection
 			ImplementingType = implementingType;
 			StateType = stateType;
 		}
+
+		internal object GroupBy(Func<object, object> p)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

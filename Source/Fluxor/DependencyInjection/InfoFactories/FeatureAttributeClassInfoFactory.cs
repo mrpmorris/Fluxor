@@ -9,7 +9,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 	internal class FeatureAttributeClassInfoFactory
 	{
 		internal static FeatureAttributeClassInfo[] Create(
-			IServiceCollection serviceCollection,
+			IServiceCollection services,
 			IEnumerable<Type> allCandidateTypes)
 		{
 			(Type stateType, FeatureAttribute attr)[] discoveredClasses = allCandidateTypes

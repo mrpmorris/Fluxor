@@ -14,7 +14,7 @@ namespace Fluxor
 		///	<summary>
 		///		Adds support to Blazor for the Fluxor library
 		///	</summary>
-		///	<param name="serviceCollection">The service collection</param>
+		///	<param name="services">The service collection</param>
 		///	<param name="configure">A callback used to configure options</param>
 		///	<returns>The service collection</returns>
 		///	<example>
@@ -22,29 +22,29 @@ namespace Fluxor
 		///			.ScanAssemblies(typeof(Program).Assembly));
 		///	</example>
 		public static IServiceCollection AddFluxor(
-			this IServiceCollection serviceCollection,
+			this IServiceCollection services,
 			Action<FluxorOptions> configure = null)
 		{
 			// We only use an instance so middleware can create extensions to the Options
-			var options = new FluxorOptions(serviceCollection);
+			var options = new FluxorOptions(services);
 			configure?.Invoke(options);
 
 			// Register all middleware types with dependency injection
 			foreach (Type middlewareType in options.MiddlewareTypes)
-				serviceCollection.AddScoped(middlewareType);
+				services.AddScoped(middlewareType);
 
 			IEnumerable<AssemblyScanSettings> scanIncludeList = options.MiddlewareTypes
 				.Select(t => new AssemblyScanSettings(t.Assembly, t.Namespace));
 
 			ReflectionScanner.Scan(
 				options: options,
-				serviceCollection: serviceCollection,
+				services: services,
 				assembliesToScan: options.AssembliesToScan,
 				typesToScan: options.TypesToScan,
 				scanIncludeList: scanIncludeList);
-			serviceCollection.AddScoped(typeof(IState<>), typeof(State<>));
+			services.AddScoped(typeof(IState<>), typeof(State<>));
 
-			return serviceCollection;
+			return services;
 		}
 	}
 }

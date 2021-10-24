@@ -1,4 +1,5 @@
 ﻿using Fluxor.DependencyInjection.InfoFactories;
+using Fluxor.DependencyInjection.ServiceRegistration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace Fluxor.DependencyInjection
 	internal static class ReflectionScanner
 	{
 		internal static void Scan(
-			this IServiceCollection serviceCollection,
+			this IServiceCollection services,
 			FluxorOptions options,
 			IEnumerable<Type> typesToScan,
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
@@ -30,35 +31,42 @@ namespace Fluxor.DependencyInjection
 				allCandidateTypes: out Type[] allCandidateTypes,
 				allNonAbstractCandidateTypes: out Type[] allNonAbstractCandidateTypes);
 
-			// Classes must not be abstract
-			ReducerClassInfo[] reducerClassInfos =
-				ReducerClassInfoFactory.Create(serviceCollection, allNonAbstractCandidateTypes);
-
-			EffectClassInfo[] effectClassInfos =
-				EffectClassInfoFactory.Create(serviceCollection, allNonAbstractCandidateTypes);
-
 			// Method reducer/effects may belong to abstract classes
-			TypeAndMethodInfo[] allCandidateMethods = AssemblyScanSettings.FilterMethods(allCandidateTypes);
+			TypeAndMethodInfo[] allCandidateMethods =
+				AssemblyScanSettings.FilterMethods(allCandidateTypes);
 
+			// Find all concrete implementors of IReducer<T>
+			ReducerClassInfo[] reducerClassInfos =
+				ReducerClassInfoFactory.Create(services, allNonAbstractCandidateTypes);
+
+			// Find all [ReducerMethod] decorated methods
 			ReducerMethodInfo[] reducerMethodInfos =
-				ReducerMethodInfoFactory.Create(serviceCollection, allCandidateMethods);
+				ReducerMethodInfoFactory.Create(services, allCandidateMethods);
 
+			// Find all concrete implementors of IEffect<T>
+			EffectClassInfo[] effectClassInfos =
+				EffectClassInfoFactory.Create(services, allNonAbstractCandidateTypes);
+
+			// Find all [EffectMethod] decorated methods
 			EffectMethodInfo[] effectMethodInfos =
-				EffectMethodInfoFactory.Create(serviceCollection, allCandidateMethods);
+				EffectMethodInfoFactory.Create(services, allCandidateMethods);
 
+			// Find all concrete implementors of IFeature
 			FeatureClassInfo[] featureClassInfos =
 				FeatureClassInfoFactory.Create(
-					serviceCollection: serviceCollection,
+					services: services,
 					allCandidateTypes: allNonAbstractCandidateTypes,
 					reducerClassInfos: reducerClassInfos,
 					reducerMethodInfos: reducerMethodInfos);
 
-			RegisterStore(
-				serviceCollection: serviceCollection,
-				options: options,
-				featureClassInfos: featureClassInfos,
-				effectClassInfos: effectClassInfos,
-				effectMethodInfos: effectMethodInfos);
+			StoreRegistration.Register(
+				services,
+				options,
+				featureClassInfos,
+				reducerClassInfos,
+				reducerMethodInfos,
+				effectClassInfos,
+				effectMethodInfos);
 		}
 
 		private static void GetCandidateTypes(
@@ -94,52 +102,6 @@ namespace Fluxor.DependencyInjection
 			allNonAbstractCandidateTypes = allCandidateTypes
 					.Where(t => !t.IsAbstract)
 					.ToArray();
-		}
-
-		private static void RegisterStore(
-			IServiceCollection serviceCollection,
-			FluxorOptions options,
-			IEnumerable<FeatureClassInfo> featureClassInfos,
-			IEnumerable<EffectClassInfo> effectClassInfos,
-			IEnumerable<EffectMethodInfo> effectMethodInfos)
-		{
-			// Register IDispatcher as an alias to Store
-			serviceCollection.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetService<Store>());
-			// Register IActionSubscriber as an alias to Store
-			serviceCollection.AddScoped<IActionSubscriber>(serviceProvider => serviceProvider.GetService<Store>());
-			// Register IStore as an alias to Store
-			serviceCollection.AddScoped<IStore>(serviceProvider => serviceProvider.GetService<Store>());
-
-			// Register a custom factory for building IStore that will inject all effects
-			serviceCollection.AddScoped(typeof(Store), serviceProvider =>
-			{
-				var store = new Store();
-				foreach (FeatureClassInfo featureClassInfo in featureClassInfos)
-				{
-					var feature = (IFeature)serviceProvider.GetService(featureClassInfo.FeatureInterfaceGenericType);
-					store.AddFeature(feature);
-				}
-
-				foreach (EffectClassInfo effectClassInfo in effectClassInfos)
-				{
-					var effect = (IEffect)serviceProvider.GetService(effectClassInfo.ImplementingType);
-					store.AddEffect(effect);
-				}
-
-				foreach (EffectMethodInfo effectMethodInfo in effectMethodInfos)
-				{
-					IEffect effect = EffectWrapperFactory.Create(serviceProvider, effectMethodInfo);
-					store.AddEffect(effect);
-				}
-
-				foreach (Type middlewareType in options.MiddlewareTypes)
-				{
-					var middleware = (IMiddleware)serviceProvider.GetService(middlewareType);
-					store.AddMiddleware(middleware);
-				}
-
-				return store;
-			});
 		}
 	}
 }
