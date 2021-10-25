@@ -18,8 +18,10 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			EffectClassInfo[] effectClassInfos,
 			EffectMethodInfo[] effectMethodInfos)
 		{
-			FeatureClassRegistration.Register(
-				services, featureClassInfos,
+			FeatureRegistration.Register(
+				services,
+				featureClassInfos,
+				featureAttributeClassInfos,
 				reducerClassInfos,
 				reducerMethodInfos); ;
 			ReducerClassRegistration.Register(services, reducerClassInfos);

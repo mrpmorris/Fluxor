@@ -6,6 +6,7 @@ namespace Fluxor.DependencyInjection
 {
 	internal class FeatureAttributeClassInfo
 	{
+		public readonly FeatureAttribute FeatureAttribute;
 		public readonly Type StateType;
 		public readonly Type FeatureInterfaceGenericType;
 		public readonly Type FeatureWrapperGenericType;
@@ -20,9 +21,10 @@ namespace Fluxor.DependencyInjection
 			if (stateType == null)
 				throw new ArgumentNullException(nameof(stateType));
 
+			FeatureAttribute = featureAttribute;
 			StateType = stateType;
-			FeatureInterfaceGenericType = typeof(IFeature<>).MakeGenericType(stateType);
-			FeatureWrapperGenericType = typeof(FeatureAttributeStateWrapper<>).MakeGenericType(stateType);
+			FeatureInterfaceGenericType = typeof(IFeature<>).MakeGenericType(StateType);
+			FeatureWrapperGenericType = typeof(FeatureAttributeStateWrapper<>).MakeGenericType(StateType);
 
 			if (featureAttribute.CreateInitialStateMethodName == null)
 				CreateInitialStateFunc = CreateParameterlessConstructorStateFactory(featureAttribute);

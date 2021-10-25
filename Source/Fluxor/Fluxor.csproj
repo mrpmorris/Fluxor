@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DependencyInjection\WrapperFactories\" />
     <Folder Include="DependencyInjection\Wrappers\" />
   </ItemGroup>
 

@@ -7,13 +7,13 @@ namespace Fluxor.DependencyInjection.WrapperFactories
 	{
 		internal static object Create(
 			IServiceProvider serviceProvider,
-			ReducerMethodInfo reducerMethodInfo)
+			ReducerMethodInfo info)
 		{
-			Type stateType = reducerMethodInfo.StateType;
-			Type actionType = reducerMethodInfo.ActionType;
+			Type stateType = info.StateType;
+			Type actionType = info.ActionType;
 
-			Type hostClassType = reducerMethodInfo.HostClassType;
-			object reducerHostInstance = reducerMethodInfo.MethodInfo.IsStatic
+			Type hostClassType = info.HostClassType;
+			object reducerHostInstance = info.MethodInfo.IsStatic
 				? null
 				: serviceProvider.GetService(hostClassType);
 
@@ -21,7 +21,7 @@ namespace Fluxor.DependencyInjection.WrapperFactories
 			var result = Activator.CreateInstance(
 				classGenericType,
 				reducerHostInstance,
-				reducerMethodInfo);
+				info);
 			return result;
 		}
 	}

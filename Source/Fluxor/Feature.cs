@@ -36,6 +36,7 @@ namespace Fluxor
 		/// </summary>
 		protected readonly List<IReducer<TState>> Reducers = new List<IReducer<TState>>();
 
+		private bool HasInitialState;
 		private SpinLock SpinLock = new SpinLock();
 		private ThrottledInvoker TriggerStateChangedCallbacksThrottler;
 
@@ -45,7 +46,6 @@ namespace Fluxor
 		public Feature()
 		{
 			TriggerStateChangedCallbacksThrottler = new ThrottledInvoker(TriggerStateChangedCallbacks);
-			State = GetInitialState();
 		}
 
 		private EventHandler untypedStateChanged;
@@ -61,8 +61,6 @@ namespace Fluxor
 				SpinLock.ExecuteLocked(() => untypedStateChanged -= value);
 			}
 		}
-
-		private TState _State;
 
 		private EventHandler<TState> stateChanged;
 		/// <summary>
@@ -81,10 +79,24 @@ namespace Fluxor
 			}
 		}
 
+		private TState _State;
 		/// <see cref="IFeature{TState}.State"/>
 		public virtual TState State
 		{
-			get => _State;
+			get
+			{
+				if (HasInitialState)
+					return _State;
+				SpinLock.ExecuteLocked(() =>
+				{
+					if (!HasInitialState)
+					{
+						_State = (TState)GetInitialState();
+						HasInitialState = true;
+					}
+				});
+				return _State;
+			}
 			protected set
 			{
 				SpinLock.ExecuteLocked(() =>
