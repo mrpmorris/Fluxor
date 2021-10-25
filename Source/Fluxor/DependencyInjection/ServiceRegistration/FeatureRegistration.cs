@@ -12,7 +12,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 		public static void Register(
 			IServiceCollection services,
 			FeatureClassInfo[] featureClassInfos,
-			FeatureAttributeClassInfo[] featureAttributeClassInfos,
+			FeatureStateInfo[] featureStateInfos,
 			ReducerClassInfo[] reducerClassInfos,
 			ReducerMethodInfo[] reducerMethodInfos)
 		{
@@ -32,9 +32,9 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 				reducerClassInfoByStateType,
 				reducerMethodInfoByStateType);
 
-			RegisterFeatureAttributeClassInfos(
+			RegisterStateInfos(
 				services,
-				featureAttributeClassInfos,
+				featureStateInfos,
 				reducerClassInfoByStateType,
 				reducerMethodInfoByStateType);
 		}
@@ -81,13 +81,13 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 
 		}
 
-		private static void RegisterFeatureAttributeClassInfos(
+		private static void RegisterStateInfos(
 			IServiceCollection services,
-			FeatureAttributeClassInfo[] featureAttributeClassInfos,
+			FeatureStateInfo[] featureStateInfos,
 			Dictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType,
 			Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType)
 		{
-			foreach (FeatureAttributeClassInfo info in featureAttributeClassInfos)
+			foreach (FeatureStateInfo info in featureStateInfos)
 			{
 				reducerClassInfoByStateType.TryGetValue(
 					info.StateType,
@@ -103,7 +103,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 					// Create an instance of the implementing type
 					ConstructorInfo featureConstructor =
 					info.FeatureWrapperGenericType.GetConstructor(
-						new Type[] { typeof(FeatureAttributeClassInfo) });
+						new Type[] { typeof(FeatureStateInfo) });
 
 					var featureInstance =
 						(IFeature)featureConstructor.Invoke(new object[] { info });

@@ -3,7 +3,7 @@
 namespace Fluxor
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-	public class FeatureAttribute : Attribute
+	public class FeatureStateAttribute : Attribute
 	{
 		public string Name { get; set; }
 		public string CreateInitialStateMethodName { get; set; }

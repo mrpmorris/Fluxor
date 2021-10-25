@@ -6,9 +6,9 @@ using System.Reflection;
 
 namespace Fluxor.DependencyInjection.InfoFactories
 {
-	internal class FeatureAttributeClassInfoFactory
+	internal class FeatureStateInfoFactory
 	{
-		internal static FeatureAttributeClassInfo[] Create(
+		internal static FeatureStateInfo[] Create(
 			IServiceCollection services,
 			IEnumerable<Type> allCandidateTypes)
 		=>
@@ -16,10 +16,10 @@ namespace Fluxor.DependencyInjection.InfoFactories
 				.Select(x => new
 				{
 					Type = x,
-					FeatureAttribute = x.GetCustomAttribute<FeatureAttribute>()
+					FeatureStateAttribute = x.GetCustomAttribute<FeatureStateAttribute>()
 				})
-				.Where(x => x.FeatureAttribute != null)
-				.Select(x => new FeatureAttributeClassInfo(x.FeatureAttribute, x.Type))
+				.Where(x => x.FeatureStateAttribute != null)
+				.Select(x => new FeatureStateInfo(x.FeatureStateAttribute, x.Type))
 				.ToArray();
 	}
 }

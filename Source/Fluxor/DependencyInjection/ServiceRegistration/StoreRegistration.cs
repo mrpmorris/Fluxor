@@ -12,7 +12,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			IServiceCollection services,
 			FluxorOptions options,
 			FeatureClassInfo[] featureClassInfos,
-			FeatureAttributeClassInfo[] featureAttributeClassInfos,
+			FeatureStateInfo[] featureStateInfos,
 			ReducerClassInfo[] reducerClassInfos,
 			ReducerMethodInfo[] reducerMethodInfos,
 			EffectClassInfo[] effectClassInfos,
@@ -21,7 +21,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			FeatureRegistration.Register(
 				services,
 				featureClassInfos,
-				featureAttributeClassInfos,
+				featureStateInfos,
 				reducerClassInfos,
 				reducerMethodInfos); ;
 			ReducerClassRegistration.Register(services, reducerClassInfos);
@@ -46,9 +46,9 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 					store.AddFeature(feature);
 				}
 
-				foreach (FeatureAttributeClassInfo featureAttributeClassInfo in featureAttributeClassInfos)
+				foreach (FeatureStateInfo featureStateInfo in featureStateInfos)
 				{
-					var feature = (IFeature)serviceProvider.GetService(featureAttributeClassInfo.FeatureInterfaceGenericType);
+					var feature = (IFeature)serviceProvider.GetService(featureStateInfo.FeatureInterfaceGenericType);
 					store.AddFeature(feature);
 				}
 

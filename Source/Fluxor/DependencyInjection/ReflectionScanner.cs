@@ -59,8 +59,8 @@ namespace Fluxor.DependencyInjection
 					reducerClassInfos: reducerClassInfos,
 					reducerMethodInfos: reducerMethodInfos);
 
-			FeatureAttributeClassInfo[] featureAttributeClassInfos =
-				FeatureAttributeClassInfoFactory.Create(
+			FeatureStateInfo[] featureStateInfos =
+				FeatureStateInfoFactory.Create(
 					services: services,
 					allCandidateTypes: allCandidateTypes);
 
@@ -68,7 +68,7 @@ namespace Fluxor.DependencyInjection
 				services,
 				options,
 				featureClassInfos,
-				featureAttributeClassInfos,
+				featureStateInfos,
 				reducerClassInfos,
 				reducerMethodInfos,
 				effectClassInfos,

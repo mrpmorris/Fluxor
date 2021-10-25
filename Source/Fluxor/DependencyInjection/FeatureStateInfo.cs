@@ -4,45 +4,46 @@ using System.Reflection;
 
 namespace Fluxor.DependencyInjection
 {
-	internal class FeatureAttributeClassInfo
+	internal class FeatureStateInfo
 	{
-		public readonly FeatureAttribute FeatureAttribute;
+		public readonly FeatureStateAttribute FeatureStateAttribute;
 		public readonly Type StateType;
 		public readonly Type FeatureInterfaceGenericType;
 		public readonly Type FeatureWrapperGenericType;
 		public readonly Func<object> CreateInitialStateFunc;
 
-		public FeatureAttributeClassInfo(
-			FeatureAttribute featureAttribute,
+		public FeatureStateInfo(
+			FeatureStateAttribute featureStateAttribute,
 			Type stateType)
 		{
-			if (featureAttribute == null)
-				throw new ArgumentNullException(nameof(featureAttribute));
+			if (featureStateAttribute == null)
+				throw new ArgumentNullException(nameof(featureStateAttribute));
 			if (stateType == null)
 				throw new ArgumentNullException(nameof(stateType));
 
-			FeatureAttribute = featureAttribute;
+			FeatureStateAttribute = featureStateAttribute;
 			StateType = stateType;
 			FeatureInterfaceGenericType = typeof(IFeature<>).MakeGenericType(StateType);
-			FeatureWrapperGenericType = typeof(FeatureAttributeStateWrapper<>).MakeGenericType(StateType);
+			FeatureWrapperGenericType = typeof(FeatureStateWrapper<>).MakeGenericType(StateType);
 
-			if (featureAttribute.CreateInitialStateMethodName == null)
-				CreateInitialStateFunc = CreateParameterlessConstructorStateFactory(featureAttribute);
+			if (featureStateAttribute.CreateInitialStateMethodName == null)
+				CreateInitialStateFunc = CreateParameterlessConstructorStateFactory(featureStateAttribute);
 			else
-				throw new NotImplementedException(nameof(FeatureAttribute.CreateInitialStateMethodName));
+				throw new NotImplementedException(nameof(FeatureStateAttribute.CreateInitialStateMethodName));
 		}
 
 		private static T CreateStateUsingParameterlessConstructor<T>()
 			where T : new()
 			=> new T();
 
-		private Func<object> CreateParameterlessConstructorStateFactory(FeatureAttribute featureAttribute)
+		private Func<object> CreateParameterlessConstructorStateFactory(
+			FeatureStateAttribute featureStateAttribute)
 		{
 			ConstructorInfo constructor = StateType.GetConstructor(Array.Empty<Type>());
 			if (constructor == null)
 				ThrowConstructorException();
 
-			MethodInfo createMethod = typeof(FeatureAttributeClassInfo)
+			MethodInfo createMethod = typeof(FeatureStateInfo)
 				.GetMethod(
 					nameof(CreateStateUsingParameterlessConstructor),
 					BindingFlags.NonPublic | BindingFlags.Static)
@@ -56,7 +57,7 @@ namespace Fluxor.DependencyInjection
 		{
 			throw new ArgumentException(
 				message: $"{StateType.Name} must implement a public parameterless constructor if" +
-				$" {nameof(FeatureAttribute)}.{nameof(FeatureAttribute.CreateInitialStateMethodName)} is null");
+				$" {nameof(FeatureStateAttribute)}.{nameof(FeatureStateAttribute.CreateInitialStateMethodName)} is null");
 		}
 	}
 }

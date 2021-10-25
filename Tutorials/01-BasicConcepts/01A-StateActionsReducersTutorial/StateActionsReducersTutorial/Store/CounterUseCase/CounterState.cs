@@ -2,7 +2,7 @@
 
 namespace BasicConcepts.StateActionsReducersTutorial.Store.CounterUseCase
 {
-	[Feature]
+	[FeatureState]
 	public class CounterState
 	{
 		public int ClickCount { get; }

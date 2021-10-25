@@ -1,6 +1,6 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureAttributeTests.SupportFiles
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureStateAttributeTests.SupportFiles
 {
-	[Feature(CreateInitialStateMethodName = nameof(CreateInitialState))]
+	[FeatureState(CreateInitialStateMethodName = nameof(CreateInitialState))]
 	public class StateWithStaticFactoryMethod
 	{
 		public int SomeValue { get; private set; }
