@@ -11,22 +11,15 @@ namespace Fluxor.DependencyInjection.InfoFactories
 		internal static FeatureAttributeClassInfo[] Create(
 			IServiceCollection services,
 			IEnumerable<Type> allCandidateTypes)
-		{
-			(Type stateType, FeatureAttribute attr)[] discoveredClasses = allCandidateTypes
+		=>
+			allCandidateTypes
 				.Select(x => new
 				{
 					Type = x,
 					FeatureAttribute = x.GetCustomAttribute<FeatureAttribute>()
 				})
 				.Where(x => x.FeatureAttribute != null)
-				.Select(x => (x.Type, x.FeatureAttribute))
+				.Select(x => new FeatureAttributeClassInfo(x.FeatureAttribute, x.Type))
 				.ToArray();
-
-			foreach (var item in discoveredClasses)
-			{
-				//TODO: Resister
-			}
-			throw new NotImplementedException();
-		}
 	}
 }

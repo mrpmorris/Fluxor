@@ -58,8 +58,8 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			// Register a factory for creating instance of this feature type when requested via the generic IFeature interface
 			services.AddScoped(featureClassInfo.FeatureInterfaceGenericType, serviceProvider =>
 			{
-					// Create an instance of the implementing type
-					var featureInstance = (IFeature)serviceProvider.GetService(featureClassInfo.ImplementingType);
+				// Create an instance of the implementing type
+				var featureInstance = (IFeature)serviceProvider.GetService(featureClassInfo.ImplementingType);
 
 				if (reducerClassInfosForStateType != null)
 				{

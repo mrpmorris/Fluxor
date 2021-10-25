@@ -5,9 +5,11 @@ namespace Fluxor.DependencyInjection
 {
 	internal class FeatureAttributeClassInfo
 	{
+		public readonly FeatureAttribute FeatureAttribute;
 		public readonly Type StateType;
 		public readonly Type FeatureInterfaceGenericType;
-		public readonly Func<IFeature> CreateFeature;
+		public readonly Type FeatureWrapperGenericType;
+		public readonly Func<object> CreateInitialStateFunc;
 
 		public FeatureAttributeClassInfo(
 			FeatureAttribute featureAttribute,
@@ -20,9 +22,10 @@ namespace Fluxor.DependencyInjection
 
 			StateType = stateType;
 			FeatureInterfaceGenericType = typeof(IFeature<>).MakeGenericType(stateType);
+			FeatureWrapperGenericType = typeof(FeatureAttributeStateWrapper<>).MakeGenericType(stateType);
 
 			if (featureAttribute.CreateInitialStateMethodName == null)
-				CreateFeature = CreateParameterlessConstructorFactory(featureAttribute);
+				CreateInitialStateFunc = CreateParameterlessConstructorStateFactory(featureAttribute);
 			else
 				throw new NotImplementedException(nameof(FeatureAttribute.CreateInitialStateMethodName));
 		}
@@ -31,7 +34,7 @@ namespace Fluxor.DependencyInjection
 			where T : new()
 			=> new T();
 
-		private Func<IFeature> CreateParameterlessConstructorFactory(FeatureAttribute featureAttribute)
+		private Func<object> CreateParameterlessConstructorStateFactory(FeatureAttribute featureAttribute)
 		{
 			ConstructorInfo constructor = StateType.GetConstructor(Array.Empty<Type>());
 			if (constructor == null)
@@ -43,7 +46,8 @@ namespace Fluxor.DependencyInjection
 					BindingFlags.NonPublic | BindingFlags.Static)
 				.MakeGenericMethod(StateType);
 
-			return (Func<IFeature>)createMethod.CreateDelegate(typeof(Func<IFeature>));
+			var factory = (Func<object>)createMethod.CreateDelegate(typeof(Func<object>));
+			return factory;
 		}
 
 		private void ThrowConstructorException()
