@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Fluxor.DependencyInjection.Wrappers;
+using System;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.WrapperFactories
 {
 	internal static class ReducerWrapperFactory
 	{

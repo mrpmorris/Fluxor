@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.Wrappers
 {
 	internal class FeatureAttributeStateWrapper<TState> : Feature<TState>
 	{

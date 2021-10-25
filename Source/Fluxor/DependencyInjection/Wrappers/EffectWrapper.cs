@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.Wrappers
 {
 	internal class EffectWrapper<TAction> : IEffect
 	{

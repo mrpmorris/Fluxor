@@ -22,4 +22,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DependencyInjection\WrapperFactories\" />
+    <Folder Include="DependencyInjection\Wrappers\" />
+  </ItemGroup>
+
 </Project>

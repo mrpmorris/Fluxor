@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Fluxor.DependencyInjection.Wrappers;
+using System;
 using System.Reflection;
 
 namespace Fluxor.DependencyInjection
 {
 	internal class FeatureAttributeClassInfo
 	{
-		public readonly FeatureAttribute FeatureAttribute;
 		public readonly Type StateType;
 		public readonly Type FeatureInterfaceGenericType;
 		public readonly Type FeatureWrapperGenericType;

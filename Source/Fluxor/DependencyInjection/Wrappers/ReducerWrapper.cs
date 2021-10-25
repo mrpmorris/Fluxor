@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection.Wrappers
 {
 	internal class ReducerWrapper<TState, TAction> : IReducer<TState>
 	{
