@@ -32,25 +32,25 @@ namespace Fluxor.DependencyInjection
 				CreateInitialStateFunc = CreateFactoryFromParameterlessConstructor(featureStateAttribute);
 		}
 
-		private static T CreateStateUsingParameterlessConstructor<T>()
-			where T : new()
-			=> new T();
-
 		private Func<object> CreateFactoryFromParameterlessConstructor(
 			FeatureStateAttribute featureStateAttribute)
 		{
-			ConstructorInfo constructor = StateType.GetConstructor(Array.Empty<Type>());
+			ConstructorInfo constructor = StateType.GetConstructor(
+				BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+				binder: null,
+				CallingConventions.HasThis,
+				types: Array.Empty<Type>(),
+				modifiers: null);
+			
 			if (constructor == null)
-				ThrowConstructorException();
+				throw new ArgumentException(
+					message: 
+					$"{StateType.FullName} doesn't have a public or non-public parameterless constructor."
+					+ $" Either create one, or specify a static factory method name using the"
+					+ $" {nameof(FeatureStateAttribute.CreateInitialStateMethodName)} property on the "
+					+ $" {nameof(FeatureStateAttribute)}");
 
-			MethodInfo createMethod = typeof(FeatureStateInfo)
-				.GetMethod(
-					nameof(CreateStateUsingParameterlessConstructor),
-					BindingFlags.NonPublic | BindingFlags.Static)
-				.MakeGenericMethod(StateType);
-
-			var factory = (Func<object>)createMethod.CreateDelegate(typeof(Func<object>));
-			return factory;
+			return () => Activator.CreateInstance(StateType, nonPublic: true);
 		}
 
 		private Func<object> CreateFactoryFromStateMethod(FeatureStateAttribute featureStateAttribute)
@@ -72,13 +72,6 @@ namespace Fluxor.DependencyInjection
 					+ $" must be a parameterless method, and return type {StateType.FullName}");
 
 			return (Func<object>)result.CreateDelegate(typeof(Func<object>));
-		}
-
-		private void ThrowConstructorException()
-		{
-			throw new ArgumentException(
-				message: $"{StateType.Name} must implement a public parameterless constructor if" +
-				$" {nameof(FeatureStateAttribute)}.{nameof(FeatureStateAttribute.CreateInitialStateMethodName)} is null");
 		}
 	}
 }

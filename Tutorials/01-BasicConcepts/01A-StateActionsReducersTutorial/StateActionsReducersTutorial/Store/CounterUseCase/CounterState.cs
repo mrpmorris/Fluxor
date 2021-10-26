@@ -7,12 +7,10 @@ namespace BasicConcepts.StateActionsReducersTutorial.Store.CounterUseCase
 	{
 		public int ClickCount { get; }
 
+		private CounterState() { }
 		public CounterState(int clickCount)
 		{
 			ClickCount = clickCount;
 		}
-
-		public CounterState() { }
-		//private static CounterState CreateInitialState() => new CounterState(clickCount: 0);
 	}
 }
