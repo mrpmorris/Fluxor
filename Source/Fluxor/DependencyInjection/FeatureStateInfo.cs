@@ -55,9 +55,24 @@ namespace Fluxor.DependencyInjection
 
 		private Func<object> CreateFactoryFromStateMethod(FeatureStateAttribute featureStateAttribute)
 		{
-			throw new NotImplementedException();
-		}
+			MethodInfo result =
+				StateType.GetMethod(
+					name: featureStateAttribute.CreateInitialStateMethodName,
+					bindingAttr: BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
+			if (result?.ReturnType != StateType)
+				result = null;
+
+			if ((result?.GetParameters()?.Length ?? 0) != 0)
+				result = null;
+
+			if (result == null)
+				throw new InvalidOperationException(
+					message: $"{StateType.FullName}.{featureStateAttribute.CreateInitialStateMethodName}"
+					+ $" must be a parameterless method, and return type {StateType.FullName}");
+
+			return (Func<object>)result.CreateDelegate(typeof(Func<object>));
+		}
 
 		private void ThrowConstructorException()
 		{
