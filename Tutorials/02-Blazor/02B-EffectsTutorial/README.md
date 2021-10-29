@@ -34,21 +34,6 @@ public class WeatherState
 This state holds a property indicating whether or not the data is currently being retrieved from
 the server, and an enumerable holding zero to many `WeatherForecast` objects.
 
-*Note: Again, the state is immutable*
-
-- Create a new class named `Feature`. This class describes the state to the store.
-
-```c#
-public class Feature : Feature<WeatherState>
-{
-  public override string GetName() => "Weather";
-  protected override WeatherState GetInitialState() =>
-    new WeatherState(
-      isLoading: false,
-      forecasts: null);
-}
-```
-
 #### Displaying state in the component
 
 - Find the `Pages` folder and add a new file named `FetchData.razor.cs`
@@ -117,6 +102,20 @@ public static class Reducers
 }
 ```
 
+Alternatively, because we aren't using any values from the `FetchDataAction action` we
+can declare our reducer method without that parameter, like so:
+
+```c#
+public static class Reducers
+{
+  [ReducerMethod(typeof(FetchDataAction))]
+  public static WeatherState ReduceFetchDataAction(WeatherState state) =>
+    new WeatherState(
+      isLoading: true,
+      forecasts: null);
+}
+```
+
 - In `Fetchdata.razor.cs` inject `IDispatcher` and dispatch our action from the `OnInitialized`
 lifecycle method. The code-behind class should now look like this
 
@@ -139,29 +138,22 @@ public partial class FetchData
 
 #### Requesting data from the server via an `Effect`
 
-Effect handlers do not (and cannot) affect state directly. They are triggered when the action they are
-waiting for is dispatched through the store, and as a response they can dispatch new actions.
+Effect handlers cannot (and should not) affect state directly. They are triggered when the action
+they are interested in is dispatched through the store, and as a response they can dispatch new actions.
 
-Effect handlers can be written in one of two ways.
+Effect handlers can be written in one of three ways.
 
-1. By descending from the `Effect<TAction>` class. The name of the class is unimportant.
 
-```c#
-public class FetchDataActionEffect : Effect<FetchDataAction>
-{
-  private readonly HttpClient Http;
+1. As with `[ReducerMethod]`, it is possible to use `[EffectMethod]` without
+  the action parameter being needed in the method signature.
 
-  public FetchDataActionEffect(HttpClient http)
+```
+  [EffectMethod(typeof(FetchDataAction))]
+  public async Task HandleFetchDataAction(IDispatcher dispatcher)
   {
-    Http = http;
-  }
-
-  public override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
-  {
-    var forecasts = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
+    var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
     dispatcher.Dispatch(new FetchDataResultAction(forecasts));
   }
-}
 ```
 
 2. By decorating instance or static methods with `[EffectMethod]`. The name of the class and the
@@ -170,25 +162,54 @@ method are unimportant.
 ```c#
 public class Effects
 {
-  private readonly HttpClient Http;
+  private readonly IWeatherForecastService WeatherForecastService;
 
-  public Effects(HttpClient http)
+  public Effects(IWeatherForecastService weatherForecastService)
   {
-    Http = http;
+    WeatherForecastService = weatherForecastService;
   }
 
   [EffectMethod]
   public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
   {
-    var forecasts = await Http.GetJsonAsync<WeatherForecast[]>("WeatherForecast");
+    var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
     dispatcher.Dispatch(new FetchDataResultAction(forecasts));
   }
 }
 ```
 
-Both techniques work equally well, which you choose is an organisational choice. However, if your effect
-requires lots of (or unique) dependencies then you should consider having the handling method in its
-own class for simplicity (still either approach #1 or #2 may be used).
+3. By descending from the `Effect<TAction>` class. The name of the class is unimportant, and `TAction`
+identifies the type of action that should trigger this `Effect`.
+
+```c#
+public class FetchDataActionEffect : Effect<FetchDataAction>
+{
+  private readonly IWeatherForecastService WeatherForecastService;
+
+  public FetchDataActionEffect(IWeatherForecastService weatherForecastService)
+  {
+    WeatherForecastService = weatherForecastService;
+  }
+
+  public override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
+  {
+    var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
+    dispatcher.Dispatch(new FetchDataResultAction(forecasts));
+  }
+}
+```
+
+
+These approaches work equally well, which you choose is an organisational choice. But keep
+in mind the following
+
+1. An `[EffectMethod]` can be declared either as static or instance.
+2. If declared as an instance method, then an instance of the owning class will be created.
+3. Any dependencies that class requires will be injected, this means that multiple
+  `[EffectMethod]`s can share property values (i.e. a CancellationToken).
+
+I recommend you use approach 1 when you do not need to access values in the action object,
+otherwise use approach 2. Approach 3 is not recommended due to the amount of code involved.
 
 #### Reducing the `Effect` result into state
 
@@ -214,8 +235,8 @@ the server via an HTTP request.
 action into state.
 
 ```c#
-[ReducerMethod]
-public static WeatherState ReduceFetchDataResultAction(WeatherState state, FetchDataResultAction action) =>
+[ReducerMethod(typeof(FetchDataResultAction))]
+public static WeatherState ReduceFetchDataResultAction(WeatherState state) =>
   new WeatherState(
     isLoading: false,
     forecasts: action.Forecasts);

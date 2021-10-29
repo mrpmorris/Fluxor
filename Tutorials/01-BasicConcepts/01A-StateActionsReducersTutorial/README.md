@@ -47,7 +47,7 @@ public class App
 ```
 
 #### Initialise the store
-- Edit `App.cs`. Inject `IStore` and initialise it.
+- Edit `App.cs`. Inject `IStore`, and initialise it.
 
 ```c#
 using Fluxor;
@@ -72,20 +72,18 @@ public class App
 
 #### Adding state to the store
 
-Note, the folder structure used here is only a recommendation.
 - Create a folder named `Store`.
 - Within that folder create another folder named `CounterUseCase`.
- 
-*Note: I recommend building your store and your application around use
-cases (e.g. FindSupplier, EditSupplier, etc).*
-
 - Within the `CounterUseCase` folder create a new class named `CounterState`. This is the class that
-will hold the values of your state to be displayed in your application.
+  will hold the values of your state to be displayed in your application.
 
 ```c#
+[FeatureState]
 public class CounterState
 {
   public int ClickCount { get; }
+
+  private CounterState() {} // Required for creating initial state
 
   public CounterState(int clickCount)
   {
@@ -94,18 +92,17 @@ public class CounterState
 }
 ```
 
-*Note: State should be immutable*
+- _Notes:_
+  - State should be decorated with `[FeatureState]` for automatic discovery
+    when `services.AddFluxor` is called. 
+  - State should be immutable.
+  - A parameterless constructor is required on state for determining the initial state,
+    and can be private or public.
+  - The folder structure used here is only a recommendation.
+  - I recommend building your store and your application around use
+    cases (e.g. FindSupplier, EditSupplier, etc)
+    rather than a single monolith state.
 
-- Create a new class named `Feature`. This class describes the state to the store.
-
-```c#
-public class Feature : Feature<CounterState>
-{
-  public override string GetName() => "Counter";
-  protected override CounterState GetInitialState() =>
-    new CounterState(clickCount: 0);
-}
-```
 
 #### Displaying state in our app
 
@@ -143,8 +140,8 @@ private void CounterState_StateChanged(object sender, CounterState e)
 }
 ```
 
-*Note: The current value of the state is available in the parameter `e`, but this example shows how
-to inject the state and get the value from there.*
+*Note: The current value of the state is also available in the parameter `e`, but this example shows how
+to inject `IState<T>` and retrieve the value from there.*
 
 
 #### Dispatching an Action to indicate our intention to change state
@@ -219,7 +216,7 @@ Now our UI is dispatching our intention to increment the counter, but the state 
 we do not handle this action. We will fix that next.
 
 - In the `Store\CounterUseCase` folder, create a new class `Reducers`.
-- Make the class static, and add the following method.
+- Make a static class, and add the following method.
 
 ```c#
 public static class Reducers
@@ -234,7 +231,25 @@ Running the app will now work as expected and increment the counter whenever opt
 
 #### Tips
 
-##### Splitting reducers across classes
+##### Removing the `unused parameter` warning
+
+When a reducer method is executed, it is passed the action that triggered it.
+This allows the reducer to access any property values in the action that was dispatched,
+for example, `new CustomerSearchAction('Bob')`.
+
+In our simple case here, we do not need any values from `IncrementCounterAction` and
+including it as a parameter might result in a `unusused parameter` warning at compile time.
+
+We can circumvent this by including the action type in the `[ReducerMethod]` instead
+of the method signature.
+
+```c#
+  [ReducerMethod(typeof(IncrementCounterAction))]
+  public static CounterState ReduceIncrementCounterAction(CounterState state) =>
+    new CounterState(clickCount: state.ClickCount + 1);
+```
+
+##### Splitting reducer methods across multiple classes
 
 You may have as many reducer classes as you wish, the `Reducer` class name used in this tutorial is
 not a special name or anything, you can call it whatever you wish. If the method is decorated
@@ -264,13 +279,13 @@ public static class SomeOtherReducerClass
 
 **Tip: Do not inject dependencies into reducers!**
 
-It is possible to decorate instance methods with `[ReducerMethod]`.
-Any dependencies in the constructor will be injected automatically.
+It is also possible to decorate __instance__ methods with `[ReducerMethod]`.
+Any dependencies in the class's constructor will be injected automatically.
 
 I strongly recommend the use of static methods. Reducers should ideally be
 [pure functions](https://en.wikipedia.org/wiki/Pure_function),
 if you find yourself needing to inject dependencies into a reducer then you might be
-taking the wrong approach.
+taking the wrong approach, and should instead be using an Effect (covered later).
 
 ##### The `Reducer<TState, TAction>` class
 
@@ -284,7 +299,7 @@ public class IncrementCounterReducer : Reducer<CounterState, IncrementCounterAct
 }
 ```
 
-This pattern use is not recommended.
+This pattern requires a lot more code, therefore its use is not recommended.
 
 ### Output
 The output of running the app should look something like the following:
