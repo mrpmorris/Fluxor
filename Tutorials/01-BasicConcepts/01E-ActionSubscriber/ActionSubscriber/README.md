@@ -43,22 +43,16 @@ that folder we need the standard classes to define our feature, our state, and t
 actions/reducers/effects that we need to emulate retrieving a mutable object from an API service.
 
 ```c#
+[FeatureState]
 public class EditCustomerState
 {
   public bool IsLoading { get; private set; }
 
+  private EditCustomerState() { } // Required for creating initial state
   public EditCustomerState(bool isLoading)
   {
     IsLoading = isLoading;
   }
-}
-
-public class Feature : Feature<EditCustomerState>
-{
-  public override string GetName() => "EditCustomer";
-
-  protected override EditCustomerState GetInitialState() =>
-    new EditCustomerState(isLoading: false);
 }
 
 public class GetCustomerForEditAction
@@ -83,19 +77,19 @@ public class GetCustomerForEditResultAction
 
 public static class Reducers
 {
-  [ReducerMethod]
-  public static EditCustomerState Reduce(EditCustomerState state, GetCustomerForEditAction action) =>
+  [ReducerMethod(typeof(GetCustomerForEditAction))]
+  public static EditCustomerState Reduce(EditCustomerState state) =>
     new EditCustomerState(isLoading: true);
 
-  [ReducerMethod]
-  public static EditCustomerState Reduce(EditCustomerState state, GetCustomerForEditResultAction action) =>
+  [ReducerMethod(typeof(GetCustomerForEditResultAction))]
+  public static EditCustomerState Reduce(EditCustomerState state) =>
     new EditCustomerState(isLoading: false);
 }
 
 public class Effects
 {
-  [EffectMethod]
-  public async Task HandleGetCustomerForEditAction(GetCustomerForEditAction action, IDispatcher dispatcher)
+  [EffectMethod(typeof(GetCustomerForEditAction))]
+  public async Task HandleGetCustomerForEditAction(IDispatcher dispatcher)
   {
     Console.WriteLine("Getting customer with Id: 42");
 

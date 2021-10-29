@@ -11,7 +11,7 @@ This tutorial will recreate the `Counter` page in a standard Blazor app.
 
 ### Steps
 
-#### Add Fluxor.Blazor.Web and initialize
+#### Add Fluxor.Blazor.Web and initialise
 - First create a new Blazor app, either a Server app or Web Assembly app will do.
 
 - Add a NuGet package reference to `Fluxor.Blazor.Web`.
@@ -67,20 +67,18 @@ the following mark-up.
 
 #### Adding the Counter to the store
 
-Note, the folder structure used here is only a recommendation.
 - Create a folder named `Store`.
 - Within that folder create another folder named `CounterUseCase`.
- 
-*Note: I recommend building your store and your application around use
-cases (e.g. FindSupplier, EditSupplier, etc).*
-
 - Within the `CounterUseCase` folder create a new class named `CounterState`. This is the class that
 will hold the values of your state to be displayed in your application.
 
 ```c#
+[FeatureState]
 public class CounterState
 {
   public int ClickCount { get; }
+
+  private CounterState() {} // Required for creating initial state
 
   public CounterState(int clickCount)
   {
@@ -89,18 +87,16 @@ public class CounterState
 }
 ```
 
-*Note: State should be immutable*
-
-- Create a new class named `Feature`. This class describes the state to the store.
-
-```c#
-public class Feature : Feature<CounterState>
-{
-  public override string GetName() => "Counter";
-  protected override CounterState GetInitialState() =>
-    new CounterState(clickCount: 0);
-}
-```
+- _Notes:_
+  - State should be decorated with `[FeatureState]` for automatic discovery
+    when `services.AddFluxor` is called. 
+  - State should be immutable.
+  - A parameterless constructor is required on state for determining the initial state,
+    and can be private or public.
+  - The folder structure used here is only a recommendation.
+  - I recommend building your store and your application around use
+    cases (e.g. FindSupplier, EditSupplier, etc)
+    rather than a single monolith state.
 
 #### Displaying state in a component
 
@@ -191,7 +187,25 @@ Running the app will now work as expected and increment the counter whenever the
 
 #### Tips
 
-##### Splitting reducers across classes
+##### Removing the `unused parameter` warning
+
+When a reducer method is executed, it is passed the action that triggered it.
+This allows the reducer to access any property values in the action that was dispatched,
+for example, `new CustomerSearchAction('Bob')`.
+
+In our simple case here, we do not need any values from `IncrementCounterAction` and
+including it as a parameter might result in a `unusused parameter` warning at compile time.
+
+We can circumvent this by including the action type in the `[ReducerMethod]` instead
+of the method signature.
+
+```c#
+  [ReducerMethod(typeof(IncrementCounterAction))]
+  public static CounterState ReduceIncrementCounterAction(CounterState state) =>
+    new CounterState(clickCount: state.ClickCount + 1);
+```
+
+##### Splitting reducer methods across multiple classes
 
 You may have as many reducer classes as you wish, the `Reducer` class name used in this tutorial is
 not a special tag or anything. If the method is decorated with `[ReducerMethod]` and has the correct
@@ -221,13 +235,13 @@ public static class SomeOtherReducerClass
 
 **Tip: Do not inject state into reducers!**
 
-It is possible to decorate instance methods with `[ReducerMethod]`.
-Any dependencies in the constructor will be injected automatically.
+It is also possible to decorate __instance__ methods with `[ReducerMethod]`.
+Any dependencies in the class's constructor will be injected automatically.
 
 I strongly recommend the use of static methods. Reducers should ideally be
 [pure functions](https://en.wikipedia.org/wiki/Pure_function),
 if you find yourself needing to inject dependencies into a reducer then you might be
-taking the wrong approach.
+taking the wrong approach, and should instead be using an Effect (covered later).
 
 ##### The `Reducer<TState, TAction>` class
 
@@ -241,4 +255,4 @@ public class IncrementCounterReducer : Reducer<CounterState, IncrementCounterAct
 }
 ```
 
-This pattern use is not recommended.
+This pattern requires a lot more code, therefore its use is not recommended.
