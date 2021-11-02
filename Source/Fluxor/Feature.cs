@@ -38,7 +38,7 @@ namespace Fluxor
 
 		private bool HasInitialState;
 		private SpinLock SpinLock = new SpinLock();
-		private ThrottledInvoker TriggerStateChangedCallbacksThrottler;
+		private readonly ThrottledInvoker TriggerStateChangedCallbacksThrottler;
 
 		/// <summary>
 		/// Creates a new instance
@@ -97,16 +97,16 @@ namespace Fluxor
 				});
 				return _State;
 			}
-			protected set
-			{
+			protected set =>
 				SpinLock.ExecuteLocked(() =>
 				{
 					bool stateHasChanged = !Object.ReferenceEquals(_State, value);
-					_State = value;
 					if (stateHasChanged)
+					{
+						_State = value;
 						TriggerStateChangedCallbacksThrottler.Invoke(MaximumStateChangedNotificationsPerSecond);
+					}
 				});
-			}
 		}
 
 		/// <see cref="IFeature{TState}.AddReducer(IReducer{TState})"/>
