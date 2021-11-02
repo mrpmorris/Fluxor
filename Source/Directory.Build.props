@@ -1,37 +1,30 @@
 <Project>
 
-    <PropertyGroup>
+	<PropertyGroup>
 
-        <Version>4.1.0</Version>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <FileVersion>4.1.0.0</FileVersion>
+		<Version>4.2.0</Version>
+		<AssemblyVersion>4.2.0.0</AssemblyVersion>
+		<FileVersion>4.2.0.0</FileVersion>
 
-        <Authors>Peter Morris</Authors>
-        <Company />
-        <Copyright>Peter Morris</Copyright>
-        <PackageLicenseFile></PackageLicenseFile>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Authors>Peter Morris</Authors>
+		<Company />
+		<Copyright>Peter Morris</Copyright>
+		<PackageLicenseFile></PackageLicenseFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 
-        <PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
-        <PackageIconUrl />
-        <RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
+		<PackageIconUrl />
+		<RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
 
-        <AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
-        <SignAssembly>true</SignAssembly>
-        <DelaySign>false</DelaySign>
+		<AssemblyOriginatorKeyFile>MrPMorris.snk</AssemblyOriginatorKeyFile>
+		<SignAssembly>true</SignAssembly>
+		<DelaySign>false</DelaySign>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-
-    </PropertyGroup>
-
-    <PropertyGroup>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-        <WarningsAsErrors></WarningsAsErrors>
-        <NoWarn>1701;1702</NoWarn>
-    </PropertyGroup>
-
+	<PropertyGroup>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<NoWarn>NU5118</NoWarn>
+	</PropertyGroup>
 </Project>
