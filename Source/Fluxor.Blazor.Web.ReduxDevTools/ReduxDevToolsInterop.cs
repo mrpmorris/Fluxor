@@ -11,7 +11,6 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 	/// </summary>
 	internal sealed class ReduxDevToolsInterop : IDisposable
 	{
-
 		public const string DevToolsCallbackId = "DevToolsCallback";
 		public bool DevToolsBrowserPluginDetected { get; private set; }
 		public Func<JumpToStateCallback, Task> OnJumpToState;
@@ -21,6 +20,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		private const string FromJsDevToolsDetectedActionTypeName = "detected";
 		private const string ToJsDispatchMethodName = "dispatch";
 		private const string ToJsInitMethodName = "init";
+		private bool Disposed;
 		private bool IsInitializing;
 		private readonly IJSRuntime JSRuntime;
 		private readonly IJsonSerialization JsonSerialization;
@@ -97,11 +97,13 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			}
 		}
 
-#pragma warning disable CA1063 // Implement IDisposable Correctly
 		void IDisposable.Dispose()
-#pragma warning restore CA1063 // Implement IDisposable Correctly
 		{
-			DotNetRef.Dispose();
+			if (!Disposed)
+			{
+				DotNetRef.Dispose();
+				Disposed = true;
+			}
 		}
 
 		private static bool IsDotNetReferenceObject(object x) =>

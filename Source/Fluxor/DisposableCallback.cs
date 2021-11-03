@@ -11,7 +11,7 @@ namespace Fluxor
 	{
 		private readonly string Id;
 		private readonly Action Action;
-		private bool IsDisposed;
+		private bool Disposed;
 		private bool WasCreated;
 
 		/// <summary>
@@ -27,7 +27,7 @@ namespace Fluxor
 			if (string.IsNullOrWhiteSpace(id))
 				throw new ArgumentNullException(nameof(id));
 			if (action == null)
-				 throw new ArgumentNullException(nameof(action));
+				throw new ArgumentNullException(nameof(action));
 
 			Id = id;
 			Action = action;
@@ -39,12 +39,12 @@ namespace Fluxor
 		/// </summary>
 		public void Dispose()
 		{
-			if (IsDisposed)
+			if (Disposed)
 				throw new ObjectDisposedException(
 					nameof(DisposableCallback),
 					$"Attempt to call {nameof(Dispose)} twice on {nameof(DisposableCallback)} with Id \"{Id}\".");
 
-			IsDisposed = true;
+			Disposed = true;
 			GC.SuppressFinalize(this);
 			Action();
 		}
@@ -55,7 +55,7 @@ namespace Fluxor
 		/// <exception cref="InvalidOperationException">Thrown if the object is collected without being disposed</exception>
 		~DisposableCallback()
 		{
-			if (!IsDisposed && WasCreated)
+			if (!Disposed && WasCreated)
 				throw new InvalidOperationException($"{nameof(DisposableCallback)} with Id \"{Id}\" was not disposed. " +
 					$"See https://github.com/mrpmorris/Fluxor/tree/master/Docs/disposable-callback-not-disposed.md for more details");
 		}
