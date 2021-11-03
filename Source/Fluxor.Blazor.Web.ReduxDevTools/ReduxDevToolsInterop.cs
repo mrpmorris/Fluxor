@@ -134,7 +134,6 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 
 		internal static string GetClientScripts(ReduxDevToolsMiddlewareOptions options)
 		{
-			string assemblyName = typeof(ReduxDevToolsInterop).Assembly.GetName().Name;
 			string optionsJson = BuildOptionsJson(options);
 
 			return $@"
@@ -183,10 +182,11 @@ window.{FluxorDevToolsId} = new (function() {{
 
 		private static string BuildOptionsJson(ReduxDevToolsMiddlewareOptions options)
 		{
-			var values = new List<string>();
-			values.Add($"name:\"{options.Name}\"");
-			values.Add($"maxAge:{options.MaximumHistoryLength}");
-			values.Add($"latency:{options.Latency.TotalMilliseconds}");
+			var values = new List<string> {
+				$"name:\"{options.Name}\"",
+				$"maxAge:{options.MaximumHistoryLength}",
+				$"latency:{options.Latency.TotalMilliseconds}"
+			};
 			return string.Join(",", values);
 		}
 	}

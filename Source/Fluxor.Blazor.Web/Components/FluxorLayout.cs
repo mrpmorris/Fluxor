@@ -15,7 +15,7 @@ namespace Fluxor.Blazor.Web.Components
 
 		private bool Disposed;
 		private IDisposable StateSubscription;
-		private ThrottledInvoker StateHasChangedThrottler;
+		private readonly ThrottledInvoker StateHasChangedThrottler;
 
 		/// <summary>
 		/// Creates a new instance
