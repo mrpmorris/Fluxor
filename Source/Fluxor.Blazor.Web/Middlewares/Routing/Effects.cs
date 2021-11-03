@@ -17,10 +17,11 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		public Task HandleGoActionAsync(GoAction action, IDispatcher dispatcher)
 		{
 			Uri fullUri = NavigationManager.ToAbsoluteUri(action.NewUri);
-			if (fullUri.ToString() != NavigationManager.Uri)
+			if (fullUri.ToString() != NavigationManager.Uri || action.ForceLoad)
 			{
-				// Only navigate if we are not already at the URI specified
-				NavigationManager.NavigateTo(action.NewUri);
+				// Only navigate if we are not already at the URI specified,
+				// or if we have been told to do a proper page reload (ForceLoad)
+				NavigationManager.NavigateTo(action.NewUri, action.ForceLoad);
 			}
 			return Task.CompletedTask;
 		}

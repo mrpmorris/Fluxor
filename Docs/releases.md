@@ -3,7 +3,8 @@
 ## New in 4.2
  * New `[FeatureState]` attribute to avoid having to create `Feature<T>` descendant classes. ([#204](https://github.com/mrpmorris/Fluxor/issues/204))
  * Add `FluxorOptions.ScanTypes` to allow scanning of specified classes. ([#214](https://github.com/mrpmorris/Fluxor/issues/214))
- * Make `FluxorComponent` and `FluxorLayout` abstract ([#217](https://github.com/mrpmorris/Fluxor/issues/217))
+ * Make `FluxorComponent` and `FluxorLayout` abstract. ([#217](https://github.com/mrpmorris/Fluxor/issues/217))
+ * Add `ForceLoad` property to `GoAction`. ([#178](https://github.com/mrpmorris/Fluxor/issues/178))
 
 ## New in 4.1
  * Allow custom control over JSON serialisation in Redux Dev Tools - see 
