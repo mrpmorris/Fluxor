@@ -24,7 +24,7 @@ namespace Fluxor.Blazor.Web
 		private IJSRuntime JSRuntime { get; set; }
 
 		private string Scripts;
-		private bool IsDisposed;
+		private bool Disposed;
 		private Exception ExceptionToThrow;
 
 		/// <summary>
@@ -111,14 +111,8 @@ namespace Fluxor.Blazor.Web
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!IsDisposed)
-			{
-				if (disposing)
-				{
-					Store.UnhandledException -= OnUnhandledException;
-				}
-				IsDisposed = true;
-			}
+			if (disposing)
+				Store.UnhandledException -= OnUnhandledException;
 		}
 
 		private void OnUnhandledException(object sender, Exceptions.UnhandledExceptionEventArgs args)
@@ -130,7 +124,7 @@ namespace Fluxor.Blazor.Web
 				{
 					await UnhandledException.InvokeAsync(args).ConfigureAwait(false);
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					exceptionThrownInHandler = e;
 				}
@@ -145,9 +139,12 @@ namespace Fluxor.Blazor.Web
 
 		void IDisposable.Dispose()
 		{
-			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-			Dispose(disposing: true);
-			GC.SuppressFinalize(this);
+			if (!Disposed)
+			{
+				Dispose(true);
+				GC.SuppressFinalize(this);
+				Disposed = true;
+			}
 		}
 	}
 }
