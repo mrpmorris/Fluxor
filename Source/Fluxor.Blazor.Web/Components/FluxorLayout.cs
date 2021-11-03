@@ -51,7 +51,12 @@ namespace Fluxor.Blazor.Web.Components
 		/// </summary>
 		public void Dispose()
 		{
-			Dispose(true);
+			if (!Disposed)
+			{
+				Dispose(true);
+				GC.SuppressFinalize(this);
+				Disposed = true;
+			}
 		}
 
 		/// <summary>
@@ -68,17 +73,13 @@ namespace Fluxor.Blazor.Web.Components
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (!Disposed)
+			if (disposing)
 			{
-				Disposed = true;
-				if (disposing)
-				{
-					if (StateSubscription == null)
-						throw new NullReferenceException(ErrorMessages.ForgottenToCallBaseOnInitialized);
+				if (StateSubscription == null)
+					throw new NullReferenceException(ErrorMessages.ForgottenToCallBaseOnInitialized);
 
-					StateSubscription.Dispose();
-					ActionSubscriber?.UnsubscribeFromAllActions(this);
-				}
+				StateSubscription.Dispose();
+				ActionSubscriber?.UnsubscribeFromAllActions(this);
 			}
 		}
 	}
