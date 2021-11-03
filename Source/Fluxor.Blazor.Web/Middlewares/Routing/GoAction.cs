@@ -25,6 +25,7 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		public GoAction(string newUri, bool forceLoad = false)
 		{
 			NewUri = newUri;
+			ForceLoad = forceLoad;
 		}
 	}
 }

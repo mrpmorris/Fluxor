@@ -12,7 +12,7 @@ namespace Fluxor
 		private readonly string Id;
 		private readonly Action Action;
 		private bool Disposed;
-		private bool WasCreated;
+		private readonly bool WasCreated;
 
 		/// <summary>
 		/// Creates an instance of the class

@@ -10,7 +10,7 @@ namespace Fluxor.UnsupportedClasses
 		private volatile int LockFlag;
 		private volatile bool InvokingSuspended;
 		private DateTime LastInvokeTime;
-		private Action Action;
+		private readonly Action Action;
 		private Timer ThrottleTimer;
 
 		public ThrottledInvoker(Action action)
