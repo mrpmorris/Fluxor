@@ -21,10 +21,11 @@
 		<SignAssembly>true</SignAssembly>
 		<DelaySign>false</DelaySign>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<LangVersion>9</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
 		<NoWarn>NU5118</NoWarn>
 	</PropertyGroup>
 </Project>

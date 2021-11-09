@@ -2,16 +2,14 @@
 
 namespace Fluxor.Blazor.Web.UnitTests.SupportFiles
 {
-	public class MockState<T> : IState, IState<T>
+	public class MockState<T> : IStateChangedNotifier, IState<T>
 	{
 		T IState<T>.Value => throw new NotImplementedException();
 
 		public int SubscribeCount { get; private set; }
 		public int UnsubscribeCount { get; private set; }
-		public int GenericSubscribeCount { get; private set; }
-		public int GenericUnsubscribeCount { get; private set; }
 
-		event EventHandler IState.StateChanged
+		event EventHandler IStateChangedNotifier.StateChanged
 		{
 			add
 			{
@@ -24,17 +22,5 @@ namespace Fluxor.Blazor.Web.UnitTests.SupportFiles
 			}
 		}
 
-		event EventHandler<T> IState<T>.StateChanged
-		{
-			add
-			{
-				GenericSubscribeCount++;
-			}
-
-			remove
-			{
-				GenericUnsubscribeCount++;
-			}
-		}
 	}
 }

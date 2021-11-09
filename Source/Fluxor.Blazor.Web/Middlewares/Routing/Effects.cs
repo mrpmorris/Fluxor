@@ -14,7 +14,7 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		}
 
 		[EffectMethod]
-		public Task HandleGoActionAsync(GoAction action, IDispatcher dispatcher)
+		public Task HandleGoActionAsync(GoAction action, IDispatcher _)
 		{
 			Uri fullUri = NavigationManager.ToAbsoluteUri(action.NewUri);
 			if (fullUri.ToString() != NavigationManager.Uri || action.ForceLoad)

@@ -28,7 +28,7 @@ namespace BasicConcepts.EffectsTutorial
 			WeatherState.StateChanged += WeatherState_StateChanged;
 		}
 
-		private void CounterState_StateChanged(object sender, CounterState e)
+		private void CounterState_StateChanged(object sender, EventArgs args)
 		{
 			Console.WriteLine("");
 			Console.WriteLine("==========================> CounterState");
@@ -37,7 +37,7 @@ namespace BasicConcepts.EffectsTutorial
 			Console.WriteLine("");
 		}
 
-		private void WeatherState_StateChanged(object sender, WeatherState e)
+		private void WeatherState_StateChanged(object sender, EventArgs args)
 		{
 			Console.WriteLine("");
 			Console.WriteLine("=========================> WeatherState");
@@ -61,7 +61,7 @@ namespace BasicConcepts.EffectsTutorial
 			Console.Clear();
 			Console.WriteLine("Initializing store");
 			Store.InitializeAsync().Wait();
-			string input = "";
+			string input;
 			do
 			{
 				Console.WriteLine("1: Increment counter");

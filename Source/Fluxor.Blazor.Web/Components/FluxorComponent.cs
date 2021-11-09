@@ -5,7 +5,7 @@ using System;
 namespace Fluxor.Blazor.Web.Components
 {
 	/// <summary>
-	/// A component that auto-subscribes to state changes on all <see cref="IState"/> properties
+	/// A component that auto-subscribes to state changes on all <see cref="IStateChangedNotifier"/> properties
 	/// and ensures <see cref="ComponentBase.StateHasChanged"/> is called
 	/// </summary>
 	public abstract class FluxorComponent : ComponentBase, IDisposable

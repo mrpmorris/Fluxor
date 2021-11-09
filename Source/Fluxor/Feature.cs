@@ -34,10 +34,10 @@ namespace Fluxor
 		/// <summary>
 		/// A list of reducers registered with this feature
 		/// </summary>
-		protected readonly List<IReducer<TState>> Reducers = new List<IReducer<TState>>();
+		protected readonly List<IReducer<TState>> Reducers = new();
 
 		private bool HasInitialState;
-		private SpinLock SpinLock = new SpinLock();
+		private SpinLock SpinLock = new();
 		private readonly ThrottledInvoker TriggerStateChangedCallbacksThrottler;
 
 		/// <summary>
@@ -48,34 +48,17 @@ namespace Fluxor
 			TriggerStateChangedCallbacksThrottler = new ThrottledInvoker(TriggerStateChangedCallbacks);
 		}
 
-		private EventHandler untypedStateChanged;
-		event EventHandler IFeature.StateChanged
+		private EventHandler _stateChanged;
+		public event EventHandler StateChanged
 		{
 			add
 			{
-				SpinLock.ExecuteLocked(() => untypedStateChanged += value );
+				SpinLock.ExecuteLocked(() => _stateChanged += value );
 			}
 
 			remove
 			{
-				SpinLock.ExecuteLocked(() => untypedStateChanged -= value);
-			}
-		}
-
-		private EventHandler<TState> stateChanged;
-		/// <summary>
-		/// Event that is executed whenever the state changes
-		/// </summary>
-		public event EventHandler<TState> StateChanged
-		{
-			add
-			{
-				SpinLock.ExecuteLocked(() => stateChanged += value);
-			}
-
-			remove
-			{
-				SpinLock.ExecuteLocked(() => stateChanged -= value);
+				SpinLock.ExecuteLocked(() => _stateChanged -= value);
 			}
 		}
 
@@ -134,8 +117,7 @@ namespace Fluxor
 
 		private void TriggerStateChangedCallbacks()
 		{
-			stateChanged?.Invoke(this, State);
-			untypedStateChanged?.Invoke(this, EventArgs.Empty);
+			_stateChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }
