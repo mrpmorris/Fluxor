@@ -28,7 +28,7 @@ namespace BasicConcepts.EffectsTutorial
 			WeatherState.StateChanged += WeatherState_StateChanged;
 		}
 
-		private void CounterState_StateChanged(object sender, EventArgs args)
+		private void CounterState_StateChanged(object sender, EventArgs e)
 		{
 			Console.WriteLine("");
 			Console.WriteLine("==========================> CounterState");
@@ -37,7 +37,7 @@ namespace BasicConcepts.EffectsTutorial
 			Console.WriteLine("");
 		}
 
-		private void WeatherState_StateChanged(object sender, EventArgs args)
+		private void WeatherState_StateChanged(object sender, EventArgs e)
 		{
 			Console.WriteLine("");
 			Console.WriteLine("=========================> WeatherState");

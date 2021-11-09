@@ -77,7 +77,7 @@ namespace Fluxor
 			}
 		}
 
-		private void FeatureStateChanged(object sender, EventArgs args)
+		private void FeatureStateChanged(object sender, EventArgs e)
 		{
 			TValue newValue = Selector(Feature.State);
 			if (!HasChanged(newValue, PreviousValue))
