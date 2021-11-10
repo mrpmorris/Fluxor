@@ -14,6 +14,13 @@ namespace Fluxor
 		/// Identifies the part of the feature state to select
 		/// </summary>
 		/// <param name="selector">Function to select a value from the feature state</param>
-		void Select(Func<TState, TValue> selector);
+		/// <param name="valueEquals">
+		///		Optional function used to check if two values are equal. 
+		///		Used to determine if an update to state needs
+		///		to trigger a <see cref="IStateChangedNotifier.StateChanged"/> event
+		/// </param>
+		void Select(
+			Func<TState, TValue> selector,
+			Func<TValue, TValue, bool> valueEquals = null);
 	}
 }

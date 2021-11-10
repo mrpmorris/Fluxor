@@ -9,7 +9,12 @@
 	{
 		public State(IFeature<TState> feature) : base(feature)
 		{
-			Select(x => x); // Select the state itself
+			Select(
+				x => x, // Select the state itself
+				valueEquals: DefaultObjectReferenceEquals); // Compare by object reference
 		}
+
+		private static bool DefaultObjectReferenceEquals(TState x, TState y) =>
+			object.ReferenceEquals(x, y);
 	}
 }
