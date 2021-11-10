@@ -75,7 +75,7 @@ namespace Fluxor.UnitTests.StateSelectionTests
 		}
 
 		[Fact]
-		public void WhenUserSetsSelector_ThenPreviousValueIsRetrievedFromState()
+		public void WhenUserSetsSelector_ThenCurrentValueIsRetrievedFromState()
 		{
 			FeatureState = "ABC";
 			int invokeCount = 0;
@@ -87,7 +87,18 @@ namespace Fluxor.UnitTests.StateSelectionTests
 			FeatureState = null;
 			MockFeature.Raise(x => x.StateChanged += null, EventArgs.Empty);
 			Assert.Equal(1, invokeCount);
+		}
 
+		[Fact]
+		public void WhenFeatureStateChangesBeforeSelectorHasBeenSet_ThenDoesNotTriggerStateChanged()
+		{
+			int invokeCount = 0;
+			Subject.StateChanged += (_, _) => invokeCount++;
+			FeatureState = "ABC";
+
+			MockFeature.Raise(x => x.StateChanged += null, EventArgs.Empty);
+
+			Assert.Equal(0, invokeCount);
 		}
 	}
 }

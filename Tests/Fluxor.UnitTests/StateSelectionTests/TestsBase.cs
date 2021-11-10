@@ -6,7 +6,7 @@ namespace Fluxor.UnitTests.StateSelectionTests
 	{
 		protected readonly IStateSelection<string, char?> Subject;
 		protected readonly Mock<IFeature<string>> MockFeature = new();
-		protected string FeatureState;
+		protected string FeatureState = "---";
 
 		public TestsBase()
 		{

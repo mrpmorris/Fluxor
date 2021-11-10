@@ -54,6 +54,7 @@ namespace Fluxor
 				HasSetSelector = true;
 				if (valueEquals is not null)
 					ValueEquals = valueEquals;
+				PreviousValue = Value;
 			});
 		}
 
@@ -86,6 +87,9 @@ namespace Fluxor
 
 		private void FeatureStateChanged(object sender, EventArgs e)
 		{
+			if (!HasSetSelector)
+				return;
+
 			TValue newValue = Selector(Feature.State);
 			if (ValueEquals(newValue, PreviousValue))
 				return;
