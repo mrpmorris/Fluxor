@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 
-		<Version>4.2.0-Beta</Version>
-		<AssemblyVersion>4.2.0.0</AssemblyVersion>
-		<FileVersion>4.2.0.0</FileVersion>
+		<Version>4.2.1</Version>
+		<AssemblyVersion>4.2.1.0</AssemblyVersion>
+		<FileVersion>4.2.1.0</FileVersion>
 
 		<Authors>Peter Morris</Authors>
 		<Company />
