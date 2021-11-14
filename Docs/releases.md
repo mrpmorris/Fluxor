@@ -1,5 +1,8 @@
 # Releases
 
+## New in 4.2.1
+ * Support .NET 6
+
 ## New in 4.2
  * New `[FeatureState]` attribute to avoid having to create `Feature<T>` descendant classes. ([#204](https://github.com/mrpmorris/Fluxor/issues/204))
  * Add `FluxorOptions.ScanTypes` to allow scanning of specified classes. ([#214](https://github.com/mrpmorris/Fluxor/issues/214))
