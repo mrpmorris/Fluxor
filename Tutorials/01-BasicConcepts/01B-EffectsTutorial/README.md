@@ -129,7 +129,7 @@ public class App
 - Add the following code to output the current `WeatherState` to the console.
 
 ```c#
-private void WeatherState_StateChanged(object sender, WeatherState e)
+private void WeatherState_StateChanged(object sender, EventArgs e)
 {
   Console.WriteLine("");
   Console.WriteLine("=========================> WeatherState");
@@ -148,11 +148,6 @@ private void WeatherState_StateChanged(object sender, WeatherState e)
   Console.WriteLine("");
 }
 ```
-
-*Note: As already mentioned, the current state is in the `e` parameter. As previously, this code
-uses the injected state to demonstrate how to get hold of state at any point and not only when it is
-updated*.
-
 
 #### Using an `Action` and a `Reducer` to alter state
 

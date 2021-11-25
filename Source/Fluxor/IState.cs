@@ -1,33 +1,15 @@
-﻿using System;
-
-namespace Fluxor
+﻿namespace Fluxor
 {
 	/// <summary>
 	/// An interface that is injected into Blazor Components / pages for accessing
 	/// the state of an <see cref="IFeature{TState}"/>
 	/// </summary>
-	public interface IState
-	{
-		/// <summary>
-		/// Event that is executed whenever the state changes
-		/// </summary>
-		event EventHandler StateChanged;
-	}
-
-	/// <summary>
-	/// An interface that is injected into Blazor Components / pages for accessing
-	/// the state of an <see cref="IFeature{TState}"/>
-	/// </summary>
 	/// <typeparam name="TState">The type of the state</typeparam>
-	public interface IState<TState> : IState
+	public interface IState<TState> : IStateChangedNotifier
 	{
 		/// <summary>
-		/// Returns the current state of the feature
+		/// Returns the value selected from the feature state
 		/// </summary>
 		TState Value { get; }
-		/// <summary>
-		/// Event that is executed whenever the state changes
-		/// </summary>
-		new event EventHandler<TState> StateChanged;
 	}
 }

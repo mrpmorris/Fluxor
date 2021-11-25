@@ -99,23 +99,23 @@ namespace Fluxor.Blazor.Web
 				Store.UnhandledException -= OnUnhandledException;
 		}
 
-		private void OnUnhandledException(object sender, Exceptions.UnhandledExceptionEventArgs args)
+		private void OnUnhandledException(object sender, Exceptions.UnhandledExceptionEventArgs e)
 		{
 			InvokeAsync(async () =>
 			{
 				Exception exceptionThrownInHandler = null;
 				try
 				{
-					await UnhandledException.InvokeAsync(args).ConfigureAwait(false);
+					await UnhandledException.InvokeAsync(e).ConfigureAwait(false);
 				}
-				catch (Exception e)
+				catch (Exception exception)
 				{
-					exceptionThrownInHandler = e;
+					exceptionThrownInHandler = exception;
 				}
 
-				if (exceptionThrownInHandler != null || !args.WasHandled)
+				if (exceptionThrownInHandler != null || !e.WasHandled)
 				{
-					ExceptionToThrow = exceptionThrownInHandler ?? args.Exception;
+					ExceptionToThrow = exceptionThrownInHandler ?? e.Exception;
 					StateHasChanged();
 				}
 			});

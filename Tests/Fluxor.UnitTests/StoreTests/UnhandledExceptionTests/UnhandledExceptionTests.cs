@@ -41,9 +41,9 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests
 			var result = new List<Exception>();
 			var resetEvent = new ManualResetEvent(false);
 
-			Subject.UnhandledException += (sender, args) =>
+			Subject.UnhandledException += (sender, e) =>
 			{
-				result.Add(args.Exception);
+				result.Add(e.Exception);
 				resetEvent.Set();
 			};
 

@@ -128,7 +128,7 @@ Also, add the following line to the top of the razor file
 ```
 
 *Note: This is required to ensure the component re-renders whenever its state changes. If you are unable
-to descend from this component, you can instead subcribe to the `IState.StateChanged` event and execute
+to descend from this component, you can instead subcribe to the `StateChanged` event and execute
 `InvokeAsync(StateHasChanged)`. If you do use the event, remember to implement `IDisposable` and
 unsubscribe from the event too, otherwise your app will leak memory.*
 

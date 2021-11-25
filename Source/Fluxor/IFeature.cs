@@ -74,10 +74,5 @@ namespace Fluxor
 		/// <param name="reducer">The reducer instance</param>
 		/// <seealso cref="DependencyInjection.Options.UseDependencyInjection(System.Reflection.Assembly[])"/>
 		void AddReducer(IReducer<TState> reducer);
-
-		/// <summary>
-		/// Event that is executed whenever the state changes
-		/// </summary>
-		new event EventHandler<TState> StateChanged;
 	}
 }
