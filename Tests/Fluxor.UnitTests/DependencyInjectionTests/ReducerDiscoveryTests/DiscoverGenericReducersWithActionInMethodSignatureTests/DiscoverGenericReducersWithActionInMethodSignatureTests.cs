@@ -8,6 +8,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 	public class DiscoverGenericReducersWithActionInMethodSignatureTests
 	{
 		private readonly IServiceProvider ServiceProvider;
+		private readonly IDispatcher Dispatcher;
 		private readonly IStore Store;
 		private readonly IState<TestState<char>> State;
 
@@ -16,7 +17,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 		{
 			Assert.Equal(0, State.Value.Counters['A']);
 			Assert.Equal(0, State.Value.Counters['B']);
-			Store.Dispatch(new IncrementItemAction<char>('A'));
+			Dispatcher.Dispatch(new IncrementItemAction<char>('A'));
 			// 2 Reducers
 			// 1 assembly scanned (generic descendant)
 			// + 1 type scanned (closed generic)
@@ -33,6 +34,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();
+			Dispatcher = ServiceProvider.GetService<IDispatcher>();
 			Store = ServiceProvider.GetRequiredService<IStore>();
 			State = ServiceProvider.GetRequiredService<IState<TestState<char>>>();
 

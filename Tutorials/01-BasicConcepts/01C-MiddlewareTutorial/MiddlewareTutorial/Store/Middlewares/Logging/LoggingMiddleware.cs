@@ -8,10 +8,12 @@ namespace BasicConcepts.MiddlewareTutorial.Store.Middlewares.Logging
 {
 	public class LoggingMiddleware : Middleware
 	{
+		private IDispatcher Dispatcher;
 		private IStore Store;
 
-		public override Task InitializeAsync(IStore store)
+		public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 		{
+			Dispatcher = dispatcher;
 			Store = store;
 			Log(nameof(InitializeAsync));
 			return Task.CompletedTask;

@@ -40,7 +40,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		public override string GetClientScripts() => ReduxDevToolsInterop.GetClientScripts(Options);
 
 		/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
-		public async override Task InitializeAsync(IStore store)
+		public async override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 		{
 			Store = store;
 			await ReduxDevToolsInterop.InitializeAsync(GetState());
