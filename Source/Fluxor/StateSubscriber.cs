@@ -29,9 +29,9 @@ namespace Fluxor
 		/// <returns></returns>
 		public static IDisposable Subscribe(object subject, Action<IStateChangedNotifier> callback)
 		{
-			if (subject == null)
+			if (subject is null)
 				throw new ArgumentNullException(nameof(subject));
-			if (callback == null)
+			if (callback is null)
 				throw new ArgumentNullException(nameof(callback));
 
 			IEnumerable<GetStateDelegate> getStateDelegates = GetStateDelegatesForType(subject.GetType());

@@ -21,7 +21,7 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@if (WeatherState.Value.Forecasts != null)
+			@if (WeatherState.Value.Forecasts is not null)
 			{
 				foreach (var forecast in WeatherState.Value.Forecasts)
 				{

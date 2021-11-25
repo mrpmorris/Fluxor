@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverGenericReducersWithActionInMethodSignatureTests.SupportFiles
 {
-    public class TestState<T>
+	public class TestState<T>
 	{
 		public ReadOnlyDictionary<T, int> Counters { get; }
 

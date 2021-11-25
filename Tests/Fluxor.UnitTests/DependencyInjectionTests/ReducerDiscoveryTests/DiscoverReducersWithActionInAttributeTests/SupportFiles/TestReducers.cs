@@ -3,7 +3,6 @@
 	public static class TestReducers
 	{
 		[ReducerMethod(typeof(TestAction))]
-		public static TestState ReduceTestAction(TestState state) =>
-			new TestState(counter: state.Counter + 1);
+		public static TestState ReduceTestAction(TestState state) => new(counter: state.Counter + 1);
 	}
 }

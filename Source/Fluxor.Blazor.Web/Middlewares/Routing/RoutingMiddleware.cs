@@ -38,13 +38,13 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		/// <see cref="Middleware.OnInternalMiddlewareChangeEnding"/>
 		protected override void OnInternalMiddlewareChangeEnding()
 		{
-			if (Feature.State.Uri != NavigationManager.Uri && Feature.State.Uri != null)
+			if (Feature.State.Uri != NavigationManager.Uri && Feature.State.Uri is not null)
 				NavigationManager.NavigateTo(Feature.State.Uri);
 		}
 
 		private void LocationChanged(object sender, LocationChangedEventArgs e)
 		{
-			if (Dispatcher != null && !IsInsideMiddlewareChange && e.Location != Feature.State.Uri)
+			if (Dispatcher is not null && !IsInsideMiddlewareChange && e.Location != Feature.State.Uri)
 				Dispatcher.Dispatch(new GoAction(e.Location));
 		}
 	}

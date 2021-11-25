@@ -4,6 +4,6 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests.SupportFiles
 {
 	public class ThrowAggregateExceptionAction
 	{
-		public ManualResetEvent TriggerHasFinished { get; } = new ManualResetEvent(false);
+		public ManualResetEvent TriggerHasFinished { get; } = new(initialState: false);
 	}
 }

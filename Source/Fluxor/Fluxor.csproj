@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-
     <Product>Fluxor</Product>
     <Description>A zero boilerplate Redux/Flux framework for .NET</Description>
     <PackageIcon>fluxor-small-logo.png</PackageIcon>
     <PackageTags>Redux Flux DotNet CSharp</PackageTags>
+  </PropertyGroup>
 
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,5 +21,4 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
   </ItemGroup>
-
 </Project>

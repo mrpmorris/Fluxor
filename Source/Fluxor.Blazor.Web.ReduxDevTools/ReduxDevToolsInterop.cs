@@ -75,10 +75,10 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 
 				case "COMMIT":
 					Func<Task> commit = OnCommit;
-					if (commit != null)
+					if (commit is not null)
 					{
 						Task task = commit();
-						if (task != null)
+						if (task is not null)
 							await task;
 					}
 					break;
@@ -86,11 +86,11 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 				case "JUMP_TO_STATE":
 				case "JUMP_TO_ACTION":
 					Func<JumpToStateCallback, Task> jumpToState = OnJumpToState;
-					if (jumpToState != null)
+					if (jumpToState is not null)
 					{
 						var callbackInfo = JsonSerialization.Deserialize<JumpToStateCallback>(messageAsJson);
 						Task task = jumpToState(callbackInfo);
-						if (task != null)
+						if (task is not null)
 							await task;
 					}
 					break;
@@ -107,7 +107,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		}
 
 		private static bool IsDotNetReferenceObject(object x) =>
-			(x != null)
+			(x is not null)
 			&& (x.GetType().IsGenericType)
 			&& (x.GetType().GetGenericTypeDefinition() == typeof(DotNetObjectReference<>));
 
@@ -117,7 +117,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 				return new ValueTask<TResult>(default(TResult));
 
 
-			if (args != null && args.Length > 0)
+			if (args is not null && args.Length > 0)
 			{
 				for (int i = 0; i < args.Length; i++)
 				{
@@ -141,9 +141,9 @@ window.{FluxorDevToolsId} = new (function() {{
 	const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__;
 	this.{ToJsInitMethodName} = function() {{}};
 
-	if (reduxDevTools !== undefined && reduxDevTools !== null) {{
+	if (reduxDevTools !== undefined && reduxDevTools !is null) {{
 		const fluxorDevTools = reduxDevTools.connect({{ {optionsJson} }});
-		if (fluxorDevTools !== undefined && fluxorDevTools !== null) {{
+		if (fluxorDevTools !== undefined && fluxorDevTools !is null) {{
 			fluxorDevTools.subscribe((message) => {{ 
 				if (window.fluxorDevToolsDotNetInterop) {{
 					const messageAsJson = JSON.stringify(message);

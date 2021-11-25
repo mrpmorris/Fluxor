@@ -16,12 +16,12 @@ namespace Fluxor
 		private object SyncRoot = new object();
 		private bool Disposed;
 		private readonly IDispatcher Dispatcher;
-		private readonly Dictionary<string, IFeature> FeaturesByName = new Dictionary<string, IFeature>(StringComparer.InvariantCultureIgnoreCase);
-		private readonly List<IEffect> Effects = new List<IEffect>();
-		private readonly List<IMiddleware> Middlewares = new List<IMiddleware>();
-		private readonly List<IMiddleware> ReversedMiddlewares = new List<IMiddleware>();
-		private readonly Queue<object> QueuedActions = new Queue<object>();
-		private readonly TaskCompletionSource<bool> InitializedCompletionSource = new TaskCompletionSource<bool>();
+		private readonly Dictionary<string, IFeature> FeaturesByName = new(StringComparer.InvariantCultureIgnoreCase);
+		private readonly List<IEffect> Effects = new();
+		private readonly List<IMiddleware> Middlewares = new();
+		private readonly List<IMiddleware> ReversedMiddlewares = new();
+		private readonly Queue<object> QueuedActions = new();
+		private readonly TaskCompletionSource<bool> InitializedCompletionSource = new();
 		private readonly ActionSubscriber ActionSubscriber;
 
 		private volatile bool IsDispatching;
@@ -46,7 +46,7 @@ namespace Fluxor
 		/// <see cref="IStore.AddFeature(IFeature)"/>
 		public void AddFeature(IFeature feature)
 		{
-			if (feature == null)
+			if (feature is null)
 				throw new ArgumentNullException(nameof(feature));
 
 			lock (SyncRoot)
@@ -58,7 +58,7 @@ namespace Fluxor
 		/// <see cref="IStore.AddEffect(IEffect)"/>
 		public void AddEffect(IEffect effect)
 		{
-			if (effect == null)
+			if (effect is null)
 				throw new ArgumentNullException(nameof(effect));
 
 			lock (SyncRoot)

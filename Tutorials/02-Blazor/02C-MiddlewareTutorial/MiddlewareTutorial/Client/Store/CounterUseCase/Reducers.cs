@@ -6,6 +6,6 @@ namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Store.CounterUseCase
 	{
 		[ReducerMethod]
 		public static CounterState ReduceIncrementCounterAction(CounterState state, IncrementCounterAction action) =>
-			new CounterState(clickCount: state.ClickCount + 1);
+			new(clickCount: state.ClickCount + 1);
 	}
 }

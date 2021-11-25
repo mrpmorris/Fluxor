@@ -9,7 +9,7 @@ namespace Fluxor
 	/// </summary>
 	public class Dispatcher : IDispatcher
 	{
-		private SpinLock SpinLock = new SpinLock();
+		private SpinLock SpinLock = new();
 		private EventHandler<ActionDispatchedEventArgs> _ActionDispatched;
 
 		/// <see cref="IDispatcher.ActionDispatched"/>
@@ -28,7 +28,7 @@ namespace Fluxor
 		/// <see cref="IDispatcher.Dispatch(object)"/>
 		public void Dispatch(object action)
 		{
-			if (action == null)
+			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
 			_ActionDispatched?.Invoke(this, new ActionDispatchedEventArgs(action));

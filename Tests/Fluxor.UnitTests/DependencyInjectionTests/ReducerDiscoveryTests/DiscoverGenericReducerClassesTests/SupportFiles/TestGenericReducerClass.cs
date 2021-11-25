@@ -7,6 +7,6 @@
 	public class OpenGenericReducerClass<TAction> : Reducer<TestState, TAction>
 	{
 		public override TestState Reduce(TestState state, TAction action) =>
-			new TestState(count: state.Count + 1);
+			new(count: state.Count + 1);
 	}
 }

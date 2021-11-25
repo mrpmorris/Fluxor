@@ -35,7 +35,7 @@ namespace Fluxor.DependencyInjection.Wrappers
 			object effectHostInstance,
 			EffectMethodInfo effectMethodInfos)
 			=>
-				effectHostInstance == null
+				effectHostInstance is null
 				? CreateStaticHandlerWithActionParameter(effectMethodInfos)
 				: CreateInstanceHandlerWithActionParameter(effectHostInstance, effectMethodInfos);
 
@@ -61,7 +61,7 @@ namespace Fluxor.DependencyInjection.Wrappers
 			object effectHostInstance,
 			EffectMethodInfo effectMethodInfo)
 			=>
-				effectHostInstance == null
+				effectHostInstance is null
 				? CreateStaticHandlerWithoutActionParameter(effectMethodInfo)
 				: CreateInstanceHandlerWithoutActionParameter(effectHostInstance, effectMethodInfo);
 

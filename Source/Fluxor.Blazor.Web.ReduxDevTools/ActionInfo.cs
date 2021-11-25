@@ -11,7 +11,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 
 		public ActionInfo(object action)
 		{
-			if (action == null)
+			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
 			type = $"{action.GetType().Name} {action.GetType().Namespace}";

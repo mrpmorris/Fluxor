@@ -36,13 +36,13 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.Discov
 			var services = new ServiceCollection();
 			services.AddFluxor(x =>
 			{
-				if (assemblyToScan != null)
+				if (assemblyToScan is not null)
 				{
 					x.ScanAssemblies(assemblyToScan);
 					// Allow all features in this namepspace to be scanned
 					x.AddMiddleware<IsolatedTests>();
 				}
-				if (typeToScan != null)
+				if (typeToScan is not null)
 					x.ScanTypes(typeToScan);
 			});
 			IServiceProvider serviceProvider = services.BuildServiceProvider();

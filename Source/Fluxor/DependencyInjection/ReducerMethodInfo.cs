@@ -15,14 +15,14 @@ namespace Fluxor.DependencyInjection
 		public ReducerMethodInfo(Type hostClassType, ReducerMethodAttribute attribute, MethodInfo methodInfo)
 		{
 			ParameterInfo[] methodParameters = methodInfo.GetParameters();
-			if (attribute.ActionType == null && methodParameters.Length != 2)
+			if (attribute.ActionType is null && methodParameters.Length != 2)
 				throw new ArgumentException(
 					$"Method must have 2 parameters (state, action)"
 						+ $" when [{nameof(ReducerMethodAttribute)}] has no {nameof(ReducerMethodAttribute.ActionType)} specified. "
 						+ methodInfo.GetClassNameAndMethodName(),
 					nameof(MethodInfo));
 
-			if (attribute.ActionType != null && methodParameters.Length != 1)
+			if (attribute.ActionType is not null && methodParameters.Length != 1)
 				throw new ArgumentException(
 					$"Method must have 1 parameter (state)"
 						+ $" when [{nameof(ReducerMethodAttribute)}] has an {nameof(ReducerMethodAttribute.ActionType)} specified. "
@@ -38,7 +38,7 @@ namespace Fluxor.DependencyInjection
 			MethodInfo = methodInfo;
 			StateType = methodParameters[0].ParameterType;
 			ActionType = attribute.ActionType ?? methodParameters[1].ParameterType;
-			RequiresActionParameterInMethod = attribute.ActionType == null;
+			RequiresActionParameterInMethod = attribute.ActionType is null;
 		}
 	}
 }

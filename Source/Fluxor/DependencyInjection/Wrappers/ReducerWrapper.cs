@@ -37,7 +37,7 @@ namespace Fluxor.DependencyInjection.Wrappers
 			object reducerHostInstance,
 			ReducerMethodInfo reducerMethodInfo)
 			=>
-				reducerHostInstance == null
+				reducerHostInstance is null
 				? CreateStaticReducerWithActionParameter(reducerMethodInfo)
 				: CreateInstanceReducerWithActionParameter(reducerHostInstance, reducerMethodInfo);
 
@@ -63,7 +63,7 @@ namespace Fluxor.DependencyInjection.Wrappers
 			object reducerHostInstance,
 			ReducerMethodInfo reducerMethodInfo)
 			=>
-				reducerHostInstance == null
+				reducerHostInstance is null
 				? CreateStaticReducerWithoutActionParameter(reducerMethodInfo)
 				: CreateInstanceReducerWithoutActionParameter(reducerHostInstance, reducerMethodInfo);
 

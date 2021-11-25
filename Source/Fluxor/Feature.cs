@@ -45,7 +45,7 @@ namespace Fluxor
 		/// </summary>
 		public Feature()
 		{
-			TriggerStateChangedCallbacksThrottler = new ThrottledInvoker(TriggerStateChangedCallbacks);
+			TriggerStateChangedCallbacksThrottler = new(TriggerStateChangedCallbacks);
 		}
 
 		private EventHandler _stateChanged;
@@ -95,7 +95,7 @@ namespace Fluxor
 		/// <see cref="IFeature{TState}.AddReducer(IReducer{TState})"/>
 		public virtual void AddReducer(IReducer<TState> reducer)
 		{
-			if (reducer == null)
+			if (reducer is null)
 				throw new ArgumentNullException(nameof(reducer));
 			Reducers.Add(reducer);
 		}
@@ -103,7 +103,7 @@ namespace Fluxor
 		/// <see cref="IFeature.ReceiveDispatchNotificationFromStore(object)"/>
 		public virtual void ReceiveDispatchNotificationFromStore(object action)
 		{
-			if (action == null)
+			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
 			IEnumerable<IReducer<TState>> applicableReducers = Reducers.Where(x => x.ShouldReduceStateForAction(action));

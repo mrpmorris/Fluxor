@@ -39,7 +39,7 @@ namespace Fluxor.Blazor.Web
 			foreach (IWebMiddleware middleware in webMiddlewares)
 			{
 				string script = middleware.GetClientScripts();
-				if (script != null)
+				if (script is not null)
 				{
 					scriptBuilder.AppendLine($"// Middleware scripts: {middleware.GetType().FullName}");
 					scriptBuilder.AppendLine(script);
@@ -52,7 +52,7 @@ namespace Fluxor.Blazor.Web
 		protected override void OnAfterRender(bool firstRender)
 		{
 			base.OnAfterRender(firstRender);
-			if (ExceptionToThrow != null)
+			if (ExceptionToThrow is not null)
 			{
 				Exception exception = ExceptionToThrow;
 				ExceptionToThrow = null;
@@ -113,7 +113,7 @@ namespace Fluxor.Blazor.Web
 					exceptionThrownInHandler = exception;
 				}
 
-				if (exceptionThrownInHandler != null || !e.WasHandled)
+				if (exceptionThrownInHandler is not null || !e.WasHandled)
 				{
 					ExceptionToThrow = exceptionThrownInHandler ?? e.Exception;
 					StateHasChanged();

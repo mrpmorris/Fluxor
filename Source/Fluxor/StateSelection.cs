@@ -42,7 +42,7 @@ namespace Fluxor
 			Func<TState, TValue> selector,
 			Func<TValue, TValue, bool> valueEquals = null)
 		{
-			if (selector == null)
+			if (selector is null)
 				throw new ArgumentNullException(nameof(selector));
 
 			SpinLock.ExecuteLocked(() =>
