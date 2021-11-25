@@ -6,10 +6,13 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 {
 	public class SubscribeToActionTests
 	{
-		private Store Subject = new Store();
+		private Dispatcher Dispatcher;
+		private Store Subject;
 
 		public SubscribeToActionTests()
 		{
+			Dispatcher = new Dispatcher();
+			Subject = new Store(Dispatcher);
 			Subject.InitializeAsync().Wait();
 		}
 
@@ -32,7 +35,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 			TestAction receivedAction = null;
 
 			Subject.SubscribeToAction<TestAction>(this, x => receivedAction = x);
-			Subject.Dispatch(dispatchedAction);
+			Dispatcher.Dispatch(dispatchedAction);
 
 			Assert.Same(dispatchedAction, receivedAction);
 		}
@@ -44,7 +47,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 			TestAction receivedAction = null;
 
 			Subject.SubscribeToAction<TestAction>(this, x => receivedAction = x);
-			Subject.Dispatch(dispatchedAction);
+			Dispatcher.Dispatch(dispatchedAction);
 
 			Assert.Same(dispatchedAction, receivedAction);
 		}
@@ -58,7 +61,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 
 			Subject.SubscribeToAction<TestAction>(this, x => receivedAction1 = x);
 			Subject.SubscribeToAction<TestAction>(this, x => receivedAction2 = x);
-			Subject.Dispatch(dispatchedAction);
+			Dispatcher.Dispatch(dispatchedAction);
 
 			Assert.Same(dispatchedAction, receivedAction1);
 			Assert.Same(dispatchedAction, receivedAction2);
@@ -73,7 +76,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 
 			Subject.SubscribeToAction<TestAction>(this, x => receivedAncestorAction = x);
 			Subject.SubscribeToAction<TestDescendantAction>(this, x => receivedDescendantAction = x);
-			Subject.Dispatch(dispatchedAncestorAction);
+			Dispatcher.Dispatch(dispatchedAncestorAction);
 
 			Assert.Same(dispatchedAncestorAction, receivedAncestorAction);
 			Assert.Null(receivedDescendantAction);
@@ -88,7 +91,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 
 			Subject.SubscribeToAction<TestAction>(this, x => receivedAncestorAction = x);
 			Subject.SubscribeToAction<TestDescendantAction>(this, x => receivedDescendantAction = x);
-			Subject.Dispatch(dispatchedDescendantAction);
+			Dispatcher.Dispatch(dispatchedDescendantAction);
 
 			Assert.Same(dispatchedDescendantAction, receivedAncestorAction);
 			Assert.Same(dispatchedDescendantAction, receivedDescendantAction);
@@ -106,7 +109,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 
 			Subject.SubscribeToAction<TestAction>(subscriber1, x => actionReceivedBySubscriber1 = x);
 			Subject.SubscribeToAction<TestAction>(subscriber2, x => actionReceivedBySubscriber2 = x);
-			Subject.Dispatch(dispatchedAction);
+			Dispatcher.Dispatch(dispatchedAction);
 
 			Assert.Same(dispatchedAction, actionReceivedBySubscriber1);
 			Assert.Same(dispatchedAction, actionReceivedBySubscriber2);
@@ -122,7 +125,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 			TestAction actionReceivedBySubscriber2 = null;
 
 			Subject.SubscribeToAction<TestAction>(subscriber1, x => actionReceivedBySubscriber1 = x);
-			Subject.Dispatch(dispatchedAction);
+			Dispatcher.Dispatch(dispatchedAction);
 
 			Assert.Same(dispatchedAction, actionReceivedBySubscriber1);
 			Assert.Null(actionReceivedBySubscriber2);

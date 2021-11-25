@@ -8,6 +8,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 	public class DiscoverGenericEffectMethodsWithActionInMethodSignatureTests
 	{
 		private readonly IServiceProvider ServiceProvider;
+		private readonly IDispatcher Dispatcher;
 		private readonly IStore Store;
 		private readonly InvokeCountService InvokeCountService;
 
@@ -15,7 +16,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 		public void WhenActionIsDispatched_ThenGenericEffectClassIsExecuted()
 		{
 			Assert.Equal(0, InvokeCountService.GetCount());
-			Store.Dispatch(new TestAction());
+			Dispatcher.Dispatch(new TestAction());
 			// 2 Effects
 			// 1 assembly scanned (generic descendant)
 			// + 1 type scanned (closed generic)
@@ -33,6 +34,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 				.AddMiddleware<IsolatedTests>());
 
 			ServiceProvider = services.BuildServiceProvider();
+			Dispatcher = ServiceProvider.GetService<IDispatcher>();
 			Store = ServiceProvider.GetRequiredService<IStore>();
 
 			Store.InitializeAsync().Wait();

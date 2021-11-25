@@ -1,6 +1,5 @@
 ﻿using Fluxor.Exceptions;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 using System;
 using System.Linq;
@@ -23,7 +22,7 @@ namespace Fluxor.Blazor.Web
 		[Inject]
 		private IJSRuntime JSRuntime { get; set; }
 
-		private string Scripts;
+		private string MiddlewareInitializationScripts;
 		private bool Disposed;
 		private Exception ExceptionToThrow;
 
@@ -37,31 +36,17 @@ namespace Fluxor.Blazor.Web
 			var webMiddlewares = Store.GetMiddlewares().OfType<IWebMiddleware>();
 
 			var scriptBuilder = new StringBuilder();
-			scriptBuilder.AppendLine("<script id='initializeFluxor'>");
+			foreach (IWebMiddleware middleware in webMiddlewares)
 			{
-				foreach (IWebMiddleware middleware in webMiddlewares)
+				string script = middleware.GetClientScripts();
+				if (script != null)
 				{
-					string script = middleware.GetClientScripts();
-					if (script != null)
-					{
-						scriptBuilder.AppendLine($"// Middleware scripts: {middleware.GetType().FullName}");
-						scriptBuilder.AppendLine(script);
-					}
+					scriptBuilder.AppendLine($"// Middleware scripts: {middleware.GetType().FullName}");
+					scriptBuilder.AppendLine(script);
 				}
 			}
-			scriptBuilder.AppendLine("</script>");
-			Scripts = scriptBuilder.ToString();
+			MiddlewareInitializationScripts = scriptBuilder.ToString();
 			base.OnInitialized();
-		}
-
-		/// <summary>
-		/// Renders the supporting JavaScript for any Middleware
-		/// </summary>
-		/// <param name="builder">The builder</param>
-		protected override void BuildRenderTree(RenderTreeBuilder builder)
-		{
-			base.BuildRenderTree(builder);
-			builder.AddMarkupContent(0, Scripts);
 		}
 
 		protected override void OnAfterRender(bool firstRender)
@@ -85,9 +70,8 @@ namespace Fluxor.Blazor.Web
 			{
 				try
 				{
-					bool success = await JSRuntime.InvokeAsync<bool>("tryInitializeFluxor");
-					if (!success)
-						throw new StoreInitializationException("Failed to initialize store");
+					if (!string.IsNullOrWhiteSpace(MiddlewareInitializationScripts))
+						await JSRuntime.InvokeVoidAsync("eval", MiddlewareInitializationScripts);
 
 					await Store.InitializeAsync();
 				}
