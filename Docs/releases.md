@@ -1,5 +1,11 @@
 # Releases
 
+## New in 5.0
+ * Removed need to reference `_content/Fluxor.Blazor.Web/scripts/index.js` ([#235](https://github.com/mrpmorris/Fluxor/issues/235))
+
+## New in 4.2.1
+ * Support .NET 6
+
 ## New in 4.2
  * New `[FeatureState]` attribute to avoid having to create `Feature<T>` descendant classes. ([#204](https://github.com/mrpmorris/Fluxor/issues/204))
  * Add `FluxorOptions.ScanTypes` to allow scanning of specified classes. ([#214](https://github.com/mrpmorris/Fluxor/issues/214))
