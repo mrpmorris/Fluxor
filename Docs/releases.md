@@ -1,7 +1,7 @@
 # Releases
 
 ## New in 5.0
- * Removed need to reference `_content/Fluxor.Blazor.Web/scripts/index.js` ([#233](https://github.com/mrpmorris/Fluxor/issues/233))
+ * Removed need to reference `_content/Fluxor.Blazor.Web/scripts/index.js` ([#235](https://github.com/mrpmorris/Fluxor/issues/235))
 
 ## New in 4.2.1
  * Support .NET 6
