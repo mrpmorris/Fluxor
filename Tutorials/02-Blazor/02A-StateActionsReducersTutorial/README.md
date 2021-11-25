@@ -16,13 +16,6 @@ This tutorial will recreate the `Counter` page in a standard Blazor app.
 
 - Add a NuGet package reference to `Fluxor.Blazor.Web`.
 
-- Edit either `Pages\_Host.cshtml` (Server-side) or `wwwroot\index.html` (Web Assembly) and
-just above the `</body>` tag add the following:
-
-```html
-<script src="_content/Fluxor.Blazor.Web/scripts/index.js"></script>
-```
-
 - We now need to register Fluxor. Find where the app registers its services
 (in a Server-side app this will be in `Startup.ConfigureServices`, in a Web Assembly app this will be
 in `Program.Main`).
