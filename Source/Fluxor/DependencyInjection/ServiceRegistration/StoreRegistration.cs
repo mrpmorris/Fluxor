@@ -29,8 +29,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			EffectClassRegistration.Register(services, effectClassInfos);
 			EffectMethodRegistration.Register(services, effectMethodInfos);
 
-			// Register IDispatcher as an alias to Store
-			services.AddScoped<IDispatcher>(serviceProvider => serviceProvider.GetService<Store>());
+			services.AddScoped<IDispatcher, Dispatcher>();
 			// Register IActionSubscriber as an alias to Store
 			services.AddScoped<IActionSubscriber>(serviceProvider => serviceProvider.GetService<Store>());
 			// Register IStore as an alias to Store
@@ -39,7 +38,8 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			// Register a custom factory for building IStore that will inject all effects
 			services.AddScoped(typeof(Store), serviceProvider =>
 			{
-				var store = new Store();
+				var dispatcher = serviceProvider.GetService<IDispatcher>();
+				var store = new Store(dispatcher);
 				foreach (FeatureClassInfo featureClassInfo in featureClassInfos)
 				{
 					var feature = (IFeature)serviceProvider.GetService(featureClassInfo.FeatureInterfaceGenericType);

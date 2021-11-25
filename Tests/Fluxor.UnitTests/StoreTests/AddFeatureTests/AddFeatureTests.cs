@@ -6,6 +6,9 @@ namespace Fluxor.UnitTests.StoreTests.AddFeatureTests
 {
 	public class AddFeatureTests
 	{
+		private readonly Dispatcher Dispatcher;
+		private readonly Store Subject;
+
 		[Fact]
 		public void WhenFeatureNameIsUnique_ThenAddsFeatureToFeaturesDictionary()
 		{
@@ -15,10 +18,9 @@ namespace Fluxor.UnitTests.StoreTests.AddFeatureTests
 				.Setup(x => x.GetName())
 				.Returns(featureName);
 
-			var subject = new Store();
-			subject.AddFeature(mockFeature.Object);
+			Subject.AddFeature(mockFeature.Object);
 
-			Assert.Same(mockFeature.Object, subject.Features[featureName]);
+			Assert.Same(mockFeature.Object, Subject.Features[featureName]);
 		}
 
 		[Fact]
@@ -30,13 +32,18 @@ namespace Fluxor.UnitTests.StoreTests.AddFeatureTests
 				.Setup(x => x.GetName())
 				.Returns(featureName);
 
-			var subject = new Store();
-			subject.AddFeature(mockFeature.Object);
+			Subject.AddFeature(mockFeature.Object);
 
 			Assert.Throws<ArgumentException>(() =>
 			{
-				subject.AddFeature(mockFeature.Object);
+				Subject.AddFeature(mockFeature.Object);
 			});
+		}
+
+		public AddFeatureTests()
+		{
+			Dispatcher = new Dispatcher();
+			Subject = new Store(Dispatcher);
 		}
 	}
 }
