@@ -18,11 +18,13 @@ This tutorial will recreate the `Fetch data` page in a standard Blazor app.
 - Create a new state class to hold the state for this use case.
 
 ```c#
+[FeatureState]
 public class WeatherState
 {
   public bool IsLoading { get; }
   public IEnumerable<WeatherForecast> Forecasts { get; }
 
+  private WeatherState() { }
   public WeatherState(bool isLoading, IEnumerable<WeatherForecast> forecasts)
   {
     IsLoading = isLoading;
