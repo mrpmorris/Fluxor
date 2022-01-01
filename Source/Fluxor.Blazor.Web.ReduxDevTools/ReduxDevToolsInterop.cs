@@ -141,9 +141,9 @@ window.{FluxorDevToolsId} = new (function() {{
 	const reduxDevTools = window.__REDUX_DEVTOOLS_EXTENSION__;
 	this.{ToJsInitMethodName} = function() {{}};
 
-	if (reduxDevTools !== undefined && reduxDevTools !is null) {{
+	if (reduxDevTools !== undefined && reduxDevTools !== null) {{
 		const fluxorDevTools = reduxDevTools.connect({{ {optionsJson} }});
-		if (fluxorDevTools !== undefined && fluxorDevTools !is null) {{
+		if (fluxorDevTools !== undefined && fluxorDevTools !== null) {{
 			fluxorDevTools.subscribe((message) => {{ 
 				if (window.fluxorDevToolsDotNetInterop) {{
 					const messageAsJson = JSON.stringify(message);
