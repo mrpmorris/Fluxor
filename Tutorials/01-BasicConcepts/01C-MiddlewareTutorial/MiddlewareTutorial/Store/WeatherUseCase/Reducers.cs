@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 
-namespace BasicConcepts.MiddlewareTutorial.Client.Store.WeatherUseCase
+namespace BasicConcepts.MiddlewareTutorial.Store.WeatherUseCase
 {
 	public static class Reducers
 	{

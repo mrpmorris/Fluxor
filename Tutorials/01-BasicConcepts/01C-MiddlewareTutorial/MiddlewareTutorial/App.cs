@@ -1,7 +1,6 @@
 ﻿using Fluxor;
-using BasicConcepts.MiddlewareTutorial.Client.Store.WeatherUseCase;
-using BasicConcepts.MiddlewareTutorial.Store.CounterUseCase;
 using System;
+using BasicConcepts.MiddlewareTutorial.Store;
 
 namespace BasicConcepts.MiddlewareTutorial
 {
