@@ -130,7 +130,7 @@ public class App
 - Add a method to show the contents of the state whenever it changes
 
 ```c#
-private void CounterState_StateChanged(object sender, CounterState e)
+private void CounterState_StateChanged(object sender, EventArgs e)
 {
   Console.WriteLine("");
   Console.WriteLine("==========================> CounterState");
@@ -140,13 +140,9 @@ private void CounterState_StateChanged(object sender, CounterState e)
 }
 ```
 
-*Note: The current value of the state is also available in the parameter `e`, but this example shows how
-to inject `IState<T>` and retrieve the value from there.*
-
-
 #### Dispatching an Action to indicate our intention to change state
 
-- In `Store\CounterUseCase` create a new class `IncrementCounterAction`. This class can remain empty.
+- In the `Store\` folder, create a new class `IncrementCounterAction`. This class can remain empty.
 - In `App.cs` we need to inject `IDispatcher` and then use it to dispatch an instance
 of our new `IncrementCounterAction` when the user tells it to.
 
@@ -172,7 +168,7 @@ public class App
     CounterState.StateChanged += CounterState_StateChanged;
   }
 
-  private void CounterState_StateChanged(object sender, CounterState e)
+  private void CounterState_StateChanged(object sender, EventArgs e)
   {
     Console.WriteLine("");
     Console.WriteLine("==========================> CounterState");

@@ -40,7 +40,7 @@ public class WeatherForecast
 and class in it. This will emulate retrieving data from a remote server.
 
 ```c#
-using YourAppName.Store.Shared;
+using YourAppName.Shared;
 
 public interface IWeatherForecastService
 {
@@ -129,7 +129,7 @@ public class App
 - Add the following code to output the current `WeatherState` to the console.
 
 ```c#
-private void WeatherState_StateChanged(object sender, WeatherState e)
+private void WeatherState_StateChanged(object sender, EventArgs e)
 {
   Console.WriteLine("");
   Console.WriteLine("=========================> WeatherState");
@@ -149,14 +149,9 @@ private void WeatherState_StateChanged(object sender, WeatherState e)
 }
 ```
 
-*Note: As already mentioned, the current state is in the `e` parameter. As previously, this code
-uses the injected state to demonstrate how to get hold of state at any point and not only when it is
-updated*.
-
-
 #### Using an `Action` and a `Reducer` to alter state
 
-- In the `Store\WeatherUseCase` folder, create an empty class `FetchDataAction` (this can remain empty).
+- In the `Store` folder, create an empty class `FetchDataAction` (this can remain empty).
 - Create a static `Reducers` class, which will set `IsLoading` to true when our 
 `FetchDataAction` action is dispatched.
 

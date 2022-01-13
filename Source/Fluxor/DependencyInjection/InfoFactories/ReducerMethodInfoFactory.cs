@@ -20,7 +20,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 						c.MethodInfo,
 						ReducerAttribute = c.MethodInfo.GetCustomAttribute<ReducerMethodAttribute>(false)
 					})
-				.Where(x => x.ReducerAttribute != null)
+				.Where(x => x.ReducerAttribute is not null)
 				.Select(x => new ReducerMethodInfo(
 					x.HostClassType,
 					x.ReducerAttribute,

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28809.33
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31911.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{1A6663AC-4F1F-40AD-8D03-0B0977ED466D}"
 EndProject
@@ -11,9 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
-		..\Docs\disposable-callback-not-disposed.md = ..\Docs\disposable-callback-not-disposed.md
-		..\README.md = ..\README.md
-		..\Docs\releases.md = ..\Docs\releases.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor", "Fluxor\Fluxor.csproj", "{863909D3-7E81-4240-8C0A-6F57768D28FF}"
@@ -44,6 +41,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevTools", "Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools.csproj", "{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02C-MiddlewareTutorial", "02C-MiddlewareTutorial", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
+	ProjectSection(SolutionItems) = preProject
+		..\Tutorials\02-Blazor\02C-MiddlewareTutorial\README.md = ..\Tutorials\02-Blazor\02C-MiddlewareTutorial\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-BasicConcepts", "01-BasicConcepts", "{755410A3-91C0-4CD3-B234-1DEAE35F19DA}"
 EndProject

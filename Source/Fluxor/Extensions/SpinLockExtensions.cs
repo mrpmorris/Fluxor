@@ -8,7 +8,7 @@ namespace Fluxor.Extensions
 	{
 		public static void ExecuteLocked(this SpinLock spinLock, Action callback)
 		{
-			if (callback == null)
+			if (callback is null)
 				throw new ArgumentNullException(nameof(callback));
 
 			bool lockTaken = false;
@@ -29,7 +29,7 @@ namespace Fluxor.Extensions
 
 		public static async Task ExecuteLockedAsync(this SpinLock spinLock, Func<Task> callback)
 		{
-			if (callback == null)
+			if (callback is null)
 				throw new ArgumentNullException(nameof(callback));
 
 			bool lockTaken = false;

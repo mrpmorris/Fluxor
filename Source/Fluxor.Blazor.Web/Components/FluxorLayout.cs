@@ -5,7 +5,7 @@ using System;
 namespace Fluxor.Blazor.Web.Components
 {
 	/// <summary>
-	/// A layout that auto-subscribes to state changes on all <see cref="IState"/> properties
+	/// A layout that auto-subscribes to state changes on all <see cref="IStateChangedNotifier"/> properties
 	/// and ensures <see cref="LayoutComponentBase.StateHasChanged"/> is called
 	/// </summary>
 	public abstract class FluxorLayout : LayoutComponentBase, IDisposable
@@ -75,7 +75,7 @@ namespace Fluxor.Blazor.Web.Components
 		{
 			if (disposing)
 			{
-				if (StateSubscription == null)
+				if (StateSubscription is null)
 					throw new NullReferenceException(ErrorMessages.ForgottenToCallBaseOnInitialized);
 
 				StateSubscription.Dispose();

@@ -20,7 +20,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 						ImplementingType = t,
 						GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IReducer<>))
 					})
-				.Where(x => x.GenericParameterTypes != null)
+				.Where(x => x.GenericParameterTypes is not null)
 				.Select(x => new ReducerClassInfo(
 					implementingType: x.ImplementingType,
 					stateType: x.GenericParameterTypes[0]))

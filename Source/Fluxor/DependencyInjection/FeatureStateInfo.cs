@@ -16,9 +16,9 @@ namespace Fluxor.DependencyInjection
 			FeatureStateAttribute featureStateAttribute,
 			Type stateType)
 		{
-			if (featureStateAttribute == null)
+			if (featureStateAttribute is null)
 				throw new ArgumentNullException(nameof(featureStateAttribute));
-			if (stateType == null)
+			if (stateType is null)
 				throw new ArgumentNullException(nameof(stateType));
 
 			FeatureStateAttribute = featureStateAttribute;
@@ -26,7 +26,7 @@ namespace Fluxor.DependencyInjection
 			FeatureInterfaceGenericType = typeof(IFeature<>).MakeGenericType(StateType);
 			FeatureWrapperGenericType = typeof(FeatureStateWrapper<>).MakeGenericType(StateType);
 
-			if (featureStateAttribute.CreateInitialStateMethodName != null)
+			if (featureStateAttribute.CreateInitialStateMethodName is not null)
 				CreateInitialStateFunc = CreateFactoryFromStateMethod(featureStateAttribute);
 			else
 				CreateInitialStateFunc = CreateFactoryFromParameterlessConstructor(featureStateAttribute);
@@ -42,7 +42,7 @@ namespace Fluxor.DependencyInjection
 				types: Array.Empty<Type>(),
 				modifiers: null);
 			
-			if (constructor == null)
+			if (constructor is null)
 				throw new ArgumentException(
 					message: 
 					$"{StateType.FullName} doesn't have a public or non-public parameterless constructor."
@@ -66,7 +66,7 @@ namespace Fluxor.DependencyInjection
 			if ((result?.GetParameters()?.Length ?? 0) != 0)
 				result = null;
 
-			if (result == null)
+			if (result is null)
 				throw new InvalidOperationException(
 					message: $"{StateType.FullName}.{featureStateAttribute.CreateInitialStateMethodName}"
 					+ $" must be a parameterless method, and return type {StateType.FullName}");

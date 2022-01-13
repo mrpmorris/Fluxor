@@ -40,15 +40,8 @@ the server, and an enumerable holding zero to many `WeatherForecast` objects.
 
 - Find the `Pages` folder and add a new file named `FetchData.razor.cs`
 - Mark the class `partial`.
-- Add the following `using` declarations
 
-```c#
-using Fluxor;
-using Microsoft.AspNetCore.Components;
-using YourAppName.Store.WeatherUseCase;
-```
-
-- Next we need to inject the `WeatherState` into our component
+Next we need to inject the `WeatherState` into our component
 
 ```c#
 public partial class FetchData
@@ -89,9 +82,9 @@ to
 
 #### Using an Action and a Reducer to alter state
 
-- Create an empty class `FetchDataAction`.
-- Create a static `Reducers` class, which will set `IsLoading` to true when our 
-`FetchDataAction` action is dispatched.
+- In the `Store` folder, create an empty class `FetchDataAction`.
+- In the `Store\WeatherFeature` folder, create a static `Reducers` class, which will set
+  `IsLoading` to true when our `FetchDataAction` action is dispatched.
 
 ```c#
 public static class Reducers
@@ -207,16 +200,18 @@ in mind the following
 
 1. An `[EffectMethod]` can be declared either as static or instance.
 2. If declared as an instance method, then an instance of the owning class will be created.
-3. Any dependencies that class requires will be injected, this means that multiple
+3. Instance methods' dependencies will be injected.
+4. Only once instance of each owning class will be created, this means that multiple
   `[EffectMethod]`s can share property values (i.e. a CancellationToken).
 
-I recommend you use approach 1 when you do not need to access values in the action object,
-otherwise use approach 2. Approach 3 is not recommended due to the amount of code involved.
+I recommend you use approach 1 (static methods) when you do not need to access values in the action object,
+otherwise use approach 2 (instance methods). Approach 3 (`Effect<T>` descendant) is not
+recommended due to the amount of code involved.
 
 #### Reducing the `Effect` result into state
 
-- Create a new class `FetchDataResultAction`, which will hold the results of the call to the server
-so they can be "reduced" into our application state.
+- In the `Store` folder, create a new class `FetchDataResultAction`, which will hold the
+  results of the call to the server so they can be "reduced" into our application state.
 
 ```c#
 public class FetchDataResultAction

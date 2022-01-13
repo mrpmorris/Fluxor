@@ -26,7 +26,7 @@ namespace Fluxor
 		{
 			if (string.IsNullOrWhiteSpace(id))
 				throw new ArgumentNullException(nameof(id));
-			if (action == null)
+			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
 			Id = id;

@@ -21,7 +21,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 						ImplementingType = t,
 						GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IFeature<>))
 					})
-				.Where(x => x.GenericParameterTypes != null)
+				.Where(x => x.GenericParameterTypes is not null)
 				.Select(x => new FeatureClassInfo(
 					implementingType: x.ImplementingType,
 					stateType: x.GenericParameterTypes[0]

@@ -4,6 +4,6 @@
 	{
 		[ReducerMethod]
 		public static TestState ReduceTestAction(TestState state, TestAction action) =>
-			new TestState(counter: state.Counter + 1);
+			new(counter: state.Counter + 1);
 	}
 }

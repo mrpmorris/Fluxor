@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using BasicConcepts.EffectsTutorial.Services;
 using System;
 
-namespace BasicConcepts.EffectsTutorial.Client.Store.WeatherUseCase
+namespace BasicConcepts.EffectsTutorial.Store.WeatherUseCase
 {
 	public class Effects
 	{

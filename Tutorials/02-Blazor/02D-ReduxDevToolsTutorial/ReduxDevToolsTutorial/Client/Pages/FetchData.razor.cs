@@ -1,6 +1,7 @@
 ﻿using FluxorBlazorWeb.ReduxDevToolsTutorial.Client.Store.WeatherUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
+using FluxorBlazorWeb.ReduxDevToolsTutorial.Client.Store;
 
 namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client.Pages
 {

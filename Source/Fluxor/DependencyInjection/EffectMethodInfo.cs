@@ -18,14 +18,14 @@ namespace Fluxor.DependencyInjection
 			MethodInfo methodInfo)
 		{
 			ParameterInfo[] methodParameters = methodInfo.GetParameters();
-			if (attribute.ActionType == null && methodParameters.Length != 2)
+			if (attribute.ActionType is null && methodParameters.Length != 2)
 				throw new ArgumentException(
 					$"Method must have 2 parameters (action, IDispatcher)"
 						+ $" when [{nameof(EffectMethodAttribute)}] has no {nameof(EffectMethodAttribute.ActionType)} specified. "
 						+ methodInfo.GetClassNameAndMethodName(),
 					nameof(MethodInfo));
 
-			if (attribute.ActionType != null && methodParameters.Length != 1)
+			if (attribute.ActionType is not null && methodParameters.Length != 1)
 				throw new ArgumentException(
 					$"Method must have 1 parameter (IDispatcher)"
 						+ $" when [{nameof(EffectMethodAttribute)}] has an {nameof(EffectMethodAttribute.ActionType)} specified. "
@@ -48,7 +48,7 @@ namespace Fluxor.DependencyInjection
 			HostClassType = hostClassType;
 			MethodInfo = methodInfo;
 			ActionType = attribute.ActionType ?? methodParameters[0].ParameterType;
-			RequiresActionParameterInMethod = attribute.ActionType == null;
+			RequiresActionParameterInMethod = attribute.ActionType is null;
 		}
 	}
 }

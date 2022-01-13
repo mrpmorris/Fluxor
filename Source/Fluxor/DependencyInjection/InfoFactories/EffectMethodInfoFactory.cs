@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +19,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 						c.MethodInfo,
 						EffectAttribute = c.MethodInfo.GetCustomAttribute<EffectMethodAttribute>(false)
 					})
-				.Where(x => x.EffectAttribute != null)
+				.Where(x => x.EffectAttribute is not null)
 				.Select(x =>
 					new EffectMethodInfo(
 						x.HostClassType,

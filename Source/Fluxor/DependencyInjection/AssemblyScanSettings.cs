@@ -22,7 +22,7 @@ namespace Fluxor.DependencyInjection
 			type.Assembly == Assembly
 			&&
 			(
-				Namespace == null
+				Namespace is null
 				|| type.FullName.StartsWith(Namespace + ".", StringComparison.InvariantCultureIgnoreCase)
 			);
 
@@ -58,12 +58,12 @@ namespace Fluxor.DependencyInjection
 		public override bool Equals(object obj)
 		{
 			var other = obj as AssemblyScanSettings;
-			if (other == null)
+			if (other is null)
 				return false;
 
 			return
 				other.Assembly.FullName == Assembly.FullName
-				&& other.Namespace != null
+				&& other.Namespace is not null
 				&& other.Namespace.Equals(Namespace, StringComparison.InvariantCultureIgnoreCase);
 		}
 

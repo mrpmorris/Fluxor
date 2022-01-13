@@ -5,7 +5,6 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 	public static class ExplicitlyScannedReducers
 	{
 		[ReducerMethod(typeof(TestAction))]
-		public static TestState ReduceTestAction(TestState state) =>
-			new TestState(counter: state.Counter + 1);
+		public static TestState ReduceTestAction(TestState state) => new(counter: state.Counter + 1);
 	}
 }

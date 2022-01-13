@@ -10,7 +10,7 @@ namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Middlewares.Logging
 	{
 		private IStore Store;
 
-		public override Task InitializeAsync(IStore store)
+		public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 		{
 			Store = store;
 			Debug.WriteLine(nameof(InitializeAsync));

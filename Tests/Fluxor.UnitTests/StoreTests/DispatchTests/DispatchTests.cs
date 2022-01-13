@@ -9,33 +9,33 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 {
 	public class DispatchTests
 	{
+		private readonly IDispatcher Dispatcher;
+		private readonly IStore Subject;
+
 		[Fact]
 		public void WhenActionIsNull_ThenThrowsArgumentNullException()
 		{
-			var subject = new Store();
-			Assert.Throws<ArgumentNullException>(() => subject.Dispatch(null));
+			Assert.Throws<ArgumentNullException>(() => Dispatcher.Dispatch(null));
 		}
 
 		[Fact]
-		public async Task WhenIsInsideMiddlewareChange_ThenDoesNotDispatchActions()
+		public void WhenIsInsideMiddlewareChange_ThenDoesNotDispatchActions()
 		{
 			var mockMiddleware = MockMiddlewareFactory.Create();
 
-			var subject = new Store();
-			await subject.InitializeAsync();
-			subject.AddMiddleware(mockMiddleware.Object);
+			Subject.AddMiddleware(mockMiddleware.Object);
 
 			var testAction = new TestAction();
-			using (subject.BeginInternalMiddlewareChange())
+			using (Subject.BeginInternalMiddlewareChange())
 			{
-				subject.Dispatch(testAction);
+				Dispatcher.Dispatch(testAction);
 			}
 
 			mockMiddleware.Verify(x => x.MayDispatchAction(testAction), Times.Never);
 		}
 
 		[Fact]
-		public async Task WhenMiddlewareForbidsIt_ThenDoesNotSendActionToFeatures()
+		public void WhenMiddlewareForbidsIt_ThenDoesNotSendActionToFeatures()
 		{
 			var testAction = new TestAction();
 			var mockFeature = MockFeatureFactory.Create();
@@ -43,58 +43,50 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 			mockMiddleware
 				.Setup(x => x.MayDispatchAction(testAction))
 				.Returns(false);
-			var subject = new Store();
-			await subject.InitializeAsync();
 
-			subject.Dispatch(testAction);
+			Dispatcher.Dispatch(testAction);
 
 			mockFeature
 				.Verify(x => x.ReceiveDispatchNotificationFromStore(testAction), Times.Never);
 		}
 
 		[Fact]
-		public async Task WhenCalled_ThenCallsBeforeDispatchOnAllMiddlewares()
+		public void WhenCalled_ThenCallsBeforeDispatchOnAllMiddlewares()
 		{
 			var testAction = new TestAction();
 			var mockMiddleware = MockMiddlewareFactory.Create();
-			var subject = new Store();
-			await subject.InitializeAsync();
-			subject.AddMiddleware(mockMiddleware.Object);
+			Subject.AddMiddleware(mockMiddleware.Object);
 
-			subject.Dispatch(testAction);
+			Dispatcher.Dispatch(testAction);
 
 			mockMiddleware
 				.Verify(x => x.BeforeDispatch(testAction), Times.Once);
 		}
 
 		[Fact]
-		public async Task WhenCalled_ThenPassesActionOnToAllFeatures()
+		public void WhenCalled_ThenPassesActionOnToAllFeatures()
 		{
 			var mockFeature = MockFeatureFactory.Create();
-			var subject = new Store();
-			subject.AddFeature(mockFeature.Object);
-			await subject.InitializeAsync();
+			Subject.AddFeature(mockFeature.Object);
 
 			var testAction = new TestAction();
-			subject.Dispatch(testAction);
+			Dispatcher.Dispatch(testAction);
 
 			mockFeature
 				.Verify(x => x.ReceiveDispatchNotificationFromStore(testAction));
 		}
 
 		[Fact]
-		public async Task WhenFinished_ThenDispatchesTasksFromRegisteredEffects()
+		public void WhenFinished_ThenDispatchesTasksFromRegisteredEffects()
 		{
 			var mockFeature = MockFeatureFactory.Create();
 			var actionToEmit1 = new TestActionFromEffect1();
 			var actionToEmit2 = new TestActionFromEffect2();
 			var actionsToEmit = new object[] { actionToEmit1, actionToEmit2 };
-			var subject = new Store();
-			await subject.InitializeAsync();
-			subject.AddFeature(mockFeature.Object);
-			subject.AddEffect(new EffectThatEmitsActions(actionsToEmit));
+			Subject.AddFeature(mockFeature.Object);
+			Subject.AddEffect(new EffectThatEmitsActions(actionsToEmit));
 
-			subject.Dispatch(new TestAction());
+			Dispatcher.Dispatch(new TestAction());
 
 			mockFeature
 				.Verify(x => x.ReceiveDispatchNotificationFromStore(actionToEmit1), Times.Once);
@@ -103,7 +95,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 		}
 
 		[Fact]
-		public async Task WhenCalled_ThenTriggersOnlyEffectsThatHandleTheDispatchedAction()
+		public void WhenCalled_ThenTriggersOnlyEffectsThatHandleTheDispatchedAction()
 		{
 			var mockIncompatibleEffect = new Mock<IEffect>();
 			mockIncompatibleEffect
@@ -114,22 +106,19 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 				.Setup(x => x.ShouldReactToAction(It.IsAny<object>()))
 				.Returns(true);
 
-			var subject = new Store();
-			await subject.InitializeAsync();
-			subject.AddEffect(mockIncompatibleEffect.Object);
-			subject.AddEffect(mockCompatibleEffect.Object);
+			Subject.AddEffect(mockIncompatibleEffect.Object);
+			Subject.AddEffect(mockCompatibleEffect.Object);
 
 			var action = new TestAction();
-			subject.Dispatch(action);
+			Dispatcher.Dispatch(action);
 
 			mockIncompatibleEffect.Verify(x => x.HandleAsync(action, It.IsAny<IDispatcher>()), Times.Never);
 			mockCompatibleEffect.Verify(x => x.HandleAsync(action, It.IsAny<IDispatcher>()), Times.Once);
 		}
 
 		[Fact]
-		public async Task WhenSynchronousEffectThrowsException_ThenStillExecutesSubsequentEffects()
+		public void WhenSynchronousEffectThrowsException_ThenStillExecutesSubsequentEffects()
 		{
-			var subject = new Store();
 			var action = new object();
 
 			var mockSynchronousEffectThatThrows = new Mock<IEffect>();
@@ -137,7 +126,7 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 				.Setup(x => x.ShouldReactToAction(action))
 				.Returns(true);
 			mockSynchronousEffectThatThrows
-				.Setup(x => x.HandleAsync(action, subject))
+				.Setup(x => x.HandleAsync(action, Dispatcher))
 				.ThrowsAsync(new NotImplementedException());
 
 			var mockEffectThatFollows = new Mock<IEffect>();
@@ -145,13 +134,19 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 				.Setup(x => x.ShouldReactToAction(action))
 				.Returns(true);
 
-			await subject.InitializeAsync();
-			subject.AddEffect(mockSynchronousEffectThatThrows.Object);
-			subject.AddEffect(mockEffectThatFollows.Object);
-			subject.Dispatch(action);
+			Subject.AddEffect(mockSynchronousEffectThatThrows.Object);
+			Subject.AddEffect(mockEffectThatFollows.Object);
+			Dispatcher.Dispatch(action);
 
-			mockSynchronousEffectThatThrows.Verify(x => x.HandleAsync(action, subject));
-			mockEffectThatFollows.Verify(x => x.HandleAsync(action, subject));
+			mockSynchronousEffectThatThrows.Verify(x => x.HandleAsync(action, Dispatcher));
+			mockEffectThatFollows.Verify(x => x.HandleAsync(action, Dispatcher));
+		}
+
+		public DispatchTests()
+		{
+			Dispatcher = new Dispatcher();
+			Subject = new Store(Dispatcher);
+			Subject.InitializeAsync().Wait();
 		}
 	}
 }

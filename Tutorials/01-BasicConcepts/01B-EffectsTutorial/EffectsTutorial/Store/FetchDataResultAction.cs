@@ -1,7 +1,7 @@
-﻿using FluxorBlazorWeb.EffectsTutorial.Shared;
+﻿using BasicConcepts.EffectsTutorial.Shared;
 using System.Collections.Generic;
 
-namespace FluxorBlazorWeb.EffectsTutorial.Client.Store.WeatherUseCase
+namespace BasicConcepts.EffectsTutorial.Store
 {
 	public class FetchDataResultAction
 	{

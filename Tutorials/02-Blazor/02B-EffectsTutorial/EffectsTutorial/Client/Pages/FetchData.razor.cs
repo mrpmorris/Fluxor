@@ -1,6 +1,7 @@
 ﻿using FluxorBlazorWeb.EffectsTutorial.Client.Store.WeatherUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
+using FluxorBlazorWeb.EffectsTutorial.Client.Store;
 
 namespace FluxorBlazorWeb.EffectsTutorial.Client.Pages
 {

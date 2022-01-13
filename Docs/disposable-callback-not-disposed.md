@@ -1,7 +1,7 @@
 # DisposableCallback was not disposed
 
 Components that descend from `FluxorComponent` or `FluxorLayout` automatically subscribe to the
-`StateChanged` event on every `IState<T>` property in the component automatically. When the component
+`StateChanged` event on every `IState<TState>` and `IStateSelection<TState, TValue>` property in the component automatically. When the component
 is disposed, this subscription is removed, to avoid memory leaks.
 
 If ever you see an error message like the following

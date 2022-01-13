@@ -127,7 +127,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 		{
 			MethodInfo featureAddReducerMethodInfo = GetAddReducerMethod(featureInstance.GetType());
 
-			if (reducerClassInfosForStateType != null)
+			if (reducerClassInfosForStateType is not null)
 			{
 				foreach (ReducerClassInfo reducerClass in reducerClassInfosForStateType)
 				{
@@ -136,7 +136,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 				}
 			}
 
-			if (reducerMethodInfosForStateType != null)
+			if (reducerMethodInfosForStateType is not null)
 			{
 				foreach (ReducerMethodInfo reducerMethodInfo in reducerMethodInfosForStateType)
 				{

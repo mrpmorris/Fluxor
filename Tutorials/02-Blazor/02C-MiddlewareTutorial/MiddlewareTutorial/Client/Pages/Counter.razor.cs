@@ -1,6 +1,7 @@
 ﻿using Fluxor;
 using Microsoft.AspNetCore.Components;
 using FluxorBlazorWeb.MiddlewareTutorial.Client.Store.CounterUseCase;
+using FluxorBlazorWeb.MiddlewareTutorial.Client.Store;
 
 namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Pages
 {
@@ -14,7 +15,7 @@ namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Pages
 
 		private void IncrementCount()
 		{
-			var action = new Store.CounterUseCase.IncrementCounterAction();
+			var action = new IncrementCounterAction();
 			Dispatcher.Dispatch(action);
 		}
 	}

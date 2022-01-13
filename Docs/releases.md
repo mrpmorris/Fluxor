@@ -1,5 +1,12 @@
 # Releases
 
+## New in 5.0
+ * **Breaking change**: Removed need to reference `_content/Fluxor.Blazor.Web/scripts/index.js` ([#235](https://github.com/mrpmorris/Fluxor/issues/235))
+ * **Breaking change**: Removed `IState<TState>` generic `StateChanged` event.
+ * Separated `IDispatcher` out of `IStore`. ([#209](https://github.com/mrpmorris/Fluxor/issues/209))
+ * Added `IState<TState>` alternative `IStateSelector<TState, TValue>` for selecting and subscribing to subsets of state. ([#221](https://github.com/mrpmorris/Fluxor/issues/221))
+ * Made actions that are a generic type human readable in ReduxDevTools. ([#205](https://github.com/mrpmorris/Fluxor/issues/205))
+
 ## New in 4.2.1
  * Support .NET 6
 

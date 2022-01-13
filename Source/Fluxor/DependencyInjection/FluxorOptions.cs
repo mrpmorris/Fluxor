@@ -11,9 +11,9 @@ namespace Fluxor.DependencyInjection
 	/// </summary>
 	public class FluxorOptions
 	{
-		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = new AssemblyScanSettings[0];
-		internal Type[] TypesToScan { get; private set; } = new Type[0];
-		internal Type[] MiddlewareTypes = new Type[0];
+		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = Array.Empty<AssemblyScanSettings>();
+		internal Type[] TypesToScan { get; private set; } = Array.Empty<Type>();
+		internal Type[] MiddlewareTypes = Array.Empty<Type>();
 		/// <summary>
 		/// Service collection for registering services
 		/// </summary>
@@ -32,11 +32,11 @@ namespace Fluxor.DependencyInjection
 			Type typeToScan,
 			params Type[] additionalTypesToScan)
 		{
-			if (typeToScan == null)
+			if (typeToScan is null)
 				throw new ArgumentNullException(nameof(typeToScan));
 
 			var allTypes = new List<Type> { typeToScan };
-			if (additionalTypesToScan != null)
+			if (additionalTypesToScan is not null)
 				allTypes.AddRange(additionalTypesToScan);
 
 			string genericTypeNames = string.Join(",",
@@ -62,11 +62,11 @@ namespace Fluxor.DependencyInjection
 			Assembly assemblyToScan,
 			params Assembly[] additionalAssembliesToScan)
 		{
-			if (assemblyToScan == null)
+			if (assemblyToScan is null)
 				throw new ArgumentNullException(nameof(assemblyToScan));
 
 			var allAssemblies = new List<Assembly> { assemblyToScan };
-			if (additionalAssembliesToScan != null)
+			if (additionalAssembliesToScan is not null)
 				allAssemblies.AddRange(additionalAssembliesToScan);
 
 			var newAssembliesToScan = allAssemblies.Select(x => new AssemblyScanSettings(x)).ToList();

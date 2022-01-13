@@ -8,15 +8,10 @@ namespace Fluxor
 {
 	internal class ActionSubscriber : IActionSubscriber
 	{
-		private readonly Dictionary<object, List<ActionSubscription>> SubscriptionsForInstance;
-		private readonly Dictionary<Type, List<ActionSubscription>> SubscriptionsForType;
-		private SpinLock SpinLock = new SpinLock();
+		private readonly Dictionary<object, List<ActionSubscription>> SubscriptionsForInstance = new();
+		private readonly Dictionary<Type, List<ActionSubscription>> SubscriptionsForType = new();
+		private SpinLock SpinLock = new();
 
-		public ActionSubscriber()
-		{
-			SubscriptionsForInstance = new Dictionary<object, List<ActionSubscription>>();
-			SubscriptionsForType = new Dictionary<Type, List<ActionSubscription>>();
-		}
 
 		public IDisposable GetActionUnsubscriberAsIDisposable(object subscriber) =>
 			new DisposableCallback(
@@ -25,7 +20,7 @@ namespace Fluxor
 
 		public void Notify(object action)
 		{
-			if (action == null)
+			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
 			SpinLock.ExecuteLocked(() =>
@@ -43,9 +38,9 @@ namespace Fluxor
 
 		public void SubscribeToAction<TAction>(object subscriber, Action<TAction> callback)
 		{
-			if (subscriber == null)
+			if (subscriber is null)
 				throw new ArgumentNullException(nameof(subscriber));
-			if (callback == null)
+			if (callback is null)
 				throw new ArgumentNullException(nameof(callback));
 
 			var subscription = new ActionSubscription(
@@ -73,7 +68,7 @@ namespace Fluxor
 
 		public void UnsubscribeFromAllActions(object subscriber)
 		{
-			if (subscriber == null)
+			if (subscriber is null)
 				throw new ArgumentNullException(nameof(subscriber));
 
 			List<ActionSubscription> instanceSubscriptions;

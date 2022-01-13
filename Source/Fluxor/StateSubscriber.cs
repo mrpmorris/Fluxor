@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using GetStateDelegate = System.Func<object, Fluxor.IState>;
+using GetStateDelegate = System.Func<object, Fluxor.IStateChangedNotifier>;
 
 namespace Fluxor
 {
@@ -27,18 +27,18 @@ namespace Fluxor
 		/// <param name="subject">The object to scan for <see cref="IState{TState}"/> properties.</param>
 		/// <param name="callback">The action to execute when one of the states are modified</param>
 		/// <returns></returns>
-		public static IDisposable Subscribe(object subject, Action<IState> callback)
+		public static IDisposable Subscribe(object subject, Action<IStateChangedNotifier> callback)
 		{
-			if (subject == null)
+			if (subject is null)
 				throw new ArgumentNullException(nameof(subject));
-			if (callback == null)
+			if (callback is null)
 				throw new ArgumentNullException(nameof(callback));
 
 			IEnumerable<GetStateDelegate> getStateDelegates = GetStateDelegatesForType(subject.GetType());
-			var subscriptions = new List<(IState State, EventHandler Handler)>();
+			var subscriptions = new List<(IStateChangedNotifier State, EventHandler Handler)>();
 			foreach (GetStateDelegate getState in getStateDelegates)
 			{
-				var state = (IState)getState(subject);
+				var state = (IStateChangedNotifier)getState(subject);
 				var handler = new EventHandler((s, a) => callback(state));
 
 				subscriptions.Add((state, handler));
@@ -75,8 +75,8 @@ namespace Fluxor
 					Type stateType = currentProperty.PropertyType.GetGenericArguments()[0];
 					Type iStateType = typeof(IState<>).MakeGenericType(stateType);
 					Type getterMethod = typeof(Func<,>).MakeGenericType(type, iStateType);
-					Delegate stronglyTypedDelegate = Delegate.CreateDelegate(getterMethod, currentProperty.GetGetMethod(true));
-					var getValueDelegate = new GetStateDelegate(x => (IState)stronglyTypedDelegate.DynamicInvoke(x));
+					var stronglyTypedDelegate = Delegate.CreateDelegate(getterMethod, currentProperty.GetGetMethod(true));
+					var getValueDelegate = new GetStateDelegate(x => (IStateChangedNotifier)stronglyTypedDelegate.DynamicInvoke(x));
 					delegates.Add(getValueDelegate);
 				}
 

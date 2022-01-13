@@ -1,6 +1,6 @@
 ﻿using BasicConcepts.ActionSubscriber.ApiObjects;
 
-namespace BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase
+namespace BasicConcepts.ActionSubscriber.Store
 {
 	public class GetCustomerForEditResultAction
 	{

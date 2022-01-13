@@ -12,14 +12,15 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests
 		const int NumberOfIncrementsPerThread = 1000;
 		volatile int NumberOfThreadsWaitingToStart = NumberOfThreads;
 
-		Store Store;
-		IFeature<CounterState> Feature;
-		ManualResetEvent StartEvent;
+		private readonly IDispatcher Dispatcher;
+		private readonly IStore Subject;
+		private readonly IFeature<CounterState> Feature;
+		private readonly ManualResetEvent StartEvent;
 
 		[Fact]
 		public async Task WhenExecutedByMultipleThreads_ThenSynchronizesStateUpdates()
 		{
-			await Store.InitializeAsync();
+			await Subject.InitializeAsync();
 
 			var threads = new List<Thread>();
 			for (int i = 0; i < NumberOfThreads; i++)
@@ -45,17 +46,18 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests
 			var action = new IncrementCounterAction();
 			for (int i = 0; i < NumberOfIncrementsPerThread; i++)
 			{
-				Store.Dispatch(action);
+				Dispatcher.Dispatch(action);
 			}
 		}
 
 		public DispatchTests()
 		{
 			StartEvent = new ManualResetEvent(false);
-			Store = new Store();
+			Dispatcher = new Dispatcher();
+			Subject = new Store(Dispatcher);
 
 			Feature = new CounterFeature();
-			Store.AddFeature(Feature);
+			Subject.AddFeature(Feature);
 
 			Feature.AddReducer(new IncrementCounterReducer());
 		}

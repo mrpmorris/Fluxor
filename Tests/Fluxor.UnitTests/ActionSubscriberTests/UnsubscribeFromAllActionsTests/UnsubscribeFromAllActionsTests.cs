@@ -6,10 +6,13 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.UnsubscribeFromAllActionsTests
 {
 	public class UnsubscribeFromAllActionsTests
 	{
-		private Store Subject = new Store();
+		private Dispatcher Dispatcher;
+		private Store Subject;
 
 		public UnsubscribeFromAllActionsTests()
 		{
+			Dispatcher = new Dispatcher();
+			Subject = new Store(Dispatcher);
 			Subject.InitializeAsync().Wait();
 		}
 
@@ -18,7 +21,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.UnsubscribeFromAllActionsTests
 		{
 			Subject.SubscribeToAction<TestAction>(this, x => throw new InvalidOperationException("Subscriber should not be triggered"));
 			Subject.UnsubscribeFromAllActions(this);
-			Subject.Dispatch(new TestAction());
+			Dispatcher.Dispatch(new TestAction());
 		}
 
 		[Fact]
@@ -33,7 +36,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.UnsubscribeFromAllActionsTests
 			Subject.SubscribeToAction<TestAction>(subscriber1, x => actionReceivedBySubscriber1 = x);
 			Subject.SubscribeToAction<TestAction>(subscriber2, x => actionReceivedBySubscriber2 = x);
 			Subject.UnsubscribeFromAllActions(subscriber1);
-			Subject.Dispatch(dispatchedAction);
+			Dispatcher.Dispatch(dispatchedAction);
 
 			Assert.Null(actionReceivedBySubscriber1);
 			Assert.Same(dispatchedAction, actionReceivedBySubscriber2);
@@ -52,8 +55,8 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.UnsubscribeFromAllActionsTests
 				Subject.UnsubscribeFromAllActions(subscriber);
 			});
 
-			Subject.Dispatch(dispatchedAction);
-			Subject.Dispatch(dispatchedAction);
+			Dispatcher.Dispatch(dispatchedAction);
+			Dispatcher.Dispatch(dispatchedAction);
 
 			Assert.Equal(1, executionCount);
 		}

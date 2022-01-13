@@ -16,13 +16,6 @@ This tutorial will recreate the `Counter` page in a standard Blazor app.
 
 - Add a NuGet package reference to `Fluxor.Blazor.Web`.
 
-- Edit either `Pages\_Host.cshtml` (Server-side) or `wwwroot\index.html` (Web Assembly) and
-just above the `</body>` tag add the following:
-
-```html
-<script src="_content/Fluxor.Blazor.Web/scripts/index.js"></script>
-```
-
 - We now need to register Fluxor. Find where the app registers its services
 (in a Server-side app this will be in `Startup.ConfigureServices`, in a Web Assembly app this will be
 in `Program.Main`).
@@ -135,7 +128,7 @@ Also, add the following line to the top of the razor file
 ```
 
 *Note: This is required to ensure the component re-renders whenever its state changes. If you are unable
-to descend from this component, you can instead subcribe to the `IState.StateChanged` event and execute
+to descend from this component, you can instead subcribe to the `StateChanged` event and execute
 `InvokeAsync(StateHasChanged)`. If you do use the event, remember to implement `IDisposable` and
 unsubscribe from the event too, otherwise your app will leak memory.*
 
@@ -143,7 +136,7 @@ Running the app will now show a `0` value fo the current count, but clicking the
 
 #### Using an Action and a Reducer to alter state
 
-- In `Store\CounterUseCase` create a new class `IncrementCounterAction`. This class can remain empty.
+- In the `Store` folder, create a new class `IncrementCounterAction`. This class can remain empty.
 - Edit `Counter.Razor` and remove the `@code {}` section.
 - In `Counter.razor.cs` we need to inject `IDispatcher` and then use it to dispatch an instance
 of our new `IncrementCounterAction` when the button is clicked.
@@ -171,6 +164,7 @@ this is done.*
 Now our UI is dispatching our intention to increment the counter, but the state remains unchanged because
 we do not handle this action. We will fix that next.
 
+- In the `Store` folder create a new folder named `CounterUseCase`.
 - In the `Store\CounterUseCase` folder, create a new class `Reducers`.
 - Make the class static, and add the following code.
 
