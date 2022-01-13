@@ -1,5 +1,4 @@
-﻿using BasicConcepts.EffectsTutorial.Client.Store.WeatherUseCase;
-using Fluxor;
+﻿using Fluxor;
 
 namespace BasicConcepts.EffectsTutorial.Store.WeatherUseCase
 {

@@ -1,7 +1,7 @@
 ﻿using FluxorBlazorWeb.MiddlewareTutorial.Shared;
 using System.Collections.Generic;
 
-namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Store.WeatherUseCase
+namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Store
 {
 	public class FetchDataResultAction
 	{
