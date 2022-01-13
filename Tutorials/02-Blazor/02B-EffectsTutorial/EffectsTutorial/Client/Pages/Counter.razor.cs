@@ -1,6 +1,7 @@
 ﻿using FluxorBlazorWeb.EffectsTutorial.Client.Store.CounterUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
+using FluxorBlazorWeb.EffectsTutorial.Client.Store;
 
 namespace FluxorBlazorWeb.EffectsTutorial.Client.Pages
 {
@@ -14,7 +15,7 @@ namespace FluxorBlazorWeb.EffectsTutorial.Client.Pages
 
 		private void IncrementCount()
 		{
-			var action = new Store.CounterUseCase.IncrementCounterAction();
+			var action = new IncrementCounterAction();
 			Dispatcher.Dispatch(action);
 		}
 	}

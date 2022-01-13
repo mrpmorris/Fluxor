@@ -142,7 +142,7 @@ private void CounterState_StateChanged(object sender, EventArgs e)
 
 #### Dispatching an Action to indicate our intention to change state
 
-- In `Store\CounterUseCase` create a new class `IncrementCounterAction`. This class can remain empty.
+- In the `Store\` folder, create a new class `IncrementCounterAction`. This class can remain empty.
 - In `App.cs` we need to inject `IDispatcher` and then use it to dispatch an instance
 of our new `IncrementCounterAction` when the user tells it to.
 

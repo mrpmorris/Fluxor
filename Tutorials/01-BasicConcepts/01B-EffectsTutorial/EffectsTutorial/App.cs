@@ -1,7 +1,7 @@
 ﻿using Fluxor;
-using BasicConcepts.EffectsTutorial.Client.Store.WeatherUseCase;
 using BasicConcepts.EffectsTutorial.Shared;
 using BasicConcepts.EffectsTutorial.Store.CounterUseCase;
+using BasicConcepts.EffectsTutorial.Store.WeatherUseCase;
 using System;
 using System.Linq;
 using BasicConcepts.EffectsTutorial.Store;
