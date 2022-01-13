@@ -1,7 +1,7 @@
 ﻿using BasicConcepts.EffectsTutorial.Shared;
 using System.Collections.Generic;
 
-namespace BasicConcepts.EffectsTutorial.Client.Store.WeatherUseCase
+namespace BasicConcepts.EffectsTutorial.Store
 {
 	public class FetchDataResultAction
 	{

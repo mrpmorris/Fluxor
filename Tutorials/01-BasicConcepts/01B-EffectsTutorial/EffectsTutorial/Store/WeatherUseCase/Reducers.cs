@@ -1,6 +1,7 @@
-﻿using Fluxor;
+﻿using BasicConcepts.EffectsTutorial.Client.Store.WeatherUseCase;
+using Fluxor;
 
-namespace BasicConcepts.EffectsTutorial.Client.Store.WeatherUseCase
+namespace BasicConcepts.EffectsTutorial.Store.WeatherUseCase
 {
 	public static class Reducers
 	{
