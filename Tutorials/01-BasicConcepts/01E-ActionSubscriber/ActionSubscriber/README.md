@@ -39,28 +39,15 @@ public class CustomerEdit
 ```
 
 Create a `Store` folder, and in that folder create a folder named `EditCustomerUseCase`. Within
-that folder we need the standard classes to define our feature, our state, and the
-actions/reducers/effects that we need to emulate retrieving a mutable object from an API service.
+that folder create some actions we need to simulate fetching a mutable object from an external API service.
 
 ```c#
-[FeatureState]
-public class EditCustomerState
-{
-  public bool IsLoading { get; private set; }
-
-  private EditCustomerState() { } // Required for creating initial state
-  public EditCustomerState(bool isLoading)
-  {
-    IsLoading = isLoading;
-  }
-}
-
 public class GetCustomerForEditAction
 {
   public int Id { get; }
 
   public GetCustomerForEditAction(int id)
-  {
+ {
     Id = id;
   }
 }
@@ -72,6 +59,24 @@ public class GetCustomerForEditResultAction
   public GetCustomerForEditResultAction(CustomerEdit customer)
   {
     Customer = customer;
+  }
+}
+```
+
+And within the `Store` create a new folder named `EditCustomerUseCase`, which is where we
+will store our feature's state, reducers, and effects.
+
+
+```c#
+[FeatureState]
+public class EditCustomerState
+{
+  public bool IsLoading { get; private set; }
+
+  private EditCustomerState() { } // Required for creating initial state
+  public EditCustomerState(bool isLoading)
+  {
+    IsLoading = isLoading;
   }
 }
 

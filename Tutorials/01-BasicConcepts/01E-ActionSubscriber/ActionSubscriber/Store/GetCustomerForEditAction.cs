@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase
+namespace BasicConcepts.ActionSubscriber.Store
 {
 	public class GetCustomerForEditAction
 	{

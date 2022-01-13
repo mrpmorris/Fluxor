@@ -1,7 +1,7 @@
-﻿using BasicConcepts.MiddlewareTutorial.Shared;
+﻿using FluxorBlazorWeb.ReduxDevToolsTutorial.Shared;
 using System.Collections.Generic;
 
-namespace BasicConcepts.MiddlewareTutorial.Client.Store.WeatherUseCase
+namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client.Store
 {
 	public class FetchDataResultAction
 	{

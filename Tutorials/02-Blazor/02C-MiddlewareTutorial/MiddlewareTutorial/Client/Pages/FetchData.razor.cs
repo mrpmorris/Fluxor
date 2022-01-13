@@ -1,6 +1,7 @@
 ﻿using FluxorBlazorWeb.MiddlewareTutorial.Client.Store.WeatherUseCase;
 using Fluxor;
 using Microsoft.AspNetCore.Components;
+using FluxorBlazorWeb.MiddlewareTutorial.Client.Store;
 
 namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Pages
 {
