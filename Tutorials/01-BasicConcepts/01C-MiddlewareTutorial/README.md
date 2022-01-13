@@ -137,7 +137,7 @@ public class LoggingMiddleware : Middleware
 
 #### Running our Middleware
 
-If we run our app now, our console output should look something like the following.
+If we run our app now, our browser's console output should look something like the following.
 ```
 Initializing store
 InitializeAsync
@@ -145,48 +145,36 @@ AfterInitializeAllMiddlewares
 MayDispatchAction: StoreInitializedAction {}
 BeforeDispatch: StoreInitializedAction {}
 AfterDispatch: StoreInitializedAction {}
-
-1: Increment counter
-2: Fetch data
-x: Exit
 ```
 
 The first action dispatched when a store is initialised is the `StoreInitializedAction`. This is automatically
 dispatched by the store and should always be the first action we see.
 
-Type `1` and press Enter.
+Navigate to the Counter page and click the button to increment the counter, and the following
+will be added to the console output.
 
 ```
-> 1
 MayDispatchAction: IncrementCounterAction {}
 BeforeDispatch: IncrementCounterAction {}
 AfterDispatch: IncrementCounterAction {}
-
-1: Increment counter
-2: Fetch data
-x: Exit
 ```
 
-Now type `2` and press Enter. The output should look something like the following. Comments have been added
-to explain what is happening.
+Now navigate to the Fetch Data page, the output should look something like the following. Comments
+have been added to explain what is happening.
 
 ```
-> 2
 *** The FetchDataAction is dispatched.
 MayDispatchAction: FetchDataAction {}
 BeforeDispatch: FetchDataAction {}
 AfterDispatch: FetchDataAction {}
 
-*** As there is an effect to fetch data that is triggered by FetchDataAction, the store triggers it here.
+*** As there is an effect to fetch data that is triggered by FetchDataAction, the store triggers it here but does not wait for it to complete.
 
-*** The dispatch of FetchDataAction is now complete, so the main app loop continues and redisplays the menu.
-1: Increment counter
-2: Fetch data
-x: Exit
+*** The dispatch of FetchDataAction is now complete.
 
-*** The effect receives data from the mock server, and dispatches the received data in a new FetchDataResultAction.
+*** Later, the effect receives data from the mock server and dispatches that data in a new FetchDataResultAction.
 
-> MayDispatchAction: FetchDataResultAction {
+MayDispatchAction: FetchDataResultAction {
   "Forecasts": [
     {
       "Date": "2020-03-22T10:39:14.6862635+00:00",
@@ -255,10 +243,8 @@ AfterDispatch: StoreInitializedAction {}
      }
     }
 
-1: Increment counter
-2: Fetch data
-x: Exit
-> 1
+*** Increment counter
+
 MayDispatchAction: IncrementCounterAction {}
 BeforeDispatch: IncrementCounterAction {}
 AfterDispatch: IncrementCounterAction {}
@@ -274,11 +260,6 @@ AfterDispatch: IncrementCounterAction {}
       "ClickCount": 1
      }
     }
-
-1: Increment counter
-2: Fetch data
-x: Exit
->
 ```
 
 ### Real-life uses
@@ -302,5 +283,5 @@ history.
   [1]: <https://github.com/mrpmorris/Fluxor/tree/master/Source/Fluxor.Blazor.Web/Middlewares/Routing>
   [2]: <https://github.com/mrpmorris/Fluxor/tree/master/Source/Fluxor.Blazor.Web.ReduxDevTools>
   [3]: <https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd>
-  [4]: <https://github.com/mrpmorris/Fluxor/tree/master/Tutorials/01-BasicConcepts/01B-EffectsTutorial>
+  [4]: <https://github.com/mrpmorris/Fluxor/tree/master/Tutorials/02-Blazor/02B-EffectsTutorial>
   [5]: <https://github.com/mrpmorris/Fluxor/blob/master/Source/Fluxor.Blazor.Web.ReduxDevTools/ReduxDevToolsMiddleware.cs>
