@@ -136,7 +136,7 @@ Running the app will now show a `0` value fo the current count, but clicking the
 
 #### Using an Action and a Reducer to alter state
 
-- In `Store\CounterUseCase` create a new class `IncrementCounterAction`. This class can remain empty.
+- In the `Store` folder, create a new class `IncrementCounterAction`. This class can remain empty.
 - Edit `Counter.Razor` and remove the `@code {}` section.
 - In `Counter.razor.cs` we need to inject `IDispatcher` and then use it to dispatch an instance
 of our new `IncrementCounterAction` when the button is clicked.
@@ -164,6 +164,7 @@ this is done.*
 Now our UI is dispatching our intention to increment the counter, but the state remains unchanged because
 we do not handle this action. We will fix that next.
 
+- In the `Store` folder create a new folder named `CounterUseCase`.
 - In the `Store\CounterUseCase` folder, create a new class `Reducers`.
 - Make the class static, and add the following code.
 
