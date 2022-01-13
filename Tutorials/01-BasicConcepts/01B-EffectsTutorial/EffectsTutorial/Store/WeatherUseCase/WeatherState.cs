@@ -3,7 +3,7 @@ using Fluxor;
 using System;
 using System.Collections.Generic;
 
-namespace BasicConcepts.EffectsTutorial.Client.Store.WeatherUseCase
+namespace BasicConcepts.EffectsTutorial.Store.WeatherUseCase
 {
 	[FeatureState]
 	public class WeatherState
