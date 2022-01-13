@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools
 {
@@ -14,8 +16,22 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
-			type = $"{action.GetType().Name} {action.GetType().Namespace}";
+			type = $"{GetTypeDisplayName(action.GetType())}, {action.GetType().Namespace}";
 			Payload = action;
+			Console.WriteLine("TYPE = " + type);
+		}
+
+		public static string GetTypeDisplayName(Type type)
+		{
+			if (!type.IsGenericType)
+				return type.Name;
+
+			string name = type.GetGenericTypeDefinition().Name;
+			name = name.Remove(name.IndexOf('`'));
+			IEnumerable<string> genericTypes = type
+				.GetGenericArguments()
+				.Select(GetTypeDisplayName);
+			return $"{name}<{string.Join(",", genericTypes)}>";
 		}
 	}
 }
