@@ -41,6 +41,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevTools", "Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools.csproj", "{E33D5229-FFD7-410B-99E4-5FA2E02CCAFE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02C-MiddlewareTutorial", "02C-MiddlewareTutorial", "{F1016E3F-9840-4C96-AC62-C69B0A177005}"
+	ProjectSection(SolutionItems) = preProject
+		..\Tutorials\02-Blazor\02C-MiddlewareTutorial\README.md = ..\Tutorials\02-Blazor\02C-MiddlewareTutorial\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-BasicConcepts", "01-BasicConcepts", "{755410A3-91C0-4CD3-B234-1DEAE35F19DA}"
 EndProject
