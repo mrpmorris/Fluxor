@@ -5,6 +5,7 @@
  * **Breaking change**: Removed `IState<TState>` generic `StateChanged` event.
  * Separated `IDispatcher` out of `IStore`. ([#209](https://github.com/mrpmorris/Fluxor/issues/209))
  * Added `IState<TState>` alternative `IStateSelector<TState, TValue>` for selecting and subscribing to subsets of state. ([#221](https://github.com/mrpmorris/Fluxor/issues/221))
+ * Made actions that are a generic type human readable in ReduxDevTools. ([#205](https://github.com/mrpmorris/Fluxor/issues/205))
 
 ## New in 4.2.1
  * Support .NET 6
