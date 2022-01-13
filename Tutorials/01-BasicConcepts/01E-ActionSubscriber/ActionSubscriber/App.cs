@@ -1,4 +1,5 @@
-﻿using BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase;
+﻿using BasicConcepts.ActionSubscriber.Store;
+using BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase;
 using Fluxor;
 using Newtonsoft.Json;
 using System;
