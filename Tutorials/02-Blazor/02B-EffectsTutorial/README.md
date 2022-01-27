@@ -232,8 +232,9 @@ the server via an HTTP request.
 action into state.
 
 ```c#
-[ReducerMethod(typeof(FetchDataResultAction))]
-public static WeatherState ReduceFetchDataResultAction(WeatherState state) =>
+[ReducerMethod]
+public static WeatherState ReduceFetchDataResultAction(
+  WeatherState state, FetchDataResultAction action) =>
   new WeatherState(
     isLoading: false,
     forecasts: action.Forecasts);
@@ -241,5 +242,3 @@ public static WeatherState ReduceFetchDataResultAction(WeatherState state) =>
 
 This reducer simply sets the `IsLoading` state back to false, and sets the `Forecasts` state to the
 values in the action that was dispatched by our effect.
-
-
