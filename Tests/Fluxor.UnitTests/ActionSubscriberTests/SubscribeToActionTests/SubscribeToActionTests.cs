@@ -97,7 +97,6 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 			Assert.Same(dispatchedDescendantAction, receivedDescendantAction);
 		}
 
-
 		[Fact]
 		public void WhenActionIsDispatched_ThenNotifiesMultipleSubscribers()
 		{
@@ -129,6 +128,17 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 
 			Assert.Same(dispatchedAction, actionReceivedBySubscriber1);
 			Assert.Null(actionReceivedBySubscriber2);
+		}
+
+		[Fact]
+		public void WhenGenericActionIsDispatched_ThenNotifiesSubscriber()
+        {
+			TestReadonlyRecordStructAction? receivedAction = null;
+
+			Subject.SubscribeToAction<TestReadonlyRecordStructAction>(this, x => receivedAction = x);
+			Dispatcher.Dispatch<TestReadonlyRecordStructAction>();
+
+			Assert.Equal(default(TestReadonlyRecordStructAction), receivedAction);
 		}
 	}
 }

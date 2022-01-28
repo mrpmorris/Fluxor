@@ -35,13 +35,17 @@ namespace Fluxor.DependencyInjection
 		private Func<object> CreateFactoryFromParameterlessConstructor(
 			FeatureStateAttribute featureStateAttribute)
 		{
-			ConstructorInfo constructor = StateType.GetConstructor(
+			if (StateType.IsValueType)
+				return () => Activator.CreateInstance(StateType);
+
+			ConstructorInfo constructor =
+				StateType.GetConstructor(
 				BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
 				binder: null,
 				CallingConventions.HasThis,
 				types: Array.Empty<Type>(),
 				modifiers: null);
-			
+
 			if (constructor is null)
 				throw new ArgumentException(
 					message: 

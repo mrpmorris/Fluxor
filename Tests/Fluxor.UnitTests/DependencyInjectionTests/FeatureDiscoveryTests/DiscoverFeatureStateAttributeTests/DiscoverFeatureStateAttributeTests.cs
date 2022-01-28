@@ -25,6 +25,19 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.Discov
 		}
 
 		[Fact]
+		public void WhenFeatureStateAttibuteHasNoParameterValues_ThenStructFeatureIsCreatedWithDefaultValues()
+        {
+			IStore store = CreateStore(typeof(StructStateWithParameterlessFeatureStateAttribute));
+			Assert.Single(store.Features);
+
+			IFeature feature = store.Features.First().Value;
+			Assert.Equal(typeof(StructStateWithParameterlessFeatureStateAttribute).FullName, feature.GetName());
+			Assert.Equal(0, feature.MaximumStateChangedNotificationsPerSecond);
+			Assert.Equal(typeof(StructStateWithParameterlessFeatureStateAttribute), feature.GetStateType());
+			Assert.NotNull(feature.GetState());
+		}
+
+		[Fact]
 		public void WhenFeatureStateAttributeHasParameterValues_ThenFeatureIsCreatedWithParameterValues()
 		{
 			IStore store = CreateStore(typeof(StateWithParameterizedFeatureStateAttribute));
