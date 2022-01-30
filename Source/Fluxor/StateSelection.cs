@@ -38,6 +38,8 @@ namespace Fluxor
 			ValueEquals = DefaultValueEquals;
 		}
 
+		TODO: PeteM - Unit tests for subscribing to state and allowing multiple instances in a single component
+
 		/// <see cref="IState{TState}.Value"/>
 		public TValue Value => Selector(Feature.State);
 
