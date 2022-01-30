@@ -1,5 +1,9 @@
 # Releases
 
+## New in 5.1
+ * Fixed `IStateSelection<TState, TValue>` bug that threw exception stating the selector has
+    already been set.  ([#252](https://github.com/mrpmorris/Fluxor/issues/252))
+
 ## New in 5.0
  * **Breaking change**: Removed need to reference `_content/Fluxor.Blazor.Web/scripts/index.js` ([#235](https://github.com/mrpmorris/Fluxor/issues/235))
  * **Breaking change**: Removed `IState<TState>` generic `StateChanged` event.
