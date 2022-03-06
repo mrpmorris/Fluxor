@@ -18,7 +18,6 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 
 			type = $"{GetTypeDisplayName(action.GetType())}, {action.GetType().Namespace}";
 			Payload = action;
-			Console.WriteLine("TYPE = " + type);
 		}
 
 		public static string GetTypeDisplayName(Type type)
