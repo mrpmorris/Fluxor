@@ -9,7 +9,7 @@ namespace Fluxor
 	/// to an <see cref="IFeature{TState}"/> state.
 	/// </summary>
 	/// <typeparam name="TState"></typeparam>
-	public class StateSelection<TState, TValue> : IStateSelection<TState, TValue>, IDisposable
+	public class StateSelection<TState, TValue> : IStateSelection<TState, TValue>
 	{
 		private readonly IFeature<TState> Feature;
 		private bool HasSetSelector;
@@ -116,12 +116,6 @@ namespace Fluxor
 						Feature.StateChanged -= FeatureStateChanged;
 				});
 			}
-
-		}
-
-		void IDisposable.Dispose()
-		{
-			Feature.StateChanged -= FeatureStateChanged;
 		}
 
 		private void FeatureStateChanged(object sender, EventArgs e)
