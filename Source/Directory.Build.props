@@ -1,6 +1,6 @@
 <Project>
 	<PropertyGroup>
-		<Version>5.1.0-Beta1</Version>
+		<Version>5.1.0</Version>
 		<AssemblyVersion>5.1.0.0</AssemblyVersion>
 		<FileVersion>5.1.0.0</FileVersion>
 
