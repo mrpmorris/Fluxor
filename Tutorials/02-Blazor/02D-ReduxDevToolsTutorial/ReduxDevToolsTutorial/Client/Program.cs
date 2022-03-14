@@ -16,9 +16,11 @@ namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client
 
 			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-			builder.Services.AddFluxor(o => o
-				.ScanAssemblies(typeof(Program).Assembly)
-				.UseReduxDevTools(rdt =>
+			builder.Services.AddFluxor(o =>
+			{
+				o.ScanAssemblies(typeof(Program).Assembly);
+#if DEBUG
+				o.UseReduxDevTools(rdt =>
 				{
 					rdt.Name = "Fluxor ReduxDevTools sample";
 
@@ -40,9 +42,10 @@ namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client
 							PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
 						}
 					);
-				})
-			);
+				});
+#endif
+			});
 			await builder.Build().RunAsync();
-}
+		}
 	}
 }

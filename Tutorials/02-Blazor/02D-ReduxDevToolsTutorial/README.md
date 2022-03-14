@@ -7,14 +7,30 @@
 
 ![](./../../../images/redux-dev-tools.jpg)
 
+**NOTE:** ReduxDevTools allows the user to alter the state of your store
+directly. This might be a security flaw, so you should only reference
+this package in `Debug` builds.
+
 To enable Fluxor integration, follow these steps
- 1. Add the [Fluxor.Blazor.Web.ReduxDevTools][FluxorReduxDevToolsLink] nuget package to your project.
+ 1. Add the [Fluxor.Blazor.Web.ReduxDevTools][FluxorReduxDevToolsLink] nuget package
+    to your project. Make sure you make it conditional on `DEBUG` mode.
+
+```
+<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools" Version="....." />
+</ItemGroup>
+```
+
  2. Use the `UseReduxDevTools` extension on the Fluxor options.
 
 ```c#
-services.AddFluxor(o => o
-    .ScanAssemblies(typeof(SomeType).Assembly)
-    .UseReduxDevTools());
+services.AddFluxor(o =>
+    {
+        o.ScanAssemblies(typeof(SomeType).Assembly);
+#if DEBUG
+        o.UseReduxDevTools();
+#ENDIF
+    });
 ```
 
  3. When you run your application, click the icon for the Redux Dev Tools extension.
