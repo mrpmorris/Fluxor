@@ -7,7 +7,7 @@
     that is executed whenever the selected value changes. This is a convenient alternative to hooking up event handlers.
  * Added `event EventHandler<TValue> SelectedValueChanged` to `IStateSelection<TState, TValue>` for strongly
     typed event args when the selected value changes.
- * Changed to to avoid .net memory leak in dependency injection ([#271](https://github.com/mrpmorris/Fluxor/issues/271))
+ * Changed to avoid .net memory leak in dependency injection ([#271](https://github.com/mrpmorris/Fluxor/issues/271))
 
 ## New in 5.0
  * **Breaking change**: Removed need to reference `_content/Fluxor.Blazor.Web/scripts/index.js` ([#235](https://github.com/mrpmorris/Fluxor/issues/235))
