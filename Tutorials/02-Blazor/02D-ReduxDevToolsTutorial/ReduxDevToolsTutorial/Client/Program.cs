@@ -23,26 +23,27 @@ namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client
 					rdt.Name = "Fluxor ReduxDevTools sample";
 
 					//Example of using Newtonsoft, and optionally providing serialization settings
-					//rdt.UseNewtonsoftJson(_ =>
-					//	new Newtonsoft.Json.JsonSerializerSettings
-					//	{
-					//		ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
-					//		{
-					//			NamingStrategy = new Newtonsoft.Json.Serialization.CamelCaseNamingStrategy()
-					//		}
-					//	}
-					//);
+					rdt.UseNewtonsoftJson(_ =>
+							new Newtonsoft.Json.JsonSerializerSettings
+							{
+								ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver
+								{
+									NamingStrategy = new Newtonsoft.Json.Serialization.CamelCaseNamingStrategy()
+								}
+							}
+					);
 
 					//Example of using System.Text.Json, and optionally providing serialization options
-					rdt.UseSystemTextJson(_ =>
-						new System.Text.Json.JsonSerializerOptions
-						{
-							PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
-						}
-					);
+					//Note: This won't work with Routing Middleware enabled
+					//rdt.UseSystemTextJson(_ =>
+					//	new System.Text.Json.JsonSerializerOptions
+					//	{
+					//		PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+					//	}
+					//);
 				})
 			);
 			await builder.Build().RunAsync();
-}
+		}
 	}
 }
