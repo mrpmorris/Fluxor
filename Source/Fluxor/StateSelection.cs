@@ -15,9 +15,13 @@ namespace Fluxor
 		private bool HasSetSelector;
 		private TValue PreviousValue;
 		private Func<TState, TValue> Selector;
+		private Action<TValue> SelectedValueChangedAction;
 		private Func<TValue, TValue, bool> ValueEquals;
 		private SpinLock SpinLock = new();
-		private bool IsSubscribedToFeature => _stateChanged is not null;
+		private bool ShouldBeSubscribedToFeature =>
+			_selectedValueChanged is not null
+			|| _stateChanged is not null
+			|| SelectedValueChangedAction is not null;
 
 		/// <summary>
 		/// Creates an instance of the state holder
@@ -40,7 +44,8 @@ namespace Fluxor
 		/// <see cref="IStateSelection{TState, TValue}.Select(Func{TState, TValue}, Func{TValue, TValue, bool}))"/>
 		public void Select(
 			Func<TState, TValue> selector,
-			Func<TValue, TValue, bool> valueEquals = null)
+			Func<TValue, TValue, bool> valueEquals = null,
+			Action<TValue> selectedValueChanged = null)
 		{
 			if (selector is null)
 				throw new ArgumentNullException(nameof(selector));
@@ -48,27 +53,55 @@ namespace Fluxor
 			SpinLock.ExecuteLocked(() =>
 			{
 				if (HasSetSelector)
-					throw new InvalidOperationException("Selector has alread been set");
+					throw new InvalidOperationException("Selector has already been set");
 
+				bool wasSubscribedToFeature = ShouldBeSubscribedToFeature;
 				Selector = selector;
+				SelectedValueChangedAction = selectedValueChanged;
 				HasSetSelector = true;
 				if (valueEquals is not null)
 					ValueEquals = valueEquals;
 				PreviousValue = Value;
+
+				if (!wasSubscribedToFeature && ShouldBeSubscribedToFeature)
+					Feature.StateChanged += FeatureStateChanged;
 			});
 		}
 
+		private EventHandler<TValue> _selectedValueChanged;
+		/// <see cref="IStateSelection{TState, TValue}.SelectedValueChanged"/>
+		public event EventHandler<TValue> SelectedValueChanged
+		{
+			add
+			{
+				SpinLock.ExecuteLocked(() =>
+				{
+					bool wasSubscribedToFeature = ShouldBeSubscribedToFeature;
+					_selectedValueChanged += value;
+					if (!wasSubscribedToFeature)
+						Feature.StateChanged += FeatureStateChanged;
+				});
+			}
+			remove
+			{
+				SpinLock.ExecuteLocked(() =>
+				{
+					_selectedValueChanged -= value;
+					if (!ShouldBeSubscribedToFeature)
+						Feature.StateChanged -= FeatureStateChanged;
+				});
+			}
+		}
+
 		private EventHandler _stateChanged;
-		/// <summary>
-		/// Event that is executed whenever the state changes
-		/// </summary>
+		/// <see cref="IStateChangedNotifier.StateChanged"/>
 		public event EventHandler StateChanged
 		{
 			add
 			{
 				SpinLock.ExecuteLocked(() =>
 				{
-					bool wasSubscribedToFeature = IsSubscribedToFeature;
+					bool wasSubscribedToFeature = ShouldBeSubscribedToFeature;
 					_stateChanged += value;
 					if (!wasSubscribedToFeature)
 						Feature.StateChanged += FeatureStateChanged;
@@ -79,7 +112,7 @@ namespace Fluxor
 				SpinLock.ExecuteLocked(() =>
 				{
 					_stateChanged -= value;
-					if (!IsSubscribedToFeature)
+					if (!ShouldBeSubscribedToFeature)
 						Feature.StateChanged -= FeatureStateChanged;
 				});
 			}
@@ -95,6 +128,8 @@ namespace Fluxor
 				return;
 			PreviousValue = newValue;
 
+			SelectedValueChangedAction?.Invoke(newValue);
+			_selectedValueChanged?.Invoke(this, newValue);
 			_stateChanged?.Invoke(this, EventArgs.Empty);
 		}
 

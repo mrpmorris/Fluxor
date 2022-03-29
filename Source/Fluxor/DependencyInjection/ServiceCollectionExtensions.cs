@@ -43,7 +43,7 @@ namespace Fluxor
 				typesToScan: options.TypesToScan,
 				scanIncludeList: scanIncludeList);
 			services.AddScoped(typeof(IState<>), typeof(State<>));
-			services.AddScoped(typeof(IStateSelection<,>), typeof(StateSelection<,>));
+			services.AddTransient(typeof(IStateSelection<,>), typeof(StateSelection<,>));
 
 			return services;
 		}

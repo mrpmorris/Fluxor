@@ -19,8 +19,20 @@ namespace Fluxor
 		///		Used to determine if an update to state needs
 		///		to trigger a <see cref="IStateChangedNotifier.StateChanged"/> event
 		/// </param>
+		/// <param name="selectedValueChanged">
+		///		Optional function that is called whenever the selected value
+		///		within the state changes. This is a shorthand equivalent of
+		///		<see cref="IStateSelection{TState, TValue}.Changed"/>
+		/// </param>
 		void Select(
 			Func<TState, TValue> selector,
-			Func<TValue, TValue, bool> valueEquals = null);
+			Func<TValue, TValue, bool> valueEquals = null,
+			Action<TValue> selectedValueChanged = null);
+
+		/// <summary>
+		/// Event that is triggered whenever the selected value
+		/// within the state changes
+		/// </summary>
+		event EventHandler<TValue> SelectedValueChanged;
 	}
 }
