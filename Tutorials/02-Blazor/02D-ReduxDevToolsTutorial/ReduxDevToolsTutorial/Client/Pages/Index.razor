@@ -1,5 +1,19 @@
 ﻿@page "/"
+@using System.Diagnostics
 
 <h1>Hello, world!</h1>
 
+<code><pre>&gt;@stack&lt;</pre></code>
+
 Welcome to your new app.
+
+@code
+{
+    string stack = "";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        stack = new StackTrace().ToString();
+    }
+}
