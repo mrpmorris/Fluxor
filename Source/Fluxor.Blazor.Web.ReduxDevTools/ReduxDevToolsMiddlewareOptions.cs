@@ -27,6 +27,10 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// Default is 50.
 		/// </summary>
 		public ushort MaximumHistoryLength { get; set; } = 50;
+		/// <summary>
+		/// Specifies how many stack frames to show in Redux Dev Tools for each action.
+		/// </summary>
+		public int StackTraceLimit { get; set; }
 
 		public ReduxDevToolsMiddlewareOptions(FluxorOptions fluxorOptions)
 		{

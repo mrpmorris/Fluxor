@@ -1,6 +1,8 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects;
 using Fluxor.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,11 +55,28 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// <see cref="IMiddleware.AfterDispatch(object)"/>
 		public override void AfterDispatch(object action)
 		{
+			string stackTrace = null;
+			if (Options.StackTraceLimit > 0)
+				try
+				{
+					throw new Exception();
+				}
+				catch (Exception ex)
+				{
+					stackTrace = string.Join("\\n",
+					new StackTrace(ex, fNeedFileInfo: true)
+						.GetFrames()
+						.Take(Options.StackTraceLimit)
+						.Select(x => $"at {x.GetMethod().DeclaringType.FullName}.{x.GetMethod().Name} ({x.GetFileName()}:{x.GetFileLineNumber()}:{x.GetFileColumnNumber()})")); 
+					//	$"at {x.GetMethod().DeclaringType.FullName}.{x.GetMethod().Name}" +
+					//	$" in ({x.GetFileName()}:{x.GetFileLineNumber()})"));
+				}
+
 			SpinLock.ExecuteLocked(() =>
 				{
 					IDictionary<string, object> state = GetState();
 					TailTask = TailTask
-						.ContinueWith(_ => ReduxDevToolsInterop.DispatchAsync(action, state)).Unwrap();
+						.ContinueWith(_ => ReduxDevToolsInterop.DispatchAsync(action, state, stackTrace)).Unwrap();
 				});
 
 			// As actions can only be executed if not in a historical state (yes, "a" historical, pronounce your H!)
