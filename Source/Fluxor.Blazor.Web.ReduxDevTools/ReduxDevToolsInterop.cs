@@ -194,7 +194,7 @@ window.{FluxorDevToolsId} = new (function() {{
 				$"maxAge:{options.MaximumHistoryLength}",
 				$"latency:{options.Latency.TotalMilliseconds}"
 			};
-			if (options.StackTraceLimit > 0)
+			if (options.StackTraceEnabled)
 				values.Add("trace: function() { return JSON.parse(window.fluxorDevToolsDotNetInterop.stackTrace); }");
 			return string.Join(",", values);
 		}
