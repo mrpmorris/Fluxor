@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools
 {
@@ -28,13 +29,49 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// </summary>
 		public ushort MaximumHistoryLength { get; set; } = 50;
 		/// <summary>
-		/// Specifies how many stack frames to show in Redux Dev Tools for each action.
+		/// When enabled, the stack trace that led to the dispatch of an action will
+		/// be displayed in Redux Dev Tools.
 		/// </summary>
-		public int StackTraceLimit { get; set; }
+		public bool StackTraceEnabled { get; set; }
+		/// <summary>
+		/// Specifies how many stack frames to show in Redux Dev Tools for each action.
+		/// Less than or equal to zero means show all.
+		/// </summary>
+		public int StackTraceLimit { get; private set; }
+		internal Regex StackTraceFilterRegex { get; private set; }
+
 
 		public ReduxDevToolsMiddlewareOptions(FluxorOptions fluxorOptions)
 		{
 			FluxorOptions = fluxorOptions;
+		}
+
+		/// <summary>
+		/// Enables stack trace in Redux Dev Tools
+		/// <see cref="StackTraceEnabled"/>
+		/// </summary>
+		/// <param name="limit"><see cref="StackTraceLimit"/></param>
+		/// <param name="stackTraceFilterExpression">
+		///		A regex expression to specify which stack frames should be included. The
+		///		default value will exclude any stack frames from
+		///		System, Microsoft, ExecuteMiddlewareAfterDispatch, or ReduxDevTools.
+		///		You can include all frames by passing an empty string to this parameter.
+		/// </param>
+		public ReduxDevToolsMiddlewareOptions EnableStackTrace(
+			int limit = 0,
+			string stackTraceFilterExpression = 
+				@"^(?:(?!\b" +
+				@"System" +
+				@"|Microsoft" +
+				@"|ExecuteMiddlewareAfterDispatch" +
+				@"|ReduxDevTools" +
+				@"\b).)*$")
+		{
+			StackTraceEnabled = true;
+			StackTraceLimit = Math.Max(0, limit);
+			if (!string.IsNullOrWhiteSpace(stackTraceFilterExpression))
+				StackTraceFilterRegex = new Regex(stackTraceFilterExpression, RegexOptions.Compiled);
+			return this;
 		}
 
 		/// <summary>

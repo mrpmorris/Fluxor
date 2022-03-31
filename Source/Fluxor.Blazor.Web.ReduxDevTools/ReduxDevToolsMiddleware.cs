@@ -56,22 +56,15 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		public override void AfterDispatch(object action)
 		{
 			string stackTrace = null;
-			if (Options.StackTraceLimit > 0)
-				try
-				{
-					throw new Exception();
-				}
-				catch (Exception ex)
-				{
-					stackTrace = string.Join("\\n",
-					new StackTrace(ex, fNeedFileInfo: true)
-						.GetFrames()
-						.Take(Options.StackTraceLimit)
-						.Select(x => $"at {x.GetMethod().DeclaringType.FullName}.{x.GetMethod().Name} ({x.GetFileName()}:{x.GetFileLineNumber()}:{x.GetFileColumnNumber()})")); 
-					//	$"at {x.GetMethod().DeclaringType.FullName}.{x.GetMethod().Name}" +
-					//	$" in ({x.GetFileName()}:{x.GetFileLineNumber()})"));
-				}
-
+			int maxItems = Options.StackTraceLimit == 0 ? int.MaxValue : Options.StackTraceLimit;
+			if (Options.StackTraceEnabled)
+				stackTrace =
+					string.Join("\r\n",
+						new StackTrace(fNeedFileInfo: true)
+							.GetFrames()
+							.Select(x => $"at {x.GetMethod().DeclaringType.FullName}.{x.GetMethod().Name} ({x.GetFileName()}:{x.GetFileLineNumber()}:{x.GetFileColumnNumber()})")
+							.Where(x => Options.StackTraceFilterRegex?.IsMatch(x) != false)
+							.Take(maxItems));
 			SpinLock.ExecuteLocked(() =>
 				{
 					IDictionary<string, object> state = GetState();

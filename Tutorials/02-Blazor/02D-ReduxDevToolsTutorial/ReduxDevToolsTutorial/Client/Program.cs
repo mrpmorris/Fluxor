@@ -23,7 +23,7 @@ namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client
 				o.UseReduxDevTools(rdt =>
 				{
 					rdt.Name = "Fluxor ReduxDevTools sample";
-					rdt.StackTraceLimit = 2;
+					rdt.EnableStackTrace();
 
 					// Example of using Newtonsoft, and optionally providing serialization settings
 					rdt.UseNewtonsoftJson(_ =>

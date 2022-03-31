@@ -1,5 +1,8 @@
 # Releases
 
+## New in 5.2
+ * Added Stack Trace option for Redux Dev Tools ([#262](https://github.com/mrpmorris/Fluxor/issues/262))
+
 ## New in 5.1
  * Fixed `IStateSelection<TState, TValue>` bug that threw exception stating the selector has
     already been set.  ([#252](https://github.com/mrpmorris/Fluxor/issues/252))
