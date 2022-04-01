@@ -77,6 +77,8 @@ Options for `EnableStackTrace` are
 
 Note that determining the stack trace is an expensive operation.
 
+![](./../../../images/redux-dev-tools-trace.jpg)
+
 ### Controlling JSON options
 
 It is possible to specify which JSON library the Redux Dev Tools Middleware
