@@ -52,9 +52,15 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			}
 		}
 
-		internal async Task<object> DispatchAsync(object action, IDictionary<string, object> state) =>
-			await InvokeFluxorDevToolsMethodAsync<object>(ToJsDispatchMethodName, new ActionInfo(action), state)
-			 .ConfigureAwait(false);
+		internal async Task<object> DispatchAsync(
+			object action,
+			IDictionary<string, object> state,
+			string stackTrace)
+		=>
+			await InvokeFluxorDevToolsMethodAsync<object>(
+				ToJsDispatchMethodName,
+				new ActionInfo(action), state, stackTrace)
+			.ConfigureAwait(false);
 
 		/// <summary>
 		/// Called back from ReduxDevTools
@@ -169,9 +175,10 @@ window.{FluxorDevToolsId} = new (function() {{
 			}}
 		}};
 
-		this.{ToJsDispatchMethodName} = function(action, state) {{
+		this.{ToJsDispatchMethodName} = function(action, state, stackTrace) {{
 			action = JSON.parse(action);
 			state = JSON.parse(state);
+			window.fluxorDevToolsDotNetInterop.stackTrace = stackTrace;
 			fluxorDevTools.send(action, state);
 		}};
 
@@ -187,6 +194,8 @@ window.{FluxorDevToolsId} = new (function() {{
 				$"maxAge:{options.MaximumHistoryLength}",
 				$"latency:{options.Latency.TotalMilliseconds}"
 			};
+			if (options.StackTraceEnabled)
+				values.Add("trace: function() { return JSON.parse(window.fluxorDevToolsDotNetInterop.stackTrace); }");
 			return string.Join(",", values);
 		}
 	}
