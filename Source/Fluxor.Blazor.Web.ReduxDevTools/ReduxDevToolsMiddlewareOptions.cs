@@ -32,7 +32,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// When enabled, the stack trace that led to the dispatch of an action will
 		/// be displayed in Redux Dev Tools.
 		/// </summary>
-		public bool StackTraceEnabled { get; set; }
+		public bool StackTraceEnabled { get; private set; }
 		/// <summary>
 		/// Specifies how many stack frames to show in Redux Dev Tools for each action.
 		/// Less than or equal to zero means show all.
@@ -46,6 +46,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			FluxorOptions = fluxorOptions;
 		}
 
+
 		/// <summary>
 		/// Enables stack trace in Redux Dev Tools
 		/// <see cref="StackTraceEnabled"/>
@@ -57,6 +58,9 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		///		System, Microsoft, ExecuteMiddlewareAfterDispatch, or ReduxDevTools.
 		///		You can include all frames by passing an empty string to this parameter.
 		/// </param>
+#if !NET5_0_OR_GREATER
+		[Obsolete("StackTrace does not work in Blazor on .net 3.1")]
+#endif
 		public ReduxDevToolsMiddlewareOptions EnableStackTrace(
 			int limit = 0,
 			string stackTraceFilterExpression = 

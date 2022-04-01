@@ -56,6 +56,27 @@ services.AddFluxor(o =>
  * Latency: How often actions are added to the plugin.
  * MaximumHistoryLength: How many actions at most should be displayed in the plugin.
 
+There is also an option to have Fluxor pass the strack trace to `ReduxDevTools`. This is useful
+for when an action is being dispatched and you need to identify where it was dispatched from.
+
+```c#
+o.UseReduxDevTools(rdt =>
+  {
+    rdt.Name = "My application";
+    rdt.EnableStackTrace();
+  }));
+```
+
+Options for `EnableStackTrace` are
+ * limit: The maximum number of stack frames to include in the trace
+ * stackTraceFilterExpression:
+     * Allows you to specify a regular expression that will be used to filter the stack trace.
+     * Only lines that match the expression will be included in the trace.
+     * The default expression will exlude System, Microsoft, and Fluxor ReduxDevTools Middleware.
+     * To include all stack frames, set the expression to "".
+
+Note that determining the stack trace is an expensive operation.
+
 ### Controlling JSON options
 
 It is possible to specify which JSON library the Redux Dev Tools Middleware
