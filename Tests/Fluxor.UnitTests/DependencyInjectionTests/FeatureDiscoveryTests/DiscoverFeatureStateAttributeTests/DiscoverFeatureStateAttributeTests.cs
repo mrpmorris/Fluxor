@@ -51,6 +51,19 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.Discov
 		}
 
 		[Fact]
+		public void WhenFeatureStateAttributeHasParameterValues_ThenStructFeatureIsCreatedWithValues()
+		{
+			IStore store = CreateStore(typeof(StructStateWithParameterizedFeatureStateAttribute));
+			Assert.Single(store.Features);
+
+			IFeature feature = store.Features.First().Value;
+			Assert.Equal("ParameterizedName", feature.GetName());
+			Assert.Equal(42, feature.MaximumStateChangedNotificationsPerSecond);
+			Assert.Equal(typeof(StructStateWithParameterizedFeatureStateAttribute), feature.GetStateType());
+			Assert.NotNull(feature.GetState());
+		}
+
+		[Fact]
 		public void WhenFeatureHasCreateInitialStateMethodName_ThenMethodIsInvokedToCreateDefaultState()
 		{
 			IStore store = CreateStore(typeof(StateWithStaticFactoryMethod));
