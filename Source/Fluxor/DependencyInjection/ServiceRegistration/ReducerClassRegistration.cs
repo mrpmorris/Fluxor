@@ -6,10 +6,11 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 	{
 		public static void Register(
 			IServiceCollection services,
-			ReducerClassInfo[] reducerClassInfos)
+			ReducerClassInfo[] reducerClassInfos,
+			FluxorOptions options)
 		{
 			foreach (ReducerClassInfo reducerClassInfo in reducerClassInfos)
-				services.AddScoped(serviceType: reducerClassInfo.ImplementingType);
+				services.AddRegistration(serviceType: reducerClassInfo.ImplementingType, options: options);
 		}
 	}
 }

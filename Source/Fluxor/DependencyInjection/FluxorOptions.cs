@@ -15,6 +15,17 @@ namespace Fluxor.DependencyInjection
 		internal Type[] TypesToScan { get; private set; } = Array.Empty<Type>();
 		internal Type[] MiddlewareTypes = Array.Empty<Type>();
 		/// <summary>
+		/// The Lifecycle that should be used when registering Fluxor features/reducers/effects/middleware</br>
+		/// (default) LifecycleEnum.Scoped = Create a new instance for each new request</br>
+		/// LifecycleEnum.Singleton = Create a new instance on first request and reuse for rest of application lifetime</br>
+		/// </br>
+		/// NOTE: indicating Singleton should be done only for exceptional cases.
+		/// For example, in MAUI/Blazor hybrid applications, the main MAUI application is a different scope then each BlazorWebView component
+		/// and state needs to be shared across all scopes of the application
+		/// </summary>
+		public LifecycleEnum RegistrationLifecycle { get; private set; } = LifecycleEnum.Scoped;
+
+		/// <summary>
 		/// Service collection for registering services
 		/// </summary>
 		public readonly IServiceCollection Services;
@@ -54,6 +65,23 @@ namespace Fluxor.DependencyInjection
 		}
 
 		/// <summary>
+		/// The Lifecycle that should be used when registering Fluxor features/reducers/effects/middleware</br>
+		/// (default) LifecycleEnum.Scoped = Create a new instance for each new request</br>
+		/// LifecycleEnum.Singleton = Create a new instance on first request and reuse for rest of application lifetime</br>
+		/// </br>
+		/// NOTE: indicating Singleton should be done only for exceptional cases.
+		/// For example, in MAUI/Blazor hybrid applications, the main MAUI application is a different scope then each BlazorWebView component
+		/// and state needs to be shared across all scopes of the application</br>
+		/// </br>
+		/// This value should only be set once during the configuration of Fluxor
+		/// </summary>
+		public FluxorOptions SetRegistrationLifecycle(LifecycleEnum lifecycle)
+		{
+			RegistrationLifecycle = lifecycle;
+			return this;
+		}
+
+		/// <summary>
 		/// Enables automatic discovery of features/effects/reducers
 		/// </summary>
 		/// <param name="additionalAssembliesToScan">A collection of assemblies to scan</param>
@@ -89,7 +117,7 @@ namespace Fluxor.DependencyInjection
 			if (Array.IndexOf(MiddlewareTypes, typeof(TMiddleware)) > -1)
 				return this;
 
-			Services.AddScoped(typeof(TMiddleware));
+			Services.AddRegistration(typeof(TMiddleware), this);
 			Assembly assembly = typeof(TMiddleware).Assembly;
 			string @namespace = typeof(TMiddleware).Namespace;
 

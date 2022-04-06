@@ -7,10 +7,11 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 	{
 		public static void Register(
 			IServiceCollection services,
-			IEnumerable<EffectClassInfo> effectClassInfos)
+			IEnumerable<EffectClassInfo> effectClassInfos,
+			FluxorOptions options)
 		{
 			foreach (EffectClassInfo effectClassInfo in effectClassInfos)
-				services.AddScoped(effectClassInfo.ImplementingType);
+				services.AddRegistration(effectClassInfo.ImplementingType, options);
 		}
 	}
 }

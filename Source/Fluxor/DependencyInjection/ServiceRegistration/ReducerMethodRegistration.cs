@@ -9,7 +9,8 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 	{
 		public static void Register(
 			IServiceCollection services,
-			ReducerMethodInfo[] reducerMethodInfos)
+			ReducerMethodInfo[] reducerMethodInfos,
+			FluxorOptions options)
 		{
 			IEnumerable<Type> hostClassTypes =
 				reducerMethodInfos
@@ -18,7 +19,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 					.Distinct();
 
 			foreach (Type hostClassType in hostClassTypes)
-				services.AddScoped(hostClassType);
+				services.AddRegistration(hostClassType, options);
 		}
 	}
 }

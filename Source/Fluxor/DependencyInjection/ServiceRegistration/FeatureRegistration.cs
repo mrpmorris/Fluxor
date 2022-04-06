@@ -14,7 +14,8 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			FeatureClassInfo[] featureClassInfos,
 			FeatureStateInfo[] featureStateInfos,
 			ReducerClassInfo[] reducerClassInfos,
-			ReducerMethodInfo[] reducerMethodInfos)
+			ReducerMethodInfo[] reducerMethodInfos,
+			FluxorOptions options)
 		{
 			Dictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType =
 				reducerClassInfos
@@ -30,16 +31,18 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 				services,
 				featureClassInfos,
 				reducerClassInfoByStateType,
-				reducerMethodInfoByStateType);
+				reducerMethodInfoByStateType,
+				options);
 
 			RegisterStateInfos(
 				services,
 				featureStateInfos,
 				reducerClassInfoByStateType,
-				reducerMethodInfoByStateType);
+				reducerMethodInfoByStateType,
+				options);
 		}
 
-		private static void RegisterFeatureClassInfos(IServiceCollection services, FeatureClassInfo[] featureClassInfos, Dictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType, Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType)
+		private static void RegisterFeatureClassInfos(IServiceCollection services, FeatureClassInfo[] featureClassInfos, Dictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType, Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType, FluxorOptions options)
 		{
 			foreach (FeatureClassInfo info in featureClassInfos)
 			{
@@ -52,10 +55,10 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 					out IGrouping<Type, ReducerMethodInfo> reducerMethodInfosForStateType);
 
 				// Register the implementing type so we can get an instance from the service provider
-				services.AddScoped(info.ImplementingType);
+				services.AddRegistration(info.ImplementingType, options);
 
 				// Register a factory for the feature's interface
-				services.AddScoped(info.FeatureInterfaceGenericType, serviceProvider =>
+				services.AddRegistration(info.FeatureInterfaceGenericType, serviceProvider =>
 				{
 					// Create an instance of the implementing type
 					var featureInstance =
@@ -68,7 +71,8 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 						reducerMethodInfosForStateType);
 
 					return featureInstance;
-				});
+				},
+				options);
 			}
 		}
 
@@ -85,7 +89,8 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			IServiceCollection services,
 			FeatureStateInfo[] featureStateInfos,
 			Dictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType,
-			Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType)
+			Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType,
+			FluxorOptions options)
 		{
 			foreach (FeatureStateInfo info in featureStateInfos)
 			{
@@ -98,7 +103,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 					out IGrouping<Type, ReducerMethodInfo> reducerMethodInfosForStateType);
 
 				// Register a factory for the feature's interface
-				services.AddScoped(info.FeatureInterfaceGenericType, serviceProvider =>
+				services.AddRegistration(info.FeatureInterfaceGenericType, serviceProvider =>
 				{
 					// Create an instance of the implementing type
 					ConstructorInfo featureConstructor =
@@ -115,7 +120,8 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 						reducerMethodInfosForStateType);
 
 					return featureInstance;
-				});
+				},
+				options);
 			}
 		}
 

@@ -1,6 +1,5 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools.Serialization;
 using Fluxor.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Text.Json;
@@ -63,7 +62,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 #endif
 		public ReduxDevToolsMiddlewareOptions EnableStackTrace(
 			int limit = 0,
-			string stackTraceFilterExpression = 
+			string stackTraceFilterExpression =
 				@"^(?:(?!\b" +
 				@"System" +
 				@"|Microsoft" +
@@ -91,7 +90,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 				JsonSerializerSettings settings = getSettings?.Invoke(sp);
 				return new NewtonsoftJsonAdapter(settings);
 			});
-			FluxorOptions.Services.AddScoped<IJsonSerialization, NewtonsoftJsonAdapter>(implementationFactory);
+			FluxorOptions.Services.AddRegistration<IJsonSerialization, NewtonsoftJsonAdapter>(implementationFactory, FluxorOptions);
 			return this;
 		}
 
@@ -108,7 +107,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 				JsonSerializerOptions jsonOptions = getOptions?.Invoke(sp);
 				return new SystemTextJsonAdapter(jsonOptions);
 			});
-			FluxorOptions.Services.AddScoped<IJsonSerialization, SystemTextJsonAdapter>(implementationFactory);
+			FluxorOptions.Services.AddRegistration<IJsonSerialization, SystemTextJsonAdapter>(implementationFactory, FluxorOptions);
 			return this;
 		}
 	}

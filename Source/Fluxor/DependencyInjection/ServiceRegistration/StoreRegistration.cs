@@ -23,20 +23,21 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 				featureClassInfos,
 				featureStateInfos,
 				reducerClassInfos,
-				reducerMethodInfos); ;
-			ReducerClassRegistration.Register(services, reducerClassInfos);
-			ReducerMethodRegistration.Register(services, reducerMethodInfos);
-			EffectClassRegistration.Register(services, effectClassInfos);
-			EffectMethodRegistration.Register(services, effectMethodInfos);
+				reducerMethodInfos,
+				options); ;
+			ReducerClassRegistration.Register(services, reducerClassInfos, options);
+			ReducerMethodRegistration.Register(services, reducerMethodInfos, options);
+			EffectClassRegistration.Register(services, effectClassInfos, options);
+			EffectMethodRegistration.Register(services, effectMethodInfos, options);
 
-			services.AddScoped<IDispatcher, Dispatcher>();
+			services.AddRegistration<IDispatcher, Dispatcher>(options);
 			// Register IActionSubscriber as an alias to Store
-			services.AddScoped<IActionSubscriber>(serviceProvider => serviceProvider.GetService<Store>());
+			services.AddRegistration<IActionSubscriber>(serviceProvider => serviceProvider.GetService<Store>(), options);
 			// Register IStore as an alias to Store
-			services.AddScoped<IStore>(serviceProvider => serviceProvider.GetService<Store>());
+			services.AddRegistration<IStore>(serviceProvider => serviceProvider.GetService<Store>(), options);
 
 			// Register a custom factory for building IStore that will inject all effects
-			services.AddScoped(typeof(Store), serviceProvider =>
+			services.AddRegistration(typeof(Store), serviceProvider =>
 			{
 				var dispatcher = serviceProvider.GetService<IDispatcher>();
 				var store = new Store(dispatcher);
@@ -71,7 +72,8 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 				}
 
 				return store;
-			});
+			},
+			options);
 
 		}
 	}
