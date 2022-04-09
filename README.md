@@ -1,7 +1,7 @@
 # Fluxor
 ![](./Images/fluxor-logo.png)
 
-Fluxor is a zero boilerplate Flux/Redux library for [Microsoft DotNet](https://dotnet.microsoft.com/).
+***Fluxor*** is a zero boilerplate Flux/Redux library for [Microsoft .NET](https://dotnet.microsoft.com/)
 
 [![Join the chat at https://gitter.im/mrpmorris/fluxor](https://badges.gitter.im/mrpmorris/fluxor.svg)](https://gitter.im/mrpmorris/fluxor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
