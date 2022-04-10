@@ -1,6 +1,6 @@
 ﻿namespace Fluxor
 {
-	public enum LifecycleEnum
+	public enum StoreLifetime
 	{
 		Scoped,
 		Singleton

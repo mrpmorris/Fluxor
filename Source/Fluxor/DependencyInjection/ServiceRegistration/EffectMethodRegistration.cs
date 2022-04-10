@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Fluxor.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 					.Distinct();
 
 			foreach (Type hostClassType in hostClassTypes)
-				services.AddRegistration(hostClassType, options);
+				services.Add(hostClassType, options);
 		}
 	}
 }

@@ -10,7 +10,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests
       [Fact]
       public void WhenStoreIsCreatedWithScopedLifecycle_ItIsUniqueToDependencyInjectionScope()
       {
-         IServiceProvider serviceProvider = SetupServiceProvider(LifecycleEnum.Scoped);
+         IServiceProvider serviceProvider = SetupServiceProvider(StoreLifetime.Scoped);
 
          (IServiceScope scope1, IStore store1, IDispatcher dispatcher1, IState<CounterState> state1) = CreateStore(serviceProvider);
          (IServiceScope scope2, IStore store2, IDispatcher dispatcher2, IState<CounterState> state2) = CreateStore(serviceProvider);
@@ -44,7 +44,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests
       [Fact]
       public void WhenStoreIsCreatedWithSingletonLifecycle_ItIsNotUniqueToDependencyInjectionScope()
       {
-         IServiceProvider serviceProvider = SetupServiceProvider(LifecycleEnum.Singleton);
+         IServiceProvider serviceProvider = SetupServiceProvider(StoreLifetime.Singleton);
 
          (IServiceScope scope1, IStore store1, IDispatcher dispatcher1, IState<CounterState> state1) = CreateStore(serviceProvider);
          (IServiceScope scope2, IStore store2, IDispatcher dispatcher2, IState<CounterState> state2) = CreateStore(serviceProvider);
@@ -72,11 +72,11 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests
          Assert.Equal(3, state2.Value.Counter);
       }
 
-      private static IServiceProvider SetupServiceProvider(LifecycleEnum lifecycle)
+      private static IServiceProvider SetupServiceProvider(StoreLifetime lifecycle)
       {
          ServiceCollection services = new ServiceCollection();
          services.AddFluxor(x => x
-            .SetRegistrationLifecycle(lifecycle)
+            .SetStoreLifetime(lifecycle)
             .AddMiddleware<IsolatedTests>()
             .ScanAssemblies(typeof(IsolatedTests).Assembly));
          IServiceProvider serviceProvider = services.BuildServiceProvider();

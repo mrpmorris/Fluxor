@@ -1,4 +1,5 @@
 ﻿using Fluxor.DependencyInjection.WrapperFactories;
+using Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -55,10 +56,10 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 					out IGrouping<Type, ReducerMethodInfo> reducerMethodInfosForStateType);
 
 				// Register the implementing type so we can get an instance from the service provider
-				services.AddRegistration(info.ImplementingType, options);
+				services.Add(info.ImplementingType, options);
 
 				// Register a factory for the feature's interface
-				services.AddRegistration(info.FeatureInterfaceGenericType, serviceProvider =>
+				services.Add(info.FeatureInterfaceGenericType, serviceProvider =>
 				{
 					// Create an instance of the implementing type
 					var featureInstance =
@@ -103,7 +104,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 					out IGrouping<Type, ReducerMethodInfo> reducerMethodInfosForStateType);
 
 				// Register a factory for the feature's interface
-				services.AddRegistration(info.FeatureInterfaceGenericType, serviceProvider =>
+				services.Add(info.FeatureInterfaceGenericType, serviceProvider =>
 				{
 					// Create an instance of the implementing type
 					ConstructorInfo featureConstructor =

@@ -1,5 +1,6 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools;
 using Fluxor.DependencyInjection;
+using Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -21,43 +22,12 @@ namespace Fluxor
 			updateReduxOptions?.Invoke(reduxOptions);
 
 			options.AddMiddleware<ReduxDevToolsMiddleware>();
-			options.Services.AddRegistration<ReduxDevToolsInterop>(options);
-			options.Services.AddRegistration(_ => reduxOptions, options);
+			options.Services.Add<ReduxDevToolsInterop>(options);
+			options.Services.Add(_ => reduxOptions, options);
 			options.UseRouting();
 			return options;
 		}
 
-		private static IServiceCollection AddRegistration<TService>(this IServiceCollection services, FluxorOptions options)
-			where TService : class
-		{
-			return options.RegistrationLifecycle switch {
-				LifecycleEnum.Scoped => services.AddScoped<TService>(),
-				LifecycleEnum.Singleton => services.AddSingleton<TService>(),
-				_ => services
-			};
-		}
-
-		private static IServiceCollection AddRegistration<TService>(this IServiceCollection services, Func<IServiceProvider, TService> implementationFactory, FluxorOptions options)
-			where TService : class
-		{
-			return options.RegistrationLifecycle switch {
-				LifecycleEnum.Scoped => services.AddScoped(implementationFactory),
-				LifecycleEnum.Singleton => services.AddSingleton(implementationFactory),
-				_ => services
-			};
-		}
-
-		internal static IServiceCollection AddRegistration<TService, TImplementation>(this IServiceCollection services, Func<IServiceProvider, TImplementation> implementationFactory, FluxorOptions options)
-			where TService : class
-			where TImplementation : class, TService
-		{
-			return options.RegistrationLifecycle switch {
-				LifecycleEnum.Scoped => services.AddScoped<TService, TImplementation>(implementationFactory),
-				LifecycleEnum.Singleton => services.AddSingleton<TService, TImplementation>(implementationFactory),
-				_ => services
-			};
-		}
 	}
-
 
 }

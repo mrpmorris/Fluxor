@@ -1,4 +1,5 @@
 ﻿using Fluxor.DependencyInjection.WrapperFactories;
+using Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -30,14 +31,14 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			EffectClassRegistration.Register(services, effectClassInfos, options);
 			EffectMethodRegistration.Register(services, effectMethodInfos, options);
 
-			services.AddRegistration<IDispatcher, Dispatcher>(options);
+			services.Add<IDispatcher, Dispatcher>(options);
 			// Register IActionSubscriber as an alias to Store
-			services.AddRegistration<IActionSubscriber>(serviceProvider => serviceProvider.GetService<Store>(), options);
+			services.Add<IActionSubscriber>(serviceProvider => serviceProvider.GetService<Store>(), options);
 			// Register IStore as an alias to Store
-			services.AddRegistration<IStore>(serviceProvider => serviceProvider.GetService<Store>(), options);
+			services.Add<IStore>(serviceProvider => serviceProvider.GetService<Store>(), options);
 
 			// Register a custom factory for building IStore that will inject all effects
-			services.AddRegistration(typeof(Store), serviceProvider =>
+			services.Add(typeof(Store), serviceProvider =>
 			{
 				var dispatcher = serviceProvider.GetService<IDispatcher>();
 				var store = new Store(dispatcher);

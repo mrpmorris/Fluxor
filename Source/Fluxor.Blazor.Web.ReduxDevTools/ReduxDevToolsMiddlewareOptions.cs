@@ -1,5 +1,6 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools.Serialization;
 using Fluxor.DependencyInjection;
+using Fluxor.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Text.Json;
@@ -90,7 +91,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 				JsonSerializerSettings settings = getSettings?.Invoke(sp);
 				return new NewtonsoftJsonAdapter(settings);
 			});
-			FluxorOptions.Services.AddRegistration<IJsonSerialization, NewtonsoftJsonAdapter>(implementationFactory, FluxorOptions);
+			FluxorOptions.Services.Add<IJsonSerialization, NewtonsoftJsonAdapter>(implementationFactory, FluxorOptions);
 			return this;
 		}
 
@@ -107,7 +108,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 				JsonSerializerOptions jsonOptions = getOptions?.Invoke(sp);
 				return new SystemTextJsonAdapter(jsonOptions);
 			});
-			FluxorOptions.Services.AddRegistration<IJsonSerialization, SystemTextJsonAdapter>(implementationFactory, FluxorOptions);
+			FluxorOptions.Services.Add<IJsonSerialization, SystemTextJsonAdapter>(implementationFactory, FluxorOptions);
 			return this;
 		}
 	}
