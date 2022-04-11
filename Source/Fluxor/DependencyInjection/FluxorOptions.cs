@@ -15,26 +15,7 @@ namespace Fluxor.DependencyInjection
 		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = Array.Empty<AssemblyScanSettings>();
 		internal Type[] TypesToScan { get; private set; } = Array.Empty<Type>();
 		internal Type[] MiddlewareTypes = Array.Empty<Type>();
-		/// <summary>
-		/// The Store Lifetime that should be used when registering Fluxor features/reducers/effects/middleware
-		/// </summary>
-		/// <remarks>
-		/// <list type="bullet">
-		/// <item>
-		/// <term>LifecycleEnum.Scoped</term>
-		/// <description>(default) Create a new instance for each new request</description>
-		/// </item>
-		/// <item>
-		/// <term>LifecycleEnum.Singleton</term>
-		/// <description>Create a new instance on first request and reuse for rest of application lifetime</description>
-		/// <para>
-		/// NOTE: indicating Singleton should be done only for exceptional cases.
-		/// For example, in MAUI/Blazor hybrid applications, the main MAUI application is a different scope then each BlazorWebView component
-		/// and state needs to be shared across all scopes of the application
-		/// </para>
-		/// This value should only be set once during the configuration of Fluxor
-		/// </remarks>
-		public StoreLifetime StoreLifetime { get; set; } = StoreLifetime.Scoped;
+		internal StoreLifetime StoreLifetime { get; set; } = StoreLifetime.Scoped;
 
 		/// <summary>
 		/// Service collection for registering services
@@ -76,11 +57,29 @@ namespace Fluxor.DependencyInjection
 		}
 
 		/// <summary>
-		/// Sets the Lifecycle that should be used when registering Fluxor features/reducers/effects/middleware
+		/// The Store Lifetime that should be used when registering Fluxor features/reducers/effects/middleware
 		/// </summary>
 		/// <param name="lifecycle">the lifecycle to use</param>
 		/// <returns>Options</returns>
-		public FluxorOptions SetStoreLifetime(StoreLifetime lifecycle)
+		/// <remarks>
+		/// <list type="bullet">
+		/// <item>
+		/// <term>LifecycleEnum.Scoped</term>
+		/// <description>(default) Create a new instance for each new request</description>
+		/// </item>
+		/// <item>
+		/// <term>LifecycleEnum.Singleton</term>
+		/// <description>Create a new instance on first request and reuse for rest of application lifetime</description>
+		/// <para>
+		/// NOTE: indicating Singleton should be done only for exceptional cases.
+		/// For example, in MAUI/Blazor hybrid applications, the main MAUI application is a different scope then each BlazorWebView component
+		/// and state needs to be shared across all scopes of the application
+		/// </para>
+		/// <para>
+		/// This value should only be set once during the configuration of Fluxor
+		/// </para>
+		/// </remarks>
+		public FluxorOptions WithServiceLifetime(StoreLifetime lifecycle)
 		{
 			StoreLifetime = lifecycle;
 			return this;
