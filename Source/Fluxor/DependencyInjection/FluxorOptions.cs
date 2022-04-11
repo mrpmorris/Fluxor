@@ -79,7 +79,7 @@ namespace Fluxor.DependencyInjection
 		/// This value should only be set once during the configuration of Fluxor
 		/// </para>
 		/// </remarks>
-		public FluxorOptions WithServiceLifetime(StoreLifetime lifecycle)
+		public FluxorOptions WithLifetime(StoreLifetime lifecycle)
 		{
 			StoreLifetime = lifecycle;
 			return this;

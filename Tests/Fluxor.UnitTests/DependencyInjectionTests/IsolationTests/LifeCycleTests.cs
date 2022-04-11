@@ -76,7 +76,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests
       {
          ServiceCollection services = new ServiceCollection();
          services.AddFluxor(x => x
-            .WithServiceLifetime(lifecycle)
+            .WithLifetime(lifecycle)
             .AddMiddleware<IsolatedTests>()
             .ScanAssemblies(typeof(IsolatedTests).Assembly));
          IServiceProvider serviceProvider = services.BuildServiceProvider();
