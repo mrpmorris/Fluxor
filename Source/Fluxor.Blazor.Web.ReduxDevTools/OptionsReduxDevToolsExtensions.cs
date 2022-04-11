@@ -1,5 +1,6 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools;
 using Fluxor.DependencyInjection;
+using Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -21,10 +22,12 @@ namespace Fluxor
 			updateReduxOptions?.Invoke(reduxOptions);
 
 			options.AddMiddleware<ReduxDevToolsMiddleware>();
-			options.Services.AddScoped<ReduxDevToolsInterop>();
-			options.Services.AddScoped(_ => reduxOptions);
+			options.Services.Add<ReduxDevToolsInterop>(options);
+			options.Services.Add(_ => reduxOptions, options);
 			options.UseRouting();
 			return options;
 		}
+
 	}
+
 }

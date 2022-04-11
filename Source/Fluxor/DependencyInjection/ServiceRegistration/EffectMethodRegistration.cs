@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Fluxor.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 	{
 		public static void Register(
 			IServiceCollection services,
-			EffectMethodInfo[] effectMethodInfos)
+			EffectMethodInfo[] effectMethodInfos,
+			FluxorOptions options)
 		{
 			IEnumerable<Type> hostClassTypes =
 				effectMethodInfos
@@ -18,7 +20,7 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 					.Distinct();
 
 			foreach (Type hostClassType in hostClassTypes)
-				services.AddScoped(hostClassType);
+				services.Add(hostClassType, options);
 		}
 	}
 }

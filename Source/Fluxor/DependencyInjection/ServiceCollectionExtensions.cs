@@ -1,4 +1,5 @@
 ﻿using Fluxor.DependencyInjection;
+using Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Fluxor
 
 			// Register all middleware types with dependency injection
 			foreach (Type middlewareType in options.MiddlewareTypes)
-				services.AddScoped(middlewareType);
+				services.Add(middlewareType, options);
 
 			IEnumerable<AssemblyScanSettings> scanIncludeList = options.MiddlewareTypes
 				.Select(t => new AssemblyScanSettings(t.Assembly, t.Namespace));
@@ -42,10 +43,11 @@ namespace Fluxor
 				assembliesToScan: options.AssembliesToScan,
 				typesToScan: options.TypesToScan,
 				scanIncludeList: scanIncludeList);
-			services.AddScoped(typeof(IState<>), typeof(State<>));
+			services.Add(typeof(IState<>), typeof(State<>), options);
 			services.AddTransient(typeof(IStateSelection<,>), typeof(StateSelection<,>));
 
 			return services;
 		}
+
 	}
 }
