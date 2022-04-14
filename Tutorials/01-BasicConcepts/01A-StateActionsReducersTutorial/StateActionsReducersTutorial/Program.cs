@@ -10,11 +10,8 @@ namespace BasicConcepts.StateActionsReducersTutorial
 		{
 			var services = new ServiceCollection();
 			services.AddScoped<App>();
-			services.AddFluxor(o =>
-         {
-				o.StoreLifetime = StoreLifetime.Scoped;
-				o.ScanAssemblies(typeof(Program).Assembly);
-         });
+			services.AddFluxor(o => o
+				.ScanAssemblies(typeof(Program).Assembly));
 
 			IServiceProvider serviceProvider = services.BuildServiceProvider();
 
