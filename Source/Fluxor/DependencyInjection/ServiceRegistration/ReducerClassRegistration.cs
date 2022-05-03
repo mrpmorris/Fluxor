@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Fluxor.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fluxor.DependencyInjection.ServiceRegistration
 {
@@ -6,10 +7,11 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 	{
 		public static void Register(
 			IServiceCollection services,
-			ReducerClassInfo[] reducerClassInfos)
+			ReducerClassInfo[] reducerClassInfos,
+			FluxorOptions options)
 		{
 			foreach (ReducerClassInfo reducerClassInfo in reducerClassInfos)
-				services.AddScoped(serviceType: reducerClassInfo.ImplementingType);
+				services.Add(serviceType: reducerClassInfo.ImplementingType, options: options);
 		}
 	}
 }

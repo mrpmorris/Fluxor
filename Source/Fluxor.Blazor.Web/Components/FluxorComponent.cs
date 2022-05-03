@@ -42,8 +42,12 @@ namespace Fluxor.Blazor.Web.Components
 		{
 			ActionSubscriber.SubscribeToAction<TAction>(this, action =>
 			{
-				if (!Disposed)
-					callback(action);
+				InvokeAsync(() =>
+				{
+					if (!Disposed)
+						callback(action);
+					StateHasChanged();
+				});
 			});
 		}
 

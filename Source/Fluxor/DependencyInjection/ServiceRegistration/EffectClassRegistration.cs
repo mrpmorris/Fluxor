@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Fluxor.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 
 namespace Fluxor.DependencyInjection.ServiceRegistration
@@ -7,10 +8,11 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 	{
 		public static void Register(
 			IServiceCollection services,
-			IEnumerable<EffectClassInfo> effectClassInfos)
+			IEnumerable<EffectClassInfo> effectClassInfos,
+			FluxorOptions options)
 		{
 			foreach (EffectClassInfo effectClassInfo in effectClassInfos)
-				services.AddScoped(effectClassInfo.ImplementingType);
+				services.Add(effectClassInfo.ImplementingType, options);
 		}
 	}
 }

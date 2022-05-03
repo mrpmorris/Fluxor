@@ -1,32 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
-  <PropertyGroup>
-    <Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
-    <Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
-    <PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
-    <PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
+		<Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
+		<PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
+		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
+		<SignAssembly Condition="'$(Configuration)'=='Release'" >True</SignAssembly>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
-    <LangVersion>9</LangVersion>
-    <RazorLangVersion>3.0</RazorLangVersion>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.8" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
+	<PropertyGroup>
+		<RazorLangVersion>3.0</RazorLangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
-    <ProjectReference Include="..\Fluxor\Fluxor.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\..\Images\fluxor-blazor-reduxdevtools-small.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\Images\fluxor-blazor-reduxdevtools-small.png">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 </Project>
