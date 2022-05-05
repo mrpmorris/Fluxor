@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using System;
 using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.Middlewares.Routing
@@ -38,13 +39,15 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		/// <see cref="Middleware.OnInternalMiddlewareChangeEnding"/>
 		protected override void OnInternalMiddlewareChangeEnding()
 		{
-			if (Feature.State.Uri != NavigationManager.Uri && Feature.State.Uri is not null)
+			bool isUriSame = string.Equals(Feature.State.Uri?.TrimEnd('/'), NavigationManager.Uri.TrimEnd('/'), StringComparison.OrdinalIgnoreCase);
+			if (!isUriSame && Feature.State.Uri is not null)
 				NavigationManager.NavigateTo(Feature.State.Uri);
 		}
 
 		private void LocationChanged(object sender, LocationChangedEventArgs e)
 		{
-			if (Dispatcher is not null && !IsInsideMiddlewareChange && e.Location != Feature.State.Uri)
+			bool isUriSame = string.Equals(e.Location.TrimEnd('/'), Feature.State.Uri?.TrimEnd('/'), StringComparison.OrdinalIgnoreCase);
+			if (Dispatcher is not null && !IsInsideMiddlewareChange && !isUriSame)
 				Dispatcher.Dispatch(new GoAction(e.Location));
 		}
 	}
