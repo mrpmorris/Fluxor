@@ -142,7 +142,7 @@ Effect handlers can be written in one of three ways.
 1. As with `[ReducerMethod]`, it is possible to use `[EffectMethod]` without
   the action parameter being needed in the method signature.
 
-```
+```c#
   [EffectMethod(typeof(FetchDataAction))]
   public async Task HandleFetchDataAction(IDispatcher dispatcher)
   {
@@ -207,6 +207,12 @@ in mind the following
 I recommend you use approach 1 (static methods) when you do not need to access values in the action object,
 otherwise use approach 2 (instance methods). Approach 3 (`Effect<T>` descendant) is not
 recommended due to the amount of code involved.
+
+***Important: Effects instances are created once per store instance and share a lifetime with the store.***
+
+This means that service instances injected into effects also share a lifetime with the store which, for long-lived scopes, means they will live for the life of the user's session. For example, Blazor apps keep one long-lived injection scope per browser window.
+
+When injecting `HttpClient` and you anticipate a possible DNS change you could consider instead using `IHttpClientFactory` and requesting a `HttpClient` per execution of the effect code. If you need a new instance of a service or each execution (e.g. a `UnitOfWork` or `DbContext`) you could consider using `IServiceScopeFactory` to create a new instance of those services.
 
 #### Reducing the `Effect` result into state
 
