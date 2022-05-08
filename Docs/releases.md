@@ -1,5 +1,14 @@
 # Releases
 
+## New in 5.4
+ * ActionSubscribers are now notified after state has been reduced ([#299](https://github.com/mrpmorris/Fluxor/issues/299))
+ * Routing middleware will no longer dispatch a GoAction when URl is the same value but formatted differently ([#297](https://github.com/mrpmorris/Fluxor/issues/297))
+
+## New in 5.3
+ * New method EnableStackTrace on ReduxDevToolsMiddlewareOptions to enable passing stack trace to the browser plugin ([#262](https://github.com/mrpmorris/Fluxor/issues/262))
+ * ActionSubscriber demo
+ * Add LifeCycle to FluxorOptions and use in registration ([#287](https://github.com/mrpmorris/Fluxor/issues/287))
+
 ## New in 5.2
  * Added Stack Trace option for Redux Dev Tools ([#262](https://github.com/mrpmorris/Fluxor/issues/262))
 
