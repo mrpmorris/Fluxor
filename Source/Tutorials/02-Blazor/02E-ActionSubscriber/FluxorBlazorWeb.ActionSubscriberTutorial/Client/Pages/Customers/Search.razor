@@ -39,19 +39,4 @@ else
     </table>
 }
 
-@code {
-    [Inject] private IDispatcher Dispatcher { get; set; } = null!;
-    [Inject] private IState<SearchCustomersState> State { get; set; } = null!;
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if (!State.Value.Customers.Any())
-            Refresh();
-    }
-
-    protected void Refresh()
-    {
-        Dispatcher.Dispatch(new SearchCustomersAction(""));
-    }
-}
