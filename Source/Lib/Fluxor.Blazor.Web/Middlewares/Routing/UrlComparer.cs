@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace Fluxor.Blazor.Web.Middlewares.Routing
 {

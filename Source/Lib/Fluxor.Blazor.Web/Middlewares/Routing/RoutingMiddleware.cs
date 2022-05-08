@@ -39,7 +39,7 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		/// <see cref="Middleware.OnInternalMiddlewareChangeEnding"/>
 		protected override void OnInternalMiddlewareChangeEnding()
 		{
-			if (!UrlComparer.AreEqual(Feature.State.Uri, NavigationManager.Uri) && Feature.State.Uri is not null)
+			if (Feature.State.Uri is not null && !UrlComparer.AreEqual(Feature.State.Uri, NavigationManager.Uri))
 				NavigationManager.NavigateTo(Feature.State.Uri);
 		}
 
