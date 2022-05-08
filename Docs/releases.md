@@ -5,7 +5,7 @@
 
 ## New in 5.1
  * Fixed `IStateSelection<TState, TValue>` bug that threw exception stating the selector has
-    already been set.  ([#252](https://github.com/mrpmorris/Fluxor/issues/252))
+    already been set. ([#252](https://github.com/mrpmorris/Fluxor/issues/252))
  * Added an optional `Action<TValue> selectedValueChanged` to `IStateSelection<TState, TValue>.Select`
     that is executed whenever the selected value changes. This is a convenient alternative to hooking up event handlers.
  * Added `event EventHandler<TValue> SelectedValueChanged` to `IStateSelection<TState, TValue>` for strongly

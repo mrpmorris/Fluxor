@@ -10,7 +10,7 @@ If ever you see an error message like the following
 
 it is most likely because of one of the following reasons:
 
-### Not calling base.Dispose
+## Not calling base.Dispose
 **Problem:** You have overridden `Dispose(bool disposed)` on `FluxorComponent`
 or `FluxorLayout` and not called `base.Dispose(disposed)`.
 
@@ -24,7 +24,7 @@ protected override void Dispose(bool disposed)
 }
 ```
 
-### Not calling base.BeginMiddlewareChange
+## Not calling base.BeginMiddlewareChange
 **Problem:** In more advanced scenarios, you have called `IStore.BeginInternalMiddlewareChange` without
 disposing the result.
 
@@ -39,13 +39,13 @@ using (Store.BeginMiddlewareChange())
 }
 ```
 
-### Not calling Dispose on IActionSubscriber.GetActionUnsubscriberAsIDisposable
+## Not calling Dispose on IActionSubscriber.GetActionUnsubscriberAsIDisposable
 **Problem:** You have called `IActionSubscriber.GetActionUnsubscriberAsIDisposable()` and
 not called `Dispose()` on the result.
 
 **Fix:** You must call `Dispose`
 
 
-### Mismatch Between Async/Sync Initialization methods
+## Mismatch Between Async/Sync Initialization methods
 
 If you use `OnInitializedAsync` you should call `base.OnInitializedAsync()` and not the `base.OnInitialized()`.
