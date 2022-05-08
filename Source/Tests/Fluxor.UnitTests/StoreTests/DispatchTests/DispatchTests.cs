@@ -2,7 +2,6 @@
 using Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles;
 using Moq;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests.DispatchTests

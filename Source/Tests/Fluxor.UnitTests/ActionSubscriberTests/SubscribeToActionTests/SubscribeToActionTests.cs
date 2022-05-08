@@ -1,4 +1,5 @@
 ﻿using Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests.SupportFiles;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
 
@@ -6,13 +7,20 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 {
 	public class SubscribeToActionTests
 	{
-		private Dispatcher Dispatcher;
-		private Store Subject;
+		private IDispatcher Dispatcher;
+		private IStore Subject;
+		private IState<State> State;
 
 		public SubscribeToActionTests()
 		{
-			Dispatcher = new Dispatcher();
-			Subject = new Store(Dispatcher);
+			var services = new ServiceCollection();
+			services.AddFluxor(x => x
+				.ScanAssemblies(GetType().Assembly)
+				.AddMiddleware<IsolatedTests>());
+			var serviceProvider = services.BuildServiceProvider();
+			Dispatcher = serviceProvider.GetRequiredService<IDispatcher>();
+			Subject = serviceProvider.GetRequiredService<IStore>();
+			State = serviceProvider.GetRequiredService<IState<State>>();
 			Subject.InitializeAsync().Wait();
 		}
 
@@ -97,6 +105,24 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 			Assert.Same(dispatchedDescendantAction, receivedDescendantAction);
 		}
 
+		[Fact]
+		public void WhenActionIsDispatched_ThenUpdatesStateBeforeNotifyingSubscribers()
+		{
+			var subscriber = new object();
+			var dispatchedAction = new TestAction();
+			TestAction actionReceivedBySubscriber = null;
+			State stateWhenSubscriberWasNotified = null;
+
+			Subject.SubscribeToAction<TestAction>(subscriber, x =>
+			{
+				actionReceivedBySubscriber = x;
+				stateWhenSubscriberWasNotified = State.Value;
+			});
+			Dispatcher.Dispatch(dispatchedAction);
+
+			Assert.Same(dispatchedAction, actionReceivedBySubscriber);
+			Assert.Equal(1, stateWhenSubscriberWasNotified.DispatchCount);
+		}
 
 		[Fact]
 		public void WhenActionIsDispatched_ThenNotifiesMultipleSubscribers()

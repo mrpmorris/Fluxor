@@ -284,12 +284,12 @@ namespace Fluxor
 					if (Middlewares.All(x => x.MayDispatchAction(nextActionToProcess)))
 					{
 						ExecuteMiddlewareBeforeDispatch(nextActionToProcess);
-						ActionSubscriber?.Notify(nextActionToProcess);
 
 						// Notify all features of this action
 						foreach (var featureInstance in FeaturesByName.Values)
 							featureInstance.ReceiveDispatchNotificationFromStore(nextActionToProcess);
 
+						ActionSubscriber?.Notify(nextActionToProcess);
 						ExecuteMiddlewareAfterDispatch(nextActionToProcess);
 						TriggerEffects(nextActionToProcess);
 					}
