@@ -29,7 +29,7 @@ services.AddFluxor(o =>
         o.ScanAssemblies(typeof(SomeType).Assembly);
 #if DEBUG
         o.UseReduxDevTools();
-#ENDIF
+#endif
     });
 ```
 
