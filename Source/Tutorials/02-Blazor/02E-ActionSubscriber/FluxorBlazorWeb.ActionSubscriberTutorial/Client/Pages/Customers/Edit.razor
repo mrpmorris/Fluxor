@@ -1,0 +1,40 @@
+﻿@page "/customer/edit/{CustomerId:int}"
+@inherits FluxorComponent
+@using FluxorBlazorWeb.ActionSubscriberTutorial.Client.Store
+@using FluxorBlazorWeb.ActionSubscriberTutorial.Client.Store.CustomerUseCases.EditUseCases
+@using CustomerContracts = FluxorBlazorWeb.ActionSubscriberTutorial.Contracts.Customers
+
+<h3>Edit customer</h3>
+@if (State.Value.IsLoading || State.Value.IsSaving)
+{
+    if (State.Value.IsLoading)
+    {
+        <h4>Loading...</h4>
+    }
+    else
+    {
+        <h4>Saving customer: @EditCustomerDto?.Id @EditCustomerDto?.Name</h4>
+    }
+}
+else
+{
+    <EditForm Model=@EditCustomerDto>
+        <DataAnnotationsValidator/>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <InputText @bind-Value=EditCustomerDto!.Name class="form-control" id="name"/>
+        </div>
+        <div class="form-group">
+            <label for="email-address">Email address</label>
+            <InputText @bind-Value=EditCustomerDto!.EmailAddress class="form-control" id="email-address"/>
+        </div>
+        <div class="form-group">
+            <label for="notes">Notes</label>
+            <InputTextArea @bind-Value=EditCustomerDto!.Notes class="form-control" id="notes"/>
+        </div>
+        <button type="button" class="btn btn-primary" @onclick=Save>Save</button>
+        <a href="/customers/search" type="button" class="btn btn-secondary">Cancel</a>
+    </EditForm>
+}
+
+

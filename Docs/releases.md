@@ -1,11 +1,20 @@
 # Releases
 
+## New in 5.4
+ * ActionSubscribers are now notified after state has been reduced ([#299](https://github.com/mrpmorris/Fluxor/issues/299))
+ * Routing middleware will no longer dispatch a GoAction when URl is the same value but formatted differently ([#297](https://github.com/mrpmorris/Fluxor/issues/297))
+
+## New in 5.3
+ * New method EnableStackTrace on ReduxDevToolsMiddlewareOptions to enable passing stack trace to the browser plugin ([#262](https://github.com/mrpmorris/Fluxor/issues/262))
+ * ActionSubscriber demo
+ * Add LifeCycle to FluxorOptions and use in registration ([#287](https://github.com/mrpmorris/Fluxor/issues/287))
+
 ## New in 5.2
  * Added Stack Trace option for Redux Dev Tools ([#262](https://github.com/mrpmorris/Fluxor/issues/262))
 
 ## New in 5.1
  * Fixed `IStateSelection<TState, TValue>` bug that threw exception stating the selector has
-    already been set.  ([#252](https://github.com/mrpmorris/Fluxor/issues/252))
+    already been set. ([#252](https://github.com/mrpmorris/Fluxor/issues/252))
  * Added an optional `Action<TValue> selectedValueChanged` to `IStateSelection<TState, TValue>.Select`
     that is executed whenever the selected value changes. This is a convenient alternative to hooking up event handlers.
  * Added `event EventHandler<TValue> SelectedValueChanged` to `IStateSelection<TState, TValue>` for strongly
