@@ -16,9 +16,9 @@ To enable Fluxor integration, follow these steps
     to your project. Make sure you make it conditional on `DEBUG` mode.
 
 ```
-<ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools" Version="....." />
-</ItemGroup>
+ <ItemGroup Condition="$(Configuration)=='Debug'">
+    <PackageReference Include="Fluxor.Blazor.Web.ReduxDevTools" Version="...." />
+  </ItemGroup>
 ```
 
  2. Use the `UseReduxDevTools` extension on the Fluxor options.
