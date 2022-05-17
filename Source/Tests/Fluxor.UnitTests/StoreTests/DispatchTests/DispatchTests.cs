@@ -2,6 +2,7 @@
 using Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles;
 using Moq;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests.DispatchTests
@@ -139,6 +140,22 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 
 			mockSynchronousEffectThatThrows.Verify(x => x.HandleAsync(action, Dispatcher));
 			mockEffectThatFollows.Verify(x => x.HandleAsync(action, Dispatcher));
+		}
+
+		[Fact]
+		public void WhenNoSubscriberIsAttachedToTheDispatcher_ThenActionsAreStoredUntilOneSubscribes()
+		{
+			var dispatcher = new Dispatcher();
+			dispatcher.Dispatch(0);
+			dispatcher.Dispatch(1);
+			dispatcher.Dispatch(2);
+
+			var receivedActions = new List<int>();
+			dispatcher.ActionDispatched += (_, args) => receivedActions.Add((int)args.Action);
+			Assert.Equal(3, receivedActions.Count);
+			Assert.Equal(0, receivedActions[0]);
+			Assert.Equal(1, receivedActions[1]);
+			Assert.Equal(2, receivedActions[2]);
 		}
 
 		public DispatchTests()
