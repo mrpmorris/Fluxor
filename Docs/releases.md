@@ -4,7 +4,7 @@
  * ActionSubscribers are now notified after state has been reduced ([#299](https://github.com/mrpmorris/Fluxor/issues/299))
  * Routing middleware will no longer dispatch a GoAction when URl is the same value but formatted differently ([#297](https://github.com/mrpmorris/Fluxor/issues/297))
  * `IDispatcher` now queues actions whenever there are no subscribers to the `ActionDispatched` event and then
-   dequeues them when a subscriber is added.
+   dequeues them when a subscriber is added ([#301](https://github.com/mrpmorris/Fluxor/issues/301))
 
 ## New in 5.3
  * New method EnableStackTrace on ReduxDevToolsMiddlewareOptions to enable passing stack trace to the browser plugin ([#262](https://github.com/mrpmorris/Fluxor/issues/262))
