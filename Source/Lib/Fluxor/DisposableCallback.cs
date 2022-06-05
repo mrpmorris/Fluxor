@@ -13,6 +13,8 @@ namespace Fluxor
 		private readonly Action Action;
 		private bool Disposed;
 		private readonly bool WasCreated;
+		private readonly string CallerFilePath;
+		private readonly int CallerLineNumber;
 
 		/// <summary>
 		/// Creates an instance of the class
@@ -22,7 +24,10 @@ namespace Fluxor
 		///		for helping to identify the source that created the instance that threw the exception.
 		/// </param>
 		/// <param name="action">The action to execute when the instance is disposed</param>
-		public DisposableCallback(string id, Action action)
+		public DisposableCallback(string id, Action action,
+			[System.Runtime.CompilerServices.CallerFilePath] string callerFilePath = "",
+			[System.Runtime.CompilerServices.CallerLineNumber] int callerLineNumber = 0
+			)
 		{
 			if (string.IsNullOrWhiteSpace(id))
 				throw new ArgumentNullException(nameof(id));
@@ -32,6 +37,8 @@ namespace Fluxor
 			Id = id;
 			Action = action;
 			WasCreated = true;
+			CallerFilePath = callerFilePath;
+			CallerLineNumber = callerLineNumber;
 		}
 
 		/// <summary>
@@ -42,11 +49,18 @@ namespace Fluxor
 			if (Disposed)
 				throw new ObjectDisposedException(
 					nameof(DisposableCallback),
-					$"Attempt to call {nameof(Dispose)} twice on {nameof(DisposableCallback)} with Id \"{Id}\".");
+					$"Attempt to call {nameof(Dispose)} twice on {nameof(DisposableCallback)} with Id {GetIdInfo()}.");
 
 			Disposed = true;
 			GC.SuppressFinalize(this);
 			Action();
+		}
+
+		private string GetIdInfo()
+		{
+			string result = $"\"{Id}\"";
+			result += $" (created in \"{CallerFilePath}\" on line {CallerLineNumber})";
+			return result;
 		}
 
 		/// <summary>
@@ -56,8 +70,12 @@ namespace Fluxor
 		~DisposableCallback()
 		{
 			if (!Disposed && WasCreated)
-				throw new InvalidOperationException($"{nameof(DisposableCallback)} with Id \"{Id}\" was not disposed. " +
-					$"See https://github.com/mrpmorris/Fluxor/tree/master/Docs/disposable-callback-not-disposed.md for more details");
+			{
+				string message = $"{nameof(DisposableCallback)} with Id \"{GetIdInfo()}\" was not disposed";
+				throw new InvalidOperationException(
+					$"{message}. See https://github.com/mrpmorris/Fluxor/tree/master/Docs/disposable-callback-not-disposed.md" +
+					$" for more details");
+			}
 		}
 	}
 }
