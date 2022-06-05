@@ -6,8 +6,7 @@
 [![Join the chat at https://gitter.im/mrpmorris/fluxor](https://badges.gitter.im/mrpmorris/fluxor.svg)](https://gitter.im/mrpmorris/fluxor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Introduction
-If you are new to Fluxor, or to the Flux/Redux approach in general then [this YouTube video by Nick Chapsas](https://www.youtube.com/watch?v=k_c-ErPaYa8) is an excellent introduction.
-The video is based on the original [Blazor-Fluxor](https://github.com/mrpmorris/blazor-fluxor) library, but the concepts are the same.
+If you are new to Fluxor, or to the Flux/Redux approach in general then [this YouTube video by Chris Clement](https://www.youtube.com/watch?v=sAyH-O0dFaI) is an excellent introduction.
 
 ## Goal
 The aim of Fluxor is to create a multi-UI, single-state store approach to front-end development without the headaches typically associated with other implementations, such as the overwhelming amount of boiler-plate code required just to add a very basic feature.
@@ -15,8 +14,6 @@ The aim of Fluxor is to create a multi-UI, single-state store approach to front-
 ## Getting started
 The easiest way to get started is to read the [documentation](./Docs/README.md).
 Which includes tutorials that are numbered in an order recommended for learning Fluxor. Each will have a `README` file that explains how the tutorial was created.
-
-There is also [this great introductory video](https://www.youtube.com/watch?v=sAyH-O0dFaI) by [Chris Clement](https://twitter.com/christo_ment) 
 
 ## Installation
 You can download the latest release / pre-release NuGet packages from the official Fluxor nuget pages.
