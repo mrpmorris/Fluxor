@@ -10,7 +10,7 @@ namespace Fluxor
 	/// </summary>
 	public class Dispatcher : IDispatcher
 	{
-		private SpinLock SpinLock = new();
+		private readonly object SyncRoot = new();
 		private readonly Queue<object> QueuedActions = new Queue<object>();
 		private EventHandler<ActionDispatchedEventArgs> _ActionDispatched;
 
@@ -19,16 +19,19 @@ namespace Fluxor
 		{
 			add
 			{
-				SpinLock.ExecuteLocked(() =>
+				lock (SyncRoot)
 				{
 					_ActionDispatched += value;
 					if (QueuedActions.Count > 0)
 						DequeueActions();
-				});
+				}
 			}
 			remove
 			{
-				SpinLock.ExecuteLocked(() => _ActionDispatched -= value);
+				lock (SyncRoot)
+				{
+					_ActionDispatched -= value;
+				}
 			}
 		}
 
@@ -38,13 +41,13 @@ namespace Fluxor
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
-			SpinLock.ExecuteLocked(() =>
+			lock (SyncRoot)
 			{
 				if (_ActionDispatched is not null)
 					_ActionDispatched(this, new ActionDispatchedEventArgs(action));
 				else
 					QueuedActions.Enqueue(action);
-			});
+			}
 		}
 
 		private void DequeueActions()

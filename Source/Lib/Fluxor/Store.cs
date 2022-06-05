@@ -273,6 +273,7 @@ namespace Fluxor
 			if (IsDispatching)
 				return;
 
+			var dispatchedActions = new List<object>();
 			IsDispatching = true;
 			try
 			{
@@ -291,7 +292,7 @@ namespace Fluxor
 
 						ActionSubscriber?.Notify(nextActionToProcess);
 						ExecuteMiddlewareAfterDispatch(nextActionToProcess);
-						TriggerEffects(nextActionToProcess);
+						dispatchedActions.Add(nextActionToProcess);
 					}
 				}
 			}
@@ -299,6 +300,8 @@ namespace Fluxor
 			{
 				IsDispatching = false;
 			}
+			foreach(var dispatchedAction in dispatchedActions)
+				TriggerEffects(dispatchedAction);
 		}
 	}
 }
