@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureClassDescendantsTests\" />
+    <Folder Include="ExtensionsTests\SpinLockExtensionsTests\" />
   </ItemGroup>
 
   <ItemGroup>
