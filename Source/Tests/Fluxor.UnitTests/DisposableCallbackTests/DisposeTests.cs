@@ -20,13 +20,17 @@ namespace Fluxor.UnitTests.DisposableCallbackTests
 		}
 
 		[Fact]
-		public void WhenCalledTwice_ThenThrowsObjectDisposedException()
+		public void WhenCalledTwice_ThenThrowsObjectDisposedExceptionWithCallerInformation()
 		{
 			var subject = new DisposableCallback(
-				$"{nameof(DisposeTests)}.{nameof(WhenCalledTwice_ThenThrowsObjectDisposedException)}",
+				$"{nameof(DisposeTests)}.{nameof(WhenCalledTwice_ThenThrowsObjectDisposedExceptionWithCallerInformation)}",
 				() => { });
 			subject.Dispose();
-			Assert.Throws<ObjectDisposedException>(() => subject.Dispose());
+			var exception = Assert.Throws<ObjectDisposedException>(() => subject.Dispose());
+
+			Assert.Contains(
+				@"Fluxor.UnitTests\DisposableCallbackTests\DisposeTests.cs"" on line ",
+				exception.Message);
 		}
 	}
 }
