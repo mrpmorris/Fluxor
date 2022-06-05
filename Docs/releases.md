@@ -2,6 +2,7 @@
 
 ## New in 5.5
  * `SpinLockExtensions.ExecuteLocked` was not locking ([#318](https://github.com/mrpmorris/Fluxor/issues/318))
+ * `DisposableCallback` includes Caller info when throwing an exception ([#320](https://github.com/mrpmorris/Fluxor/issues/320))
 
 ## New in 5.4
  * ActionSubscribers are now notified after state has been reduced ([#299](https://github.com/mrpmorris/Fluxor/issues/299))
