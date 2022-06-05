@@ -6,7 +6,7 @@ namespace Fluxor.Extensions
 {
 	public static class SpinLockExtensions
 	{
-		public static void ExecuteLocked(this SpinLock spinLock, Action callback)
+		public static void ExecuteLocked(this ref SpinLock spinLock, Action callback)
 		{
 			if (callback is null)
 				throw new ArgumentNullException(nameof(callback));
