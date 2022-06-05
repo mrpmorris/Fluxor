@@ -1,5 +1,8 @@
 # Releases
 
+## New in 5.5
+ * `SpinLockExtensions.ExecuteLocked` was not locking ([#318](https://github.com/mrpmorris/Fluxor/issues/318))
+
 ## New in 5.4
  * ActionSubscribers are now notified after state has been reduced ([#299](https://github.com/mrpmorris/Fluxor/issues/299))
  * Routing middleware will no longer dispatch a GoAction when URl is the same value but formatted differently ([#297](https://github.com/mrpmorris/Fluxor/issues/297))
