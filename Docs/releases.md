@@ -1,7 +1,6 @@
 # Releases
 
 ## New in 5.5
- * `SpinLockExtensions.ExecuteLocked` was not locking ([#318](https://github.com/mrpmorris/Fluxor/issues/318))
  * `DisposableCallback` includes Caller info when throwing an exception ([#320](https://github.com/mrpmorris/Fluxor/issues/320))
 
 ## New in 5.4
