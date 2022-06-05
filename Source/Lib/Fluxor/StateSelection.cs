@@ -12,12 +12,12 @@ namespace Fluxor
 	public class StateSelection<TState, TValue> : IStateSelection<TState, TValue>
 	{
 		private readonly IFeature<TState> Feature;
+		private readonly object SyncRoot = new();
 		private bool HasSetSelector;
 		private TValue PreviousValue;
 		private Func<TState, TValue> Selector;
 		private Action<TValue> SelectedValueChangedAction;
 		private Func<TValue, TValue, bool> ValueEquals;
-		private SpinLock SpinLock = new();
 		private bool ShouldBeSubscribedToFeature =>
 			_selectedValueChanged is not null
 			|| _stateChanged is not null
@@ -50,7 +50,7 @@ namespace Fluxor
 			if (selector is null)
 				throw new ArgumentNullException(nameof(selector));
 
-			SpinLock.ExecuteLocked(() =>
+			lock (SyncRoot)
 			{
 				if (HasSetSelector)
 					throw new InvalidOperationException("Selector has already been set");
@@ -65,7 +65,7 @@ namespace Fluxor
 
 				if (!wasSubscribedToFeature && ShouldBeSubscribedToFeature)
 					Feature.StateChanged += FeatureStateChanged;
-			});
+			}
 		}
 
 		private EventHandler<TValue> _selectedValueChanged;
@@ -74,22 +74,22 @@ namespace Fluxor
 		{
 			add
 			{
-				SpinLock.ExecuteLocked(() =>
+				lock (SyncRoot)
 				{
 					bool wasSubscribedToFeature = ShouldBeSubscribedToFeature;
 					_selectedValueChanged += value;
 					if (!wasSubscribedToFeature)
 						Feature.StateChanged += FeatureStateChanged;
-				});
+				}
 			}
 			remove
 			{
-				SpinLock.ExecuteLocked(() =>
+				lock (SyncRoot)
 				{
 					_selectedValueChanged -= value;
 					if (!ShouldBeSubscribedToFeature)
 						Feature.StateChanged -= FeatureStateChanged;
-				});
+				}
 			}
 		}
 
@@ -99,22 +99,22 @@ namespace Fluxor
 		{
 			add
 			{
-				SpinLock.ExecuteLocked(() =>
+				lock (SyncRoot)
 				{
 					bool wasSubscribedToFeature = ShouldBeSubscribedToFeature;
 					_stateChanged += value;
 					if (!wasSubscribedToFeature)
 						Feature.StateChanged += FeatureStateChanged;
-				});
+				}
 			}
 			remove
 			{
-				SpinLock.ExecuteLocked(() =>
+				lock (SyncRoot)
 				{
 					_stateChanged -= value;
 					if (!ShouldBeSubscribedToFeature)
 						Feature.StateChanged -= FeatureStateChanged;
-				});
+				}
 			}
 		}
 

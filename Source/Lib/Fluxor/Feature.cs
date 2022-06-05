@@ -36,8 +36,8 @@ namespace Fluxor
 		/// </summary>
 		protected readonly List<IReducer<TState>> Reducers = new();
 
+		private readonly object SyncRoot = new();
 		private bool HasInitialState;
-		private SpinLock SpinLock = new();
 		private readonly ThrottledInvoker TriggerStateChangedCallbacksThrottler;
 
 		/// <summary>
@@ -48,17 +48,23 @@ namespace Fluxor
 			TriggerStateChangedCallbacksThrottler = new(TriggerStateChangedCallbacks);
 		}
 
-		private EventHandler _stateChanged;
+		private EventHandler _StateChanged;
 		public event EventHandler StateChanged
 		{
 			add
 			{
-				SpinLock.ExecuteLocked(() => _stateChanged += value );
+				lock (SyncRoot)
+				{
+					_StateChanged += value;
+				}
 			}
 
 			remove
 			{
-				SpinLock.ExecuteLocked(() => _stateChanged -= value);
+				lock (SyncRoot)
+				{
+					_StateChanged -= value;
+				}
 			}
 		}
 
@@ -70,18 +76,22 @@ namespace Fluxor
 			{
 				if (HasInitialState)
 					return _State;
-				SpinLock.ExecuteLocked(() =>
+				if (!HasInitialState)
 				{
-					if (!HasInitialState)
+					lock (SyncRoot)
 					{
-						_State = (TState)GetInitialState();
-						HasInitialState = true;
+						if (!HasInitialState)
+						{
+							_State = (TState)GetInitialState();
+							HasInitialState = true;
+						}
 					}
-				});
+				}
 				return _State;
 			}
-			protected set =>
-				SpinLock.ExecuteLocked(() =>
+			protected set
+			{
+				lock (SyncRoot)
 				{
 					bool stateHasChanged = !Object.ReferenceEquals(_State, value);
 					if (stateHasChanged)
@@ -89,7 +99,8 @@ namespace Fluxor
 						_State = value;
 						TriggerStateChangedCallbacksThrottler.Invoke(MaximumStateChangedNotificationsPerSecond);
 					}
-				});
+				}
+			}
 		}
 
 		/// <see cref="IFeature{TState}.AddReducer(IReducer{TState})"/>
@@ -117,7 +128,7 @@ namespace Fluxor
 
 		private void TriggerStateChangedCallbacks()
 		{
-			_stateChanged?.Invoke(this, EventArgs.Empty);
+			_StateChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

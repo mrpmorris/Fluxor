@@ -14,8 +14,8 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 	/// </summary>
 	internal sealed class ReduxDevToolsMiddleware : WebMiddleware
 	{
+		private readonly object SyncRoot = new();
 		private Task TailTask = Task.CompletedTask;
-		private SpinLock SpinLock = new SpinLock();
 		private int SequenceNumberOfCurrentState = 0;
 		private int SequenceNumberOfLatestState = 0;
 		private readonly ReduxDevToolsMiddlewareOptions Options;
@@ -65,12 +65,12 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 							.Select(x => $"at {x.GetMethod().DeclaringType.FullName}.{x.GetMethod().Name} ({x.GetFileName()}:{x.GetFileLineNumber()}:{x.GetFileColumnNumber()})")
 							.Where(x => Options.StackTraceFilterRegex?.IsMatch(x) != false)
 							.Take(maxItems));
-			SpinLock.ExecuteLocked(() =>
-				{
-					IDictionary<string, object> state = GetState();
-					TailTask = TailTask
-						.ContinueWith(_ => ReduxDevToolsInterop.DispatchAsync(action, state, stackTrace)).Unwrap();
-				});
+			lock (SyncRoot)
+			{
+				IDictionary<string, object> state = GetState();
+				TailTask = TailTask
+					.ContinueWith(_ => ReduxDevToolsInterop.DispatchAsync(action, state, stackTrace)).Unwrap();
+			}
 
 			// As actions can only be executed if not in a historical state (yes, "a" historical, pronounce your H!)
 			// ensure the latest is incremented, and the current = latest

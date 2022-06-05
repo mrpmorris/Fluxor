@@ -8,9 +8,9 @@ namespace Fluxor
 {
 	internal class ActionSubscriber : IActionSubscriber
 	{
+		private readonly object SyncRoot = new();
 		private readonly Dictionary<object, List<ActionSubscription>> SubscriptionsForInstance = new();
 		private readonly Dictionary<Type, List<ActionSubscription>> SubscriptionsForType = new();
-		private SpinLock SpinLock = new();
 
 
 		public IDisposable GetActionUnsubscriberAsIDisposable(object subscriber) =>
@@ -23,7 +23,7 @@ namespace Fluxor
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
-			SpinLock.ExecuteLocked(() =>
+			lock(SyncRoot)
 			{
 				IEnumerable<Action<object>> callbacks =
 					SubscriptionsForType
@@ -33,7 +33,7 @@ namespace Fluxor
 						.ToArray();
 				foreach (Action<object> callback in callbacks)
 					callback(action);
-			});
+			}
 		}
 
 		public void SubscribeToAction<TAction>(object subscriber, Action<TAction> callback)
@@ -48,7 +48,7 @@ namespace Fluxor
 				actionType: typeof(TAction),
 				callback: (object action) => callback((TAction)action));
 
-			SpinLock.ExecuteLocked(() =>
+			lock(SyncRoot)
 			{
 				if (!SubscriptionsForInstance.TryGetValue(subscriber, out List<ActionSubscription> instanceSubscriptions))
 				{
@@ -63,7 +63,7 @@ namespace Fluxor
 					SubscriptionsForType[typeof(TAction)] = typeSubscriptions;
 				}
 				typeSubscriptions.Add(subscription);
-			});
+			};
 		}
 
 		public void UnsubscribeFromAllActions(object subscriber)
@@ -72,7 +72,7 @@ namespace Fluxor
 				throw new ArgumentNullException(nameof(subscriber));
 
 			List<ActionSubscription> instanceSubscriptions;
-			SpinLock.ExecuteLocked(() =>
+			lock(SyncRoot)
 			{
 				if (!SubscriptionsForInstance.TryGetValue(subscriber, out instanceSubscriptions))
 					return;
@@ -91,7 +91,7 @@ namespace Fluxor
 						.Except(instanceSubscriptions)
 						.ToList();
 				}
-			});
+			}
 		}
 	}
 }
