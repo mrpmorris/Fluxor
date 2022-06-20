@@ -1,6 +1,7 @@
 ﻿using Fluxor.UnsupportedClasses;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.Components
 {
@@ -8,7 +9,7 @@ namespace Fluxor.Blazor.Web.Components
 	/// A layout that auto-subscribes to state changes on all <see cref="IStateChangedNotifier"/> properties
 	/// and ensures <see cref="LayoutComponentBase.StateHasChanged"/> is called
 	/// </summary>
-	public abstract class FluxorLayout : LayoutComponentBase, IDisposable
+	public abstract class FluxorLayout : LayoutComponentBase, IDisposable, IAsyncDisposable
 	{
 		[Inject]
 		private IActionSubscriber ActionSubscriber { get; set; }
@@ -62,6 +63,18 @@ namespace Fluxor.Blazor.Web.Components
 				Disposed = true;
 			}
 		}
+		/// <summary>
+		/// Disposes of the component and unsubscribes from any state
+		/// </summary>
+		public async ValueTask DisposeAsync()
+		{
+			if (!Disposed)
+			{
+				await DisposeAsync(true);
+				GC.SuppressFinalize(this);
+				Disposed = true;
+			}
+		}
 
 		/// <summary>
 		/// Subscribes to state properties
@@ -75,7 +88,7 @@ namespace Fluxor.Blazor.Web.Components
 			});
 		}
 
-		protected virtual void Dispose(bool disposing)
+		private void InternalDispose(bool disposing)
 		{
 			if (disposing)
 			{
@@ -85,6 +98,15 @@ namespace Fluxor.Blazor.Web.Components
 				StateSubscription.Dispose();
 				ActionSubscriber?.UnsubscribeFromAllActions(this);
 			}
+		}
+		protected virtual void Dispose(bool disposing)
+		{
+			InternalDispose(disposing);
+		}
+		protected virtual ValueTask DisposeAsync(bool disposing)
+		{
+			InternalDispose(disposing);
+			return default;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Fluxor.Blazor.Web.UnitTests.SupportFiles;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests
@@ -15,6 +16,16 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests
 		{
 			StateSubject.ExecuteOnInitialized();
 			StateSubject.Dispose();
+
+			Assert.Equal(1, MockState1.UnsubscribeCount);
+			Assert.Equal(1, MockState2.UnsubscribeCount);
+		}
+
+		[Fact]
+		public async Task WhenDisposedAsync_ThenUnsubscribesFromStateProperties()
+		{
+			StateSubject.ExecuteOnInitialized();
+			await StateSubject.DisposeAsync();
 
 			Assert.Equal(1, MockState1.UnsubscribeCount);
 			Assert.Equal(1, MockState2.UnsubscribeCount);
@@ -38,6 +49,23 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests
 		}
 
 		[Fact]
+		public async Task WhenDisposingAsyncAndBaseOnInitializedWasNotCalled_ThenThrowsNullReferenceException()
+		{
+			string errorMessage = null;
+			var component = new FluxorComponentThatOptionallyCallsBaseOnInitialized();
+			try
+			{
+				component.Test_OnInitialized();
+				await component.DisposeAsync();
+			}
+			catch (NullReferenceException e)
+			{
+				errorMessage = e.Message;
+			}
+			Assert.Equal("Have you forgotten to call base.OnInitialized() in your component?", errorMessage);
+		}
+
+		[Fact]
 		public void WhenBaseOnInitializedWasCalled_ThenDoesNotThrowAnException()
 		{
 			var component = new FluxorComponentThatOptionallyCallsBaseOnInitialized
@@ -46,6 +74,16 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests
 			};
 			component.Test_OnInitialized();
 			component.Dispose();
+		}
+
+		[Fact]
+		public async Task WhenDisposingAsyncAndBaseOnInitializedWasCalled_ThenDoesNotThrowAnException()
+		{
+			var component = new FluxorComponentThatOptionallyCallsBaseOnInitialized {
+				CallBaseOnInitialized = true
+			};
+			component.Test_OnInitialized();
+			await component.DisposeAsync();
 		}
 
 		public DisposeTests()
