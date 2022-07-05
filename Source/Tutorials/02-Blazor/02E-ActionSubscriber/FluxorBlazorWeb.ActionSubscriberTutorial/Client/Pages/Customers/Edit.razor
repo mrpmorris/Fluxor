@@ -5,18 +5,18 @@
 @using CustomerContracts = FluxorBlazorWeb.ActionSubscriberTutorial.Contracts.Customers
 
 <h3>Edit customer</h3>
-@if (EditCustomerDto is null)
+@if (State.Value.IsLoading || State.Value.IsSaving || EditCustomerDto is null)
 {
     if (State.Value.IsLoading)
     {
         <h4>Loading...</h4>
     }
-    if (State.Value.IsSaving)
+    else
     {
         <h4>Saving customer: @EditCustomerDto?.Id @EditCustomerDto?.Name</h4>
     }
 }
-@if (EditCustomerDto is not null)
+else
 {
     <EditForm Model=@EditCustomerDto>
         <DataAnnotationsValidator/>
