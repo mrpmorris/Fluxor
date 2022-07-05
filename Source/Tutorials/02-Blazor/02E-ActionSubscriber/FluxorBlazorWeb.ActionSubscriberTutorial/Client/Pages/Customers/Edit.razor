@@ -16,7 +16,7 @@
         <h4>Saving customer: @EditCustomerDto?.Id @EditCustomerDto?.Name</h4>
     }
 }
-@if (EditCustomerDto is not null)
+else
 {
     <EditForm Model=@EditCustomerDto>
         <DataAnnotationsValidator/>
