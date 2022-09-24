@@ -87,6 +87,7 @@ namespace Fluxor
 					if (stateHasChanged)
 					{
 						_State = value;
+						HasInitialState = true;
 						TriggerStateChangedCallbacksThrottler.Invoke(MaximumStateChangedNotificationsPerSecond);
 					}
 				});
