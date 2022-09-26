@@ -1,31 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
+using Fluxor.UnitTests.FeatureTests.SupportFiles;
 
 namespace Fluxor.UnitTests.FeatureTests
 {
-	public class FeatureTests
+	public partial class FeatureTests
 	{
-		private class TestState
-		{
-			public int SomeValue { get; }
-
-			public TestState(int someValue)
-			{
-				SomeValue = someValue;
-			}
-		}
-		
-
-		private class SomeFeature : Feature<TestState>
-		{
-			public override string GetName() => "SomeName";
-
-			protected override TestState GetInitialState() => new TestState(1);
-		}
 
 		[Fact]
 		public void WhenFeatureRestoredStateIsCalledBeforeGettingFeatureState_StateReturnsRestoredState()

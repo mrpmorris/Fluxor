@@ -2,6 +2,7 @@
 
 ## New in 5.5
  * `DisposableCallback` includes Caller info when throwing an exception ([#320](https://github.com/mrpmorris/Fluxor/issues/320))
+ * Ensured initialising the store does not overwrite manually set state ([#347](https://github.com/mrpmorris/Fluxor/issues/347))
 
 ## New in 5.4
  * ActionSubscribers are now notified after state has been reduced ([#299](https://github.com/mrpmorris/Fluxor/issues/299))
