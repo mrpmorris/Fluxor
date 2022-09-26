@@ -5,7 +5,7 @@
 @using CustomerContracts = FluxorBlazorWeb.ActionSubscriberTutorial.Contracts.Customers
 
 <h3>Edit customer</h3>
-@if (State.Value.IsLoading || State.Value.IsSaving)
+@if (State.Value.IsLoading || State.Value.IsSaving || EditCustomerDto is null)
 {
     if (State.Value.IsLoading)
     {
