@@ -24,8 +24,6 @@
 		<SignAssembly>true</SignAssembly>
 		<DelaySign>false</DelaySign>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-
-
 	</PropertyGroup>
 
 	<PropertyGroup>
