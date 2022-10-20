@@ -14,13 +14,18 @@
 
 		<PackageProjectUrl>https://github.com/mrpmorris/Fluxor</PackageProjectUrl>
 		<PackageIconUrl />
-		<RepositoryUrl>https://github.com/mrpmorris/Fluxor</RepositoryUrl>
-		<RepositoryType>git</RepositoryType>
+
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<DebugType>embedded</DebugType>
+		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
 
 		<AssemblyOriginatorKeyFile>..\..\..\..\..\MrPMorris.snk</AssemblyOriginatorKeyFile>
 		<SignAssembly>true</SignAssembly>
 		<DelaySign>false</DelaySign>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -30,6 +35,10 @@
 
 	<ItemGroup>
 		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
 	</ItemGroup>
 
 </Project>
