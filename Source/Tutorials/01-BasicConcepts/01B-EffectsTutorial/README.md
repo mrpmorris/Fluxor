@@ -309,8 +309,8 @@ our mock server.
 action into state.
 
 ```c#
-[ReducerMethod(typeof(FetchDataResultAction))]
-public static WeatherState ReduceFetchDataResultAction(WeatherState state) =>
+[ReducerMethod]
+public static WeatherState ReduceFetchDataResultAction(FetchDataResultAction action, WeatherState state) =>
   new WeatherState(
     isLoading: false,
     forecasts: action.Forecasts);
