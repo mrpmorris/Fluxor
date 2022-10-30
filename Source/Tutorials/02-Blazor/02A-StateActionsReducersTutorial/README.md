@@ -2,7 +2,7 @@
 
 ## State, Actions, and Reducers
 
-First read the [Basic-concepts - State, Actions, and Reducers](../../01-BasicConcepts/01A-StateActionsReducersTutorial/README.md) section for a user-interface-agnostic
+First read the [Basic-concepts - State, Actions, and Reducers](../../01-BasicConcepts/01A-StateActionsReducersTutorial/) section for a user-interface-agnostic
 explanation of how these concepts work together. This tutorial will explain how to adjust those concepts
 to work with the Blazor Web user-interface.
 

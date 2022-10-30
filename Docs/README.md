@@ -17,14 +17,14 @@ state combined with the changes expected for the action.
 ## Tutorials
 ### Basic concepts
 
-* [State, actions, and reducers](../Source/Tutorials/01-BasicConcepts/01A-StateActionsReducersTutorial/README.md)
-* [Effects](../Source/Tutorials/01-BasicConcepts/01B-EffectsTutorial/README.md)
-* [Middleware](../Source/Tutorials/01-BasicConcepts/01C-MiddlewareTutorial/README.md)
-* [ActionSubscriber](../Source/Tutorials/01-BasicConcepts/01E-ActionSubscriber/README.md)
+* [State, actions, and reducers](../Source/Tutorials/01-BasicConcepts/01A-StateActionsReducersTutorial/)
+* [Effects](../Source/Tutorials/01-BasicConcepts/01B-EffectsTutorial/)
+* [Middleware](../Source/Tutorials/01-BasicConcepts/01C-MiddlewareTutorial/)
+* [ActionSubscriber](../Source/Tutorials/01-BasicConcepts/01E-ActionSubscriber/)
 
 ### Blazor for web
 
-* [State, actions, and reducers](../Source/Tutorials/02-Blazor/02A-StateActionsReducersTutorial/README.md)
-* [Effects](../Source/Tutorials/02-Blazor/02B-EffectsTutorial/README.md)
-* [Middleware](../Source/Tutorials/02-Blazor/02C-MiddlewareTutorial/README.md)
-* [Redux Dev Tools](../Source/Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/README.md)
+* [State, actions, and reducers](../Source/Tutorials/02-Blazor/02A-StateActionsReducersTutorial/)
+* [Effects](../Source/Tutorials/02-Blazor/02B-EffectsTutorial/)
+* [Middleware](../Source/Tutorials/02-Blazor/02C-MiddlewareTutorial/)
+* [Redux Dev Tools](../Source/Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/)
