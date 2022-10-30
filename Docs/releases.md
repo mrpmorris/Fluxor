@@ -46,7 +46,7 @@
 
 ## New in 4.1
  * Allow custom control over JSON serialisation in Redux Dev Tools - see 
-   [Redux Dev Tools](../Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/README.md) docs.
+   [Redux Dev Tools](../Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/) docs.
 
 
 ## New in 4.0
