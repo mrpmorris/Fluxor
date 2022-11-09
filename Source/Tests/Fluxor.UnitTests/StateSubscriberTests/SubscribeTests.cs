@@ -16,12 +16,13 @@ namespace Fluxor.UnitTests.StateSubscriberTests
 		public void WhenSubscribedToSubject_ThenNotificationsShouldBeReceived()
 		{
 			int invocationCount = 0;
-			_ = StateSubscriber.Subscribe(this, _ => invocationCount++);
-
-			State = "Y";
-			MockFeature.Raise(x => x.StateChanged += null, EventArgs.Empty);
-			State = "Z";
-			MockFeature.Raise(x => x.StateChanged += null, EventArgs.Empty);
+			using (StateSubscriber.Subscribe(this, _ => invocationCount++))
+			{
+				State = "Y";
+				MockFeature.Raise(x => x.StateChanged += null, EventArgs.Empty);
+				State = "Z";
+				MockFeature.Raise(x => x.StateChanged += null, EventArgs.Empty);
+			}
 
 			Assert.Equal(2, invocationCount);
 			Assert.Equal(2, CallbackInvocationCount);
