@@ -12,9 +12,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Condition="'$(TargetFramework)' == 'net7.0'" Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
 		<PackageReference Condition="'$(TargetFramework)' == 'net6.0'" Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
 		<PackageReference Condition="'$(TargetFramework)' == 'net5.0'" Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
-		<PackageReference Condition="'$(TargetFramework)' != 'net6.0' AND '$(TargetFramework)' != 'net5.0'" Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0" />
+		<PackageReference Condition="'$(TargetFramework)' != 'net7.0' AND '$(TargetFramework)' != 'net6.0' AND '$(TargetFramework)' != 'net5.0'" Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>

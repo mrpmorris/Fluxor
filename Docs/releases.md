@@ -1,6 +1,7 @@
 # Releases
 
 ## New in 5.6
+* Support .NET 7
 * Ensure StateSelection unsubscribes proprerly ([#353](https://github.com/mrpmorris/Fluxor/issues/353))
 
 ## New in 5.5
