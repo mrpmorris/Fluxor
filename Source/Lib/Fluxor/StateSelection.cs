@@ -20,8 +20,7 @@ namespace Fluxor
 		private Func<TValue, TValue, bool> ValueEquals;
 		private bool ShouldBeSubscribedToFeature =>
 			_selectedValueChanged is not null
-			|| _stateChanged is not null
-			|| SelectedValueChangedAction is not null;
+			|| _stateChanged is not null;
 
 		/// <summary>
 		/// Creates an instance of the state holder
