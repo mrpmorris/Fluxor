@@ -48,7 +48,10 @@ namespace Fluxor.UnitTests.StateSubscriberTests
 			MockFeature = new Mock<IFeature<string>>();
 			MockFeature.SetupGet(x => x.State).Returns(() => State);
 			Selection = new StateSelection<string, char?>(MockFeature.Object);
-			Selection.Select(x => x[0], valueEquals: null, selectedValueChanged: _ => CallbackInvocationCount++);
+			Selection.Select(
+				selector: x => x[0],
+				valueEquals: null,
+				selectedValueChanged: _ => CallbackInvocationCount++);
 		}
 	}
 }
