@@ -1,5 +1,8 @@
 # Releases
 
+## New in 5.6
+* Ensure StateSelection unsubscribes proprerly ([#353](https://github.com/mrpmorris/Fluxor/issues/353))
+
 ## New in 5.5
  * `DisposableCallback` includes Caller info when throwing an exception ([#320](https://github.com/mrpmorris/Fluxor/issues/320))
  * Ensured initialising the store does not overwrite manually set state ([#347](https://github.com/mrpmorris/Fluxor/issues/347))
