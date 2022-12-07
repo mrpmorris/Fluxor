@@ -77,6 +77,11 @@ namespace Fluxor
 				if (!SubscriptionsForInstance.TryGetValue(subscriber, out instanceSubscriptions))
 					return;
 
+				IEnumerable<object> subscribedInstances =
+				    instanceSubscriptions
+					.Select(x => x.Subscriber)
+					.Distinct();
+					
 				IEnumerable<Type> subscribedActionTypes =
 					instanceSubscriptions
 						.Select(x => x.ActionType)
@@ -90,6 +95,12 @@ namespace Fluxor
 					SubscriptionsForType[actionType] = actionTypeSubscriptions
 						.Except(instanceSubscriptions)
 						.ToList();
+				}
+				
+				foreach (object subscription in subscribedInstances)
+				{
+				    if (SubscriptionsForInstance.ContainsKey(subscription))
+					SubscriptionsForInstance.Remove(subscription);
 				}
 			}
 		}
