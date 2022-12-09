@@ -96,9 +96,7 @@ namespace Fluxor
 				}
 
 				foreach(object subscription in subscribedInstances)
-				{
 					SubscriptionsForInstance.Remove(subscription);
-				}
 			}
 		}
 	}
