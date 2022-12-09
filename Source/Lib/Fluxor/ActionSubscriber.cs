@@ -77,8 +77,8 @@ namespace Fluxor
 
 				IEnumerable<object> subscribedInstances =
 					instanceSubscriptions
-					.Select(x => x.Subscriber)
-					.Distinct();
+						.Select(x => x.Subscriber)
+						.Distinct();
 
 				IEnumerable<Type> subscribedActionTypes =
 					instanceSubscriptions
