@@ -1,5 +1,8 @@
 # Releases
 
+## New in 5.7
+* Fixes memory leak when using `ActionSubscriber` or `SubscribeToAction` ([#378](https://github.com/mrpmorris/Fluxor/issues/378))
+
 ## New in 5.6
 * Support .NET 7
 * Ensure StateSelection unsubscribes properly ([#353](https://github.com/mrpmorris/Fluxor/issues/353))
