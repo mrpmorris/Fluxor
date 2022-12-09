@@ -1,8 +1,6 @@
-﻿using Fluxor.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace Fluxor
 {
@@ -23,7 +21,7 @@ namespace Fluxor
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
-			lock(SyncRoot)
+			lock (SyncRoot)
 			{
 				IEnumerable<Action<object>> callbacks =
 					SubscriptionsForType
@@ -48,7 +46,7 @@ namespace Fluxor
 				actionType: typeof(TAction),
 				callback: (object action) => callback((TAction)action));
 
-			lock(SyncRoot)
+			lock (SyncRoot)
 			{
 				if (!SubscriptionsForInstance.TryGetValue(subscriber, out List<ActionSubscription> instanceSubscriptions))
 				{
@@ -72,17 +70,22 @@ namespace Fluxor
 				throw new ArgumentNullException(nameof(subscriber));
 
 			List<ActionSubscription> instanceSubscriptions;
-			lock(SyncRoot)
+			lock (SyncRoot)
 			{
 				if (!SubscriptionsForInstance.TryGetValue(subscriber, out instanceSubscriptions))
 					return;
+
+				IEnumerable<object> subscribedInstances =
+					instanceSubscriptions
+						.Select(x => x.Subscriber)
+						.Distinct();
 
 				IEnumerable<Type> subscribedActionTypes =
 					instanceSubscriptions
 						.Select(x => x.ActionType)
 						.Distinct();
 
-				foreach(Type actionType in subscribedActionTypes)
+				foreach (Type actionType in subscribedActionTypes)
 				{
 					List<ActionSubscription> actionTypeSubscriptions;
 					if (!SubscriptionsForType.TryGetValue(actionType, out actionTypeSubscriptions))
@@ -91,6 +94,9 @@ namespace Fluxor
 						.Except(instanceSubscriptions)
 						.ToList();
 				}
+
+				foreach (object subscription in subscribedInstances)
+					SubscriptionsForInstance.Remove(subscription);
 			}
 		}
 	}
