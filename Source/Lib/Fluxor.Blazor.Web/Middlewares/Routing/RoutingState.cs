@@ -22,9 +22,6 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing
 		/// Creates a new instance of the state
 		/// </summary>
 		/// <param name="uri">The new value of the URI state</param>
-#if NET5_0_OR_GREATER
-		[System.Text.Json.Serialization.JsonConstructor]
-#endif
 		public RoutingState(string uri)
 		{
 			Uri = uri;
