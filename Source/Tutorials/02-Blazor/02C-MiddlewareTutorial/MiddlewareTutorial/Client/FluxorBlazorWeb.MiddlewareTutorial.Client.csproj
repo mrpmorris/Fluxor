@@ -1,19 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>Latest</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
-      <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
+		<PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Lib\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Lib\Fluxor\Fluxor.csproj" />
-    <ProjectReference Include="..\Shared\FluxorBlazorWeb.MiddlewareTutorial.Shared.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\..\..\Lib\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
+		<ProjectReference Include="..\..\..\..\..\Lib\Fluxor\Fluxor.csproj" />
+		<ProjectReference Include="..\Shared\FluxorBlazorWeb.MiddlewareTutorial.Shared.csproj" />
+	</ItemGroup>
 </Project>
