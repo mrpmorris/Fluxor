@@ -1,8 +1,9 @@
 # Releases
 
 ## New in 6.0
-* Remove support for obsolete versions of .NET framework ([#384](https://github.com/mrpmorris/Fluxor/issues/384))
-* Replace IDisposable with IAsyncDisposable in Blazor components ([#324](https://github.com/mrpmorris/Fluxor/issues/324))
+* **Breaking change**: Remove support for obsolete versions of .NET framework ([#384](https://github.com/mrpmorris/Fluxor/issues/384))
+* **Breaking change**: Replace IDisposable with IAsyncDisposable in Blazor components ([#324](https://github.com/mrpmorris/Fluxor/issues/324))
+* **Breaking change**: `UseReduxDevTools` no longer ensures `UseRouting` is called ([#360](https://github.com/mrpmorris/Fluxor/issues/360))
 
 ## New in 5.9
 * Adds additional useful information to exception thrown by `DisposableAction` ([#425](https://github.com/mrpmorris/Fluxor/issues/425))

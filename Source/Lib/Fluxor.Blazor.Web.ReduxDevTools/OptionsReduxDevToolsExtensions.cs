@@ -24,7 +24,6 @@ namespace Fluxor
 			options.AddMiddleware<ReduxDevToolsMiddleware>();
 			options.Services.Add<ReduxDevToolsInterop>(options);
 			options.Services.Add(_ => reduxOptions, options);
-			options.UseRouting();
 			return options;
 		}
 
