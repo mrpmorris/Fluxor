@@ -5,7 +5,6 @@
 		<Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
 		<PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
 		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents ReduxDevTools</PackageTags>
-		<SignAssembly Condition="'$(Configuration)'=='Release'">True</SignAssembly>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,11 +12,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Condition="'$(TargetFramework)' == 'net7.0'" Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
-		<PackageReference Condition="'$(TargetFramework)' == 'net6.0'" Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
 
-		<PackageReference Condition="'$(TargetFramework)' == 'net7.0'" Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-		<PackageReference Condition="'$(TargetFramework)' == 'net6.0'" Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
 	</ItemGroup>
 
 	<ItemGroup>

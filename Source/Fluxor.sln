@@ -6,11 +6,13 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{1A6663AC-4F1F-40AD-8D03-0B0977ED466D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2279CD95-5886-4777-B019-E66683CE32F1}"
+	ProjectSection(SolutionItems) = preProject
+		Tests\Directory.Build.props = Tests\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C2B1D7B3-E943-4EA3-88B0-94433B49080C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		Lib\Directory.Build.props = Lib\Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor", "Lib\Fluxor\Fluxor.csproj", "{863909D3-7E81-4240-8C0A-6F57768D28FF}"
@@ -118,6 +120,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.EffectsTutorial.Server", "Tutorials\02-Blazor\02B-EffectsTutorial\EffectsTutorial\Server\FluxorBlazorWeb.EffectsTutorial.Server.csproj", "{7A6B9736-6DE1-4B52-8A88-D433C8917731}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ActionSubscriberTutorial.Contracts", "Tutorials\02-Blazor\02E-ActionSubscriber\FluxorBlazorWeb.ActionSubscriberTutorial\Shared\FluxorBlazorWeb.ActionSubscriberTutorial.Contracts.csproj", "{AE3CD639-5DE8-43ED-9CE4-8498548ADD28}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevTools.UnitTests", "Tests\Fluxor.Blazor.Web.ReduxDevTools.UnitTests\Fluxor.Blazor.Web.ReduxDevTools.UnitTests.csproj", "{FD3207E5-1DE9-4526-9C2A-4C18129992D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -393,6 +397,18 @@ Global
 		{AE3CD639-5DE8-43ED-9CE4-8498548ADD28}.Release|iPhone.Build.0 = Release|Any CPU
 		{AE3CD639-5DE8-43ED-9CE4-8498548ADD28}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{AE3CD639-5DE8-43ED-9CE4-8498548ADD28}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Release|iPhone.Build.0 = Release|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -431,6 +447,7 @@ Global
 		{3E8452CA-14A3-432E-8378-99EAC13E5EED} = {B5E9B3FC-1304-4A74-B0A9-607282AB2FD0}
 		{7A6B9736-6DE1-4B52-8A88-D433C8917731} = {730B26CD-CADC-4CF0-8A1D-3BB174692A40}
 		{AE3CD639-5DE8-43ED-9CE4-8498548ADD28} = {B5E9B3FC-1304-4A74-B0A9-607282AB2FD0}
+		{FD3207E5-1DE9-4526-9C2A-4C18129992D9} = {2279CD95-5886-4777-B019-E66683CE32F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}

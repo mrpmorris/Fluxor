@@ -20,22 +20,15 @@
 		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
 
 		<AssemblyOriginatorKeyFile>..\..\..\..\..\MrPMorris.snk</AssemblyOriginatorKeyFile>
-		<SignAssembly>true</SignAssembly>
 		<DelaySign>false</DelaySign>
-		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<SignAssembly Condition="'$(Configuration)'=='Release'">true</SignAssembly>
+		<GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-		<NoWarn>NU5118</NoWarn>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<SupportedPlatform Include="browser" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
 	</ItemGroup>
-
 </Project>
