@@ -19,6 +19,7 @@ namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client
 			builder.Services.AddFluxor(o =>
 			{
 				o.ScanAssemblies(typeof(Program).Assembly);
+				o.UseRouting();
 #if DEBUG
 				o.UseReduxDevTools(rdt =>
 				{
