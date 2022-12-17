@@ -2,6 +2,7 @@
 
 ## New in 6.0
 * Remove support for obsolete versions of .NET framework ([#384](https://github.com/mrpmorris/Fluxor/issues/384))
+* Replace IDisposable with IAsyncDisposable in Blazor components ([#324](https://github.com/mrpmorris/Fluxor/issues/324))
 
 ## New in 5.7
 * Fixes memory leak when using `ActionSubscriber` or `SubscribeToAction` ([#378](https://github.com/mrpmorris/Fluxor/issues/378))

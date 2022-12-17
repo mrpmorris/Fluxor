@@ -1,6 +1,7 @@
 ﻿using Fluxor.UnsupportedClasses;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.Components
 {
@@ -8,7 +9,7 @@ namespace Fluxor.Blazor.Web.Components
 	/// A layout that auto-subscribes to state changes on all <see cref="IStateChangedNotifier"/> properties
 	/// and ensures <see cref="LayoutComponentBase.StateHasChanged"/> is called
 	/// </summary>
-	public abstract class FluxorLayout : LayoutComponentBase, IDisposable
+	public abstract class FluxorLayout : LayoutComponentBase, IAsyncDisposable
 	{
 		[Inject]
 		private IActionSubscriber ActionSubscriber { get; set; }
@@ -53,14 +54,35 @@ namespace Fluxor.Blazor.Web.Components
 		/// <summary>
 		/// Disposes of the component and unsubscribes from any state
 		/// </summary>
-		public void Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			if (!Disposed)
+			if (Disposed)
+				return;
+
+			await DisposeAsyncCore(true).ConfigureAwait(false);
+			GC.SuppressFinalize(this);
+			Disposed = true;
+		}
+
+		/// <summary>
+		/// Disposes via IAsyncDisposable
+		/// </summary>
+		/// <param name="disposing">true if called manually, otherwise false</param>
+		/// <returns></returns>
+		/// <exception cref="NullReferenceException">
+		///		Thrown when a descendant overrides DisposeAsyncCore and does call base.
+		/// </exception>
+		protected virtual ValueTask DisposeAsyncCore(bool disposing)
+		{
+			if (disposing)
 			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-				Disposed = true;
+				if (StateSubscription is null)
+					throw new NullReferenceException(ErrorMessages.ForgottenToCallBaseOnInitialized);
+
+				StateSubscription.Dispose();
+				ActionSubscriber?.UnsubscribeFromAllActions(this);
 			}
+			return ValueTask.CompletedTask;
 		}
 
 		/// <summary>
@@ -73,18 +95,6 @@ namespace Fluxor.Blazor.Web.Components
 			{
 				StateHasChangedThrottler.Invoke(MaximumStateChangedNotificationsPerSecond);
 			});
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				if (StateSubscription is null)
-					throw new NullReferenceException(ErrorMessages.ForgottenToCallBaseOnInitialized);
-
-				StateSubscription.Dispose();
-				ActionSubscriber?.UnsubscribeFromAllActions(this);
-			}
 		}
 	}
 }

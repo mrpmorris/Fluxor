@@ -1,5 +1,6 @@
 ﻿using Fluxor.Blazor.Web.UnitTests.SupportFiles;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorLayoutTests
@@ -11,24 +12,24 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorLayoutTests
 		private readonly MockState<int> MockState2;
 
 		[Fact]
-		public void UnsubscribesFromStateProperties()
+		public async ValueTask UnsubscribesFromStateProperties()
 		{
 			StateSubject.ExecuteOnInitialized();
-			StateSubject.Dispose();
+			await StateSubject.DisposeAsync();
 
 			Assert.Equal(1, MockState1.UnsubscribeCount);
 			Assert.Equal(1, MockState2.UnsubscribeCount);
 		}
 
 		[Fact]
-		public void WhenBaseOnInitializedWasNotCalled_ThenThrowsNullReferenceException()
+		public async ValueTask WhenBaseOnInitializedWasNotCalled_ThenThrowsNullReferenceException()
 		{
 			string errorMessage = null;
 			var layout = new FluxorLayoutThatOptionallyCallsBaseOnInitialized();
 			try
 			{
 				layout.Test_OnInitialized();
-				layout.Dispose();
+				await layout.DisposeAsync();
 			}
 			catch (NullReferenceException e)
 			{
@@ -38,14 +39,14 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorLayoutTests
 		}
 
 		[Fact]
-		public void WhenBaseOnInitializedWasCalled_ThenDoesNotThrowAnException()
+		public async ValueTask WhenBaseOnInitializedWasCalled_ThenDoesNotThrowAnException()
 		{
 			var layout = new FluxorLayoutThatOptionallyCallsBaseOnInitialized
 			{
 				CallBaseOnInitialized = true
 			};
 			layout.Test_OnInitialized();
-			layout.Dispose();
+			await layout.DisposeAsync();
 		}
 		public DisposeTests()
 		{
