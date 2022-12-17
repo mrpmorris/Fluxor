@@ -1,4 +1,5 @@
 ﻿#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+using Fluxor.Blazor.Web.ReduxDevTools.Internal;
 using Fluxor.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;

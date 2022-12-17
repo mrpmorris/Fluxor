@@ -1,4 +1,5 @@
-﻿using Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects;
+﻿using Fluxor.Blazor.Web.ReduxDevTools.Internal;
+using Fluxor.Blazor.Web.ReduxDevTools.Internal.CallbackObjects;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 	/// <summary>
 	/// Middleware for interacting with the Redux Devtools extension for Chrome
 	/// </summary>
-	internal sealed class ReduxDevToolsMiddleware : WebMiddleware
+	public sealed class ReduxDevToolsMiddleware : WebMiddleware
 	{
 		private readonly object SyncRoot = new();
 		private Task TailTask = Task.CompletedTask;

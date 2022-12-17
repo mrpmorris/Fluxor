@@ -1,16 +1,16 @@
-﻿using Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects;
+﻿using Fluxor.Blazor.Web.ReduxDevTools.Internal.CallbackObjects;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Fluxor.Blazor.Web.ReduxDevTools
+namespace Fluxor.Blazor.Web.ReduxDevTools.Internal
 {
-	internal interface IReduxDevToolsInterop
+	public interface IReduxDevToolsInterop
 	{
-		public bool DevToolsBrowserPluginDetected { get; }
-		public Func<JumpToStateCallback, Task> OnJumpToState { get; set; }
-		public Func<Task> OnCommit { get; set; }
+		bool DevToolsBrowserPluginDetected { get; }
+		Func<JumpToStateCallback, Task> OnJumpToState { get; set; }
+		Func<Task> OnCommit { get; set; }
 		ValueTask InitializeAsync(IDictionary<string, object> state);
 		Task<object> DispatchAsync(
 			object action,
@@ -126,9 +126,9 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		}
 
 		private static bool IsDotNetReferenceObject(object x) =>
-			(x is not null)
-			&& (x.GetType().IsGenericType)
-			&& (x.GetType().GetGenericTypeDefinition() == typeof(DotNetObjectReference<>));
+			x is not null
+			&& x.GetType().IsGenericType
+			&& x.GetType().GetGenericTypeDefinition() == typeof(DotNetObjectReference<>);
 
 		private ValueTask<TResult> InvokeFluxorDevToolsMethodAsync<TResult>(string identifier, params object[] args)
 		{
@@ -180,7 +180,7 @@ window.{FluxorDevToolsId} = new (function() {{
 				// Notify Fluxor of the presence of the browser plugin
 				const detectedMessage = {{
 					payload: {{
-						type: '{ReduxDevToolsInterop.FromJsDevToolsDetectedActionTypeName}'
+						type: '{FromJsDevToolsDetectedActionTypeName}'
 					}}
 				}};
 				const detectedMessageAsJson = JSON.stringify(detectedMessage);

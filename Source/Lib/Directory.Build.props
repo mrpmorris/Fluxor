@@ -21,7 +21,7 @@
 
 		<AssemblyOriginatorKeyFile>..\..\..\..\..\MrPMorris.snk</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>
-		<SignAssembly Condition="'$(Configuration)'=='Release'">True</SignAssembly>
+		<SignAssembly Condition="'$(Configuration)'=='Release'">true</SignAssembly>
 		<GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
