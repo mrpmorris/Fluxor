@@ -1,6 +1,6 @@
-﻿namespace Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects
+﻿namespace Fluxor.Blazor.Web.ReduxDevTools.Internal.CallbackObjects
 {
-	internal class JumpToStatePayload : BasePayload
+	public class JumpToStatePayload : BasePayload
 	{
 #pragma warning disable IDE1006 // Naming Styles
 		public int index { get; set; }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Fluxor;
 using System.Net.Http;
 using System;
+using Fluxor.Blazor.Web.ReduxDevTools;
 
 namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client
 {
