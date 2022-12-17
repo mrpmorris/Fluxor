@@ -1,4 +1,5 @@
-﻿using Fluxor.Exceptions;
+﻿using Fluxor.Blazor.Web.Components;
+using Fluxor.Exceptions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -11,7 +12,7 @@ namespace Fluxor.Blazor.Web
 	/// <summary>
 	/// Initializes the store for the current user. This should be placed in the App.razor component.
 	/// </summary>
-	public class StoreInitializer : ComponentBase, IDisposable
+	public class StoreInitializer : FluxorComponent
 	{
 		[Parameter]
 		public EventCallback<Exceptions.UnhandledExceptionEventArgs> UnhandledException { get; set; }
@@ -23,8 +24,18 @@ namespace Fluxor.Blazor.Web
 		private IJSRuntime JSRuntime { get; set; }
 
 		private string MiddlewareInitializationScripts;
-		private bool Disposed;
 		private Exception ExceptionToThrow;
+
+		/// <summary>
+		/// Disposes via IAsyncDisposable
+		/// </summary>
+		/// <param name="disposing">true if called manually, otherwise false</param>
+		protected override ValueTask DisposeAsyncCore(bool disposing)
+		{
+			if (disposing)
+				Store.UnhandledException -= OnUnhandledException;
+			return ValueTask.CompletedTask;
+		}
 
 		/// <summary>
 		/// Retrieves supporting JavaScript for any Middleware
@@ -93,12 +104,6 @@ namespace Fluxor.Blazor.Web
 			}
 		}
 
-		protected virtual void Dispose(bool disposing)
-		{
-			if (disposing)
-				Store.UnhandledException -= OnUnhandledException;
-		}
-
 		private void OnUnhandledException(object sender, Exceptions.UnhandledExceptionEventArgs e)
 		{
 			InvokeAsync(async () =>
@@ -119,16 +124,6 @@ namespace Fluxor.Blazor.Web
 					StateHasChanged();
 				}
 			});
-		}
-
-		void IDisposable.Dispose()
-		{
-			if (!Disposed)
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-				Disposed = true;
-			}
 		}
 	}
 }
