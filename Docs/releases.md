@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.0
+* Remove support for obsolete versions of .NET framework ([#384](https://github.com/mrpmorris/Fluxor/issues/384))
+
 ## New in 5.7
 * Fixes memory leak when using `ActionSubscriber` or `SubscribeToAction` ([#378](https://github.com/mrpmorris/Fluxor/issues/378))
 
