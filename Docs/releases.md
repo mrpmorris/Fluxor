@@ -1,13 +1,14 @@
 # Releases
 
+## New in 6.0
+* Remove support for obsolete versions of .NET framework ([#384](https://github.com/mrpmorris/Fluxor/issues/384))
+
 ## New in 5.9
 * Adds additional useful information to exception thrown by `DisposableAction` ([#425](https://github.com/mrpmorris/Fluxor/issues/425))
 * Fix deadlock scenario when dispatching actions from an effect triggered by store activation ([#426](https://github.com/mrpmorris/Fluxor/issues/426))
 
 ## New in 5.8
-* Fixes potential for deadlock ([#407](https://github.com/mrpmorris/Fluxor/issues/407))
-
-## New in 5.7
+* Fixes potential for deadlock ([#407](https://github.com/mrpmorris/Fluxor/issues/407))## New in 5.7
 * Fixes memory leak when using `ActionSubscriber` or `SubscribeToAction` ([#378](https://github.com/mrpmorris/Fluxor/issues/378))
 
 ## New in 5.6

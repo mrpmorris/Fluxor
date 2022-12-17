@@ -58,9 +58,6 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		///		System, Microsoft, ExecuteMiddlewareAfterDispatch, or ReduxDevTools.
 		///		You can include all frames by passing an empty string to this parameter.
 		/// </param>
-#if !NET5_0_OR_GREATER
-		[Obsolete("StackTrace does not work in Blazor on .net 3.1")]
-#endif
 		public ReduxDevToolsMiddlewareOptions EnableStackTrace(
 			int limit = 0,
 			string stackTraceFilterExpression =

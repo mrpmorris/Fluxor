@@ -17,7 +17,7 @@ namespace FluxorBlazorWeb.EffectsTutorial.Server
 			services.AddResponseCompression(opts =>
 			{
 				opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-									new[] { "application/octet-stream" });
+					new[] { "application/octet-stream" });
 			});
 		}
 
