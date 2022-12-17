@@ -1,10 +1,10 @@
-﻿using Fluxor.Blazor.Web.ReduxDevTools;
+﻿using Fluxor.Blazor.Web.ReduxDevTools.Internal;
 using Fluxor.DependencyInjection;
 using Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Fluxor
+namespace Fluxor.Blazor.Web.ReduxDevTools
 {
 	public static class OptionsReduxDevToolsExtensions
 	{

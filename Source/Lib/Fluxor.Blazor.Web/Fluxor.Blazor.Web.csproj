@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
+		<LangVersion>11</LangVersion>
 		<Product>Fluxor for Blazor (Web)</Product>
 		<Description>A zero boilerplate Redux/Flux framework for Blazor</Description>
 		<PackageIcon>fluxor-blazor-logo-small.png</PackageIcon>
 		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents</PackageTags>
-		<SignAssembly Condition="'$(Configuration)'=='Release'" >True</SignAssembly>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -12,10 +12,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Condition="'$(TargetFramework)' == 'net7.0'" Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" />
-		<PackageReference Condition="'$(TargetFramework)' == 'net6.0'" Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" />
-		<PackageReference Condition="'$(TargetFramework)' == 'net5.0'" Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
-		<PackageReference Condition="'$(TargetFramework)' != 'net7.0' AND '$(TargetFramework)' != 'net6.0' AND '$(TargetFramework)' != 'net5.0'" Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
+
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
 	</ItemGroup>
 
 	<ItemGroup>
