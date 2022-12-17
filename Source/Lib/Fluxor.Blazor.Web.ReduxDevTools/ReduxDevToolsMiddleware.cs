@@ -1,10 +1,7 @@
 ﻿using Fluxor.Blazor.Web.ReduxDevTools.CallbackObjects;
-using Fluxor.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools
@@ -20,21 +17,21 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		private int SequenceNumberOfLatestState = 0;
 		private readonly ReduxDevToolsMiddlewareOptions Options;
 		private IStore Store;
-		private readonly ReduxDevToolsInterop ReduxDevToolsInterop;
+		private readonly IReduxDevToolsInterop ToolsInterop;
 		private readonly IJsonSerialization JsonSerialization;
 
 		/// <summary>
 		/// Creates a new instance of the middleware
 		/// </summary>
 		public ReduxDevToolsMiddleware(
-			ReduxDevToolsInterop reduxDevToolsInterop,
+			IReduxDevToolsInterop reduxDevToolsInterop,
 			ReduxDevToolsMiddlewareOptions options,
 			IJsonSerialization jsonSerialization = null)
 		{
 			Options = options;
-			ReduxDevToolsInterop = reduxDevToolsInterop;
-			ReduxDevToolsInterop.OnJumpToState = OnJumpToState;
-			ReduxDevToolsInterop.OnCommit = OnCommit;
+			ToolsInterop = reduxDevToolsInterop;
+			ToolsInterop.OnJumpToState = OnJumpToState;
+			ToolsInterop.OnCommit = OnCommit;
 			JsonSerialization = jsonSerialization ?? new Serialization.NewtonsoftJsonAdapter();
 		}
 
@@ -45,7 +42,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		public async override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 		{
 			Store = store;
-			await ReduxDevToolsInterop.InitializeAsync(GetState());
+			await ToolsInterop.InitializeAsync(GetState());
 		}
 
 		/// <see cref="IMiddleware.MayDispatchAction(object)"/>
@@ -55,6 +52,9 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// <see cref="IMiddleware.AfterDispatch(object)"/>
 		public override void AfterDispatch(object action)
 		{
+			if (Options.ActionFilters.Length > 0 && !Options.ActionFilters.All(filter => filter(action)))
+				return;
+
 			string stackTrace = null;
 			int maxItems = Options.StackTraceLimit == 0 ? int.MaxValue : Options.StackTraceLimit;
 			if (Options.StackTraceEnabled)
@@ -69,7 +69,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			{
 				IDictionary<string, object> state = GetState();
 				TailTask = TailTask
-					.ContinueWith(_ => ReduxDevToolsInterop.DispatchAsync(action, state, stackTrace)).Unwrap();
+					.ContinueWith(_ => ToolsInterop.DispatchAsync(action, state, stackTrace)).Unwrap();
 			}
 
 			// As actions can only be executed if not in a historical state (yes, "a" historical, pronounce your H!)
@@ -91,7 +91,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			// Wait for fire+forget state notifications to ReduxDevTools to dequeue
 			await TailTask.ConfigureAwait(false);
 
-			await ReduxDevToolsInterop.InitializeAsync(GetState());
+			await ToolsInterop.InitializeAsync(GetState());
 			SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
 		}
 

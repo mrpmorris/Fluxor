@@ -4,6 +4,7 @@
 * **Breaking change**: Remove support for obsolete versions of .NET framework ([#384](https://github.com/mrpmorris/Fluxor/issues/384))
 * **Breaking change**: Replace IDisposable with IAsyncDisposable in Blazor components ([#324](https://github.com/mrpmorris/Fluxor/issues/324))
 * **Breaking change**: `UseReduxDevTools` no longer ensures `UseRouting` is called ([#360](https://github.com/mrpmorris/Fluxor/issues/360))
+*  Support Action Filtering in Redux Dev Tools ([#383](https://github.com/mrpmorris/Fluxor/issues/383))
 
 ## New in 5.7
 * Fixes memory leak when using `ActionSubscriber` or `SubscribeToAction` ([#378](https://github.com/mrpmorris/Fluxor/issues/378))

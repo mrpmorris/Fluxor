@@ -6,15 +6,28 @@ using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools
 {
+	internal interface IReduxDevToolsInterop
+	{
+		public bool DevToolsBrowserPluginDetected { get; }
+		public Func<JumpToStateCallback, Task> OnJumpToState { get; set; }
+		public Func<Task> OnCommit { get; set; }
+		ValueTask InitializeAsync(IDictionary<string, object> state);
+		Task<object> DispatchAsync(
+			object action,
+			IDictionary<string, object> state,
+			string stackTrace);
+		Task DevToolsCallback(string messageAsJson);
+	}
+
 	/// <summary>
 	/// Interop for dev tools
 	/// </summary>
-	internal sealed class ReduxDevToolsInterop : IDisposable
+	internal sealed class ReduxDevToolsInterop : IDisposable, IReduxDevToolsInterop
 	{
 		public const string DevToolsCallbackId = "DevToolsCallback";
 		public bool DevToolsBrowserPluginDetected { get; private set; }
-		public Func<JumpToStateCallback, Task> OnJumpToState;
-		public Func<Task> OnCommit;
+		public Func<JumpToStateCallback, Task> OnJumpToState { get; set; }
+		public Func<Task> OnCommit { get; set; }
 
 		private const string FluxorDevToolsId = "__FluxorDevTools__";
 		private const string FromJsDevToolsDetectedActionTypeName = "detected";
@@ -39,7 +52,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			DotNetRef = DotNetObjectReference.Create(this);
 		}
 
-		internal async ValueTask InitializeAsync(IDictionary<string, object> state)
+		public async ValueTask InitializeAsync(IDictionary<string, object> state)
 		{
 			IsInitializing = true;
 			try
@@ -52,7 +65,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			}
 		}
 
-		internal async Task<object> DispatchAsync(
+		public async Task<object> DispatchAsync(
 			object action,
 			IDictionary<string, object> state,
 			string stackTrace)

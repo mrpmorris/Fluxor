@@ -1,0 +1,16 @@
+<Project>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+		<LangVersion>11</LangVersion>
+		<AssemblyOriginatorKeyFile>..\..\..\..\..\MrPMorris.snk</AssemblyOriginatorKeyFile>
+		<SignAssembly Condition="'$(Configuration)'=='Release'">True</SignAssembly>
+		<DelaySign>false</DelaySign>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
+</Project>
