@@ -22,7 +22,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			updateReduxOptions?.Invoke(reduxOptions);
 
 			options.AddMiddleware<ReduxDevToolsMiddleware>();
-			options.Services.Add<ReduxDevToolsInterop>(options);
+			options.Services.Add<IReduxDevToolsInterop, ReduxDevToolsInterop>(options);
 			options.Services.Add(_ => reduxOptions, options);
 			return options;
 		}
