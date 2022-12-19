@@ -11,7 +11,6 @@ public class AfterDispatchTests
 {
 	private readonly Mock<IReduxDevToolsInterop> MockReduxDevToolsInterop;
 	private ReduxDevToolsMiddlewareOptions Options;
-	private readonly Mock<IJsonSerialization> MockJsonSerialization;
 	private Lazy<ReduxDevToolsMiddleware> Subject;
 
 	[Fact]
@@ -60,14 +59,12 @@ public class AfterDispatchTests
 	{
 		MockReduxDevToolsInterop = new Mock<IReduxDevToolsInterop>();
 		Options = new ReduxDevToolsMiddlewareOptions(new FluxorOptions(new ServiceCollection()));
-		MockJsonSerialization = new Mock<IJsonSerialization>();
 		Subject = new(() =>
 		{
 
 			var result = new ReduxDevToolsMiddleware(
 				MockReduxDevToolsInterop.Object,
-				Options,
-				MockJsonSerialization.Object);
+				Options);
 			result.InitializeAsync(Mock.Of<IDispatcher>(), new Store(Mock.Of<IDispatcher>()));
 			return result;
 		});

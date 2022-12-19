@@ -2,6 +2,7 @@
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools.Internal
@@ -36,19 +37,15 @@ namespace Fluxor.Blazor.Web.ReduxDevTools.Internal
 		private bool Disposed;
 		private bool IsInitializing;
 		private readonly IJSRuntime JSRuntime;
-		private readonly IJsonSerialization JsonSerialization;
 		private readonly DotNetObjectReference<ReduxDevToolsInterop> DotNetRef;
 
 		/// <summary>
 		/// Creates an instance of the dev tools interop
 		/// </summary>
 		/// <param name="jsRuntime"></param>
-		public ReduxDevToolsInterop(
-			IJSRuntime jsRuntime,
-			IJsonSerialization jsonSerialization = null)
+		public ReduxDevToolsInterop(IJSRuntime jsRuntime)
 		{
 			JSRuntime = jsRuntime;
-			JsonSerialization = jsonSerialization ?? new Serialization.NewtonsoftJsonAdapter();
 			DotNetRef = DotNetObjectReference.Create(this);
 		}
 
@@ -71,9 +68,9 @@ namespace Fluxor.Blazor.Web.ReduxDevTools.Internal
 			string stackTrace)
 		=>
 			await InvokeFluxorDevToolsMethodAsync<object>(
-				ToJsDispatchMethodName,
-				new ActionInfo(action), state, stackTrace)
-			.ConfigureAwait(false);
+					ToJsDispatchMethodName,
+					new ActionInfo(action), state, stackTrace)
+				.ConfigureAwait(false);
 
 		/// <summary>
 		/// Called back from ReduxDevTools
@@ -85,7 +82,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools.Internal
 			if (string.IsNullOrWhiteSpace(messageAsJson))
 				return;
 
-			var message = JsonSerialization.Deserialize<BaseCallbackObject>(messageAsJson);
+			var message = JsonSerializer.Deserialize<BaseCallbackObject>(messageAsJson);
 			switch (message?.payload?.type)
 			{
 				case FromJsDevToolsDetectedActionTypeName:
@@ -107,7 +104,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools.Internal
 					Func<JumpToStateCallback, Task> jumpToState = OnJumpToState;
 					if (jumpToState is not null)
 					{
-						var callbackInfo = JsonSerialization.Deserialize<JumpToStateCallback>(messageAsJson);
+						var callbackInfo = JsonSerializer.Deserialize<JumpToStateCallback>(messageAsJson);
 						Task task = jumpToState(callbackInfo);
 						if (task is not null)
 							await task;
@@ -141,9 +138,9 @@ namespace Fluxor.Blazor.Web.ReduxDevTools.Internal
 				for (int i = 0; i < args.Length; i++)
 				{
 					if (!IsDotNetReferenceObject(args[i]))
-						args[i] = JsonSerialization.Serialize(
-							source: args[i],
-							type: args[i]?.GetType() ?? typeof(object));
+						args[i] = JsonSerializer.Serialize(
+							value: args[i],
+							inputType: args[i]?.GetType() ?? typeof(object));
 				}
 			}
 
