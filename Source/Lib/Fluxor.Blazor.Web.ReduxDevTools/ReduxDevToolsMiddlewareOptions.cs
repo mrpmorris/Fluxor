@@ -1,7 +1,5 @@
-﻿using Fluxor.Blazor.Web.ReduxDevTools.Serialization;
-using Fluxor.DependencyInjection;
+﻿using Fluxor.DependencyInjection;
 using Fluxor.Extensions;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Immutable;
 using System.Text.Json;
@@ -104,40 +102,6 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 			StackTraceLimit = Math.Max(0, limit);
 			if (!string.IsNullOrWhiteSpace(stackTraceFilterExpression))
 				StackTraceFilterRegex = new Regex(stackTraceFilterExpression, RegexOptions.Compiled);
-			return this;
-		}
-
-		/// <summary>
-		/// Uses Newtonsoft JSON as the JSON serializer for Redux Dev Tools
-		/// </summary>
-		/// <param name="getSettings">Optional function to create JSON serialization settings</param>
-		/// <returns></returns>
-		public ReduxDevToolsMiddlewareOptions UseNewtonsoftJson(
-			Func<IServiceProvider, JsonSerializerSettings> getSettings = null)
-		{
-			var implementationFactory = new Func<IServiceProvider, NewtonsoftJsonAdapter>(sp =>
-			{
-				JsonSerializerSettings settings = getSettings?.Invoke(sp);
-				return new NewtonsoftJsonAdapter(settings);
-			});
-			FluxorOptions.Services.Add<IJsonSerialization, NewtonsoftJsonAdapter>(implementationFactory, FluxorOptions);
-			return this;
-		}
-
-		/// <summary>
-		/// Uses Newtonsoft JSON as the JSON serializer for Redux Dev Tools
-		/// </summary>
-		/// <param name="getOptions">Optional function to create JSON serialization options</param>
-		/// <returns></returns>
-		public ReduxDevToolsMiddlewareOptions UseSystemTextJson(
-			Func<IServiceProvider, JsonSerializerOptions> getOptions = null)
-		{
-			var implementationFactory = new Func<IServiceProvider, SystemTextJsonAdapter>(sp =>
-			{
-				JsonSerializerOptions jsonOptions = getOptions?.Invoke(sp);
-				return new SystemTextJsonAdapter(jsonOptions);
-			});
-			FluxorOptions.Services.Add<IJsonSerialization, SystemTextJsonAdapter>(implementationFactory, FluxorOptions);
 			return this;
 		}
 	}
