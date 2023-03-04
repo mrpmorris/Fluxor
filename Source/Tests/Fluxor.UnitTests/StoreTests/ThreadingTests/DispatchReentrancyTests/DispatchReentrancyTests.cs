@@ -13,7 +13,7 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchReentrancyTests
 		private readonly IFeature<CounterState> Feature;
 
 		[Fact]
-		public async Task WhenMiddlewareReactsToAnAction_AndDispatchesAnEvent_ThenThereShouldBeNoDeadlock()
+		public async Task WhenObserverSubscribesToAnAction_AndDispatchesAnActionFromANewThread_ThenThereShouldBeNoDeadlock()
 		{
 			Thread initialThread = Thread.CurrentThread;
 			Subject.SubscribeToAction<StoreInitializedAction>(this, _ =>
@@ -47,8 +47,6 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchReentrancyTests
 
 			Feature = new CounterFeature();
 			Subject.AddFeature(Feature);
-
-			Subject.AddMiddleware(new AutoIncrementMiddleware());
 		}
 
 	}
