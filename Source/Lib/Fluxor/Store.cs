@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace Fluxor
 		private readonly List<IEffect> Effects = new();
 		private readonly List<IMiddleware> Middlewares = new();
 		private readonly List<IMiddleware> ReversedMiddlewares = new();
-		private readonly Queue<object> QueuedActions = new();
+		private readonly ConcurrentQueue<object> QueuedActions = new();
 		private readonly TaskCompletionSource<bool> InitializedCompletionSource = new();
 		private readonly ActionSubscriber ActionSubscriber;
 
@@ -144,32 +145,34 @@ namespace Fluxor
 
 		private void ActionDispatched(object sender, ActionDispatchedEventArgs e)
 		{
-			lock (SyncRoot)
+			// Do not allow task dispatching inside a middleware-change.
+			// These change cycles are for things like "jump to state" in Redux Dev Tools
+			// and should be short lived.
+			// We avoid dispatching inside a middleware change because we don't want UI events (like component Init)
+			// that trigger actions (such as fetching data from a server) to execute
+			if (IsInsideMiddlewareChange)
+				return;
+
+
+			// This is a concurrent queue, so is safe even if dequeuing is already in progress
+			QueuedActions.Enqueue(e.Action);
+
+			// HasActivatedStore is set to true when the page finishes loading
+			// At which point DequeueActions will be called
+			// So if it hasn't been activated yet, just exit and wait for that to happen
+			if (!HasActivatedStore)
+				return;
+
+			// If a dequeue is still going then it will deal with the event we just
+			// queued, so we can exit at this point.
+			// This prevents a re-entrant deadlock
+			if (!IsDispatching)
 			{
-				// Do not allow task dispatching inside a middleware-change.
-				// These change cycles are for things like "jump to state" in Redux Dev Tools
-				// and should be short lived.
-				// We avoid dispatching inside a middleware change because we don't want UI events (like component Init)
-				// that trigger actions (such as fetching data from a server) to execute
-				if (IsInsideMiddlewareChange)
-					return;
-
-				// If a dequeue is already in progress, we will just
-				// let this new action be added to the queue and then exit
-				// Note: This is to cater for the following scenario
-				//	1: An action is dispatched
-				//	2: An effect is triggered
-				//	3: The effect immediately dispatches a new action
-				// The Queue ensures it is processed after its triggering action has completed rather than immediately
-				QueuedActions.Enqueue(e.Action);
-
-				// HasActivatedStore is set to true when the page finishes loading
-				// At which point DequeueActions will be called
-				if (!HasActivatedStore)
-					return;
-
-				DequeueActions();
-			};
+				lock (SyncRoot)
+				{
+					DequeueActions();
+				};
+			}
 		}
 
 		private void EndMiddlewareChange(IDisposable[] disposables)
@@ -277,10 +280,8 @@ namespace Fluxor
 			IsDispatching = true;
 			try
 			{
-				while (QueuedActions.Count > 0)
+				while (QueuedActions.TryDequeue(out object nextActionToProcess))
 				{
-					object nextActionToProcess = QueuedActions.Dequeue();
-
 					// Only process the action if no middleware vetos it
 					if (Middlewares.All(x => x.MayDispatchAction(nextActionToProcess)))
 					{
@@ -300,7 +301,7 @@ namespace Fluxor
 			{
 				IsDispatching = false;
 			}
-			foreach(var dispatchedAction in dispatchedActions)
+			foreach (var dispatchedAction in dispatchedActions)
 				TriggerEffects(dispatchedAction);
 		}
 	}
