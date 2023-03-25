@@ -6,23 +6,23 @@ namespace {{ moxy.Class.Namespace }}
 		[FeatureState]
 		public class TestState{{$stateIndex}}
 		{
-
 		}
 
-		public static class Reducers{{$stateIndex}}
-		{
+
 			{{ for $reducerIndex in 1..100}}
-				[ReducerMethod]
-				public static TestState{{$stateIndex}} ReduceAction{{$reducerIndex}}(TestState{{$stateIndex}} state, Action1 action) => state;
+				public static class Reducers_{{$stateIndex}}_{{$reducerIndex}}
+				{
+						[ReducerMethod]
+						public static TestState{{$stateIndex}} ReduceActionA{{$reducerIndex}}(TestState{{$stateIndex}} state, Action1 action) => state;
+				}
 			{{ end }}
-		}
 
-		public static class Effects{{$stateIndex}}
-		{
 			{{ for $effectIndex in 1..100}}
-				[EffectMethod]
-				public static Task HandleAction{{$effectIndex}}(Action1 action, IDispatcher dispatcher) => Task.CompletedTask;
+				public static class Effects_{{$stateIndex}}_{{$effectIndex}}
+				{
+						[EffectMethod]
+						public static Task HandleActionA{{$effectIndex}}(Action1 action, IDispatcher dispatcher) => Task.CompletedTask;
+				}
 			{{ end }}
-		}
 	{{ end }}
 }
