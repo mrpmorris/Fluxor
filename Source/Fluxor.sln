@@ -123,6 +123,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluxorBlazorWeb.ActionSubsc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevTools.UnitTests", "Tests\Fluxor.Blazor.Web.ReduxDevTools.UnitTests\Fluxor.Blazor.Web.ReduxDevTools.UnitTests.csproj", "{FD3207E5-1DE9-4526-9C2A-4C18129992D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluxor.Benchmarks", "Tests\Fluxor.Benchmarks\Fluxor.Benchmarks.csproj", "{652F1732-88D7-42BE-B548-30F8CD960F58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -409,6 +411,18 @@ Global
 		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Release|iPhone.Build.0 = Release|Any CPU
 		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{FD3207E5-1DE9-4526-9C2A-4C18129992D9}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Release|iPhone.Build.0 = Release|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{652F1732-88D7-42BE-B548-30F8CD960F58}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -448,6 +462,7 @@ Global
 		{7A6B9736-6DE1-4B52-8A88-D433C8917731} = {730B26CD-CADC-4CF0-8A1D-3BB174692A40}
 		{AE3CD639-5DE8-43ED-9CE4-8498548ADD28} = {B5E9B3FC-1304-4A74-B0A9-607282AB2FD0}
 		{FD3207E5-1DE9-4526-9C2A-4C18129992D9} = {2279CD95-5886-4777-B019-E66683CE32F1}
+		{652F1732-88D7-42BE-B548-30F8CD960F58} = {2279CD95-5886-4777-B019-E66683CE32F1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B1F2E0DF-C651-48A3-83E3-3B77D34EC3A2}
