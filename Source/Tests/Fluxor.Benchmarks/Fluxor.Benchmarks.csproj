@@ -7,17 +7,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="CreateStoreClasses.mixin" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <AdditionalFiles Include="CreateStoreClasses.mixin" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.3" PrivateAssets="all" />
-		<PackageReference Include="Morris.Moxy" Version="1.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>
