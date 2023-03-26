@@ -6,6 +6,7 @@
 * **Breaking change**: `UseReduxDevTools` no longer ensures `UseRouting` is called ([#360](https://github.com/mrpmorris/Fluxor/issues/360))
 * **Breaking change**: `UseReduxDevTools` no longer requires `Newtonsoft.Json` ([#386](https://github.com/mrpmorris/Fluxor/issues/386))
 *  Support Action Filtering in Redux Dev Tools ([#383](https://github.com/mrpmorris/Fluxor/issues/383))
+* Optimisations to assembly scanning (approximately 14% faster)
 
 ## New in 5.9
 * Adds additional useful information to exception thrown by `DisposableAction` ([#425](https://github.com/mrpmorris/Fluxor/issues/425))
