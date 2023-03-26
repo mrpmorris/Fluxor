@@ -2,14 +2,13 @@ namespace {{ moxy.Class.Namespace }}
 {
 	public class Action1 { }
 
-	{{ for $stateIndex in 1..100 }}
+	{{ for $stateIndex in 1..50 }}
 		[FeatureState]
 		public class TestState{{$stateIndex}}
 		{
 		}
 
-
-			{{ for $reducerIndex in 1..100}}
+			{{ for $reducerIndex in 1..50}}
 				public static class Reducers_{{$stateIndex}}_{{$reducerIndex}}
 				{
 						[ReducerMethod]
@@ -17,7 +16,7 @@ namespace {{ moxy.Class.Namespace }}
 				}
 			{{ end }}
 
-			{{ for $effectIndex in 1..100}}
+			{{ for $effectIndex in 1..50}}
 				public static class Effects_{{$stateIndex}}_{{$effectIndex}}
 				{
 						[EffectMethod]
