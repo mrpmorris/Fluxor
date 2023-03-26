@@ -1,11 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<TargetFrameworks>net6.0</TargetFrameworks>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,5 +10,4 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
 	</ItemGroup>
-
 </Project>
