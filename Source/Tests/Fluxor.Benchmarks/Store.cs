@@ -1,4 +1,6 @@
-﻿namespace Fluxor.Benchmarks
+﻿using System.Threading.Tasks;
+
+namespace Fluxor.Benchmarks
 {
 	public class Action1 { }
 
