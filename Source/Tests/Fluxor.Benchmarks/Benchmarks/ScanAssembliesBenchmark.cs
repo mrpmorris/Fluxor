@@ -1,17 +1,14 @@
-﻿using System.Diagnostics;
+﻿using BenchmarkDotNet.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fluxor.Benchmarks.Benchmarks;
 
-public static class ScanAssembliesBenchmark
+public class ScanAssembliesBenchmark
 {
-	public async static Task ExecuteAsync(Func<string, Task> log)
+	[Benchmark]
+	public void ScanAssemblies()
 	{
 		var services = new ServiceCollection();
-
-		var stopwatch = Stopwatch.StartNew();
-		services.AddFluxor(x => x.ScanAssemblies(typeof(App).Assembly));
-		stopwatch.Stop();
-
-		await log($"ScanAssemblies took {stopwatch.ElapsedMilliseconds} ms");
+		services.AddFluxor(x => x.ScanAssemblies(typeof(Program).Assembly));
 	}
 }

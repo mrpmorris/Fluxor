@@ -48,11 +48,24 @@ namespace Fluxor.DependencyInjection
 								| BindingFlags.Instance
 								| BindingFlags.Static
 								| BindingFlags.FlattenHierarchy)
-							.Where(m =>
-								m.GetCustomAttributes(true).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
 					})
 				.SelectMany(x => x.Methods
-					.Select(m => new TypeAndMethodInfo(x.Type, m)))
+					.Select(m =>
+						new
+						{
+							Type = x.Type,
+							MethodInfo = m,
+							MethodAttribute = m
+								.GetCustomAttributes(true)
+								.FirstOrDefault(a => a is ReducerMethodAttribute || a is EffectMethodAttribute)
+							}
+					)
+				.Where(x => x.MethodAttribute is not null)
+				.Select(x =>
+					new TypeAndMethodInfo(
+						type: x.Type,
+						methodInfo: x.MethodInfo,
+						methodAttribute: (Attribute)x.MethodAttribute)))
 				.ToArray();
 
 		public override bool Equals(object obj)

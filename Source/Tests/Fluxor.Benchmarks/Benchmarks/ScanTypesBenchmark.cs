@@ -1,14 +1,15 @@
-﻿using System.Diagnostics;
+﻿using BenchmarkDotNet.Attributes;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Fluxor.Benchmarks.Benchmarks;
 
-public static class ScanTypesBenchmark
+public class ScanTypesBenchmark
 {
-	public async static Task ExecuteAsync(Func<string, Task> log)
+	[Benchmark]
+	public void ScanTypes()
 	{
 		var services = new ServiceCollection();
 
-		var stopwatch = Stopwatch.StartNew();
 		services.AddFluxor(x => x
 			.ScanTypes(
 				typeof(TestState1),
@@ -5061,8 +5062,5 @@ public static class ScanTypesBenchmark
 				typeof(Action50Effect49),
 				typeof(TestState50Reducer50),
 				typeof(Action50Effect50)));
-		stopwatch.Stop();
-
-		await log($"ScanTypes took {stopwatch.ElapsedMilliseconds} ms");
 	}
 }
