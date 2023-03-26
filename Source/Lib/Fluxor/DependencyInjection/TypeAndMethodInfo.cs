@@ -11,9 +11,9 @@ namespace Fluxor.DependencyInjection
 
 		public TypeAndMethodInfo(Type type, MethodInfo methodInfo, Attribute methodAttribute)
 		{
-			Type = type ?? throw new ArgumentNullException(nameof(type));
-			MethodInfo = methodInfo ?? throw new ArgumentNullException(nameof(methodInfo));
-			MethodAttribute = methodAttribute ?? throw new ArgumentNullException(nameof(methodAttribute));
+			Type = type;
+			MethodInfo = methodInfo;
+			MethodAttribute = methodAttribute;
 		}
 	}
 }
