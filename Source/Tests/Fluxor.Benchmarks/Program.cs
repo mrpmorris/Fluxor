@@ -1,20 +1,9 @@
-using Fluxor.Benchmarks;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+namespace Fluxor.Benchmarks;
 
-namespace Fluxor.Benchmarks
+public static class Program
 {
-	public class Program
+	public static void Main(string[] args)
 	{
-		public static async Task Main(string[] args)
-		{
-			var builder = WebAssemblyHostBuilder.CreateDefault(args);
-			builder.RootComponents.Add<App>("#app");
-			builder.RootComponents.Add<HeadOutlet>("head::after");
-
-			builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
-			await builder.Build().RunAsync();
-		}
+		BenchmarkDotNet.Running.BenchmarkRunner.Run(typeof(Program).Assembly);
 	}
 }
