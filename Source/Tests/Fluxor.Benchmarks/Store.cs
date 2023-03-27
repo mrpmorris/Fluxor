@@ -4,7 +4,7 @@ namespace Fluxor.Benchmarks
 {
 	public class Action1 { }
 
-	[FeatureState]
+	[FeatureStateAttribute(CreateInitialStateMethodName="Create", MaximumStateChangedNotificationsPerSecond = 32, Name = "MyState")]
 	public class TestState1
 	{
 	}
