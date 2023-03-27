@@ -9,6 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Lib\Fluxor.SourceGenerator\Fluxor.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	  <ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
 	</ItemGroup>
 </Project>
