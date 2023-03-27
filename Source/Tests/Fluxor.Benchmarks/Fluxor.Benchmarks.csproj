@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Fluxor.PreScanningStoreBuilder\Fluxor.PreScanningStoreBuilder.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	  <ProjectReference Include="..\..\Lib\Fluxor.PreScanningStoreBuilder\Fluxor.PreScanningStoreBuilder.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	  <ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
 	</ItemGroup>
 </Project>

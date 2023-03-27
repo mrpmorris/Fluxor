@@ -56,7 +56,7 @@ namespace Fluxor.PreScanningStoreBuilder.CodeModels
 				|| other.Attributes.SequenceEqual(Attributes)
 			);
 
-		public override int GetHashCode() => HashCode.Combine(ClassInfo);
+		public override int GetHashCode() => HashCode.Combine(ClassInfo, Attributes);
 		public static bool operator ==(ClassInfoWithAttributeInfo left, ClassInfoWithAttributeInfo right) => left.Equals(right);
 		public static bool operator !=(ClassInfoWithAttributeInfo left, ClassInfoWithAttributeInfo right) => !left.Equals(right);
 	}
