@@ -5,11 +5,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\Lib\Fluxor.SourceGenerator\Fluxor.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-	  <ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+		<ProjectReference Include="..\..\Lib\Fluxor.StoreBuilderSourceGenerator\Fluxor.StoreBuilderSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
 	</ItemGroup>
 </Project>

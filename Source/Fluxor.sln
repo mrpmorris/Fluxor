@@ -125,7 +125,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Blazor.Web.ReduxDevT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.Benchmarks", "Tests\Fluxor.Benchmarks\Fluxor.Benchmarks.csproj", "{652F1732-88D7-42BE-B548-30F8CD960F58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluxor.SourceGenerator", "Lib\Fluxor.SourceGenerator\Fluxor.SourceGenerator.csproj", "{AA72B26C-8C68-4492-96FC-4F441DDC1D1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor.StoreBuilderSourceGenerator", "Lib\Fluxor.StoreBuilderSourceGenerator\Fluxor.StoreBuilderSourceGenerator.csproj", "{AA72B26C-8C68-4492-96FC-4F441DDC1D1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
