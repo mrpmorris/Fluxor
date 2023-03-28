@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Roslyn": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\..\\Tests\\Fluxor.Benchmarks\\Fluxor.Benchmarks.csproj"
+    }
+  }
+}
