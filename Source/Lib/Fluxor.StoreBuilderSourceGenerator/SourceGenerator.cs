@@ -1,4 +1,5 @@
-﻿using Fluxor.StoreBuilderSourceGenerator.ModelSelectors;
+﻿using Fluxor.StoreBuilderSourceGenerator.FeatureStateClasses;
+using Fluxor.StoreBuilderSourceGenerator.ReducerMethodClasses;
 using Microsoft.CodeAnalysis;
 using System;
 
@@ -9,17 +10,50 @@ public class SourceGenerator : IIncrementalGenerator
 {
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		
-		IncrementalValuesProvider<GeneratorSyntaxContext> classDeclarationSyntaxes =
-			ClassesSelector.Select(context);
+
+		IncrementalValuesProvider< FeatureStateClassInfo> featureStateClassInfos =
+			FeatureStateClassesSelector.Select(context);
+
+		IncrementalValuesProvider<Either<CompilerError, ReducerMethodInfo>> reducerMethodInfos =
+			ReducerMethodsSelector.Select(context);
 
 		context.RegisterSourceOutput(
-			classDeclarationSyntaxes,
-			static (sourceProductionContext, generatorSyntaxContext) =>
+			featureStateClassInfos,
+			static (productionContext, sourceContext) =>
 			{
-				sourceProductionContext.AddSource(
-					hintName: $"Hello.g.cs",
-					source: "//haha");
+				Console.Beep(11000, 150);
+			});
+
+		context.RegisterSourceOutput(
+			reducerMethodInfos,
+			static (productionContext, sourceContext) =>
+			{
+				_ = sourceContext.Match(
+					error =>
+					{
+						var descriptor = new DiagnosticDescriptor(
+							id: error.Id,
+							title: error.Title,
+							messageFormat: error.Title,
+							category: "Fluxor",
+							defaultSeverity: DiagnosticSeverity.Error,
+							isEnabledByDefault: true);
+						var diagnostic = Diagnostic.Create(descriptor, error.Location);
+						productionContext.ReportDiagnostic(diagnostic);
+						return Void.Value;
+					},
+					reducerMethodInfo =>
+					{
+						return Void.Value;
+					});
+				Console.Beep(7000, 150);
 			});
 	}
+
+	static SourceGenerator()
+	{
+
+	}
 }
+
+

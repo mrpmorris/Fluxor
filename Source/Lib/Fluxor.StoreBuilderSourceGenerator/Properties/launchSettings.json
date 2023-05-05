@@ -2,7 +2,7 @@
   "profiles": {
     "Roslyn": {
       "commandName": "DebugRoslynComponent",
-      "targetProject": "..\\..\\Tests\\Fluxor.Benchmarks\\Fluxor.Benchmarks.csproj"
+      "targetProject": "..\\..\\Tests\\Fluxor.StoreBuilderSourceGeneratorTests\\Fluxor.StoreBuilderSourceGeneratorTests\\Fluxor.StoreBuilderSourceGeneratorTests.csproj"
     }
   }
 }
