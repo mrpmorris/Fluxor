@@ -2,9 +2,8 @@
 using Microsoft.CodeAnalysis.CSharp;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
-namespace Fluxor.StoreBuilderSourceGenerator.Features;
+namespace Fluxor.StoreBuilderSourceGenerator.FeatureStateAttributes;
 
 internal static class FeatureStateClassesSelector
 {

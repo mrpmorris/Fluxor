@@ -1,9 +1,8 @@
 ﻿using Fluxor.StoreBuilderSourceGenerator.Helpers;
-using Fluxor.StoreBuilderSourceGenerator.Reducers;
 using Microsoft.CodeAnalysis;
 using System.Threading;
 
-namespace Fluxor.StoreBuilderSourceGenerator.Effects;
+namespace Fluxor.StoreBuilderSourceGenerator.EffectMethodAttributes;
 
 internal static class EffectMethodsSelector
 {

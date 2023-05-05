@@ -1,6 +1,6 @@
 ﻿using Fluxor.StoreBuilderSourceGenerator.Helpers;
 
-namespace Fluxor.StoreBuilderSourceGenerator.Features;
+namespace Fluxor.StoreBuilderSourceGenerator.FeatureStateAttributes;
 
 internal readonly record struct FeatureStateClassInfo
 (

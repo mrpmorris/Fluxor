@@ -1,4 +1,4 @@
-﻿namespace Fluxor.StoreBuilderSourceGenerator.Effects;
+﻿namespace Fluxor.StoreBuilderSourceGenerator.EffectMethodAttributes;
 
 internal readonly record struct EffectMethodInfo
 (

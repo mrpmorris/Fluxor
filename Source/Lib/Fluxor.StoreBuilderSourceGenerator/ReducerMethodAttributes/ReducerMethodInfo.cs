@@ -1,4 +1,4 @@
-﻿namespace Fluxor.StoreBuilderSourceGenerator.Reducers;
+﻿namespace Fluxor.StoreBuilderSourceGenerator.ReducerMethodAttributes;
 
 internal readonly record struct ReducerMethodInfo
 (
