@@ -29,4 +29,20 @@ internal readonly record struct CompilerError
 		Id: "Fluxor5",
 		Title: "Reducer method's received state type must be the same as the method's return type.");
 
+	public static readonly CompilerError EffectMethodMustReturnTask = new CompilerError(
+		Id: "Fluxor6",
+		Title: "Effect method must return a Task.");
+
+	public static readonly CompilerError EffectMethodMustHaveActionAndIDispatcherParameters = new CompilerError(
+		Id: "Fluxor7",
+		Title: "Effect method must have action and IDispatcher parameters.");
+
+	public static readonly CompilerError EffectMethodWithExplicitlyDefinedActionTypeMustHaveASingleIDispatcherParameter = new CompilerError(
+		Id: "Fluxor8",
+		Title: "Effect method with explicitly defined ActionType must have a single IDispatcher parameter.");
+
+	public static readonly CompilerError EffectMethodMustHaveAnIDispatcherParameter = new CompilerError(
+		Id: "Fluxor9",
+		Title: "Effect method must have an IDispatcher parameter.");
+
 }

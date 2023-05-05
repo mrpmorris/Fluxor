@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Fluxor.StoreBuilderSourceGenerator.ReducerMethodClasses;
+namespace Fluxor.StoreBuilderSourceGenerator.Reducers;
 
 internal static class ReducerMethodsSelector
 {

@@ -18,5 +18,11 @@ internal class State1Reducers
 	public static string SayHello() => "Helpppplo";
 }
 
+internal class State1Effects
+{
+	[EffectMethod(typeof(TestState1Action1))]
+	public static Task Hell(IDispatcher dispatcher) => Task.CompletedTask;
+}
+
 
 
