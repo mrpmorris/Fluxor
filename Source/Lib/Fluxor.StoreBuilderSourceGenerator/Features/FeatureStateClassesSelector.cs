@@ -4,17 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Fluxor.StoreBuilderSourceGenerator.FeatureStateClasses;
+namespace Fluxor.StoreBuilderSourceGenerator.Features;
 
 internal static class FeatureStateClassesSelector
 {
-	public static IncrementalValuesProvider<FeatureStateClassInfo> Select(IncrementalGeneratorInitializationContext context) =>
+	public static IncrementalValuesProvider<Either<CompilerError, FeatureStateClassInfo>> Select(IncrementalGeneratorInitializationContext context) =>
 		context.SyntaxProvider.ForAttributeWithMetadataName(
 			fullyQualifiedMetadataName: "Fluxor.FeatureStateAttribute",
-			predicate: (SyntaxNode node, CancellationToken cancellationToken) => true,
+			predicate: (node, cancellationToken) => true,
 			transform: (source, cancellationToken) => CreateFeatureStateClassInfos(source));
 
-	private static FeatureStateClassInfo CreateFeatureStateClassInfos(GeneratorAttributeSyntaxContext context)
+	private static Either<CompilerError, FeatureStateClassInfo> CreateFeatureStateClassInfos(GeneratorAttributeSyntaxContext context)
 	{
 		string classNamespace = context.TargetSymbol.ContainingNamespace?.ToDisplayString() ?? "";
 		string className = context.TargetSymbol.Name;

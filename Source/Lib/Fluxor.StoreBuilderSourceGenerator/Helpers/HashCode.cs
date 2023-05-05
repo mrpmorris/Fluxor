@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Fluxor.StoreBuilderSourceGenerator;
+namespace Fluxor.StoreBuilderSourceGenerator.Helpers;
 
 internal static class HashCode
 {
@@ -10,11 +10,11 @@ internal static class HashCode
 		int result = 0;
 		unchecked
 		{
-			for(int i = 0; i < objects.Length; i++)
+			for (int i = 0; i < objects.Length; i++)
 			{
 				object obj = objects[i];
 				int objHashCode = obj?.GetHashCode() ?? 0;
-				result = (result * 397) ^ objHashCode;
+				result = result * 397 ^ objHashCode;
 			}
 		}
 		return result;

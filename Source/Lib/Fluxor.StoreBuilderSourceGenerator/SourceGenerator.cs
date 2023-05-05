@@ -1,5 +1,6 @@
-﻿using Fluxor.StoreBuilderSourceGenerator.FeatureStateClasses;
-using Fluxor.StoreBuilderSourceGenerator.ReducerMethodClasses;
+﻿using Fluxor.StoreBuilderSourceGenerator.Effects;
+using Fluxor.StoreBuilderSourceGenerator.Features;
+using Fluxor.StoreBuilderSourceGenerator.Reducers;
 using Microsoft.CodeAnalysis;
 using System;
 
@@ -10,17 +11,22 @@ public class SourceGenerator : IIncrementalGenerator
 {
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-
-		IncrementalValuesProvider< FeatureStateClassInfo> featureStateClassInfos =
+		IncrementalValuesProvider<Either<CompilerError, FeatureStateClassInfo>> featureStateClassInfos =
 			FeatureStateClassesSelector.Select(context);
 
 		IncrementalValuesProvider<Either<CompilerError, ReducerMethodInfo>> reducerMethodInfos =
 			ReducerMethodsSelector.Select(context);
 
+		IncrementalValuesProvider<Either<CompilerError, EffectMethodInfo>> effectMethodInfos =
+			EffectMethodsSelector.Select(context);
+
 		context.RegisterSourceOutput(
 			featureStateClassInfos,
 			static (productionContext, sourceContext) =>
 			{
+				_ = sourceContext.Match(
+					error => AddCompilerError(productionContext, error),
+					featureStateClassInfo => Void.Value);
 				Console.Beep(11000, 150);
 			});
 
@@ -29,31 +35,34 @@ public class SourceGenerator : IIncrementalGenerator
 			static (productionContext, sourceContext) =>
 			{
 				_ = sourceContext.Match(
-					error =>
-					{
-						var descriptor = new DiagnosticDescriptor(
-							id: error.Id,
-							title: error.Title,
-							messageFormat: error.Title,
-							category: "Fluxor",
-							defaultSeverity: DiagnosticSeverity.Error,
-							isEnabledByDefault: true);
-						var diagnostic = Diagnostic.Create(descriptor, error.Location);
-						productionContext.ReportDiagnostic(diagnostic);
-						return Void.Value;
-					},
-					reducerMethodInfo =>
-					{
-						return Void.Value;
-					});
+					error => AddCompilerError(productionContext, error),
+					reducerMethodInfo => Void.Value);
 				Console.Beep(7000, 150);
+			});
+
+		context.RegisterSourceOutput(
+			effectMethodInfos,
+			static (productionContext, sourceContext) =>
+			{
+				_ = sourceContext.Match(
+					error => AddCompilerError(productionContext, error),
+					effectMethodInfo => Void.Value);
+				Console.Beep(5000, 150);
 			});
 	}
 
-	static SourceGenerator()
+	private static Void AddCompilerError(SourceProductionContext productionContext, CompilerError error)
 	{
-
+		var descriptor = new DiagnosticDescriptor(
+			id: error.Id,
+			title: error.Title,
+			messageFormat: error.Title,
+			category: "Fluxor",
+			defaultSeverity: DiagnosticSeverity.Error,
+			isEnabledByDefault: true);
+		var diagnostic = Diagnostic.Create(descriptor, error.Location);
+		productionContext.ReportDiagnostic(diagnostic);
+		return Void.Value;
 	}
 }
-
 
