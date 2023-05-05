@@ -1,6 +1,6 @@
-﻿using Fluxor.StoreBuilderSourceGenerator.Effects;
-using Fluxor.StoreBuilderSourceGenerator.Features;
-using Fluxor.StoreBuilderSourceGenerator.Reducers;
+﻿using Fluxor.StoreBuilderSourceGenerator.EffectMethodAttributes;
+using Fluxor.StoreBuilderSourceGenerator.FeatureStateAttributes;
+using Fluxor.StoreBuilderSourceGenerator.ReducerMethodAttributes;
 using Microsoft.CodeAnalysis;
 using System;
 

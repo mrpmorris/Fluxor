@@ -1,12 +1,8 @@
 ﻿using Fluxor.StoreBuilderSourceGenerator.Helpers;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
-namespace Fluxor.StoreBuilderSourceGenerator.Reducers;
+namespace Fluxor.StoreBuilderSourceGenerator.ReducerMethodAttributes;
 
 internal static class ReducerMethodsSelector
 {
