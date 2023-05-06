@@ -26,13 +26,14 @@ internal static class ReducerMethodsSelector
 		string className = methodSymbol.ContainingType.Name;
 		string classFullName = NamespaceHelper.Combine(@namespace: classNamespace, className: className);
 
-		string actionClassName = null;
+		string actionClassFullName = null;
+		string explicitlyDefinedActionClassFullName = null;
 
 		var attribute = context.Attributes[0];
 		if (attribute.ConstructorArguments.Length > 0)
-			actionClassName = attribute.ConstructorArguments[0].Value.ToString().Unquote();
+			explicitlyDefinedActionClassFullName = attribute.ConstructorArguments[0].Value.ToString().Unquote();
 
-		bool requiresActionParameter = actionClassName is null;
+		bool requiresActionParameter = explicitlyDefinedActionClassFullName is null;
 
 		if (requiresActionParameter && methodSymbol.Parameters.Length != 2)
 			return CompilerError.ReducerMethodMustHaveStateAndActionParameters with { Location = methodSymbol.Locations[0] };
@@ -41,7 +42,7 @@ internal static class ReducerMethodsSelector
 			return CompilerError.ReducerMethodWithExplicitlyDefinedActionTypeMustHaveASingleStateParameter with {  Location = methodSymbol.Locations[0] };
 
 		string stateClassName = methodSymbol.Parameters[0].Type.ToDisplayString();
-		actionClassName ??= methodSymbol.Parameters[1].ToDisplayString();
+		actionClassFullName = explicitlyDefinedActionClassFullName ?? methodSymbol.Parameters[1].ToDisplayString();
 
 		if (returnTypeClassName != stateClassName)
 			return CompilerError.ReducerMethodsReceivedStateTypeMustBeTheSameAsTheMethodsReturnType with {  Location = methodSymbol.Parameters[0].Locations[0] };
@@ -49,7 +50,8 @@ internal static class ReducerMethodsSelector
 		return new ReducerMethodInfo(
 			ClassFullName: classFullName,
 			MethodName: context.TargetSymbol.Name,
-			DeclaredActionClassFullName: actionClassName);
+			ExplicitlyDeclaredActionClassFullName: explicitlyDefinedActionClassFullName,
+			ActionClassFullName: actionClassFullName);
 	}
 }
 
