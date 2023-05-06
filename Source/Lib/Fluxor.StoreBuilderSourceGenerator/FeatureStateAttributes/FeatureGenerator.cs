@@ -1,8 +1,8 @@
 ﻿using Fluxor.StoreBuilderSourceGenerator.Extensions;
+using Fluxor.StoreBuilderSourceGenerator.Helpers;
 using Microsoft.CodeAnalysis;
 using System.CodeDom.Compiler;
 using System.IO;
-using System.Text;
 
 namespace Fluxor.StoreBuilderSourceGenerator.FeatureStateAttributes;
 
@@ -17,35 +17,47 @@ internal static class FeatureGenerator
 
 	private static string GenerateSourceCode(FeatureStateClassInfo featureStateClassInfo)
 	{
+		string generatedClassName = $"{featureStateClassInfo.ClassName}GeneratedFeature";
+
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");
 
+
 		writer.WriteLine("using Fluxor;\r\n");
+
+		WriteClassRegistration(writer, featureStateClassInfo, generatedClassName);
 
 		writer.WriteLine($"namespace {featureStateClassInfo.ClassNamespace}");
 		using (writer.CodeBlock())
 		{
-			WriteClass(writer, featureStateClassInfo);
+			WriteClass(writer, featureStateClassInfo, generatedClassName);
 		}
 
 		writer.Flush();
 		return result.ToString();
 	}
 
-	private static void WriteClass(IndentedTextWriter writer, FeatureStateClassInfo featureStateClassInfo)
+	private static void WriteClassRegistration(IndentedTextWriter writer, FeatureStateClassInfo featureStateClassInfo, string generatedClassName)
 	{
-		writer.WriteLine($"internal class {featureStateClassInfo.ClassName}GeneratedFeature : Feature<{featureStateClassInfo.ClassName}>");
+		string classFullName = NamespaceHelper.Combine(featureStateClassInfo.ClassNamespace, generatedClassName);
+		writer.WriteLine($"[assembly:Fluxor.CodeGeneratorAttributes.DiscoveredFeature(typeof({classFullName}))]\r\n");
+	}
+
+	private static void WriteClass(IndentedTextWriter writer, FeatureStateClassInfo featureStateClassInfo, string generatedClassName)
+	{
+		writer.WriteLine($"internal class {generatedClassName} : Feature<{featureStateClassInfo.ClassName}>");
 		using (writer.CodeBlock())
 		{
-			WriteConstructor(writer, featureStateClassInfo);
 			OverrideGetName(writer, featureStateClassInfo);
 			OverrideGetInitialState(writer, featureStateClassInfo);
+			WriteConstructor(writer, featureStateClassInfo, generatedClassName);
 		}
 	}
 
-	private static void WriteConstructor(IndentedTextWriter writer, FeatureStateClassInfo featureStateClassInfo)
+	private static void WriteConstructor(IndentedTextWriter writer, FeatureStateClassInfo featureStateClassInfo, string generatedClassName)
 	{
-		writer.WriteLine($"public {featureStateClassInfo.ClassName}GeneratedFeature()");
+		writer.WriteLine();
+		writer.WriteLine($"public {generatedClassName}()");
 		using (writer.CodeBlock())
 		{
 			writer.WriteLine($"MaximumStateChangedNotificationsPerSecond =  {featureStateClassInfo.MaximumStateChangedNotificationsPerSecond};");
@@ -65,8 +77,7 @@ internal static class FeatureGenerator
 			? $"new {featureStateClassInfo.ClassFullName}()"
 			: $"{featureStateClassInfo.ClassFullName}.{featureStateClassInfo.CreateInitialStateMethodName}()";
 
-		writer.WriteLine($"protected override {featureStateClassInfo.ClassFullName} GetInitialState() => {creationCode};");
+		writer.WriteLine($"protected override {featureStateClassInfo.ClassFullName} GetInitialState() =>");
+		writer.WriteIndentedLine($"{creationCode};\r\n");
 	}
-
-
 }

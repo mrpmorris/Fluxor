@@ -16,4 +16,11 @@ internal static class IndentedTextWriterExtensions
 			instance.WriteLine("}");
 		});
 	}
+
+	public static void WriteIndentedLine(this IndentedTextWriter instance, string content)
+	{
+		instance.Indent++;
+		instance.WriteLine(content);
+		instance.Indent--;
+	}
 }
