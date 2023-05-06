@@ -48,7 +48,7 @@ internal static class ReducerGenerator
 
 	private static void WriteClass(IndentedTextWriter writer, ReducerMethodInfo reducerMethodInfo, string generatedClassName)
 	{
-		writer.WriteLine($"internal class {generatedClassName} : Reducer<{reducerMethodInfo.StateClassFullName}, {reducerMethodInfo.ActionClassFullName}>");
+		writer.WriteLine($"internal sealed class {generatedClassName} : Reducer<{reducerMethodInfo.StateClassFullName}, {reducerMethodInfo.ActionClassFullName}>");
 		using (writer.CodeBlock())
 		{
 			OverrideReduce(writer, reducerMethodInfo);

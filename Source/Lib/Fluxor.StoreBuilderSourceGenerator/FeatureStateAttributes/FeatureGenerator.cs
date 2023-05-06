@@ -44,7 +44,7 @@ internal static class FeatureGenerator
 
 	private static void WriteClass(IndentedTextWriter writer, FeatureStateClassInfo featureStateClassInfo, string generatedClassName)
 	{
-		writer.WriteLine($"internal class {generatedClassName} : Feature<{featureStateClassInfo.ClassName}>");
+		writer.WriteLine($"internal sealed class {generatedClassName} : Feature<{featureStateClassInfo.ClassName}>");
 		using (writer.CodeBlock())
 		{
 			OverrideGetName(writer, featureStateClassInfo);
