@@ -18,15 +18,13 @@ internal static class ReducerMethodsSelector
 		if (!methodSymbol.IsStatic)
 			return CompilerError.ReducerMethodMustBeStatic with { Location = methodSymbol.Locations[0] };
 
-		string returnTypeClassName = methodSymbol.ReturnType.ToDisplayString();
-		if (returnTypeClassName == "void")
+		string returnTypeClassFullName = methodSymbol.ReturnType.ToDisplayString();
+		if (returnTypeClassFullName == "void")
 			return CompilerError.ReducerMethodMustReturnState with { Location = methodSymbol.Locations[0] };
 
 		string classNamespace = context.TargetSymbol.ContainingNamespace?.ToDisplayString() ?? "";
 		string className = methodSymbol.ContainingType.Name;
-		string classFullName = NamespaceHelper.Combine(@namespace: classNamespace, className: className);
 
-		string actionClassFullName = null;
 		string explicitlyDefinedActionClassFullName = null;
 
 		var attribute = context.Attributes[0];
@@ -41,15 +39,17 @@ internal static class ReducerMethodsSelector
 		if (!requiresActionParameter && methodSymbol.Parameters.Length != 1)
 			return CompilerError.ReducerMethodWithExplicitlyDefinedActionTypeMustHaveASingleStateParameter with {  Location = methodSymbol.Locations[0] };
 
-		string stateClassName = methodSymbol.Parameters[0].Type.ToDisplayString();
-		actionClassFullName = explicitlyDefinedActionClassFullName ?? methodSymbol.Parameters[1].ToDisplayString();
+		string stateClassFullName = methodSymbol.Parameters[0].Type.ToDisplayString();
+		string actionClassFullName = explicitlyDefinedActionClassFullName ?? methodSymbol.Parameters[1].Type.ToDisplayString();
 
-		if (returnTypeClassName != stateClassName)
+		if (returnTypeClassFullName != stateClassFullName)
 			return CompilerError.ReducerMethodsReceivedStateTypeMustBeTheSameAsTheMethodsReturnType with {  Location = methodSymbol.Parameters[0].Locations[0] };
 
 		return new ReducerMethodInfo(
-			ClassFullName: classFullName,
+			ClassName: className,
+			ClassNamespace: classNamespace,
 			MethodName: context.TargetSymbol.Name,
+			StateClassFullName: stateClassFullName,
 			ExplicitlyDeclaredActionClassFullName: explicitlyDefinedActionClassFullName,
 			ActionClassFullName: actionClassFullName);
 	}

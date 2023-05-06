@@ -36,7 +36,7 @@ public class SourceGenerator : IIncrementalGenerator
 			{
 				_ = errorOrReducerMethod.Match(
 					error => AddCompilerError(productionContext, error),
-					reducerMethodInfo => Void.Value);
+					reducerMethodInfo => ReducerGenerator.Generate(productionContext, reducerMethodInfo));
 				Console.Beep(7000, 150);
 			});
 

@@ -15,6 +15,9 @@ internal class State1Reducers
 	[ReducerMethod(typeof(TestState1Action1))]
 	public static TestState1 ReduceTestState1Action1(TestState1 state) => state;
 
+	[ReducerMethod]
+	public static TestState1 ReduceTestState1Action1(TestState1 state, TestState1Action1 action) => state;
+
 	public static string SayHello() => "Helpppplo";
 }
 
