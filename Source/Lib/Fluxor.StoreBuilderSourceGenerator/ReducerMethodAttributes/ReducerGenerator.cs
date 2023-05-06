@@ -66,6 +66,6 @@ internal static class ReducerGenerator
 		writer.WriteIndentedLine($"{reducerMethodInfo.StateClassFullName} state,");
 		writer.WriteIndentedLine($"{reducerMethodInfo.ActionClassFullName} action)");
 		writer.WriteLine("=>");
-		writer.WriteIndentedLine($"{reducerMethodInfo.ClassFullName}.{reducerMethodInfo.MethodName}({arguments});\r\n");
+		writer.WriteIndentedLine($"{reducerMethodInfo.ClassFullName}.{reducerMethodInfo.MethodName}({arguments});");
 	}
 }
