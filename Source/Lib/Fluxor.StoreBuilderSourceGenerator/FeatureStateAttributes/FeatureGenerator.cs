@@ -17,11 +17,10 @@ internal static class FeatureGenerator
 
 	private static string GenerateSourceCode(FeatureStateClassInfo featureStateClassInfo)
 	{
-		string generatedClassName = $"{featureStateClassInfo.ClassName}GeneratedFeature";
+		string generatedClassName = $"{featureStateClassInfo.ClassName}GeneratedFluxorFeature";
 
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");
-
 
 		writer.WriteLine("using Fluxor;\r\n");
 
