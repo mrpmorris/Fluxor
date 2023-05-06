@@ -22,19 +22,19 @@ public class SourceGenerator : IIncrementalGenerator
 
 		context.RegisterSourceOutput(
 			featureStateClassInfos,
-			static (productionContext, sourceContext) =>
+			static (productionContext, errorOrFeature) =>
 			{
-				_ = sourceContext.Match(
+				_ = errorOrFeature.Match(
 					error => AddCompilerError(productionContext, error),
-					featureStateClassInfo => Void.Value);
+					featureStateClassInfo => FeatureGenerator.Generate(productionContext, featureStateClassInfo));
 				Console.Beep(11000, 150);
 			});
 
 		context.RegisterSourceOutput(
 			reducerMethodInfos,
-			static (productionContext, sourceContext) =>
+			static (productionContext, errorOrReducerMethod) =>
 			{
-				_ = sourceContext.Match(
+				_ = errorOrReducerMethod.Match(
 					error => AddCompilerError(productionContext, error),
 					reducerMethodInfo => Void.Value);
 				Console.Beep(7000, 150);
@@ -42,9 +42,9 @@ public class SourceGenerator : IIncrementalGenerator
 
 		context.RegisterSourceOutput(
 			effectMethodInfos,
-			static (productionContext, sourceContext) =>
+			static (productionContext, errorOrEffectMethod) =>
 			{
-				_ = sourceContext.Match(
+				_ = errorOrEffectMethod.Match(
 					error => AddCompilerError(productionContext, error),
 					effectMethodInfo => Void.Value);
 				Console.Beep(5000, 150);
