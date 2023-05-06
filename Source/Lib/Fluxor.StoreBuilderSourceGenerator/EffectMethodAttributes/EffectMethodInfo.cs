@@ -1,9 +1,16 @@
-﻿namespace Fluxor.StoreBuilderSourceGenerator.EffectMethodAttributes;
+﻿using Fluxor.StoreBuilderSourceGenerator.Helpers;
+
+namespace Fluxor.StoreBuilderSourceGenerator.EffectMethodAttributes;
 
 internal readonly record struct EffectMethodInfo
 (
-	string ClassFullName,
+	string ClassNamespace,
+	string ClassName,
 	string MethodName,
-	string DeclaredActionClassFullName,
+	string ExplicitlyDeclaredActionClassFullName,
+	string ActionClassFullName,
 	bool IsStatic
-);
+)
+{
+	public string ClassFullName => NamespaceHelper.Combine(ClassNamespace, ClassName);
+}

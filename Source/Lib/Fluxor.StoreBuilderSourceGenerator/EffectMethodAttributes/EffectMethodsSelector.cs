@@ -22,15 +22,15 @@ internal static class EffectMethodsSelector
 
 		string classNamespace = context.TargetSymbol.ContainingNamespace?.ToDisplayString() ?? "";
 		string className = methodSymbol.ContainingType.Name;
-		string classFullName = NamespaceHelper.Combine(@namespace: classNamespace, className: className);
 
 		string actionClassName = null;
+		string explicitlyDefinedClassFullName = null;
 
 		var attribute = context.Attributes[0];
 		if (attribute.ConstructorArguments.Length > 0)
-			actionClassName = attribute.ConstructorArguments[0].Value.ToString().Unquote();
+			explicitlyDefinedClassFullName = attribute.ConstructorArguments[0].Value.ToString().Unquote();
 
-		bool requiresActionParameter = actionClassName is null;
+		bool requiresActionParameter = explicitlyDefinedClassFullName is null;
 
 		if (requiresActionParameter && methodSymbol.Parameters.Length != 2)
 			return CompilerError.EffectMethodMustHaveActionAndIDispatcherParameters with { Location = methodSymbol.Locations[0] };
@@ -38,7 +38,7 @@ internal static class EffectMethodsSelector
 		if (!requiresActionParameter && methodSymbol.Parameters.Length != 1)
 			return CompilerError.EffectMethodWithExplicitlyDefinedActionTypeMustHaveASingleIDispatcherParameter with {  Location = methodSymbol.Locations[0] };
 
-		actionClassName ??= methodSymbol.Parameters[0].ToDisplayString();
+		actionClassName = explicitlyDefinedClassFullName ?? methodSymbol.Parameters[0].ToDisplayString();
 		int dispatcherParameterIndex = requiresActionParameter ? 1 : 0;
 		string dispatcherParameterClassName = methodSymbol.Parameters[dispatcherParameterIndex].Type.ToDisplayString();
 
@@ -46,9 +46,11 @@ internal static class EffectMethodsSelector
 			return CompilerError.EffectMethodMustHaveAnIDispatcherParameter with {  Location = methodSymbol.Parameters[0].Locations[0] };
 
 		return new EffectMethodInfo(
-			ClassFullName: classFullName,
+			ClassNamespace: classNamespace,
+			ClassName: className,
 			MethodName: context.TargetSymbol.Name,
-			DeclaredActionClassFullName: actionClassName,
+			ExplicitlyDeclaredActionClassFullName: explicitlyDefinedClassFullName,
+			ActionClassFullName: actionClassName,
 			IsStatic: methodSymbol.IsStatic);
 	}
 }
