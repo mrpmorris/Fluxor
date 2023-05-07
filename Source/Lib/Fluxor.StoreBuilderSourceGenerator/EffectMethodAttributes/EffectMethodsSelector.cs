@@ -23,7 +23,6 @@ internal static class EffectMethodsSelector
 		string classNamespace = context.TargetSymbol.ContainingNamespace?.ToDisplayString() ?? "";
 		string className = methodSymbol.ContainingType.Name;
 
-		string actionClassName = null;
 		string explicitlyDefinedClassFullName = null;
 
 		var attribute = context.Attributes[0];
@@ -38,7 +37,7 @@ internal static class EffectMethodsSelector
 		if (!requiresActionParameter && methodSymbol.Parameters.Length != 1)
 			return CompilerError.EffectMethodWithExplicitlyDefinedActionTypeMustHaveASingleIDispatcherParameter with {  Location = methodSymbol.Locations[0] };
 
-		actionClassName = explicitlyDefinedClassFullName ?? methodSymbol.Parameters[0].ToDisplayString();
+		string actionClassName = explicitlyDefinedClassFullName ?? methodSymbol.Parameters[0].Type.ToDisplayString();
 		int dispatcherParameterIndex = requiresActionParameter ? 1 : 0;
 		string dispatcherParameterClassName = methodSymbol.Parameters[dispatcherParameterIndex].Type.ToDisplayString();
 

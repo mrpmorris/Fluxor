@@ -46,7 +46,7 @@ public class SourceGenerator : IIncrementalGenerator
 			{
 				_ = errorOrEffectMethod.Match(
 					error => AddCompilerError(productionContext, error),
-					effectMethodInfo => Void.Value);
+					effectMethodInfo => EffectGenerator.Generate(productionContext, effectMethodInfo));
 				Console.Beep(5000, 150);
 			});
 	}

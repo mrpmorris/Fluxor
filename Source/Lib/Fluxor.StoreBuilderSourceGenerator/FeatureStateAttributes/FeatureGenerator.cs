@@ -22,8 +22,6 @@ internal static class FeatureGenerator
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");
 
-		writer.WriteLine("using Fluxor;\r\n");
-
 		WriteClassRegistration(writer, featureStateClassInfo, generatedClassName);
 
 		writer.WriteLine($"namespace {featureStateClassInfo.ClassNamespace}");
