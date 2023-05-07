@@ -80,13 +80,13 @@ internal static class EffectGenerator
 			? effectMethodInfo.ClassFullName
 			: "Implementor";
 
-		string actionArgument =
+		string actionArguments =
 			effectMethodInfo.ExplicitlyDeclaredActionClassFullName is not null
-			? ""
-			: $"action, ";
+			? "dispatcher"
+			: "action, dispatcher";
 
 		writer.WriteLine($"public override System.Threading.Tasks.Task HandleAsync({effectMethodInfo.ActionClassFullName} action, Fluxor.IDispatcher dispatcher) =>");
-		writer.WriteIndentedLine($"{executingParty}.{effectMethodInfo.MethodName}({actionArgument} dispatcher);");
+		writer.WriteIndentedLine($"{executingParty}.{effectMethodInfo.MethodName}({actionArguments});");
 	}
 
 
