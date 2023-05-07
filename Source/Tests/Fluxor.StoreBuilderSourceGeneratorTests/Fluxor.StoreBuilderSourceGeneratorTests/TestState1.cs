@@ -22,14 +22,13 @@ internal class State1Reducers
 internal class State1Effects
 {
 	[EffectMethod(typeof(TestState1Action1))]
-	public static Task ExplicitlyDefinedActionHandlerAsync(IDispatcher dispatcher) => Task.CompletedTask;
+	public Task ExplicitlyDefinedActionHandlerAsync(IDispatcher dispatcher) => Task.CompletedTask;
 
 	[EffectMethod]
 	public Task ActionHandlerAsync(TestState1Action1 action, IDispatcher dispatcher) => Task.CompletedTask;
 
 	[EffectMethod]
 	public static Task StaticActionHandlerAsync(TestState1Action1 action, IDispatcher dispatcher) => Task.CompletedTask;
-
 }
 
 
