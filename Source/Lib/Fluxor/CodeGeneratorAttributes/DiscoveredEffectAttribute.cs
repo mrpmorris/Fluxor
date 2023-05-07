@@ -6,9 +6,9 @@ namespace Fluxor.CodeGeneratorAttributes;
 public sealed class DiscoveredEffectAttribute : Attribute
 {
 	public Type Effect { get; }
-	public Type ImplementingClass { get; }
+	public Type ImplementingClass { get; set; }
 
-	public DiscoveredEffectAttribute(Type effect, Type implementingClass)
+	public DiscoveredEffectAttribute(Type effect)
 	{
 		Effect = effect ?? throw new ArgumentNullException(nameof(effect));
 	}

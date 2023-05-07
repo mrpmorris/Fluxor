@@ -25,7 +25,7 @@ internal class State1Effects
 	public static Task ExplicitlyDefinedActionHandlerAsync(IDispatcher dispatcher) => Task.CompletedTask;
 
 	[EffectMethod]
-	public static Task ExplicitlyDefinedActionHandlerAsync(TestState1Action1 action, IDispatcher dispatcher) => Task.CompletedTask;
+	public Task ActionHandlerAsync(TestState1Action1 action, IDispatcher dispatcher) => Task.CompletedTask;
 
 }
 

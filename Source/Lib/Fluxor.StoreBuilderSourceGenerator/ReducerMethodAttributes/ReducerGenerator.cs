@@ -26,8 +26,6 @@ internal static class ReducerGenerator
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");
 
-		writer.WriteLine("using Fluxor;\r\n");
-
 		WriteClassRegistration(writer, reducerMethodInfo, generatedClassName);
 
 		writer.WriteLine($"namespace {reducerMethodInfo.ClassNamespace}");
