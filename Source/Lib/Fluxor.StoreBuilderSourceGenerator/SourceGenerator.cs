@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 
 namespace Fluxor.StoreBuilderSourceGenerator;
 
@@ -23,14 +24,53 @@ public class SourceGenerator : IIncrementalGenerator
 		IncrementalValuesProvider<Either<CompilerError, EffectMethodInfo>> effectMethodInfos =
 			EffectMethodsSelector.Select(context);
 
-		IncrementalValuesProvider<DiscoveredMiddlewareClassInfo> middlewareClassInfos =
-			DiscoveredMiddlewareClassesSelector.Select(context);
+		IncrementalValueProvider<ImmutableArray<string>> effectClassNames = EffectClassesSelector
+			.Select(context)
+			.Collect();
+
+		IncrementalValueProvider<ImmutableArray<string>> featureClassNames = FeatureClassesSelector
+			.Select(context)
+			.Collect();
+
+		IncrementalValueProvider<ImmutableArray<string>> middlewareClassNames = MiddlewareClassesSelector
+			.Select(context)
+			.Collect();
+
+		IncrementalValueProvider<ImmutableArray<string>> reducerClassNames = ReducerClassesSelector
+			.Select(context)
+			.Collect();
+
+		var discoveredClasses =
+			effectClassNames
+			.Combine(featureClassNames)
+			.Select((x, _) =>
+				new
+				{
+					EffectClassNames = x.Left,
+					FeatureClassNames = x.Right
+				})
+			.Combine(middlewareClassNames)
+			.Select((x, _) =>
+				new
+				{
+					x.Left.EffectClassNames,
+					x.Left.FeatureClassNames,
+					MiddlewareClassNames = x.Right
+				})
+			.Combine(reducerClassNames)
+			.Select((x, _) =>
+				new
+				{
+					x.Left.EffectClassNames,
+					x.Left.FeatureClassNames,
+					x.Left.MiddlewareClassNames,
+					ReducerClassNames = x.Right
+				});
 
 		context.RegisterSourceOutput(
-			middlewareClassInfos,
-			static (productionContext, middleware) =>
+			discoveredClasses,
+			static (productionContext, discoveredClasses) =>
 			{
-				Console.WriteLine(middleware.ClassNamespace);
 			});
 
 		context.RegisterSourceOutput(
@@ -66,27 +106,8 @@ public class SourceGenerator : IIncrementalGenerator
 				);
 			});
 
-		context.RegisterSourceOutput(
-			middlewareClassInfos.Collect(),
-			static (productionContext, errorOrMiddlewareClasses) =>
-			{
-				var classes = ImmutableArray.CreateBuilder<DiscoveredMiddlewareClassInfo>();
-				for (int i = 0; i < errorOrMiddlewareClasses.Length; i++)
-				{
-					Either<CompilerError, DiscoveredMiddlewareClassInfo> errorOrMiddlewareClass = errorOrMiddlewareClasses[i];
-					_ = errorOrMiddlewareClass.Match
-					(
-						error => AddCompilerError(productionContext, error),
-						middlewareClassInfo =>
-						{
-							classes.Add(middlewareClassInfo);
-							return Void.Value;
-						}
-					);
-				}
 
-				DiscoveredMiddlewareClassGenerator.Generate(productionContext, classes.ToImmutableArray());
-			});
+
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
