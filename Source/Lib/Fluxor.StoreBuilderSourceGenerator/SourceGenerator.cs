@@ -3,10 +3,8 @@ using Fluxor.StoreBuilderSourceGenerator.FeatureStateAttributes;
 using Fluxor.StoreBuilderSourceGenerator.DiscoveredMiddlewareClasses;
 using Fluxor.StoreBuilderSourceGenerator.ReducerMethodAttributes;
 using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using System.Collections.Generic;
 
 namespace Fluxor.StoreBuilderSourceGenerator;
 
