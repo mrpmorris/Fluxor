@@ -1,8 +1,11 @@
 ﻿using Fluxor.StoreBuilderSourceGenerator.EffectMethodAttributes;
 using Fluxor.StoreBuilderSourceGenerator.FeatureStateAttributes;
+using Fluxor.StoreBuilderSourceGenerator.DiscoveredMiddlewareClasses;
 using Fluxor.StoreBuilderSourceGenerator.ReducerMethodAttributes;
 using Microsoft.CodeAnalysis;
 using System;
+using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 
 namespace Fluxor.StoreBuilderSourceGenerator;
 
@@ -20,37 +23,73 @@ public class SourceGenerator : IIncrementalGenerator
 		IncrementalValuesProvider<Either<CompilerError, EffectMethodInfo>> effectMethodInfos =
 			EffectMethodsSelector.Select(context);
 
+		IncrementalValuesProvider<DiscoveredMiddlewareClassInfo> middlewareClassInfos =
+			DiscoveredMiddlewareClassesSelector.Select(context);
+
+		context.RegisterSourceOutput(
+			middlewareClassInfos,
+			static (productionContext, middleware) =>
+			{
+				Console.WriteLine(middleware.ClassNamespace);
+			});
+
 		context.RegisterSourceOutput(
 			featureStateClassInfos,
 			static (productionContext, errorOrFeature) =>
 			{
-				_ = errorOrFeature.Match(
+				_ = errorOrFeature.Match
+				(
 					error => AddCompilerError(productionContext, error),
-					featureStateClassInfo => FeatureGenerator.Generate(productionContext, featureStateClassInfo));
-				Console.Beep(11000, 150);
+					featureStateClassInfo => FeatureGenerator.Generate(productionContext, featureStateClassInfo)
+				);
 			});
 
 		context.RegisterSourceOutput(
 			reducerMethodInfos,
 			static (productionContext, errorOrReducerMethod) =>
 			{
-				_ = errorOrReducerMethod.Match(
+				_ = errorOrReducerMethod.Match
+				(
 					error => AddCompilerError(productionContext, error),
-					reducerMethodInfo => ReducerGenerator.Generate(productionContext, reducerMethodInfo));
-				Console.Beep(7000, 150);
+					reducerMethodInfo => ReducerGenerator.Generate(productionContext, reducerMethodInfo)
+				);
 			});
 
 		context.RegisterSourceOutput(
 			effectMethodInfos,
 			static (productionContext, errorOrEffectMethod) =>
 			{
-				_ = errorOrEffectMethod.Match(
+				_ = errorOrEffectMethod.Match
+				(
 					error => AddCompilerError(productionContext, error),
-					effectMethodInfo => EffectGenerator.Generate(productionContext, effectMethodInfo));
-				Console.Beep(5000, 150);
+					effectMethodInfo => EffectGenerator.Generate(productionContext, effectMethodInfo)
+				);
+			});
+
+		context.RegisterSourceOutput(
+			middlewareClassInfos.Collect(),
+			static (productionContext, errorOrMiddlewareClasses) =>
+			{
+				var classes = ImmutableArray.CreateBuilder<DiscoveredMiddlewareClassInfo>();
+				for (int i = 0; i < errorOrMiddlewareClasses.Length; i++)
+				{
+					Either<CompilerError, DiscoveredMiddlewareClassInfo> errorOrMiddlewareClass = errorOrMiddlewareClasses[i];
+					_ = errorOrMiddlewareClass.Match
+					(
+						error => AddCompilerError(productionContext, error),
+						middlewareClassInfo =>
+						{
+							classes.Add(middlewareClassInfo);
+							return Void.Value;
+						}
+					);
+				}
+
+				DiscoveredMiddlewareClassGenerator.Generate(productionContext, classes.ToImmutableArray());
 			});
 	}
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static Void AddCompilerError(SourceProductionContext productionContext, CompilerError error)
 	{
 		var descriptor = new DiagnosticDescriptor(
