@@ -1,4 +1,7 @@
-﻿using System.Collections.Immutable;
+﻿using Fluxor.StoreBuilderSourceGenerator.EffectMethodAttributes;
+using Fluxor.StoreBuilderSourceGenerator.FeatureStateAttributes;
+using Fluxor.StoreBuilderSourceGenerator.ReducerMethodAttributes;
+using System.Collections.Immutable;
 
 namespace Fluxor.StoreBuilderSourceGenerator;
 
@@ -10,10 +13,9 @@ public partial class SourceGenerator
 		ImmutableArray<string> DiscoveredFeatureClassNames = default,
 		ImmutableArray<string> DiscoveredMiddlewareClassNames = default,
 		ImmutableArray<string> DiscoveredReducerClassNames = default,
-		ImmutableArray<string> GeneratedEffectClassNames = default,
-		ImmutableArray<string> GeneratedFeatureClassNames = default,
-		ImmutableArray<string> GeneratedReducerClassNames = default,
-		ImmutableArray<string> GeneratedEffectDependenciesClassNames = default
+		ImmutableArray<EffectMethodInfo> EffectMethodInfos = default,
+		ImmutableArray<FeatureStateClassInfo> FeatureStateClassInfos = default,
+		ImmutableArray<ReducerMethodInfo> ReducerMethodInfos = default
 	);
 }
 

@@ -52,36 +52,30 @@ public partial class SourceGenerator : IIncrementalGenerator
 				x.Left with {
 					DiscoveredReducerClassNames = x.Right
 				})
-			.Combine(featureStateClassInfos.Collect())
-			.Select((x, _) =>
-				x.Left with {
-					GeneratedFeatureClassNames = x.Right
-						.Where(x => x.IsRight)
-						.Select(x => FeatureGenerator.GetGeneratedClassName(x.Right))
-						.ToImmutableArray()
-				})
 			.Combine(effectMethodInfos.Collect())
 			.Select((x, _) =>
 				x.Left with {
-					GeneratedEffectClassNames = x.Right
+					EffectMethodInfos = x.Right
 						.Where(x => x.IsRight)
-						.Select(x => EffectGenerator.GetGeneratedClassName(x.Right))
-						.ToImmutableArray(),
-					GeneratedEffectDependenciesClassNames = x.Right
+						.Select(x => x.Right)
+						.ToImmutableArray()
+				})
+			.Combine(featureStateClassInfos.Collect())
+			.Select((x, _) =>
+				x.Left with {
+					FeatureStateClassInfos = x.Right
 						.Where(x => x.IsRight)
-						.Select(x => EffectGenerator.GetGeneratedClassName(x.Right))
+						.Select(x => x.Right)
 						.ToImmutableArray()
 				})
 			.Combine(reducerMethodInfos.Collect())
 			.Select((x, _) =>
 				x.Left with {
-					GeneratedReducerClassNames = x.Right
+					ReducerMethodInfos = x.Right
 						.Where(x => x.IsRight)
-						.Select(x => ReducerGenerator.GetGeneratedClassName(x.Right))
+						.Select(x => x.Right)
 						.ToImmutableArray()
 				});
-
-
 
 		context.RegisterSourceOutput(
 			discoveredClasses,
