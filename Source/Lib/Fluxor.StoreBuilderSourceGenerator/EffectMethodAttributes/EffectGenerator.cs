@@ -19,9 +19,12 @@ internal static class EffectGenerator
 		return Void.Value;
 	}
 
+	public static string GetGeneratedClassName(EffectMethodInfo effectMethodInfo) =>
+		$"{effectMethodInfo.ClassName}{effectMethodInfo.GetHashCode()}GeneratedFluxorEffect".Replace("-", "X");
+
 	private static string GenerateSourceCode(EffectMethodInfo effectMethodInfo)
 	{
-		string generatedClassName = $"{effectMethodInfo.ClassName}{effectMethodInfo.GetHashCode()}GeneratedFluxorEffect".Replace("-", "X");
+		string generatedClassName = GetGeneratedClassName(effectMethodInfo);
 
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");

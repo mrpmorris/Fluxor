@@ -5,95 +5,95 @@ using Fluxor.StoreBuilderSourceGenerator.ReducerMethodAttributes;
 using Microsoft.CodeAnalysis;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using System.Linq;
 
 namespace Fluxor.StoreBuilderSourceGenerator;
 
 [Generator]
-public class SourceGenerator : IIncrementalGenerator
+public partial class SourceGenerator : IIncrementalGenerator
 {
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		IncrementalValuesProvider<Either<CompilerError, FeatureStateClassInfo>> featureStateClassInfos =
-			FeatureStateClassesSelector.Select(context);
+		IncrementalValuesProvider<Either<CompilerError, EffectMethodInfo>> effectMethodInfos = GenerateEffectClassesForEffectMethods(context);
+		IncrementalValuesProvider<Either<CompilerError, FeatureStateClassInfo>> featureStateClassInfos = GenerateFeatureClassesForFeatureStateClasses(context);
+		IncrementalValuesProvider<Either<CompilerError, ReducerMethodInfo>> reducerMethodInfos = GenerateReducerClassesForReducerMethods(context);
 
-		IncrementalValuesProvider<Either<CompilerError, ReducerMethodInfo>> reducerMethodInfos =
-			ReducerMethodsSelector.Select(context);
-
-		IncrementalValuesProvider<Either<CompilerError, EffectMethodInfo>> effectMethodInfos =
-			EffectMethodsSelector.Select(context);
-
-		IncrementalValueProvider<ImmutableArray<string>> effectClassNames = EffectClassesSelector
+		IncrementalValueProvider<ImmutableArray<string>> discoveredEffectClassNames = EffectClassesSelector
 			.Select(context)
 			.Collect();
 
-		IncrementalValueProvider<ImmutableArray<string>> featureClassNames = FeatureClassesSelector
+		IncrementalValueProvider<ImmutableArray<string>> discoveredFeatureClassNames = FeatureClassesSelector
 			.Select(context)
 			.Collect();
 
-		IncrementalValueProvider<ImmutableArray<string>> middlewareClassNames = MiddlewareClassesSelector
+		IncrementalValueProvider<ImmutableArray<string>> discoveredMiddlewareClassNames = MiddlewareClassesSelector
 			.Select(context)
 			.Collect();
 
-		IncrementalValueProvider<ImmutableArray<string>> reducerClassNames = ReducerClassesSelector
+		IncrementalValueProvider<ImmutableArray<string>> discoveredReducerClassNames = ReducerClassesSelector
 			.Select(context)
 			.Collect();
 
 		var discoveredClasses =
-			effectClassNames
-			.Combine(featureClassNames)
+			discoveredEffectClassNames
+			.Combine(discoveredFeatureClassNames)
 			.Select((x, _) =>
-				new
-				{
-					EffectClassNames = x.Left,
-					FeatureClassNames = x.Right
+				new DiscoveredClasses {
+					DiscoveredEffectClassNames = x.Left,
+					DiscoveredFeatureClassNames = x.Right
 				})
-			.Combine(middlewareClassNames)
+			.Combine(discoveredMiddlewareClassNames)
 			.Select((x, _) =>
-				new
-				{
-					x.Left.EffectClassNames,
-					x.Left.FeatureClassNames,
-					MiddlewareClassNames = x.Right
+				x.Left with {
+					DiscoveredMiddlewareClassNames = x.Right
 				})
-			.Combine(reducerClassNames)
+			.Combine(discoveredReducerClassNames)
 			.Select((x, _) =>
-				new
-				{
-					x.Left.EffectClassNames,
-					x.Left.FeatureClassNames,
-					x.Left.MiddlewareClassNames,
-					ReducerClassNames = x.Right
+				x.Left with {
+					DiscoveredReducerClassNames = x.Right
+				})
+			.Combine(featureStateClassInfos.Collect())
+			.Select((x, _) =>
+				x.Left with {
+					GeneratedFeatureClassNames = x.Right
+						.Where(x => x.IsRight)
+						.Select(x => FeatureGenerator.GetGeneratedClassName(x.Right))
+						.ToImmutableArray()
+				})
+			.Combine(effectMethodInfos.Collect())
+			.Select((x, _) =>
+				x.Left with {
+					GeneratedEffectClassNames = x.Right
+						.Where(x => x.IsRight)
+						.Select(x => EffectGenerator.GetGeneratedClassName(x.Right))
+						.ToImmutableArray(),
+					GeneratedEffectDependenciesClassNames = x.Right
+						.Where(x => x.IsRight)
+						.Select(x => EffectGenerator.GetGeneratedClassName(x.Right))
+						.ToImmutableArray()
+				})
+			.Combine(reducerMethodInfos.Collect())
+			.Select((x, _) =>
+				x.Left with {
+					GeneratedReducerClassNames = x.Right
+						.Where(x => x.IsRight)
+						.Select(x => ReducerGenerator.GetGeneratedClassName(x.Right))
+						.ToImmutableArray()
 				});
 
-		//TODO: PeteM Add in generated names
+
 
 		context.RegisterSourceOutput(
 			discoveredClasses,
 			static (productionContext, discoveredClasses) =>
 			{
 			});
+	}
 
-		context.RegisterSourceOutput(
-			featureStateClassInfos,
-			static (productionContext, errorOrFeature) =>
-			{
-				_ = errorOrFeature.Match
-				(
-					error => AddCompilerError(productionContext, error),
-					featureStateClassInfo => FeatureGenerator.Generate(productionContext, featureStateClassInfo)
-				);
-			});
-
-		context.RegisterSourceOutput(
-			reducerMethodInfos,
-			static (productionContext, errorOrReducerMethod) =>
-			{
-				_ = errorOrReducerMethod.Match
-				(
-					error => AddCompilerError(productionContext, error),
-					reducerMethodInfo => ReducerGenerator.Generate(productionContext, reducerMethodInfo)
-				);
-			});
+	private static IncrementalValuesProvider<Either<CompilerError, EffectMethodInfo>> GenerateEffectClassesForEffectMethods(IncrementalGeneratorInitializationContext context)
+	{
+		IncrementalValuesProvider<Either<CompilerError, EffectMethodInfo>> effectMethodInfos =
+			EffectMethodsSelector.Select(context);
 
 		context.RegisterSourceOutput(
 			effectMethodInfos,
@@ -105,9 +105,43 @@ public class SourceGenerator : IIncrementalGenerator
 					effectMethodInfo => EffectGenerator.Generate(productionContext, effectMethodInfo)
 				);
 			});
+		return effectMethodInfos;
+	}
 
+	private static IncrementalValuesProvider<Either<CompilerError, FeatureStateClassInfo>> GenerateFeatureClassesForFeatureStateClasses(IncrementalGeneratorInitializationContext context)
+	{
+		IncrementalValuesProvider<Either<CompilerError, FeatureStateClassInfo>> featureStateClassInfos =
+			FeatureStateClassesSelector.Select(context);
 
+		context.RegisterSourceOutput(
+			featureStateClassInfos,
+			static (productionContext, errorOrFeature) =>
+			{
+				_ = errorOrFeature.Match
+				(
+					error => AddCompilerError(productionContext, error),
+					featureStateClassInfo => FeatureGenerator.Generate(productionContext, featureStateClassInfo)
+				);
+			});
+		return featureStateClassInfos;
+	}
 
+	private static IncrementalValuesProvider<Either<CompilerError, ReducerMethodInfo>> GenerateReducerClassesForReducerMethods(IncrementalGeneratorInitializationContext context)
+	{
+		IncrementalValuesProvider<Either<CompilerError, ReducerMethodInfo>> reducerMethodInfos =
+			ReducerMethodsSelector.Select(context);
+
+		context.RegisterSourceOutput(
+			reducerMethodInfos,
+			static (productionContext, errorOrReducerMethod) =>
+			{
+				_ = errorOrReducerMethod.Match
+				(
+					error => AddCompilerError(productionContext, error),
+					reducerMethodInfo => ReducerGenerator.Generate(productionContext, reducerMethodInfo)
+				);
+			});
+		return reducerMethodInfos;
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

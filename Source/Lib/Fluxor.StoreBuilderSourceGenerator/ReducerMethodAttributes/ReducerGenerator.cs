@@ -19,9 +19,12 @@ internal static class ReducerGenerator
 		return Void.Value;
 	}
 
+	public static string GetGeneratedClassName(ReducerMethodInfo reducerMethodInfo) =>
+		$"{reducerMethodInfo.ClassName}{reducerMethodInfo.GetHashCode()}GeneratedFluxorReducer".Replace("-", "X");
+
 	private static string GenerateSourceCode(ReducerMethodInfo reducerMethodInfo)
 	{
-		string generatedClassName = $"{reducerMethodInfo.ClassName}{reducerMethodInfo.GetHashCode()}GeneratedFluxorReducer".Replace("-", "X");
+		string generatedClassName = GetGeneratedClassName(reducerMethodInfo);
 
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");

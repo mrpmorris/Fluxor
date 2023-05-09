@@ -15,9 +15,12 @@ internal static class FeatureGenerator
 		return Void.Value;
 	}
 
+	public static string GetGeneratedClassName(FeatureStateClassInfo featureStateClassInfo) =>
+		$"{featureStateClassInfo.ClassName}GeneratedFluxorFeature";
+
 	private static string GenerateSourceCode(FeatureStateClassInfo featureStateClassInfo)
 	{
-		string generatedClassName = $"{featureStateClassInfo.ClassName}GeneratedFluxorFeature";
+		string generatedClassName = GetGeneratedClassName(featureStateClassInfo);
 
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");
