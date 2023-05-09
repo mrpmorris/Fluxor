@@ -65,6 +65,8 @@ public class SourceGenerator : IIncrementalGenerator
 					ReducerClassNames = x.Right
 				});
 
+		//TODO: PeteM Add in generated names
+
 		context.RegisterSourceOutput(
 			discoveredClasses,
 			static (productionContext, discoveredClasses) =>

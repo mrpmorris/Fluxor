@@ -29,4 +29,5 @@ internal static class EffectClassesSelector
 
 		return provider;
 	}
+
 }
