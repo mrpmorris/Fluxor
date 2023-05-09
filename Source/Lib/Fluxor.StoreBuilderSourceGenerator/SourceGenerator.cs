@@ -14,6 +14,7 @@ public partial class SourceGenerator : IIncrementalGenerator
 {
 	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
+		IncrementalValueProvider<string> rootNamespace = GetRootNameSpace(context);
 		IncrementalValuesProvider<Either<CompilerError, EffectMethodInfo>> effectMethodInfos = GenerateEffectClassesForEffectMethods(context);
 		IncrementalValuesProvider<Either<CompilerError, FeatureStateClassInfo>> featureStateClassInfos = GenerateFeatureClassesForFeatureStateClasses(context);
 		IncrementalValuesProvider<Either<CompilerError, ReducerMethodInfo>> reducerMethodInfos = GenerateReducerClassesForReducerMethods(context);
@@ -75,14 +76,22 @@ public partial class SourceGenerator : IIncrementalGenerator
 						.Where(x => x.IsRight)
 						.Select(x => x.Right)
 						.ToImmutableArray()
-				});
+				})
+			.Combine(rootNamespace);
 
 		context.RegisterSourceOutput(
 			discoveredClasses,
-			static (productionContext, discoveredClasses) =>
+			static (productionContext, source) =>
 			{
+				var discoveredClasses = source.Left;
+				string rootNamespace = source.Right;
+				FluxorModuleGenerator.Generate(productionContext, rootNamespace, discoveredClasses);
 			});
 	}
+
+	private static IncrementalValueProvider<string> GetRootNameSpace(IncrementalGeneratorInitializationContext context) =>
+		context.AnalyzerConfigOptionsProvider.Select((x, _) =>
+			x.GlobalOptions.TryGetValue("build_property.RootNamespace", out string value) ? value : "");
 
 	private static IncrementalValuesProvider<Either<CompilerError, EffectMethodInfo>> GenerateEffectClassesForEffectMethods(IncrementalGeneratorInitializationContext context)
 	{
