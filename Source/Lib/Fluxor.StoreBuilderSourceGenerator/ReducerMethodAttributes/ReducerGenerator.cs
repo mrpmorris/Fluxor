@@ -11,7 +11,7 @@ internal static class ReducerGenerator
 	public static Void Generate(SourceProductionContext productionContext, ReducerMethodInfo reducerMethodInfo)
 	{
 		string fileName =
-			$"{reducerMethodInfo.ClassFullName}.{reducerMethodInfo.MethodName}.Fluxor.Reducer.{reducerMethodInfo.GetHashCode()}.cs"
+			$"{reducerMethodInfo.ClassFullName}.{reducerMethodInfo.MethodName}.Fluxor.Reducer.{reducerMethodInfo.GetHashCode():X}.cs"
 			.Replace("-", "X");
 
 		string sourceCode = GenerateSourceCode(reducerMethodInfo);
@@ -20,7 +20,7 @@ internal static class ReducerGenerator
 	}
 
 	public static string GetGeneratedClassName(ReducerMethodInfo reducerMethodInfo) =>
-		$"{reducerMethodInfo.ClassName}{reducerMethodInfo.GetHashCode()}GeneratedFluxorReducer".Replace("-", "X");
+		$"{reducerMethodInfo.ClassName}{reducerMethodInfo.GetHashCode():X}GeneratedFluxorReducer".Replace("-", "X");
 
 	private static string GenerateSourceCode(ReducerMethodInfo reducerMethodInfo)
 	{
