@@ -11,7 +11,7 @@ internal static class EffectGenerator
 	public static Void Generate(SourceProductionContext productionContext, EffectMethodInfo effectMethodInfo)
 	{
 		string fileName =
-		$"{effectMethodInfo.ClassFullName}.{effectMethodInfo.MethodName}.Fluxor.Effect.{effectMethodInfo.GetHashCode()}.cs"
+		$"{effectMethodInfo.ClassFullName}.{effectMethodInfo.MethodName}.Fluxor.Effect.{effectMethodInfo.GetHashCode():X}.cs"
 			.Replace("-", "X");
 
 		string sourceCode = GenerateSourceCode(effectMethodInfo);
@@ -20,7 +20,7 @@ internal static class EffectGenerator
 	}
 
 	public static string GetGeneratedClassName(EffectMethodInfo effectMethodInfo) =>
-		$"{effectMethodInfo.ClassName}{effectMethodInfo.GetHashCode()}GeneratedFluxorEffect".Replace("-", "X");
+		$"{effectMethodInfo.ClassName}{effectMethodInfo.GetHashCode():X}GeneratedFluxorEffect".Replace("-", "X");
 
 	private static string GenerateSourceCode(EffectMethodInfo effectMethodInfo)
 	{
