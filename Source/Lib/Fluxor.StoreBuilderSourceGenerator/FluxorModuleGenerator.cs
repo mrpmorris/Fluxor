@@ -26,7 +26,6 @@ internal class FluxorModuleGenerator
 
 		bool hasNamespace = rootNamespace is not null && rootNamespace.Length > 0;
 
-		writer.WriteLine("using System.Collections.Immutable;");
 		if (hasNamespace)
 		{
 			writer.WriteLine($"namespace {rootNamespace}");
@@ -71,7 +70,7 @@ internal class FluxorModuleGenerator
 		string[] middlewareClassNames = discoveredClasses.DiscoveredMiddlewareClassNames.ToArray();
 		string[] reducerClassNames = generatedReducerClassNames.Union(discoveredClasses.DiscoveredReducerClassNames).Distinct().ToArray();
 
-		writer.WriteLine("public static class FluxorModule");
+		writer.WriteLine("public partial class FluxorModule : Fluxor.IFluxorModule");
 		using (writer.CodeBlock())
 		{
 			GenerateClassArrayPropertySource(writer, "Dependencies", dependencies);
@@ -84,7 +83,8 @@ internal class FluxorModuleGenerator
 
 	private static void GenerateClassArrayPropertySource(IndentedTextWriter writer, string propertyName, string[] classes)
 	{
-		writer.WriteLine($"public static readonly ImmutableArray<System.Type> {propertyName} = new System.Type[]");
+		writer.WriteLine($"public System.Collections.Generic.IEnumerable<System.Type> {propertyName} => _{propertyName};");
+		writer.WriteLine($"private System.Collections.Generic.IEnumerable<System.Type> _{propertyName} = new System.Collections.Generic.List<System.Type>");
 		writer.Indent++;
 		writer.WriteLine("{");
 		writer.Indent++;
@@ -95,7 +95,7 @@ internal class FluxorModuleGenerator
 		}
 		writer.Indent--;
 		writer.WriteLine("}");
-		writer.WriteLine(".ToImmutableArray();\r\n");
+		writer.WriteLine(".AsReadOnly();\r\n");
 		writer.Indent--;
 	}
 }
