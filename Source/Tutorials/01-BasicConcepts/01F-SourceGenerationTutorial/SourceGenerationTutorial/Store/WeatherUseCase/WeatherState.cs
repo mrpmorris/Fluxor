@@ -1,9 +1,9 @@
-﻿using Fluxor;
-using FluxorBlazorWeb.EffectsTutorial.Shared;
+﻿using BasicConcepts.SourceGenerationTutorial.Shared;
+using Fluxor;
 using System;
 using System.Collections.Generic;
 
-namespace FluxorBlazorWeb.EffectsTutorial.Client.Store.WeatherUseCase
+namespace BasicConcepts.SourceGenerationTutorial.Store.WeatherUseCase
 {
 	[FeatureState]
 	public class WeatherState

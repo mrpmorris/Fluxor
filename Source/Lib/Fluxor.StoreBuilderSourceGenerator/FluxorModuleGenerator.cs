@@ -1,6 +1,7 @@
 ﻿using Fluxor.StoreBuilderSourceGenerator.EffectMethodAttributes;
 using Fluxor.StoreBuilderSourceGenerator.Extensions;
 using Fluxor.StoreBuilderSourceGenerator.FeatureStateAttributes;
+using Fluxor.StoreBuilderSourceGenerator.Helpers;
 using Fluxor.StoreBuilderSourceGenerator.ReducerMethodAttributes;
 using Microsoft.CodeAnalysis;
 using System;
@@ -46,9 +47,18 @@ internal class FluxorModuleGenerator
 
 	private static void GenerateClassSource(IndentedTextWriter writer, DiscoveredClasses discoveredClasses)
 	{
-		string[] generatedEffectClassNames = discoveredClasses.EffectMethodInfos.Select(EffectGenerator.GetGeneratedClassName).ToArray();
-		string[] generatedFeatureClassNames = discoveredClasses.FeatureStateClassInfos.Select(FeatureGenerator.GetGeneratedClassName).ToArray();
-		string[] generatedReducerClassNames = discoveredClasses.ReducerMethodInfos.Select(ReducerGenerator.GetGeneratedClassName).ToArray();
+		string[] generatedEffectClassNames = discoveredClasses.EffectMethodInfos
+			.Select(x => NamespaceHelper.Combine(x.ClassNamespace, EffectGenerator.GetGeneratedClassName(x)))
+			.ToArray();
+		
+		string[] generatedFeatureClassNames = discoveredClasses.FeatureStateClassInfos
+			.Select(x => NamespaceHelper.Combine(x.ClassNamespace, FeatureGenerator.GetGeneratedClassName(x)))
+			.ToArray();
+
+		string[] generatedReducerClassNames = discoveredClasses.ReducerMethodInfos
+			.Select(x => NamespaceHelper.Combine(x.ClassNamespace, ReducerGenerator.GetGeneratedClassName(x)))
+			.ToArray();
+
 		string[] dependencies = discoveredClasses
 			.EffectMethodInfos
 			.Where(x => !x.IsStatic)
@@ -74,7 +84,9 @@ internal class FluxorModuleGenerator
 
 	private static void GenerateClassArrayPropertySource(IndentedTextWriter writer, string propertyName, string[] classes)
 	{
-		writer.WriteLine($"public static readonly ImmutableArray<Type> {propertyName} = new Type[] {{");
+		writer.WriteLine($"public static readonly ImmutableArray<System.Type> {propertyName} = new System.Type[]");
+		writer.Indent++;
+		writer.WriteLine("{");
 		writer.Indent++;
 		for(int i = 0; i < classes.Length; i++)
 		{
@@ -82,6 +94,8 @@ internal class FluxorModuleGenerator
 			writer.WriteLine($"typeof({className}),");
 		}
 		writer.Indent--;
-		writer.WriteLine("}.ToImmutableArray();");
+		writer.WriteLine("}");
+		writer.WriteLine(".ToImmutableArray();\r\n");
+		writer.Indent--;
 	}
 }

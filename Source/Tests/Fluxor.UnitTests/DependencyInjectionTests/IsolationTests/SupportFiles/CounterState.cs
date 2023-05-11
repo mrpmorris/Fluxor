@@ -5,7 +5,8 @@
 	{
 		public int Counter { get; private set; }
 
-		public CounterState() { }
+		private CounterState() { }
+
 		public CounterState(int counter)
 		{
 			Counter = counter;
