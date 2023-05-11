@@ -1,6 +1,6 @@
 ﻿using Fluxor;
 
-namespace BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase
+namespace BasicConcepts.ActionSubscriberTutorial.Store.EditCustomerUseCase
 {
 	public static class Reducers
 	{

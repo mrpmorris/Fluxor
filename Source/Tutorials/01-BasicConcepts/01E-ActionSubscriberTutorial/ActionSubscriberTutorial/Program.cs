@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace BasicConcepts.ActionSubscriber
+namespace BasicConcepts.ActionSubscriberTutorial
 {
 	class Program
 	{

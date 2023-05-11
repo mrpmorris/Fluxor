@@ -1,10 +1,12 @@
-﻿using BasicConcepts.ActionSubscriber.ApiObjects;
+﻿using BasicConcepts.ActionSubscriber.Store;
+using BasicConcepts.ActionSubscriberTutorial.ApiObjects;
+using BasicConcepts.ActionSubscriberTutorial.Store;
 using Fluxor;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
-namespace BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase
+namespace BasicConcepts.ActionSubscriberTutorial.Store.EditCustomerUseCase
 {
 	public class Effects
 	{
