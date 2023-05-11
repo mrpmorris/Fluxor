@@ -31,6 +31,13 @@ namespace Fluxor.DependencyInjection
 			Services = services;
 		}
 
+		public FluxorOptions ImportModules(
+			IFluxorModule moduleToImport,
+			params IFluxorModule[] additionalModulesToImport)
+		{
+			return this;
+		}
+
 		public FluxorOptions ScanTypes(
 			Type typeToScan,
 			params Type[] additionalTypesToScan)

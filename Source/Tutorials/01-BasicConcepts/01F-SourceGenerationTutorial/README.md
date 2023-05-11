@@ -31,37 +31,13 @@ named `FluxorModule.cs`.
 using System.Collections.Immutable;
 namespace BasicConcepts.SourceGenerationTutorial
 {
-	public static class FluxorModule
+	public class FluxorModule : Fluxor.IFluxorModule
 	{
-		public static readonly ImmutableArray<System.Type> Dependencies = new System.Type[]
-			{
-				// Classes
-			}
-			.ToImmutableArray();
-
-		public static readonly ImmutableArray<System.Type> Effects = new System.Type[]
-			{
-				// Classes
-			}
-			.ToImmutableArray();
-
-		public static readonly ImmutableArray<System.Type> Features = new System.Type[]
-			{
-				// Classes
-			}
-			.ToImmutableArray();
-
-		public static readonly ImmutableArray<System.Type> Middlewares = new System.Type[]
-			{
-				// Classes
-			}
-			.ToImmutableArray();
-
-		public static readonly ImmutableArray<System.Type> Reducers = new System.Type[]
-			{
-				// Classes
-			}
-			.ToImmutableArray();
+		public IEnumerable<System.Type> Dependencies => // Classes
+		public IEnumerable<System.Type> Effects => // Classes
+		public IEnumerable<System.Type> Features => // Classes
+		public IEnumerable<System.Type> Middlewares => // Classes
+		public IEnumerable<System.Type> Reducers => // Classes
 	}
 }
 ```
@@ -80,7 +56,8 @@ decorated methods, or a class that implements `Fluxor.IEffect`.
 decorated methods, or a class that implements `Fluxor.IReducer<TState>`.
 
 #### Bootstrapping our app
-Replace the `ScanAssemblies` method call in `Program.cs` with `ImportModules`.
+Replace the `ScanAssemblies` method call in `Program.cs` with `ImportModules`, and pass in
+a collection of module instances you wish to import.
 
 ```c#
 static void Main(string[] args)
@@ -88,7 +65,7 @@ static void Main(string[] args)
   var services = new ServiceCollection();
   services.AddScoped<App>();
   services.AddFluxor(o => o
-    .ImportModules(typeof(Program).Assembly));
+    .ImportModules(new MyAppNamespace.FluxorModule());
 
   IServiceProvider serviceProvider = services.BuildServiceProvider();
 
