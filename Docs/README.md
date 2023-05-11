@@ -20,7 +20,7 @@ state combined with the changes expected for the action.
 * [State, actions, and reducers](../Source/Tutorials/01-BasicConcepts/01A-StateActionsReducersTutorial/)
 * [Effects](../Source/Tutorials/01-BasicConcepts/01B-EffectsTutorial/)
 * [Middleware](../Source/Tutorials/01-BasicConcepts/01C-MiddlewareTutorial/)
-* [ActionSubscriber](../Source/Tutorials/01-BasicConcepts/01E-ActionSubscriber/)
+* [ActionSubscriber](../Source/Tutorials/01-BasicConcepts/01E-ActionSubscriberTutorial/)
 
 ### Blazor for web
 
@@ -28,3 +28,4 @@ state combined with the changes expected for the action.
 * [Effects](../Source/Tutorials/02-Blazor/02B-EffectsTutorial/)
 * [Middleware](../Source/Tutorials/02-Blazor/02C-MiddlewareTutorial/)
 * [Redux Dev Tools](../Source/Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/)
+* [ActionSubscriber](../Source/Tutorials/02-Blazor/02E-ActionSubscriberTutorial/)

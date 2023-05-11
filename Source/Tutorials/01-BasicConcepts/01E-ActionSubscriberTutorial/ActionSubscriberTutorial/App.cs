@@ -1,10 +1,10 @@
-﻿using BasicConcepts.ActionSubscriber.Store;
-using BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase;
+﻿using BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase;
+using BasicConcepts.ActionSubscriberTutorial.Store;
 using Fluxor;
 using Newtonsoft.Json;
 using System;
 
-namespace BasicConcepts.ActionSubscriber
+namespace BasicConcepts.ActionSubscriberTutorial
 {
 	public class App : IDisposable
 	{
