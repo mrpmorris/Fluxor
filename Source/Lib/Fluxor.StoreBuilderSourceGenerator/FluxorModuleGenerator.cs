@@ -84,7 +84,7 @@ internal class FluxorModuleGenerator
 	private static void GenerateClassArrayPropertySource(IndentedTextWriter writer, string propertyName, string[] classes)
 	{
 		writer.WriteLine($"public System.Collections.Generic.IEnumerable<System.Type> {propertyName} => _{propertyName};");
-		writer.WriteLine($"private System.Collections.Generic.IEnumerable<System.Type> _{propertyName} = new System.Collections.Generic.List<System.Type>");
+		writer.WriteLine($"private static readonly System.Collections.Generic.IEnumerable<System.Type> _{propertyName} = new System.Collections.Generic.List<System.Type>");
 		writer.Indent++;
 		writer.WriteLine("{");
 		writer.Indent++;

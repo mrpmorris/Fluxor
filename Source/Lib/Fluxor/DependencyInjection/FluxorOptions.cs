@@ -13,6 +13,7 @@ namespace Fluxor.DependencyInjection
 	public class FluxorOptions
 	{
 		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = Array.Empty<AssemblyScanSettings>();
+		internal IFluxorModule[] ModulesToImport { get; private set; } = Array.Empty<IFluxorModule>();
 		internal Type[] TypesToScan { get; private set; } = Array.Empty<Type>();
 		internal Type[] MiddlewareTypes = Array.Empty<Type>();
 		internal StoreLifetime StoreLifetime { get; set; } = StoreLifetime.Scoped;
@@ -35,6 +36,17 @@ namespace Fluxor.DependencyInjection
 			IFluxorModule moduleToImport,
 			params IFluxorModule[] additionalModulesToImport)
 		{
+			if (moduleToImport is null)
+				throw new ArgumentNullException(nameof(moduleToImport));
+
+			var allModules = new List<IFluxorModule>() { moduleToImport };
+			if (additionalModulesToImport is not null)
+				allModules.AddRange(additionalModulesToImport);
+
+			ModulesToImport = ModulesToImport
+				.Union(allModules)
+				.Distinct(new TypeEqualityComparer<IFluxorModule>())
+				.ToArray();
 			return this;
 		}
 
