@@ -29,8 +29,6 @@ internal static class EffectGenerator
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");
 
-		WriteClassRegistration(writer, effectMethodInfo, generatedClassName);
-
 		writer.WriteLine($"namespace {effectMethodInfo.ClassNamespace}");
 		using (writer.CodeBlock())
 		{
@@ -41,20 +39,9 @@ internal static class EffectGenerator
 		return result.ToString();
 	}
 
-	private static void WriteClassRegistration(IndentedTextWriter writer, EffectMethodInfo effectMethodInfo, string generatedClassName)
-	{
-		string implementingClassArgument =
-			effectMethodInfo.IsStatic
-			? ""
-			: $", ImplementingClass = typeof({effectMethodInfo.ClassFullName})";
-
-		string classFullName = NamespaceHelper.Combine(effectMethodInfo.ClassNamespace, generatedClassName);
-		writer.WriteLine($"[assembly:Fluxor.CodeGeneratorAttributes.DiscoveredEffect(typeof({classFullName}){implementingClassArgument})]\r\n");
-	}
-
 	private static void WriteClass(IndentedTextWriter writer, EffectMethodInfo effectMethodInfo, string generatedClassName)
 	{
-		writer.WriteLine($"internal sealed class {generatedClassName} : Effect<{effectMethodInfo.ActionClassFullName}>");
+		writer.WriteLine($"internal sealed class {generatedClassName} : Fluxor.Effect<{effectMethodInfo.ActionClassFullName}>");
 		using (writer.CodeBlock())
 		{
 			if (!effectMethodInfo.IsStatic)

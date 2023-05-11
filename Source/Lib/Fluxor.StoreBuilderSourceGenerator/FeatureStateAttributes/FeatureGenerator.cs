@@ -25,8 +25,6 @@ internal static class FeatureGenerator
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");
 
-		WriteClassRegistration(writer, featureStateClassInfo, generatedClassName);
-
 		writer.WriteLine($"namespace {featureStateClassInfo.ClassNamespace}");
 		using (writer.CodeBlock())
 		{
@@ -37,15 +35,9 @@ internal static class FeatureGenerator
 		return result.ToString();
 	}
 
-	private static void WriteClassRegistration(IndentedTextWriter writer, FeatureStateClassInfo featureStateClassInfo, string generatedClassName)
-	{
-		string classFullName = NamespaceHelper.Combine(featureStateClassInfo.ClassNamespace, generatedClassName);
-		writer.WriteLine($"[assembly:Fluxor.CodeGeneratorAttributes.DiscoveredFeature(typeof({classFullName}))]\r\n");
-	}
-
 	private static void WriteClass(IndentedTextWriter writer, FeatureStateClassInfo featureStateClassInfo, string generatedClassName)
 	{
-		writer.WriteLine($"internal sealed class {generatedClassName} : Feature<{featureStateClassInfo.ClassName}>");
+		writer.WriteLine($"internal sealed class {generatedClassName} : Fluxor.Feature<{featureStateClassInfo.ClassName}>");
 		using (writer.CodeBlock())
 		{
 			OverrideGetName(writer, featureStateClassInfo);
@@ -74,7 +66,7 @@ internal static class FeatureGenerator
 	{
 		string creationCode =
 			featureStateClassInfo.CreateInitialStateMethodName is null
-			? $"new {featureStateClassInfo.ClassFullName}()"
+			? $"System.Activator.CreateInstance<{featureStateClassInfo.ClassFullName}>()"
 			: $"{featureStateClassInfo.ClassFullName}.{featureStateClassInfo.CreateInitialStateMethodName}()";
 
 		writer.WriteLine($"protected override {featureStateClassInfo.ClassFullName} GetInitialState() =>");

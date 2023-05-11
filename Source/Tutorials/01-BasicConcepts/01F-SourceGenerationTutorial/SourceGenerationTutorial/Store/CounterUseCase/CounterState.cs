@@ -1,13 +1,13 @@
 ﻿using Fluxor;
 
-namespace BasicConcepts.StateActionsReducersTutorial.Store.CounterUseCase
+namespace BasicConcepts.SourceGenerationTutorial.Store.CounterUseCase
 {
 	[FeatureState]
 	public class CounterState
 	{
 		public int ClickCount { get; }
 
-		private CounterState() { }
+		public CounterState() { }
 
 		public CounterState(int clickCount)
 		{

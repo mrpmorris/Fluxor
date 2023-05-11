@@ -29,8 +29,6 @@ internal static class ReducerGenerator
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");
 
-		WriteClassRegistration(writer, reducerMethodInfo, generatedClassName);
-
 		writer.WriteLine($"namespace {reducerMethodInfo.ClassNamespace}");
 		using (writer.CodeBlock())
 		{
@@ -41,15 +39,9 @@ internal static class ReducerGenerator
 		return result.ToString();
 	}
 
-	private static void WriteClassRegistration(IndentedTextWriter writer, ReducerMethodInfo reducerMethodInfo, string generatedClassName)
-	{
-		string classFullName = NamespaceHelper.Combine(reducerMethodInfo.ClassNamespace, generatedClassName);
-		writer.WriteLine($"[assembly:Fluxor.CodeGeneratorAttributes.DiscoveredReducer(typeof({classFullName}))]\r\n");
-	}
-
 	private static void WriteClass(IndentedTextWriter writer, ReducerMethodInfo reducerMethodInfo, string generatedClassName)
 	{
-		writer.WriteLine($"internal sealed class {generatedClassName} : Reducer<{reducerMethodInfo.StateClassFullName}, {reducerMethodInfo.ActionClassFullName}>");
+		writer.WriteLine($"internal sealed class {generatedClassName} : Fluxor.Reducer<{reducerMethodInfo.StateClassFullName}, {reducerMethodInfo.ActionClassFullName}>");
 		using (writer.CodeBlock())
 		{
 			OverrideReduce(writer, reducerMethodInfo);
