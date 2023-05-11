@@ -23,9 +23,64 @@ attributes
 OutputItemType="Analyzer" ReferenceOutputAssembly="false"
 ```
 
+Next, expand the project's `Dependencies` node, then `Analyzers`, then `Fluxor.StoreBuilderSourceGenerator` and observe
+the auto-generated files. You can open these files and inspect them, the file of interest is
+named `FluxorModule.cs`.
+
+```c#
+using System.Collections.Immutable;
+namespace BasicConcepts.SourceGenerationTutorial
+{
+	public static class FluxorModule
+	{
+		public static readonly ImmutableArray<System.Type> Dependencies = new System.Type[]
+			{
+				// Classes
+			}
+			.ToImmutableArray();
+
+		public static readonly ImmutableArray<System.Type> Effects = new System.Type[]
+			{
+				// Classes
+			}
+			.ToImmutableArray();
+
+		public static readonly ImmutableArray<System.Type> Features = new System.Type[]
+			{
+				// Classes
+			}
+			.ToImmutableArray();
+
+		public static readonly ImmutableArray<System.Type> Middlewares = new System.Type[]
+			{
+				// Classes
+			}
+			.ToImmutableArray();
+
+		public static readonly ImmutableArray<System.Type> Reducers = new System.Type[]
+			{
+				// Classes
+			}
+			.ToImmutableArray();
+	}
+}
+```
+
+1. **Dependencies:** A list of classes that are required for the generated `Effects` classes.
+An `[EffectMethod]` may decorate an instance member on a class (unlike '[ReducerMethod]` which can
+only decorate a static method). Because of this, the generated `Effect` method will need an instance
+of the class that implements the `[EffectMethod]` code.  The `Dependencies` property lists these
+types so they may be registered with your dependency injection container.
+1. **Effects:** A list of `Effect` classes in the assembly, whether generated from `[EffectMethod]`
+decorated methods, or a class that implements `Fluxor.IEffect`.
+1. **Features:** A list of `Feature` classes in the assembly, whether generated from
+`[FeatureState]` decorated classes, or a class that implements `IFeature`.
+1. **Middlewares:** A list of `Middleware` classes in the assembly that implement `Fluxor.IMiddleware`.
+1. **Reducers:** A list of `Reducer` classes in the assembly, whether generated from `[ReducerMethod]`
+decorated methods, or a class that implements `Fluxor.IReducer<TState>`.
 
 #### Bootstrapping our app
-Replace the `Main` method in `Program.cs` to execute our test app.
+Replace the `ScanAssemblies` method call in `Program.cs` with `ImportModules`.
 
 ```c#
 static void Main(string[] args)
@@ -33,7 +88,7 @@ static void Main(string[] args)
   var services = new ServiceCollection();
   services.AddScoped<App>();
   services.AddFluxor(o => o
-    .ScanAssemblies(typeof(Program).Assembly));
+    .ImportModules(typeof(Program).Assembly));
 
   IServiceProvider serviceProvider = services.BuildServiceProvider();
 
@@ -42,39 +97,7 @@ static void Main(string[] args)
 }
 ```
 
-#### Subscribing to actions
-Edit the `App` class and implement the following two methods:
-
-```c#
-private void SubscribeToResultAction()
-{
-  Console.WriteLine($"Subscribing to action {nameof(GetCustomerForEditResultAction)}");
-  ActionSubscriber.SubscribeToAction<GetCustomerForEditResultAction>(this, action =>
-  {
-    // Show the object from the server in the console
-    string jsonToShowInConsole = JsonConvert.SerializeObject(action.Customer, Formatting.Indented);
-    Console.WriteLine("Action notification: " + action.GetType().Name);
-    Console.WriteLine(jsonToShowInConsole);
-  });
-}
-
-void IDisposable.Dispose()
-{
-  // IMPORTANT: Unsubscribe to avoid memory leaks!
-  ActionSubscriber.UnsubscribeFromAllActions(this);
-}
-```
-
 ### Running our app
 
-If we run our app now, and select option 1 (and press enter), our
-console output should look something like this.
-
-```
-> Action notification: GetCustomerForEditResultAction
-{
-  "Id": 42,
-  "RowVersion": "AQIDBAUGBwgJCgsMDQ4PEA==",
-  "Name": "Our first customer"
-}
-```
+If we run our app now, and select option 1 or option 2, we should see the
+same output as our Effects Tutorial project.
