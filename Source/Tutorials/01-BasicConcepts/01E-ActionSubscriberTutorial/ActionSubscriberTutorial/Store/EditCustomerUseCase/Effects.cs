@@ -1,6 +1,4 @@
-﻿using BasicConcepts.ActionSubscriber.Store;
-using BasicConcepts.ActionSubscriberTutorial.ApiObjects;
-using BasicConcepts.ActionSubscriberTutorial.Store;
+﻿using BasicConcepts.ActionSubscriberTutorial.ApiObjects;
 using Fluxor;
 using Newtonsoft.Json;
 using System;
