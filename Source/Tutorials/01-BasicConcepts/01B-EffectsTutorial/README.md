@@ -310,7 +310,7 @@ action into state.
 
 ```c#
 [ReducerMethod]
-public static WeatherState ReduceFetchDataResultAction(FetchDataResultAction action, WeatherState state) =>
+public static WeatherState ReduceFetchDataResultAction(WeatherState state, FetchDataResultAction action) =>
   new WeatherState(
     isLoading: false,
     forecasts: action.Forecasts);

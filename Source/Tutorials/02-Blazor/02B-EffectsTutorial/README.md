@@ -201,7 +201,7 @@ in mind the following
 1. An `[EffectMethod]` can be declared either as static or instance.
 2. If declared as an instance method, then an instance of the owning class will be created.
 3. Instance methods' dependencies will be injected.
-4. Only once instance of each owning class will be created, this means that multiple
+4. Only one instance of each owning class will be created, this means that multiple
   `[EffectMethod]`s can share property values (i.e. a CancellationToken).
 
 I recommend you use approach 1 (static methods) when you do not need to access values in the action object,
