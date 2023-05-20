@@ -132,7 +132,7 @@ to descend from this component, you can instead subcribe to the `StateChanged` e
 `InvokeAsync(StateHasChanged)`. If you do use the event, remember to implement `IDisposable` and
 unsubscribe from the event too, otherwise your app will leak memory.*
 
-Running the app will now show a `0` value fo the current count, but clicking the "Click me" button does nothing.
+Running the app will now show a `0` value for the current count, but clicking the "Click me" button does nothing.
 
 #### Using an Action and a Reducer to alter state
 
