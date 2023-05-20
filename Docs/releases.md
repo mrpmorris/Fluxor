@@ -1,5 +1,8 @@
 # Releases
 
+## New in 5.8
+* Fixes potential for deadlock ([#407](https://github.com/mrpmorris/Fluxor/issues/407))
+
 ## New in 5.7
 * Fixes memory leak when using `ActionSubscriber` or `SubscribeToAction` ([#378](https://github.com/mrpmorris/Fluxor/issues/378))
 
