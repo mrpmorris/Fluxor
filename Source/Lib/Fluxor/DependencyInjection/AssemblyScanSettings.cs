@@ -28,7 +28,7 @@ namespace Fluxor.DependencyInjection
 
 		public static Type[] FilterClasses(
 			IEnumerable<Type> types,
-			IEnumerable<AssemblyScanSettings> scanExcludeList,
+			IEnumerable<AssemblyAndNamespace> scanExcludeList,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
 			=> types
 					.Where(t =>
@@ -76,8 +76,7 @@ namespace Fluxor.DependencyInjection
 
 			return
 				other.Assembly.FullName == Assembly.FullName
-				&& other.Namespace is not null
-				&& other.Namespace.Equals(Namespace, StringComparison.InvariantCultureIgnoreCase);
+				&& string.Equals(Namespace, other.Namespace, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		public override int GetHashCode()
