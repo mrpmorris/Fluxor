@@ -13,20 +13,28 @@ namespace Fluxor.DependencyInjection
 		internal static void Scan(
 			this IServiceCollection services,
 			FluxorOptions options,
+			IEnumerable<IFluxorModule> modulesToImport,
 			IEnumerable<Type> typesToScan,
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
 		{
+			modulesToImport ??= Array.Empty<IFluxorModule>();
+			typesToScan ??= Array.Empty<Type>();
+			assembliesToScan ??= Array.Empty<AssemblyScanSettings>();
+
 			int totalScanSources = 0;
-			totalScanSources += assembliesToScan?.Count() ?? 0;
-			totalScanSources += typesToScan?.Count() ?? 0;
+			totalScanSources += assembliesToScan.Count();
+			totalScanSources += typesToScan.Count();
+			totalScanSources += modulesToImport.Count();
 
 			if (totalScanSources < 1)
-				throw new ArgumentException($"Must supply either {typesToScan} or {assembliesToScan}");
+				throw new ArgumentException(
+					$"Must supply either {nameof(typesToScan)}, {nameof(assembliesToScan)}, or {nameof(modulesToImport)}");
 
 			GetCandidateTypes(
 				assembliesToScan: assembliesToScan,
 				typesToScan: typesToScan,
+				modulesToImport: modulesToImport,
 				scanIncludeList: scanIncludeList ?? new List<AssemblyScanSettings>(),
 				allCandidateTypes: out Type[] allCandidateTypes,
 				allNonAbstractCandidateTypes: out Type[] allNonAbstractCandidateTypes);
@@ -79,6 +87,7 @@ namespace Fluxor.DependencyInjection
 			IEnumerable<AssemblyScanSettings> assembliesToScan,
 			IEnumerable<Type> typesToScan,
 			IEnumerable<AssemblyScanSettings> scanIncludeList,
+			IEnumerable<IFluxorModule> modulesToImport,
 			out Type[] allCandidateTypes,
 			out Type[] allNonAbstractCandidateTypes)
 		{
@@ -89,8 +98,10 @@ namespace Fluxor.DependencyInjection
 					.Distinct()
 					.ToArray();
 
-			AssemblyScanSettings[] scanExcludeList =
-				MiddlewareClassesDiscovery.FindMiddlewareLocations(allCandidateAssemblies);
+			AssemblyAndNamespace[] scanExcludeList =
+				MiddlewareClassesDiscovery.FindMiddlewareLocations(
+					allCandidateAssemblies,
+					modulesToImport);
 
 			allCandidateTypes = AssemblyScanSettings.FilterClasses(
 				scanExcludeList: scanExcludeList,

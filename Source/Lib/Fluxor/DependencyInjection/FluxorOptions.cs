@@ -13,10 +13,10 @@ namespace Fluxor.DependencyInjection
 	public class FluxorOptions
 	{
 		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = Array.Empty<AssemblyScanSettings>();
-		internal IFluxorModule[] ModulesToImport { get; private set; } = Array.Empty<IFluxorModule>();
-		internal Type[] TypesToScan { get; private set; } = Array.Empty<Type>();
 		internal Type[] MiddlewareTypes = Array.Empty<Type>();
+		internal IFluxorModule[] ModulesToImport { get; private set; } = Array.Empty<IFluxorModule>();
 		internal StoreLifetime StoreLifetime { get; set; } = StoreLifetime.Scoped;
+		internal Type[] TypesToScan { get; private set; } = Array.Empty<Type>();
 
 		/// <summary>
 		/// Service collection for registering services
