@@ -13,7 +13,7 @@ namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchWhileInitializingTe
 		private readonly IFeature<CounterState> Feature;
 
 		[Fact]
-		public async Task WhenObserverSubscribesToAnAction_AndDispatchesAnActionFromANewThread_ThenThereShouldBeNoDeadlock()
+		public async Task WhenInitializeTakesAWhile_AndTriggersEffectThatDispatchesAnAction_AndAnotherThreadDispatchesAnAction_ThenThereShouldBeNoDeadlock()
 		{
 			Thread initialThread = Thread.CurrentThread; 
 
