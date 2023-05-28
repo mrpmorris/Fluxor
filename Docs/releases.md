@@ -1,5 +1,8 @@
 # Releases
 
+## New in 5.9
+* Fixes potential for deadlock ([#426](https://github.com/mrpmorris/Fluxor/issues/426))
+
 ## New in 5.8
 * Fixes potential for deadlock ([#407](https://github.com/mrpmorris/Fluxor/issues/407))
 
