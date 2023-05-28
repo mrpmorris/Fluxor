@@ -48,7 +48,7 @@ namespace Fluxor
 			}
 
 			return new DisposableCallback(
-				id: $"{nameof(StateSubscriber)}.{nameof(Subscribe)}",
+				id: $"{nameof(StateSubscriber)}.{nameof(Subscribe)} / {subject.GetType().FullName}",
 				() =>
 					{
 						foreach (var subscription in subscriptions)
