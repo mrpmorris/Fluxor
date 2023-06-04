@@ -2,6 +2,7 @@
 
 ## New in 5.9
 * Adds additional useful information to exception thrown by `DisposableAction` ([#425](https://github.com/mrpmorris/Fluxor/issues/425))
+* Fix deadlock scenario when dispatching actions from an effect triggered by store activation ([#426](https://github.com/mrpmorris/Fluxor/issues/426))
 
 ## New in 5.8
 * Fixes potential for deadlock ([#407](https://github.com/mrpmorris/Fluxor/issues/407))
