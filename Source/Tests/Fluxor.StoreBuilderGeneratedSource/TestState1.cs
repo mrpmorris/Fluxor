@@ -1,4 +1,4 @@
-﻿namespace Fluxor.StoreBuilderSourceGeneratorTests;
+﻿namespace Fluxor.StoreBuilderGeneratedSource;
 
 [FeatureState(CreateInitialStateMethodName = nameof(Create), MaximumStateChangedNotificationsPerSecond = 8, Name = nameof(TestState1))]
 internal class TestState1

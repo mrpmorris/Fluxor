@@ -1,4 +1,4 @@
-﻿namespace Fluxor.StoreBuilderSourceGeneratorTests;
+﻿namespace Fluxor.StoreBuilderGeneratedSource;
 
 [FeatureState]
 internal class TestState2

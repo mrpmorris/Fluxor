@@ -20,6 +20,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+		<ProjectReference Include="..\Fluxor.StoreBuilderGeneratedSource\Fluxor.StoreBuilderGeneratedSource.csproj" />
 	</ItemGroup>
 
 </Project>
