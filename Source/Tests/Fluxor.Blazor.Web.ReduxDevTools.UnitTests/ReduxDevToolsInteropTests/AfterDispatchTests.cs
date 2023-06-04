@@ -43,9 +43,10 @@ public class AfterDispatchTests
 	}
 
 	[Fact]
-	public void WhenNotUsingActionFiltering_ThenActionShouldBeLogged()
+	public async Task WhenNotUsingActionFiltering_ThenActionShouldBeLogged()
 	{
 		Subject.Value.AfterDispatch(this);
+		await Task.Yield();
 		MockReduxDevToolsInterop.Verify(
 			x => x.DispatchAsync(
 				this,
