@@ -104,27 +104,11 @@ namespace Fluxor.DependencyInjection
 			return this;
 		}
 
-		/// <summary>
-		/// Enables automatic discovery of features/effects/reducers
-		/// </summary>
-		/// <param name="additionalAssembliesToScan">A collection of assemblies to scan</param>
-		/// <returns>Options</returns>
 		public FluxorOptions ScanAssemblies(
 			Assembly assemblyToScan,
 			params Assembly[] additionalAssembliesToScan)
 		{
-			if (assemblyToScan is null)
-				throw new ArgumentNullException(nameof(assemblyToScan));
-
-			var allAssemblies = new List<Assembly> { assemblyToScan };
-			if (additionalAssembliesToScan is not null)
-				allAssemblies.AddRange(additionalAssembliesToScan);
-
-			var newAssembliesToScan = allAssemblies.Select(x => new AssemblyScanSettings(x)).ToList();
-			newAssembliesToScan.AddRange(AssembliesToScan);
-			AssembliesToScan = newAssembliesToScan.ToArray();
-
-			return this;
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -157,5 +141,38 @@ namespace Fluxor.DependencyInjection
 			.ToArray();
 			return this;
 		}
+
+		/// <summary>
+		/// Adds a Fluxor Module to scan.
+		/// </summary>
+		/// <typeparam name="TModule">The type of module to scan.</typeparam>
+		public FluxorOptions AddModule<TModule>()
+			where TModule : IFluxorModule, new()
+		=>
+			AddModules(new TModule());
+
+		/// <summary>
+		/// Adds one or more <see cref="IFluxorModule"/>s to scan
+		/// </summary>
+		/// <param name="module">First module to scan.</param>
+		/// <param name="additionalModules">Any additional modules to scan.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="module"/> is null.</exception>
+		public FluxorOptions AddModules(
+			IFluxorModule module,
+			params IFluxorModule[] additionalModules)
+		{
+			if (module is null)
+				throw new ArgumentNullException(nameof(module));
+
+			var allModules = new List<IFluxorModule>(ModulesToImport);
+			allModules.Add(module);
+			if (additionalModules is not null)
+				allModules.AddRange(additionalModules);
+
+			ModulesToImport = allModules.Distinct().ToArray();
+
+			return this;
+		}
+
 	}
 }

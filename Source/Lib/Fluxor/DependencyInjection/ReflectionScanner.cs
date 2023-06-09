@@ -116,6 +116,7 @@ namespace Fluxor.DependencyInjection
 				)
 				.Union(typesToScan)
 				.ToArray();
+
 			allNonAbstractCandidateTypes = allCandidateTypes
 					.Where(t => !t.IsAbstract)
 					.ToArray();

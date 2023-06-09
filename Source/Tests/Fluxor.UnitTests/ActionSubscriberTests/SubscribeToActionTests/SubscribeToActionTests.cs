@@ -15,7 +15,7 @@ namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests
 		{
 			var services = new ServiceCollection();
 			services.AddFluxor(x => x
-				.ScanAssemblies(GetType().Assembly)
+				.AddModule<GeneratedFluxorModule>()
 				.AddMiddleware<IsolatedTests>());
 			var serviceProvider = services.BuildServiceProvider();
 			Dispatcher = serviceProvider.GetRequiredService<IDispatcher>();

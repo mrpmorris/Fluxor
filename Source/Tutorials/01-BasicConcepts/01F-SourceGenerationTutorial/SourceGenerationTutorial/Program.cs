@@ -14,7 +14,7 @@ namespace BasicConcepts.SourceGenerationTutorial
 			services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 			services.AddFluxor(options =>
 					options
-						.ImportModules(new FluxorModule(), new FluxorModule())
+						.ScanAssemblies(typeof(Program).Assembly)
 				);
 
 			IServiceProvider serviceProvider = services.BuildServiceProvider();

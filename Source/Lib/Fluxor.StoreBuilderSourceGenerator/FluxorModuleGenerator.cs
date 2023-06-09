@@ -16,7 +16,7 @@ internal class FluxorModuleGenerator
 	internal static void Generate(SourceProductionContext productionContext, string rootNamespace, DiscoveredClasses discoveredClasses)
 	{
 		string sourceCode = GenerateSourceCode(rootNamespace, discoveredClasses);
-		productionContext.AddSource($"FluxorModule.cs", sourceCode);
+		productionContext.AddSource($"GeneratedFluxorModule.cs", sourceCode);
 	}
 
 	private static string GenerateSourceCode(string rootNamespace, DiscoveredClasses discoveredClasses)
@@ -70,7 +70,7 @@ internal class FluxorModuleGenerator
 		string[] middlewareClassNames = discoveredClasses.DiscoveredMiddlewareClassNames.ToArray();
 		string[] reducerClassNames = generatedReducerClassNames.Union(discoveredClasses.DiscoveredReducerClassNames).Distinct().ToArray();
 
-		writer.WriteLine("public partial class FluxorModule : Fluxor.IFluxorModule");
+		writer.WriteLine("public partial class GeneratedFluxorModule : Fluxor.IFluxorModule");
 		using (writer.CodeBlock())
 		{
 			GenerateClassArrayPropertySource(writer, "Dependencies", dependencies);
