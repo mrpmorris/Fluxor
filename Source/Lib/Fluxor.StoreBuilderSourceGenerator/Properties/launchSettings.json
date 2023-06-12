@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Roslyn": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\..\\Tests\\Fluxor.StoreBuilderSourceGeneratorTests\\Fluxor.StoreBuilderSourceGeneratorTests\\Fluxor.StoreBuilderSourceGeneratorTests.csproj"
+    }
+  }
+}

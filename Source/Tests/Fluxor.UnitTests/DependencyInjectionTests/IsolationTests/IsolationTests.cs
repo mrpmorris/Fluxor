@@ -42,8 +42,8 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests
 		{
 			var services = new ServiceCollection();
 			services.AddFluxor(x => x
-				.AddMiddleware<IsolatedTests>()
-				.ScanAssemblies(typeof(IsolatedTests).Assembly));
+				.AddModule<GeneratedFluxorModule>()
+				.AddMiddleware<IsolatedTests>());
 			IServiceProvider serviceProvider = services.BuildServiceProvider();
 
 			serviceProvider.GetRequiredService<IStore>().InitializeAsync().Wait();

@@ -4,6 +4,8 @@
 	{
 		public readonly int Counter;
 
+		private CounterState() { }
+
 		public CounterState(int counter)
 		{
 			Counter = counter;

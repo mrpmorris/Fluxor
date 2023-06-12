@@ -12,6 +12,7 @@ namespace BasicConcepts.EffectsTutorial.Store.WeatherUseCase
 		public IEnumerable<WeatherForecast> Forecasts { get; }
 
 		private WeatherState() { }
+
 		public WeatherState(bool isLoading, IEnumerable<WeatherForecast> forecasts)
 		{
 			IsLoading = isLoading;

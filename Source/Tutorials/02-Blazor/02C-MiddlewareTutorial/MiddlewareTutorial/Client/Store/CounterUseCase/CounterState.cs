@@ -8,6 +8,7 @@ namespace FluxorBlazorWeb.MiddlewareTutorial.Client.Store.CounterUseCase
 		public int ClickCount { get; }
 
 		private CounterState() { }
+
 		public CounterState(int clickCount)
 		{
 			ClickCount = clickCount;

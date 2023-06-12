@@ -27,7 +27,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 		{
 			var services = new ServiceCollection();
 			services.AddFluxor(x => x
-				.ScanAssemblies(GetType().Assembly)
+				.AddModule<GeneratedFluxorModule>()
 				.ScanTypes(
 					typeof(TypesThatShouldOnlyBeScannedExplicitly.ExplicitlyScannedInstanceTestEffects),
 					typeof(TypesThatShouldOnlyBeScannedExplicitly.ExplicitlyScannedStaticTestEffects)

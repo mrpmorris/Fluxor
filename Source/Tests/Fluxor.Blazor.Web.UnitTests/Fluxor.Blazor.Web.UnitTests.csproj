@@ -1,8 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<IsPackable>false</IsPackable>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 		<PackageReference Include="Moq" Version="4.18.3" />
@@ -20,5 +16,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\Lib\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
 		<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+		<ProjectReference Include="..\..\Lib\Fluxor.StoreBuilderSourceGenerator\Fluxor.StoreBuilderSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 </Project>

@@ -11,6 +11,7 @@ namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client.Store.WeatherUseCase
 		public IEnumerable<WeatherForecast> Forecasts { get; }
 
 		private WeatherState() { }
+
 		public WeatherState(bool isLoading, IEnumerable<WeatherForecast> forecasts)
 		{
 			IsLoading = isLoading;

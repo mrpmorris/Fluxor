@@ -7,7 +7,8 @@ namespace BasicConcepts.MiddlewareTutorial.Store.CounterUseCase
 	{
 		public int ClickCount { get; }
 
-		public CounterState() { }
+		private CounterState() { }
+
 		public CounterState(int clickCount)
 		{
 			ClickCount = clickCount;

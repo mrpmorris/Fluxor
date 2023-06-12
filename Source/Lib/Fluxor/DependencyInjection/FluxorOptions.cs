@@ -13,9 +13,10 @@ namespace Fluxor.DependencyInjection
 	public class FluxorOptions
 	{
 		internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = Array.Empty<AssemblyScanSettings>();
-		internal Type[] TypesToScan { get; private set; } = Array.Empty<Type>();
 		internal Type[] MiddlewareTypes = Array.Empty<Type>();
+		internal IFluxorModule[] ModulesToImport { get; private set; } = Array.Empty<IFluxorModule>();
 		internal StoreLifetime StoreLifetime { get; set; } = StoreLifetime.Scoped;
+		internal Type[] TypesToScan { get; private set; } = Array.Empty<Type>();
 
 		/// <summary>
 		/// Service collection for registering services
@@ -94,18 +95,20 @@ namespace Fluxor.DependencyInjection
 			Assembly assemblyToScan,
 			params Assembly[] additionalAssembliesToScan)
 		{
-			if (assemblyToScan is null)
-				throw new ArgumentNullException(nameof(assemblyToScan));
+			throw new InvalidOperationException();
+			// TODO: PeteM - UCM
+			//if (assemblyToScan is null)
+			//	throw new ArgumentNullException(nameof(assemblyToScan));
 
-			var allAssemblies = new List<Assembly> { assemblyToScan };
-			if (additionalAssembliesToScan is not null)
-				allAssemblies.AddRange(additionalAssembliesToScan);
+			//var allAssemblies = new List<Assembly> { assemblyToScan };
+			//if (additionalAssembliesToScan is not null)
+			//	allAssemblies.AddRange(additionalAssembliesToScan);
 
-			var newAssembliesToScan = allAssemblies.Select(x => new AssemblyScanSettings(x)).ToList();
-			newAssembliesToScan.AddRange(AssembliesToScan);
-			AssembliesToScan = newAssembliesToScan.ToArray();
+			//var newAssembliesToScan = allAssemblies.Select(x => new AssemblyScanSettings(x)).ToList();
+			//newAssembliesToScan.AddRange(AssembliesToScan);
+			//AssembliesToScan = newAssembliesToScan.ToArray();
 
-			return this;
+			//return this;
 		}
 
 		/// <summary>
@@ -138,5 +141,44 @@ namespace Fluxor.DependencyInjection
 			.ToArray();
 			return this;
 		}
+
+		/// <summary>
+		/// Adds a <see cref="IFluxorModule"/> to scan.
+		/// </summary>
+		/// <param name="module">The module to scan.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="module"/> is null.</exception>
+		public FluxorOptions AddModule(IFluxorModule module) => AddModules(module);
+
+		/// <summary>
+		/// Adds a <see cref="IFluxorModule"/> to scan.
+		/// </summary>
+		/// <typeparam name="TModule">The type of module to scan.</typeparam>
+		/// <returns></returns>
+		public FluxorOptions AddModule<TModule>() where TModule: IFluxorModule, new() =>
+			AddModule(new TModule());
+
+		/// <summary>
+		/// Adds one or more <see cref="IFluxorModule"/>s to scan
+		/// </summary>
+		/// <param name="module">First module to scan.</param>
+		/// <param name="additionalModules">Any additional modules to scan.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="module"/> is null.</exception>
+		public FluxorOptions AddModules(
+			IFluxorModule module,
+			params IFluxorModule[] additionalModules)
+		{
+			if (module is null)
+				throw new ArgumentNullException(nameof(module));
+
+			var allModules = new List<IFluxorModule>(ModulesToImport);
+			allModules.Add(module);
+			if (additionalModules is not null)
+				allModules.AddRange(additionalModules);
+
+			ModulesToImport = allModules.Distinct().ToArray();
+
+			return this;
+		}
+
 	}
 }

@@ -28,7 +28,7 @@ namespace Fluxor.DependencyInjection
 
 		public static Type[] FilterClasses(
 			IEnumerable<Type> types,
-			IEnumerable<AssemblyScanSettings> scanExcludeList,
+			IEnumerable<AssemblyAndNamespace> scanExcludeList,
 			IEnumerable<AssemblyScanSettings> scanIncludeList)
 			=> types
 					.Where(t =>
@@ -48,11 +48,24 @@ namespace Fluxor.DependencyInjection
 								| BindingFlags.Instance
 								| BindingFlags.Static
 								| BindingFlags.FlattenHierarchy)
-							.Where(m =>
-								m.GetCustomAttributes(true).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
 					})
 				.SelectMany(x => x.Methods
-					.Select(m => new TypeAndMethodInfo(x.Type, m)))
+					.Select(m =>
+						new
+						{
+							Type = x.Type,
+							MethodInfo = m,
+							MethodAttribute = m
+								.GetCustomAttributes(true)
+								.FirstOrDefault(a => a is ReducerMethodAttribute || a is EffectMethodAttribute)
+							}
+					)
+				.Where(x => x.MethodAttribute is not null)
+				.Select(x =>
+					new TypeAndMethodInfo(
+						type: x.Type,
+						methodInfo: x.MethodInfo,
+						methodAttribute: (Attribute)x.MethodAttribute)))
 				.ToArray();
 
 		public override bool Equals(object obj)
@@ -63,8 +76,7 @@ namespace Fluxor.DependencyInjection
 
 			return
 				other.Assembly.FullName == Assembly.FullName
-				&& other.Namespace is not null
-				&& other.Namespace.Equals(Namespace, StringComparison.InvariantCultureIgnoreCase);
+				&& string.Equals(Namespace, other.Namespace, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		public override int GetHashCode()

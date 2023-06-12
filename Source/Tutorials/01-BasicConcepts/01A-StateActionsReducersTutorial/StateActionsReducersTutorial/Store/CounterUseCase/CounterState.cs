@@ -8,6 +8,7 @@ namespace BasicConcepts.StateActionsReducersTutorial.Store.CounterUseCase
 		public int ClickCount { get; }
 
 		private CounterState() { }
+
 		public CounterState(int clickCount)
 		{
 			ClickCount = clickCount;

@@ -42,6 +42,7 @@ namespace Fluxor
 				services: services,
 				assembliesToScan: options.AssembliesToScan,
 				typesToScan: options.TypesToScan,
+				modulesToImport: options.ModulesToImport,
 				scanIncludeList: scanIncludeList);
 			services.Add(typeof(IState<>), typeof(State<>), options);
 			services.AddTransient(typeof(IStateSelection<,>), typeof(StateSelection<,>));

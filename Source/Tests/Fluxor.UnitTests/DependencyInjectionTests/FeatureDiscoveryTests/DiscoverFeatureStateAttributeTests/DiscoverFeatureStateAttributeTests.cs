@@ -14,11 +14,10 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.Discov
 		[Fact]
 		public void WhenFeatureStateAttributeHasNoParameterValues_ThenFeatureIsCreatedWithDefaultValues()
 		{
-			IStore store = CreateStore(typeof(StateWithParameterlessFeatureStateAttribute));
+			IStore store = CreateStore();
 			Assert.Single(store.Features);
 
-			IFeature feature = store.Features.First().Value;
-			Assert.Equal(typeof(StateWithParameterlessFeatureStateAttribute).FullName, feature.GetName());
+			IFeature feature = store.Features.Single(x => x.Value.GetName() == typeof(StateWithParameterlessFeatureStateAttribute).FullName).Value;
 			Assert.Equal(0, feature.MaximumStateChangedNotificationsPerSecond);
 			Assert.Equal(typeof(StateWithParameterlessFeatureStateAttribute), feature.GetStateType());
 			Assert.NotNull(feature.GetState());
@@ -27,10 +26,10 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.Discov
 		[Fact]
 		public void WhenFeatureStateAttributeHasParameterValues_ThenFeatureIsCreatedWithParameterValues()
 		{
-			IStore store = CreateStore(typeof(StateWithParameterizedFeatureStateAttribute));
+			IStore store = CreateStore();
 			Assert.Single(store.Features);
 
-			IFeature feature = store.Features.First().Value;
+			IFeature feature = store.Features.Single(x => x.Value.GetName() == typeof(StateWithParameterizedFeatureStateAttribute).FullName).Value;
 			Assert.Equal("ParameterizedName", feature.GetName());
 			Assert.Equal(42, feature.MaximumStateChangedNotificationsPerSecond);
 			Assert.Equal(typeof(StateWithParameterizedFeatureStateAttribute), feature.GetStateType());
@@ -40,10 +39,10 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.Discov
 		[Fact]
 		public void WhenFeatureHasCreateInitialStateMethodName_ThenMethodIsInvokedToCreateDefaultState()
 		{
-			IStore store = CreateStore(typeof(StateWithStaticFactoryMethod));
+			IStore store = CreateStore();
 			Assert.Single(store.Features);
 
-			IFeature feature = store.Features.First().Value;
+			IFeature feature = store.Features.Single(x => x.Value.GetName() == typeof(StateWithStaticFactoryMethod).FullName).Value;
 			Assert.Equal(typeof(StateWithStaticFactoryMethod), feature.GetStateType());
 			Assert.NotNull(feature.GetState());
 
@@ -51,10 +50,10 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.Discov
 			Assert.Equal(299_792_458, state.SomeValue);
 		}
 
-		private static IStore CreateStore(Type typeToScan)
+		private static IStore CreateStore()
 		{
 			var services = new ServiceCollection();
-			services.AddFluxor(x => x.ScanTypes(typeToScan));
+			services.AddFluxor(x => x.AddModule<GeneratedFluxorModule>());
 			IServiceProvider serviceProvider = services.BuildServiceProvider();
 			return serviceProvider.GetRequiredService<IStore>();
 		}

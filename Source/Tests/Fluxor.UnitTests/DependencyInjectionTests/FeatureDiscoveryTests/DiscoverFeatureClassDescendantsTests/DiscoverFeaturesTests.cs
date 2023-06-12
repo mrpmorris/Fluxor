@@ -38,7 +38,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.Discov
 			{
 				if (assemblyToScan is not null)
 				{
-					x.ScanAssemblies(assemblyToScan);
+					x.AddModule<GeneratedFluxorModule>();
 					// Allow all features in this namepspace to be scanned
 					x.AddMiddleware<IsolatedTests>();
 				}

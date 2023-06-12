@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Fluxor.DependencyInjection.InfoFactories
 {
@@ -13,18 +11,19 @@ namespace Fluxor.DependencyInjection.InfoFactories
 			IEnumerable<TypeAndMethodInfo> allCandidateMethods)
 		=>
 			allCandidateMethods
+				.Where(x => x.MethodAttribute is ReducerMethodAttribute)
 				.Select(c =>
 					new
 					{
 						HostClassType = c.Type, 
 						c.MethodInfo,
-						ReducerAttribute = c.MethodInfo.GetCustomAttribute<ReducerMethodAttribute>(false)
+						ReducerAttribute = (ReducerMethodAttribute)c.MethodAttribute
 					})
-				.Where(x => x.ReducerAttribute is not null)
-				.Select(x => new ReducerMethodInfo(
-					x.HostClassType,
-					x.ReducerAttribute,
-					x.MethodInfo))
+				.Select(x => 
+					new ReducerMethodInfo(
+						x.HostClassType,
+						x.ReducerAttribute,
+						x.MethodInfo))
 				.ToArray();
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Fluxor.DependencyInjection.InfoFactories
 {
@@ -12,14 +11,14 @@ namespace Fluxor.DependencyInjection.InfoFactories
 			IEnumerable<TypeAndMethodInfo> allCandidateMethods)
 		=>
 			allCandidateMethods
+				.Where(x => x.MethodAttribute is EffectMethodAttribute)
 				.Select(c =>
 					new
 					{
 						HostClassType = c.Type,
 						c.MethodInfo,
-						EffectAttribute = c.MethodInfo.GetCustomAttribute<EffectMethodAttribute>(false)
+						EffectAttribute = (EffectMethodAttribute)c.MethodAttribute
 					})
-				.Where(x => x.EffectAttribute is not null)
 				.Select(x =>
 					new EffectMethodInfo(
 						x.HostClassType,

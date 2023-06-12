@@ -29,7 +29,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 			var services = new ServiceCollection();
 			services.AddScoped(_ => InvokeCountService);
 			services.AddFluxor(x => x
-				.ScanAssemblies(GetType().Assembly)
+				.AddModule<GeneratedFluxorModule>()
 				.ScanTypes(typeof(OpenGenericEffectClass<TestAction>))
 				.AddMiddleware<IsolatedTests>());
 

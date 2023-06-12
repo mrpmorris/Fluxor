@@ -27,7 +27,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.Discov
 		{
 			var services = new ServiceCollection();
 			services.AddFluxor(x => x
-				.ScanAssemblies(GetType().Assembly)
+				.AddModule<GeneratedFluxorModule>()
 				.ScanTypes(typeof(TypesThatShouldOnlyBeScannedExplicitly.ExplicitlyScannedReducers))
 				.AddMiddleware<IsolatedTests>());
 
