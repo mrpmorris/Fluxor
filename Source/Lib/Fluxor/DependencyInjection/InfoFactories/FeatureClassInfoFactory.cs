@@ -1,18 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Fluxor.DependencyInjection.InfoFactories
 {
 	internal static class FeatureClassInfoFactory
 	{
-		internal static FeatureClassInfo[] Create(
-			IServiceCollection services,
-			IEnumerable<Type> allCandidateTypes,
-			IEnumerable<ReducerClassInfo> reducerClassInfos,
-			IEnumerable<ReducerMethodInfo> reducerMethodInfos)
+		internal static FeatureClassInfo[] Create(IEnumerable<Type> allCandidateTypes)
 		=>
 			allCandidateTypes
 				.Select(t =>

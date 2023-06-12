@@ -1,5 +1,4 @@
 ﻿using Fluxor.DependencyInjection.Wrappers;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +7,7 @@ namespace Fluxor.DependencyInjection.InfoFactories
 {
 	internal static class ReducerClassInfoFactory
 	{
-		internal static ReducerClassInfo[] Create(
-			IServiceCollection services,
-			IEnumerable<Type> allCandidateTypes)
-		=>
+		internal static ReducerClassInfo[] Create(IEnumerable<Type> allCandidateTypes) =>
 			allCandidateTypes
 				.Where(t => t != typeof(ReducerWrapper<,>))
 				.Select(t =>

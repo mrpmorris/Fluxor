@@ -4,7 +4,6 @@ using Fluxor.StoreBuilderSourceGenerator.FeatureStateAttributes;
 using Fluxor.StoreBuilderSourceGenerator.Helpers;
 using Fluxor.StoreBuilderSourceGenerator.ReducerMethodAttributes;
 using Microsoft.CodeAnalysis;
-using System;
 using System.CodeDom.Compiler;
 using System.IO;
 using System.Linq;
@@ -15,31 +14,17 @@ internal class FluxorModuleGenerator
 {
 	internal static void Generate(SourceProductionContext productionContext, string rootNamespace, DiscoveredClasses discoveredClasses)
 	{
-		string sourceCode = GenerateSourceCode(rootNamespace, discoveredClasses);
+		string sourceCode = GenerateSourceCode(discoveredClasses);
 		productionContext.AddSource($"GeneratedFluxorModule.cs", sourceCode);
 	}
 
-	private static string GenerateSourceCode(string rootNamespace, DiscoveredClasses discoveredClasses)
+	private static string GenerateSourceCode(DiscoveredClasses discoveredClasses)
 	{
 		using var result = new StringWriter();
 		using var writer = new IndentedTextWriter(result, tabString: "\t");
 
-		bool hasNamespace = rootNamespace is not null && rootNamespace.Length > 0;
-
-		if (hasNamespace)
-		{
-			writer.WriteLine($"namespace {rootNamespace}");
-			writer.WriteLine("{");
-			writer.Indent++;
-		}
-
 		GenerateClassSource(writer, discoveredClasses);
 
-		if (hasNamespace)
-		{
-			writer.Indent--;
-			writer.WriteLine("}");
-		}
 		writer.Flush();
 		return result.ToString();
 	}
