@@ -127,8 +127,17 @@ Also, add the following line to the top of the razor file
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 ```
 
-*Note: This is required to ensure the component re-renders whenever its state changes. If you are unable
-to descend from this component, you can instead subcribe to the `StateChanged` event and execute
+*Note: This is required to ensure the component re-renders whenever its state changes. When you inherit from FluxorComponent the override of `OnInitialized()` will override the implementation of the FluxorComponent. Make sure you call `base.OnInitialized();` to register the StateHasChanged events correctly and to be notified about StateChanges. The override of OnInitializedAsync() will still override the ComponentBase implementation because Fluxor does not implement it on its own. An example for an `OnInitialized()` method when you are using `@inherits Fluxor.Blazor.Web.Components.FluxorComponent` would look like:
+
+```
+ protected override void OnInitialized()
+  {
+    base.OnInitialized();
+    Dispatcher.Dispatch(new FetchDataAction());
+  }
+```
+
+*Note: If you are unable to descend from this component, you can instead subcribe to the `StateChanged` event and execute
 `InvokeAsync(StateHasChanged)`. If you do use the event, remember to implement `IDisposable` and
 unsubscribe from the event too, otherwise your app will leak memory.*
 
