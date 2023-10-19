@@ -1,22 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
 		<LangVersion>11</LangVersion>
+		<TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
 		<Product>Fluxor for Blazor (Web)</Product>
 		<Description>A zero boilerplate Redux/Flux framework for Blazor</Description>
 		<PackageIcon>fluxor-blazor-logo-small.png</PackageIcon>
 		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents</PackageTags>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<RazorLangVersion>3.0</RazorLangVersion>
-	</PropertyGroup>
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" Condition="'$(TargetFramework)' == 'net5.0'" />
 
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" Condition="'$(TargetFramework)' == 'net7.0'" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" Condition="'$(TargetFramework)' == 'net6.0'" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" Condition="'$(TargetFramework)' == 'net5.0'" />
 	</ItemGroup>
 
 	<ItemGroup>

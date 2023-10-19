@@ -73,7 +73,9 @@ namespace Fluxor.Blazor.Web.ReduxDevTools
 		/// <returns></returns>
 		public ReduxDevToolsMiddlewareOptions AddActionFilter(ActionFilter filter)
 		{
-			ArgumentNullException.ThrowIfNull(filter);
+			if (filter is null)
+				throw new ArgumentNullException(nameof(filter));
+
 			ActionFilters = ActionFilters.Add(filter);
 			return this;
 		}

@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 	<PropertyGroup>
 		<LangVersion>11</LangVersion>
+		<TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
 		<Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
 		<Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
 		<PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>

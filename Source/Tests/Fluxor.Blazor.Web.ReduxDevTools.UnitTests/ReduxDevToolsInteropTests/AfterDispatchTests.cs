@@ -46,12 +46,13 @@ public class AfterDispatchTests
 	[Fact]
 	public void WhenNotUsingActionFiltering_ThenActionShouldBeLogged()
 	{
-		Subject.Value.AfterDispatch(this);
+		var action = new object();
+		Subject.Value.AfterDispatch(action);
 		MockReduxDevToolsInterop.Verify(
 			x => x.DispatchAsync(
-				this,
+				action,
 				It.IsAny<IDictionary<string, object>>(),
-				It.IsAny<string>()),
+				null),
 			Times.Once,
 			"Should have logged action");
 	}
