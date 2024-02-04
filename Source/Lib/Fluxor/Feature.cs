@@ -91,16 +91,20 @@ namespace Fluxor
 			}
 			protected set
 			{
+				bool stateHasChanged;
+
 				lock (SyncRoot)
 				{
-					bool stateHasChanged = !Object.ReferenceEquals(_State, value);
+					stateHasChanged = !Object.ReferenceEquals(_State, value);
 					if (stateHasChanged)
 					{
 						_State = value;
 						HasInitialState = true;
-						TriggerStateChangedCallbacksThrottler.Invoke(MaximumStateChangedNotificationsPerSecond);
 					}
 				}
+
+				if (stateHasChanged)
+					TriggerStateChangedCallbacksThrottler.Invoke(MaximumStateChangedNotificationsPerSecond);
 			}
 		}
 
