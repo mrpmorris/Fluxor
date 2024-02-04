@@ -41,16 +41,19 @@ namespace Fluxor
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
+			bool actionDispatchedIsNull;
 			lock (SyncRoot)
 			{
-				if (_ActionDispatched is not null)
-					_ActionDispatched(this, new ActionDispatchedEventArgs(action));
-				else
+				actionDispatchedIsNull = _ActionDispatched is null;
+                if (actionDispatchedIsNull)
 					QueuedActions.Enqueue(action);
 			}
-		}
 
-		private void DequeueActions()
+			if (!actionDispatchedIsNull)
+				_ActionDispatched(this, new ActionDispatchedEventArgs(action));
+        }
+
+        private void DequeueActions()
 		{
 			foreach (object queuedAction in QueuedActions)
 				_ActionDispatched(this, new ActionDispatchedEventArgs(queuedAction));
