@@ -1,7 +1,5 @@
-﻿using Fluxor.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Threading;
+﻿using System;
+using System.Collections.Concurrent;
 
 namespace Fluxor
 {
@@ -11,7 +9,7 @@ namespace Fluxor
 	public class Dispatcher : IDispatcher
 	{
 		private readonly object SyncRoot = new();
-		private readonly Queue<object> QueuedActions = new Queue<object>();
+		private readonly ConcurrentQueue<object> QueuedActions = new();
 		private EventHandler<ActionDispatchedEventArgs> _ActionDispatched;
 
 		/// <see cref="IDispatcher.ActionDispatched"/>
@@ -41,13 +39,11 @@ namespace Fluxor
 			if (action is null)
 				throw new ArgumentNullException(nameof(action));
 
-			lock (SyncRoot)
-			{
-				if (_ActionDispatched is not null)
-					_ActionDispatched(this, new ActionDispatchedEventArgs(action));
-				else
-					QueuedActions.Enqueue(action);
-			}
+			EventHandler<ActionDispatchedEventArgs> originalActionDispatchedEvent = _ActionDispatched;
+			if (originalActionDispatchedEvent is null)
+				QueuedActions.Enqueue(action);
+			else
+				originalActionDispatchedEvent(this, new ActionDispatchedEventArgs(action));
 		}
 
 		private void DequeueActions()
