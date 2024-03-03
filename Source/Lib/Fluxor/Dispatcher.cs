@@ -1,7 +1,5 @@
-﻿using Fluxor.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace Fluxor
 {
