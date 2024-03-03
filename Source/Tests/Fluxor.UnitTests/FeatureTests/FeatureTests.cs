@@ -5,7 +5,6 @@ namespace Fluxor.UnitTests.FeatureTests
 {
 	public partial class FeatureTests
 	{
-
 		[Fact]
 		public void WhenFeatureRestoredStateIsCalledBeforeGettingFeatureState_StateReturnsRestoredState()
 		{
