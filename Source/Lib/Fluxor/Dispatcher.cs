@@ -10,6 +10,7 @@ namespace Fluxor
 	{
 		private readonly object SyncRoot = new();
 		private readonly Queue<object> QueuedActions = new Queue<object>();
+		private volatile bool IsDequeuing;
 		private EventHandler<ActionDispatchedEventArgs> _ActionDispatched;
 
 		/// <see cref="IDispatcher.ActionDispatched"/>
@@ -20,9 +21,8 @@ namespace Fluxor
 				lock (SyncRoot)
 				{
 					_ActionDispatched += value;
-					if (QueuedActions.Count > 0)
-						DequeueActions();
 				}
+				DequeueActions();
 			}
 			remove
 			{
@@ -41,17 +41,33 @@ namespace Fluxor
 
 			lock (SyncRoot)
 			{
-				if (_ActionDispatched is not null)
-					_ActionDispatched(this, new ActionDispatchedEventArgs(action));
-				else
-					QueuedActions.Enqueue(action);
+				QueuedActions.Enqueue(action);
 			}
+			DequeueActions();
 		}
 
 		private void DequeueActions()
 		{
-			foreach (object queuedAction in QueuedActions)
-				_ActionDispatched(this, new ActionDispatchedEventArgs(queuedAction));
+			lock (SyncRoot)
+			{
+				if (IsDequeuing || _ActionDispatched is null)
+					return;
+				IsDequeuing = true;
+			}
+			do
+			{
+				object dequeuedAction = null;
+				EventHandler<ActionDispatchedEventArgs> callbacks;
+				lock (SyncRoot)
+				{
+					callbacks = _ActionDispatched;
+					IsDequeuing = callbacks is not null && QueuedActions.TryDequeue(out dequeuedAction);
+					if (!IsDequeuing)
+						return;
+				}
+
+				callbacks(this, new ActionDispatchedEventArgs(dequeuedAction));
+			} while (true);
 		}
 	}
 }
