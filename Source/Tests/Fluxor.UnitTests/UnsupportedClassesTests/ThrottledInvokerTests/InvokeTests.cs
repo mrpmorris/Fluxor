@@ -115,7 +115,7 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 			WaitHandle.WaitAll(threadCompletedEvents);
 
 			if (failCount > 0)
-				Assert.True(false,
+				Assert.Fail(
 					$"Failed: Smallest elapsed time was {smallestFailTime}" +
 					$" when it should be {Subject.ThrottleWindowMs}" +
 					$" failed {failCount} times.");

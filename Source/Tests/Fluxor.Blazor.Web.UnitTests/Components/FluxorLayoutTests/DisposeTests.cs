@@ -12,7 +12,7 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorLayoutTests
 		private readonly MockState<int> MockState2;
 
 		[Fact]
-		public async ValueTask UnsubscribesFromStateProperties()
+		public async Task UnsubscribesFromStateProperties()
 		{
 			StateSubject.ExecuteOnInitialized();
 			await StateSubject.DisposeAsync();
@@ -22,7 +22,7 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorLayoutTests
 		}
 
 		[Fact]
-		public async ValueTask WhenBaseOnInitializedWasNotCalled_ThenThrowsNullReferenceException()
+		public async Task WhenBaseOnInitializedWasNotCalled_ThenThrowsNullReferenceException()
 		{
 			string errorMessage = null;
 			var layout = new FluxorLayoutThatOptionallyCallsBaseOnInitialized();
@@ -39,7 +39,7 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorLayoutTests
 		}
 
 		[Fact]
-		public async ValueTask WhenBaseOnInitializedWasCalled_ThenDoesNotThrowAnException()
+		public async Task WhenBaseOnInitializedWasCalled_ThenDoesNotThrowAnException()
 		{
 			var layout = new FluxorLayoutThatOptionallyCallsBaseOnInitialized
 			{
@@ -48,6 +48,7 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorLayoutTests
 			layout.Test_OnInitialized();
 			await layout.DisposeAsync();
 		}
+
 		public DisposeTests()
 		{
 			MockState1 = new MockState<int>();

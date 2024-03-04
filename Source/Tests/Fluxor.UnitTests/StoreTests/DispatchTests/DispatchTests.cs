@@ -3,6 +3,7 @@ using Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Xunit;
 
 namespace Fluxor.UnitTests.StoreTests.DispatchTests
@@ -156,6 +157,29 @@ namespace Fluxor.UnitTests.StoreTests.DispatchTests
 			Assert.Equal(0, receivedActions[0]);
 			Assert.Equal(1, receivedActions[1]);
 			Assert.Equal(2, receivedActions[2]);
+		}
+
+		[Fact]
+		public void WhenActionDispatchedListenerIsCalled_ThenListenerShouldBeAbleToDispatchAnAction()
+		{
+			var primaryAction = new object();
+			var secondaryAction = new object();
+
+			var dispatcher = new Dispatcher();
+			dispatcher.ActionDispatched += (_, args) =>
+			{
+				if (args.Action != primaryAction)
+					return;
+
+				var thread = new Thread(_ =>
+				{
+					dispatcher.Dispatch(secondaryAction);
+				});
+				thread.Start();
+				thread.Join(millisecondsTimeout: 1_000);
+				Assert.Equal(ThreadState.Stopped, thread.ThreadState);
+			};
+			dispatcher.Dispatch(primaryAction);
 		}
 
 		public DispatchTests()
