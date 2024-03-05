@@ -44,8 +44,8 @@ namespace Fluxor.UnsupportedClasses
 				if (InvokingSuspended)
 					return;
 
-				int millisecondsSinceLastInvoke =
-					(int)(DateTime.UtcNow - LastInvokeTime).TotalMilliseconds;
+				double millisecondsSinceLastInvoke =
+					(DateTime.UtcNow - LastInvokeTime).TotalMilliseconds;
 
 				// If last execute was outside the throttle window then execute immediately
 				if (millisecondsSinceLastInvoke >= ThrottleWindowMs)
@@ -59,11 +59,11 @@ namespace Fluxor.UnsupportedClasses
 				// time window and prevent further invokes until
 				// the timer has triggered
 				InvokingSuspended = true;
-				int delay = ThrottleWindowMs - millisecondsSinceLastInvoke;
+				double delay = ThrottleWindowMs - millisecondsSinceLastInvoke;
 				ThrottleTimer = new Timer(
 					callback: _ => ExecuteThrottledAction(),
 					state: null,
-					dueTime: delay,
+					dueTime: (int)Math.Ceiling(delay) + 1,
 					period: 0);
 			});
 		}

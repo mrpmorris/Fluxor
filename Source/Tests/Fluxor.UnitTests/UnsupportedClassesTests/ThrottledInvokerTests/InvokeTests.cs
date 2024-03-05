@@ -65,7 +65,7 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 			// This ensures each call is on or outside the MS window
 			ActionToExecute = () =>
 			{
-				long elapsedMs = (int)(DateTime.UtcNow - lastInvokeTime).TotalMilliseconds;
+				double elapsedMs = (DateTime.UtcNow - lastInvokeTime).TotalMilliseconds;
 				if (elapsedMs >= Subject.ThrottleWindowMs)
 					successCount++;
 				else
