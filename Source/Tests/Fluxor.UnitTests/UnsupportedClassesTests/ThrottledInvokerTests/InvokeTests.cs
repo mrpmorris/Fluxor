@@ -53,41 +53,11 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		[Fact]
 		public async Task WhenExecutedByMultipleThreads_ThenThrottlesSuccessfully()
 		{
-			int processorCount = Environment.ProcessorCount;
-
-			ManualResetEvent[] threadReadyEvents =
-				Enumerable.Range(0, processorCount)
-				.Select(x => new ManualResetEvent(false))
-				.ToArray();
-
-			ManualResetEvent[] threadCompletedEvents =
-				Enumerable.Range(0, processorCount)
-				.Select(x => new ManualResetEvent(false))
-				.ToArray();
-
-			bool testCompleted = false;
-			var startTestEvent = new ManualResetEvent(false);
-			Subject.ThrottleWindowMs = 100;
-
-			for (int i = 0; i < processorCount; i++)
-			{
-				ManualResetEvent threadReadyEvent = threadReadyEvents[i];
-				ManualResetEvent threadCompletedEvent = threadCompletedEvents[i];
-				new Thread(_ => 
-				{
-					threadReadyEvent.Set();
-					startTestEvent.WaitOne();
-					while (!testCompleted)
-						Subject.Invoke();
-					threadCompletedEvent.Set();
-				}).Start();
-			}
-
-			// Wait for all threads to be ready
-			WaitHandle.WaitAll(threadReadyEvents);
+			Subject.ThrottleWindowMs = 10;
 
 			// Allow a large window for the first invoke
 			int failCount = 0;
+			int successCount = 0;
 			var lastInvokeTime = DateTime.UtcNow.AddDays(-1);
 			int smallestFailTime = int.MaxValue;
 
@@ -96,7 +66,9 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 			ActionToExecute = () =>
 			{
 				long elapsedMs = (int)(DateTime.UtcNow - lastInvokeTime).TotalMilliseconds;
-				if (elapsedMs < Subject.ThrottleWindowMs)
+				if (elapsedMs >= Subject.ThrottleWindowMs)
+					successCount++;
+				else
 				{
 					Interlocked.Increment(ref failCount);
 					smallestFailTime = (int)Math.Min(smallestFailTime, elapsedMs);
@@ -104,15 +76,16 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 				lastInvokeTime = DateTime.UtcNow;
 			};
 
-			// Start the test
-			startTestEvent.Set();
+			var startTime = DateTime.UtcNow;
+			await Parallel.ForEachAsync(Enumerable.Range(1, 256), async (x, _) =>
+			{
+				while (successCount < 10)
+				{
+					await Task.Yield();
+					Subject.Invoke();
+				}
+			});
 
-			await Task.Delay(Subject.ThrottleWindowMs * 4);
-
-			testCompleted = true;
-
-			// Wait for all threads to finish
-			WaitHandle.WaitAll(threadCompletedEvents);
 
 			if (failCount > 0)
 				Assert.Fail(
