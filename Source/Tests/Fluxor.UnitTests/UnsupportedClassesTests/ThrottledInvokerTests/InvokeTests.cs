@@ -1,5 +1,6 @@
 ﻿using Fluxor.UnsupportedClasses;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,8 +44,15 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		public async Task WhenInvokedOutsideThrottleWindow_ThenInvokesImmediately()
 		{
 			Subject.ThrottleWindowMs = 50;
+			var stopwatch = Stopwatch.StartNew();
 			Subject.Invoke();
-			await Task.Delay(51);
+			do
+			{
+				int elapsed = (int)stopwatch.ElapsedMilliseconds;
+				if (elapsed >= Subject.ThrottleWindowMs)
+					break;
+				await Task.Delay(Subject.ThrottleWindowMs - elapsed);
+			} while (true);
 			Subject.Invoke();
 
 			Assert.Equal(2, InvokeCount);
