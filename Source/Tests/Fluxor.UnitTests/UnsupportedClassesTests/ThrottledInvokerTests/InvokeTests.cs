@@ -74,7 +74,7 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 			ActionToExecute = () =>
 			{
 				double elapsedMs = (DateTime.UtcNow - lastInvokeTime).TotalMilliseconds;
-				if (Subject.ThrottleWindowMs <= elapsedMs + 10) // 10 ms for timer inaccuracies - this is not a precision tool
+				if (elapsedMs > Subject.ThrottleWindowMs)
 					successCount++;
 				else
 				{
