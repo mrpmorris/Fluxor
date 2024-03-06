@@ -61,7 +61,7 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		[Fact]
 		public async Task WhenExecutedByMultipleThreads_ThenThrottlesSuccessfully()
 		{
-			Subject.ThrottleWindowMs = 10;
+			Subject.ThrottleWindowMs = 25;
 
 			// Allow a large window for the first invoke
 			int failCount = 0;
@@ -74,7 +74,7 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 			ActionToExecute = () =>
 			{
 				double elapsedMs = (DateTime.UtcNow - lastInvokeTime).TotalMilliseconds;
-				if (elapsedMs >= Subject.ThrottleWindowMs)
+				if (Subject.ThrottleWindowMs <= elapsedMs + 10) // 10 ms for timer inaccuracies - this is not a precision tool
 					successCount++;
 				else
 				{

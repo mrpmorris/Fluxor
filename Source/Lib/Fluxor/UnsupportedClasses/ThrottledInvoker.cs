@@ -63,7 +63,7 @@ namespace Fluxor.UnsupportedClasses
 				ThrottleTimer = new Timer(
 					callback: _ => ExecuteThrottledAction(),
 					state: null,
-					dueTime: (int)Math.Ceiling(delay) + 1,
+					dueTime: (int)Math.Ceiling(delay),
 					period: 0);
 			});
 		}
