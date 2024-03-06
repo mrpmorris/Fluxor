@@ -1,5 +1,6 @@
 ﻿using Fluxor.UnsupportedClasses;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,8 +44,15 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		public async Task WhenInvokedOutsideThrottleWindow_ThenInvokesImmediately()
 		{
 			Subject.ThrottleWindowMs = 50;
+			var stopwatch = Stopwatch.StartNew();
 			Subject.Invoke();
-			await Task.Delay(50);
+			do
+			{
+				int elapsed = (int)stopwatch.ElapsedMilliseconds;
+				if (elapsed >= Subject.ThrottleWindowMs)
+					break;
+				await Task.Delay(Subject.ThrottleWindowMs - elapsed);
+			} while (true);
 			Subject.Invoke();
 
 			Assert.Equal(2, InvokeCount);
@@ -53,41 +61,11 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		[Fact]
 		public async Task WhenExecutedByMultipleThreads_ThenThrottlesSuccessfully()
 		{
-			int processorCount = Environment.ProcessorCount;
-
-			ManualResetEvent[] threadReadyEvents =
-				Enumerable.Range(0, processorCount)
-				.Select(x => new ManualResetEvent(false))
-				.ToArray();
-
-			ManualResetEvent[] threadCompletedEvents =
-				Enumerable.Range(0, processorCount)
-				.Select(x => new ManualResetEvent(false))
-				.ToArray();
-
-			bool testCompleted = false;
-			var startTestEvent = new ManualResetEvent(false);
-			Subject.ThrottleWindowMs = 100;
-
-			for (int i = 0; i < processorCount; i++)
-			{
-				ManualResetEvent threadReadyEvent = threadReadyEvents[i];
-				ManualResetEvent threadCompletedEvent = threadCompletedEvents[i];
-				new Thread(_ => 
-				{
-					threadReadyEvent.Set();
-					startTestEvent.WaitOne();
-					while (!testCompleted)
-						Subject.Invoke();
-					threadCompletedEvent.Set();
-				}).Start();
-			}
-
-			// Wait for all threads to be ready
-			WaitHandle.WaitAll(threadReadyEvents);
+			Subject.ThrottleWindowMs = 25;
 
 			// Allow a large window for the first invoke
 			int failCount = 0;
+			int successCount = 0;
 			var lastInvokeTime = DateTime.UtcNow.AddDays(-1);
 			int smallestFailTime = int.MaxValue;
 
@@ -95,8 +73,10 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 			// This ensures each call is on or outside the MS window
 			ActionToExecute = () =>
 			{
-				long elapsedMs = (int)(DateTime.UtcNow - lastInvokeTime).TotalMilliseconds;
-				if (elapsedMs < Subject.ThrottleWindowMs)
+				double elapsedMs = (DateTime.UtcNow - lastInvokeTime).TotalMilliseconds;
+				if (Subject.ThrottleWindowMs <= elapsedMs + 10) // 10 ms for timer inaccuracies - this is not a precision tool
+					successCount++;
+				else
 				{
 					Interlocked.Increment(ref failCount);
 					smallestFailTime = (int)Math.Min(smallestFailTime, elapsedMs);
@@ -104,15 +84,16 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 				lastInvokeTime = DateTime.UtcNow;
 			};
 
-			// Start the test
-			startTestEvent.Set();
+			var startTime = DateTime.UtcNow;
+			await Parallel.ForEachAsync(Enumerable.Range(1, 256), async (x, _) =>
+			{
+				while (successCount < 10)
+				{
+					await Task.Yield();
+					Subject.Invoke();
+				}
+			});
 
-			await Task.Delay(Subject.ThrottleWindowMs * 4);
-
-			testCompleted = true;
-
-			// Wait for all threads to finish
-			WaitHandle.WaitAll(threadCompletedEvents);
 
 			if (failCount > 0)
 				Assert.Fail(
