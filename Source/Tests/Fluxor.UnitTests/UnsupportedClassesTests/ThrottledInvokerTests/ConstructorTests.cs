@@ -10,7 +10,7 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		public void WhenActionIsNull_ThenThrowsArgumentNullException()
 		{
 			Assert.Throws<ArgumentNullException>(
-				"action",
+				"throttledAction",
 				() => new ThrottledInvoker(null));
 		}
 	}
