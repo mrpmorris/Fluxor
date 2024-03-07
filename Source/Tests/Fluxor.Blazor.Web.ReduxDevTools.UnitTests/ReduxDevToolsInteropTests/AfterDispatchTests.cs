@@ -14,11 +14,13 @@ public class AfterDispatchTests
 	private Lazy<ReduxDevToolsMiddleware> Subject;
 
 	[Fact]
-	public void WhenUsingActionFiltering_AndFilterReturnsFalse_ThenActionShouldNotBeLogged()
+	public async Task WhenUsingActionFiltering_AndAnyFilterReturnsFalse_ThenActionShouldNotBeLogged()
 	{
 		Options.AddActionFilter(_ => false);
 		Options.AddActionFilter(_ => true);
 		Subject.Value.AfterDispatch(this);
+		await Task.Yield();
+
 		MockReduxDevToolsInterop.Verify(
 			x => x.DispatchAsync(
 				this,
@@ -29,10 +31,12 @@ public class AfterDispatchTests
 	}
 
 	[Fact]
-	public void WhenUsingActionFiltering_AndFilterReturnsTrue_ThenActionShouldBeLogged()
+	public async Task WhenUsingActionFiltering_AndFilterReturnsTrue_ThenActionShouldBeLogged()
 	{
 		Options.AddActionFilter(_ => true);
 		Subject.Value.AfterDispatch(this);
+		await Task.Yield();
+		
 		MockReduxDevToolsInterop.Verify(
 			x => x.DispatchAsync(
 				this,
@@ -40,12 +44,15 @@ public class AfterDispatchTests
 				It.IsAny<string>()),
 			Times.Once,
 			"Should have logged action");
+
 	}
 
 	[Fact]
-	public void WhenNotUsingActionFiltering_ThenActionShouldBeLogged()
+	public async Task WhenNotUsingActionFiltering_ThenActionShouldBeLogged()
 	{
 		Subject.Value.AfterDispatch(this);
+		await Task.Yield(); 
+		
 		MockReduxDevToolsInterop.Verify(
 			x => x.DispatchAsync(
 				this,
