@@ -43,19 +43,43 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		[Fact]
 		public async Task WhenInvokedOutsideThrottleWindow_ThenInvokesImmediately()
 		{
+			const int Iterations = 10;
 			Subject.ThrottleWindowMs = 50;
 			var stopwatch = Stopwatch.StartNew();
-			Subject.Invoke();
-			do
-			{
-				int elapsed = (int)stopwatch.ElapsedMilliseconds;
-				if (elapsed >= Subject.ThrottleWindowMs)
-					break;
-				await Task.Delay(Subject.ThrottleWindowMs - elapsed);
-			} while (true);
+
+			// Get the initial invoke out of the way, because this always
+			// executes immediately.
 			Subject.Invoke();
 
-			Assert.Equal(2, InvokeCount);
+			// Now do X iterations
+			for (int i = 0; i < Iterations; i++)
+			{
+				// Invoke immediately, this should not execute the callback because it is executed
+				// either immediately after the initial Subject.Invoke() in the test,
+				// or because it is executed immediately after the Subject.Invoke() at the end
+				// of the do/while loop.
+				Subject.Invoke();
+
+				stopwatch.Restart();
+				do
+				{
+					int elapsed = (int)stopwatch.ElapsedMilliseconds;
+					if (elapsed > Subject.ThrottleWindowMs)
+						break;
+					await Task.Delay(Subject.ThrottleWindowMs - elapsed);
+				} while (true);
+
+				// Alone with the first one in the test (outside the loop), this is the
+				// Subject.Invoke() that should be outside the throttle window and therefore
+				// be executed.
+				Subject.Invoke();
+			}
+
+			// This will always be +1 because we have `Iterations` executions,
+			// and the one outside the loop.
+			// This is to check the first call always goes straight through,
+			// and all calls after that are throttled.
+			Assert.Equal(Iterations + 1, InvokeCount);
 		}
 
 		[Fact]
