@@ -61,46 +61,45 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		[Fact]
 		public async Task WhenExecutedByMultipleThreads_ThenThrottlesSuccessfully()
 		{
-			Subject.ThrottleWindowMs = 10;
-			int longestAllowedDelay = Subject.ThrottleWindowMs * 2;
+			Subject.ThrottleWindowMs = 25;
 
 			// Allow a large window for the first invoke
-			int tooSoonCount = 0;
-			int tooLateCount = 0;
-			int successCount = 0;
-			int totalExecutionCount = 0;
+			int failCount = 0;
+			int executionCount = 0;
 			var lastInvokeTime = DateTime.UtcNow.AddDays(-1);
+			int smallestFailTime = int.MaxValue;
 
 			// Set up the action to execute
 			// This ensures each call is on or outside the MS window
 			ActionToExecute = () =>
 			{
+				Interlocked.Increment(ref executionCount);
+
 				double elapsedMs = (DateTime.UtcNow - lastInvokeTime).TotalMilliseconds;
-				Interlocked.Increment(ref totalExecutionCount);
-				if (elapsedMs > Subject.ThrottleWindowMs)
-					Interlocked.Increment(ref successCount);
-				else
-				if (elapsedMs > tooLateCount)
-					Interlocked.Increment(ref tooLateCount);
-				else
-					Interlocked.Increment(ref tooSoonCount);
+				if (elapsedMs <= Subject.ThrottleWindowMs)
+				{
+					Interlocked.Increment(ref failCount);
+					smallestFailTime = (int)Math.Min(smallestFailTime, elapsedMs);
+				}
 				lastInvokeTime = DateTime.UtcNow;
 			};
 
 			var startTime = DateTime.UtcNow;
 			await Parallel.ForEachAsync(Enumerable.Range(1, 256), async (x, _) =>
 			{
-				while (totalExecutionCount < 10)
+				while (executionCount < 10)
 				{
 					await Task.Yield();
 					Subject.Invoke();
 				}
 			});
 
-			if (tooSoonCount > 0)
-				Assert.Fail($"Executed too soon {tooSoonCount} times.");
-			if (tooLateCount > 0)
-				Assert.Fail($"Executed too late {tooLateCount} times.");
+
+			if (failCount > 0)
+				Assert.Fail(
+					$"Failed: Smallest elapsed time was {smallestFailTime}" +
+					$" when it should be {Subject.ThrottleWindowMs}" +
+					$" failed {failCount} times.");
 		}
 	}
 }
