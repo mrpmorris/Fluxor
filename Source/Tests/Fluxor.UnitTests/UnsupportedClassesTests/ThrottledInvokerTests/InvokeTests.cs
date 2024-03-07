@@ -47,14 +47,14 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 			Subject.ThrottleWindowMs = 50;
 			var stopwatch = Stopwatch.StartNew();
 
-			// Get the initial invoke out of the way, because this always
-			// executes immediately.
+			// Get the initial invoke out of the way, because the first execution on the
+			// throttler will always execute the callback action immediately.
 			Subject.Invoke();
 
 			// Now do X iterations
 			for (int i = 0; i < Iterations; i++)
 			{
-				// Invoke immediately, this should not execute the callback because it is executed
+				// Call Subject.Invoke() immediately, this should not execute the callback because it is executed
 				// either immediately after the initial Subject.Invoke() in the test,
 				// or because it is executed immediately after the Subject.Invoke() at the end
 				// of the do/while loop.
@@ -69,16 +69,16 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 					await Task.Delay(Subject.ThrottleWindowMs - elapsed);
 				} while (true);
 
-				// Alone with the first one in the test (outside the loop), this is the
+				// Along with the first one in the test (outside the loop), this is the
 				// Subject.Invoke() that should be outside the throttle window and therefore
-				// be executed.
+				// result in the callback action being executed.
 				Subject.Invoke();
 			}
 
-			// This will always be +1 because we have `Iterations` executions,
-			// and the one outside the loop.
-			// This is to check the first call always goes straight through,
-			// and all calls after that are throttled.
+			// This will always be +1 because the first call to the throttler will always
+			// execute immediately, and then we have 
+			//   X iterations ignored because they are immediately afterwards.
+			//   X iterations callback because they are outside the specified throttle time.
 			Assert.Equal(Iterations + 1, InvokeCount);
 		}
 
