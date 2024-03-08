@@ -65,6 +65,17 @@ namespace Fluxor.Blazor.Web.Components
 		}
 
 		/// <summary>
+		/// Initializes the store (primarily intended for WASM components and pages).
+		/// </summary>
+		protected override void async Task OnParametersSetAsync()
+		{
+			await base.OnParametersSetAsync();
+
+			//Attempt to initialize the store knowing that if it's already been initialized, this won't do anything
+			await Store.InitializeAsync();
+		}
+
+		/// <summary>
 		/// Subscribes to state properties
 		/// </summary>
 		protected override void OnInitialized()

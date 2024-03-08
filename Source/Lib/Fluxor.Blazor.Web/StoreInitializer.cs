@@ -53,6 +53,7 @@ namespace Fluxor.Blazor.Web
 		protected override async Task OnInitializedAsync()
 		{
 			await Store.InitializeAsync();
+			await base.OnInitializedAsync();
 		}
 #endif
 
