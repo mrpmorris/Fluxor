@@ -67,7 +67,7 @@ public class InvokeTests
 	[Fact]
 	public async Task WhenInvokedInsideThrottleWindow_ThenMoreThanTwoInvokesAreDiscarded()
 	{
-		const byte AllowedInvokesPerSecond = 25;
+		const byte AllowedInvokesPerSecond = 1;
 		const int ThrottleWindowMS = (1000 / AllowedInvokesPerSecond);
 		const int ThreeThrottleWindowsMS = (int)(ThrottleWindowMS * 3);
 
@@ -78,7 +78,7 @@ public class InvokeTests
 
 		await Task.Delay(ThreeThrottleWindowsMS);
 
-		if (InvokeCount == 1)
+		if (InvokeCount != 2)
 			Assert.Fail("Deferred Invoke was not executed at start of second window.");
 
 		if (InvokeCount > 2)
@@ -167,5 +167,34 @@ public class InvokeTests
 				$" Smallest elapsed time was {TimeSpan.FromTicks(smallestFailMS).TotalMilliseconds} MS" +
 				$" when it should be no less than {WindowSizeMS} MS" +
 				$" failed {failCount} times.");
+	}
+
+	[Fact]
+	public void WhenDisposed_ThenInitialActionDoesNotExecute()
+	{
+		const byte AllowedInvokesPerSecond = 25;
+
+		(Subject as IDisposable).Dispose();
+		Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
+
+		Assert.Equal(0, InvokeCount);
+	}
+
+	[Fact]
+	public async Task WhenDisposed_ThenAlreadyDeferredActionDoesNotExecute()
+	{
+		const byte AllowedInvokesPerSecond = 25;
+		const int WindowSizeMS = (1000 / AllowedInvokesPerSecond);
+		const int HalfWindowSizeMS = WindowSizeMS / 2;
+
+		Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
+		Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
+
+		await Task.Delay(HalfWindowSizeMS);
+		(Subject as IDisposable).Dispose();
+
+		await Task.Delay(WindowSizeMS * 2);
+
+		Assert.Equal(1, InvokeCount);
 	}
 }
