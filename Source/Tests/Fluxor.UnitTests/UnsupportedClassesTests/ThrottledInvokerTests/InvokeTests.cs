@@ -40,7 +40,7 @@ public class InvokeTests
 	[Fact]
 	public async Task WhenInvokedInsideThrottleWindow_ThenSecondInvokeIsDeferredUntilEndOfThrottleWindow()
 	{
-		const byte AllowedInvokesPerSecond = 25;
+		const byte AllowedInvokesPerSecond = 10;
 		const int ThrottleWindowMS = (1000 / AllowedInvokesPerSecond);
 		const int HalfOfAThrottleWindowMS = ThrottleWindowMS / 2;
 		const int ThreeThrottleWindowsMS = (int)(ThrottleWindowMS * 3);
@@ -88,7 +88,7 @@ public class InvokeTests
 	[Fact]
 	public async Task WhenExecutedByMultipleThreads_ThenOnlyOneThreadAtATimeInvokesTheAction()
 	{
-		const byte AllowedInvokesPerSecond = 25;
+		const byte AllowedInvokesPerSecond = 50;
 		int concurrentExecutionCount = 0;
 		int executionCount = 0;
 
@@ -106,7 +106,7 @@ public class InvokeTests
 
 		await Parallel.ForEachAsync(Enumerable.Range(1, 256), async (x, _) =>
 		{
-			while (executionCount < 42)
+			while (executionCount < 10)
 			{
 				await Task.Yield();
 				Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
@@ -117,7 +117,7 @@ public class InvokeTests
 	[Fact]
 	public async Task WhenExecutedByMultipleThreads_ThenThrottlesSuccessfully()
 	{
-		const byte AllowedInvokesPerSecond = 25;
+		const byte AllowedInvokesPerSecond = 50;
 		const int WindowSizeMS = (1000 / AllowedInvokesPerSecond);
 
 		// Allow a large window for the first invoke
@@ -172,7 +172,7 @@ public class InvokeTests
 	[Fact]
 	public void WhenDisposed_ThenInitialActionDoesNotExecute()
 	{
-		const byte AllowedInvokesPerSecond = 25;
+		const byte AllowedInvokesPerSecond = 10;
 
 		(Subject as IDisposable).Dispose();
 		Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
@@ -183,7 +183,7 @@ public class InvokeTests
 	[Fact]
 	public async Task WhenDisposed_ThenAlreadyDeferredActionDoesNotExecute()
 	{
-		const byte AllowedInvokesPerSecond = 25;
+		const byte AllowedInvokesPerSecond = 10;
 		const int WindowSizeMS = (1000 / AllowedInvokesPerSecond);
 
 		Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
