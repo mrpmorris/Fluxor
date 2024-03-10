@@ -185,13 +185,11 @@ public class InvokeTests
 	{
 		const byte AllowedInvokesPerSecond = 25;
 		const int WindowSizeMS = (1000 / AllowedInvokesPerSecond);
-		const int HalfWindowSizeMS = WindowSizeMS / 2;
 
 		Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
 		Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
 
-		await Task.Delay(HalfWindowSizeMS);
-		(Subject as IDisposable).Dispose();
+		Subject.Dispose();
 
 		await Task.Delay(WindowSizeMS * 2);
 
