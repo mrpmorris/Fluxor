@@ -13,11 +13,12 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests
 	{
 		private readonly IDispatcher Dispatcher;
 		private readonly IStore Subject;
+		private volatile int NumberOfOutstandingInvokes;
 
 		[Fact]
 		public async Task WhenTriggerThrowsUnhandledException_ThenEventIsTriggered()
 		{
-			IEnumerable<Exception> exceptions = await SendAction(new ThrowSimpleExceptionAction());
+			IEnumerable<Exception> exceptions = await SendAction(new ThrowSimpleExceptionAction(), expectedExceptionCount: 1);
 			Assert.Single(exceptions);
 			Assert.IsType<InvalidOperationException>(exceptions.First());
 		}
@@ -26,7 +27,7 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests
 		public async Task WhenTriggerThrowsUnhandledAggregateException_ThenEventIsTriggeredForEachEvent()
 		{
 			Type[] exceptionTypes = 
-				(await SendAction(new ThrowAggregateExceptionAction()))
+				(await SendAction(new ThrowAggregateExceptionAction(), expectedExceptionCount: 3))
 				.Select(x => x.GetType())
 				.ToArray();
 
@@ -36,15 +37,18 @@ namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests
 			Assert.Contains(typeof(InvalidProgramException), exceptionTypes);
 		}
 
-		private async Task<IEnumerable<Exception>> SendAction(object action)
+		private async Task<IEnumerable<Exception>> SendAction(object action, int expectedExceptionCount)
 		{
+			NumberOfOutstandingInvokes = expectedExceptionCount;
+
 			var result = new List<Exception>();
 			var resetEvent = new ManualResetEvent(false);
 
 			Subject.UnhandledException += (sender, e) =>
 			{
 				result.Add(e.Exception);
-				resetEvent.Set();
+				if (Interlocked.Decrement(ref NumberOfOutstandingInvokes) == 0)
+					resetEvent.Set();
 			};
 
 			Task effectTask = Task.Run(() =>

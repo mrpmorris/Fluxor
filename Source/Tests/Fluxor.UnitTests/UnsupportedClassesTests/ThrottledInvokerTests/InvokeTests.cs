@@ -23,8 +23,8 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		[Fact]
 		public void WhenNotThrottled_ThenInvokesImmediately()
 		{
-			for (int i = 0; i < 42; i++)
-				Subject.Invoke();
+			for (int i = 1; i <= 42; i++)
+				Subject.Invoke(maximumInvokesPerSecond: 0);
 
 			Assert.Equal(42, InvokeCount);
 		}
@@ -32,66 +32,66 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 		[Fact]
 		public void WhenInvokedInsideThrottleWindow_ThenDoesNotInvoke()
 		{
-			Subject.ThrottleWindowMs = 2000;
-
-			for (int i = 0; i < 42; i++)
-				Subject.Invoke();
+			for (int i = 1; i <= 42; i++)
+				Subject.Invoke(maximumInvokesPerSecond: 1);
 
 			Assert.Equal(1, InvokeCount);
 		}
 
 		[Fact]
-		public async Task WhenInvokedOutsideThrottleWindow_ThenInvokesImmediately()
+		public async Task WhenInvokedInsideThrottleWindow_ThenSecondInvokeIsDeferredUntilEndOfThrottleWindow()
 		{
-			const int Iterations = 10;
-			Subject.ThrottleWindowMs = 50;
-			var stopwatch = Stopwatch.StartNew();
+			const byte AllowedInvokesPerSecond = 25;
+			const int ThrottleWindowMS = (1000 / AllowedInvokesPerSecond);
+			const int HalfOfAThrottleWindowMS = ThrottleWindowMS / 2;
+			const int ThreeThrottleWindowsMS = (int)(ThrottleWindowMS * 3);
 
-			// Get the initial invoke out of the way, because the first execution on the
-			// throttler will always execute the callback action immediately.
-			Subject.Invoke();
+			// First invoke should execute immediately.
+			Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
+			if (InvokeCount != 1)
+				Assert.Fail($"Expected first Invoke in new throttle window to execute immediately. Expected 1 Invoke but found {InvokeCount}.");
 
-			// Now do X iterations
-			for (int i = 0; i < Iterations; i++)
-			{
-				// Call Subject.Invoke() immediately, this should not execute the callback because it is executed
-				// either immediately after the initial Subject.Invoke() in the test,
-				// or because it is executed immediately after the Subject.Invoke() at the end
-				// of the do/while loop.
-				Subject.Invoke();
+			// Invoke again within the throttle window, this should defer the 2nd call
+			// until the start of the next throttle window.
+			await Task.Delay(HalfOfAThrottleWindowMS);
+			Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
+			if (InvokeCount != 1)
+				Assert.Fail($"Expected second Invoke within throttle window get deferred until the start of the next window. Expected 1 Invoke but found {InvokeCount}.");
 
-				stopwatch.Restart();
-				do
-				{
-					int elapsed = (int)stopwatch.ElapsedMilliseconds;
-					if (elapsed > Subject.ThrottleWindowMs)
-						break;
-					await Task.Delay(Subject.ThrottleWindowMs - elapsed);
-				} while (true);
+			// Ensure the test has finished
+			await Task.Delay(ThreeThrottleWindowsMS);
 
-				// Along with the first one in the test (outside the loop), this is the
-				// Subject.Invoke() that should be outside the throttle window and therefore
-				// result in the callback action being executed.
-				Subject.Invoke();
-			}
-
-			// This will always be +1 because the first call to the throttler will always
-			// execute immediately, and then we have 
-			//   X iterations ignored because they are immediately afterwards.
-			//   X iterations callback because they are outside the specified throttle time.
-			Assert.Equal(Iterations + 1, InvokeCount);
+			if (InvokeCount != 2)
+				Assert.Fail($"Expected deferred second Invoke to have executed after the next window has started. Expected 2 Invoke but found {InvokeCount}.");
 		}
 
 		[Fact]
-		public async Task WhenExecutedByMultipleThreads_ThenThrottlesSuccessfully()
+		public async Task WhenInvokedInsideThrottleWindow_ThenMoreThanTwoInvokesAreDiscarded()
 		{
-			Subject.ThrottleWindowMs = 25;
+			const byte AllowedInvokesPerSecond = 25;
+			const int ThrottleWindowMS = (1000 / AllowedInvokesPerSecond);
+			const int ThreeThrottleWindowsMS = (int)(ThrottleWindowMS * 3);
 
-			// Allow a large window for the first invoke
-			int failCount = 0;
+			for (int i = 1; i <= 10; i++)
+				Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
+			if (InvokeCount != 1)
+				Assert.Fail($"Expected first Invoke in new throttle window to execute immediately. Expected 1 Invoke but found {InvokeCount}.");
+
+			await Task.Delay(ThreeThrottleWindowsMS);
+
+			if (InvokeCount == 1)
+				Assert.Fail("Deferred Invoke was not executed at start of second window.");
+
+			if (InvokeCount > 2)
+				Assert.Fail("Expected additional Invokes to be discarded when a deffered Invoke is waiting to execute.");
+		}
+
+		[Fact]
+		public async Task WhenExecutedByMultipleThreads_ThenOnlyOneThreadAtATimeInvokesTheAction()
+		{
+			const byte AllowedInvokesPerSecond = 25;
+			int concurrentExecutionCount = 0;
 			int executionCount = 0;
-			var lastInvokeTime = DateTime.UtcNow.AddDays(-1);
-			int smallestFailTime = int.MaxValue;
 
 			// Set up the action to execute
 			// This ensures each call is on or outside the MS window
@@ -99,30 +99,74 @@ namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
 			{
 				Interlocked.Increment(ref executionCount);
 
-				double elapsedMs = (DateTime.UtcNow - lastInvokeTime).TotalMilliseconds;
-				if (elapsedMs <= Subject.ThrottleWindowMs)
-				{
-					Interlocked.Increment(ref failCount);
-					smallestFailTime = (int)Math.Min(smallestFailTime, elapsedMs);
-				}
-				lastInvokeTime = DateTime.UtcNow;
+				int newConcurrentExecutionCount = Interlocked.Increment(ref concurrentExecutionCount);
+				if (newConcurrentExecutionCount != 1)
+					Assert.Fail($"Concurrent execution detected (Expected 1, found {newConcurrentExecutionCount}).");
+				Interlocked.Decrement(ref concurrentExecutionCount);
 			};
 
-			var startTime = DateTime.UtcNow;
 			await Parallel.ForEachAsync(Enumerable.Range(1, 256), async (x, _) =>
 			{
-				while (executionCount < 10)
+				while (executionCount < 42)
 				{
 					await Task.Yield();
-					Subject.Invoke();
+					Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
+				}
+			});
+		}
+
+		[Fact]
+		public async Task WhenExecutedByMultipleThreads_ThenThrottlesSuccessfully()
+		{
+			const byte AllowedInvokesPerSecond = 25;
+			const int WindowSizeMS = (1000 / AllowedInvokesPerSecond);
+
+			// Allow a large window for the first invoke
+			long lastInvokedUtcTicks = DateTime.UtcNow.AddMinutes(-1).Ticks;
+
+			int failCount = 0;
+			int totalExecutionCount = 0;
+			int smallestFailMS = int.MaxValue;
+
+			object syncRoot = new object();
+
+			// Set up the action to execute
+			// This ensures each call is on or outside the MS window
+			ActionToExecute = () =>
+			{
+				long nowUtcTicks = DateTime.UtcNow.Ticks;
+				int elapsedMS = (int)(Math.Ceiling(TimeSpan.FromTicks(nowUtcTicks - lastInvokedUtcTicks).TotalMilliseconds));
+
+				lock (syncRoot)
+				{
+					lastInvokedUtcTicks = nowUtcTicks;
+
+					if (elapsedMS < WindowSizeMS)
+					{
+						failCount++;
+						if (elapsedMS < smallestFailMS)
+							smallestFailMS = elapsedMS;
+					}
+
+					totalExecutionCount++;
+				}
+			};
+
+			await Parallel.ForEachAsync(Enumerable.Range(1, 256), async (x, _) =>
+			{
+				while (totalExecutionCount < 10)
+				{
+					await Task.Yield();
+					Subject.Invoke(maximumInvokesPerSecond: AllowedInvokesPerSecond);
 				}
 			});
 
 
 			if (failCount > 0)
 				Assert.Fail(
-					$"Failed: Smallest elapsed time was {smallestFailTime}" +
-					$" when it should be {Subject.ThrottleWindowMs}" +
+					$"Failed {failCount} times." +
+					$" Smallest elapsed time was {TimeSpan.FromTicks(smallestFailMS).TotalMilliseconds} MS" +
+					$" when it should be no less than {WindowSizeMS} MS" +
 					$" failed {failCount} times.");
 		}
 	}
