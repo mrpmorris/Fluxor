@@ -5,49 +5,48 @@ using System.Linq;
 using System.Reflection;
 using Xunit;
 
-namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureClassDescendantsTests
+namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureClassDescendantsTests;
+
+public class DiscoverFeaturesTests
 {
-	public class DiscoverFeaturesTests
+	[Fact]
+	public void WhenFeatureIsIncludedViaScanAssemblies_ThenItIsAddedToTheStore()
 	{
-		[Fact]
-		public void WhenFeatureIsIncludedViaScanAssemblies_ThenItIsAddedToTheStore()
-		{
-			IStore store = CreateStore(
-				typeof(IsolatedTests).Assembly,
-				typeToScan: null);
-			Assert.Equal(2, store.Features.Count);
-		}
+		IStore store = CreateStore(
+			typeof(IsolatedTests).Assembly,
+			typeToScan: null);
+		Assert.Equal(2, store.Features.Count);
+	}
 
-		[Theory]
-		[InlineData(typeof(IntegerFeature))]
-		public void WhenFeatureIsScannedViaType_ThenItIsAddedToTheStore(Type typeToScan)
-		{
-			IStore store = CreateStore(
-				assemblyToScan: null,
-				typeToScan);
-			Assert.Single(store.Features);
-			Assert.Equal(typeToScan.Name, store.Features.Single().Key);
-		}
+	[Theory]
+	[InlineData(typeof(IntegerFeature))]
+	public void WhenFeatureIsScannedViaType_ThenItIsAddedToTheStore(Type typeToScan)
+	{
+		IStore store = CreateStore(
+			assemblyToScan: null,
+			typeToScan);
+		Assert.Single(store.Features);
+		Assert.Equal(typeToScan.Name, store.Features.Single().Key);
+	}
 
-		private static IStore CreateStore(
-			Assembly assemblyToScan,
-			Type typeToScan)
+	private static IStore CreateStore(
+		Assembly assemblyToScan,
+		Type typeToScan)
+	{
+		var services = new ServiceCollection();
+		services.AddFluxor(x =>
 		{
-			var services = new ServiceCollection();
-			services.AddFluxor(x =>
+			if (assemblyToScan is not null)
 			{
-				if (assemblyToScan is not null)
-				{
-					x.ScanAssemblies(assemblyToScan);
-					// Allow all features in this namepspace to be scanned
-					x.AddMiddleware<IsolatedTests>();
-				}
-				if (typeToScan is not null)
-					x.ScanTypes(typeToScan);
-			});
-			IServiceProvider serviceProvider = services.BuildServiceProvider();
-			IStore result = serviceProvider.GetRequiredService<IStore>();
-			return result;
-		}
+				x.ScanAssemblies(assemblyToScan);
+				// Allow all features in this namepspace to be scanned
+				x.AddMiddleware<IsolatedTests>();
+			}
+			if (typeToScan is not null)
+				x.ScanTypes(typeToScan);
+		});
+		IServiceProvider serviceProvider = services.BuildServiceProvider();
+		IStore result = serviceProvider.GetRequiredService<IStore>();
+		return result;
 	}
 }

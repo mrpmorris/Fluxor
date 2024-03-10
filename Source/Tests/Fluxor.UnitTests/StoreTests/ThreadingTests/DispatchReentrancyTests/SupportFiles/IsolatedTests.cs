@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchReentrancyTests.SupportFiles
+﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchReentrancyTests.SupportFiles;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
-	}
 }

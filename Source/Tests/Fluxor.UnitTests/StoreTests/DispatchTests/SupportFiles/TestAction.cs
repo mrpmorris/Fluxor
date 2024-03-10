@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles
+﻿namespace Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles;
+
+public class TestAction
 {
-	public class TestAction
-	{
-	}
 }

@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests.SupportFiles
+﻿namespace Fluxor.UnitTests.ActionSubscriberTests.SubscribeToActionTests.SupportFiles;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
-	}
 }

@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests.SupportFiles
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests.SupportFiles;
+
+public class IncrementCounterAction
 {
-	public class IncrementCounterAction
-	{
-	}
 }

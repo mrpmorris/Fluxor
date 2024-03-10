@@ -1,4 +1,3 @@
-﻿namespace Fluxor.UnitTests.EffectTests.ShouldReactToActionTests.SupportFiles
-{
-	public interface IInterfaceForEffect { }
-}
+﻿namespace Fluxor.UnitTests.EffectTests.ShouldReactToActionTests.SupportFiles;
+
+public interface IInterfaceForEffect { }

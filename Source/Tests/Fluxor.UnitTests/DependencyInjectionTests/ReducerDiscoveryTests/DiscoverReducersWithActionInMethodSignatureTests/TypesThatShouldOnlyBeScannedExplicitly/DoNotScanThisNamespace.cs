@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInMethodSignatureTests.TypesThatShouldOnlyBeScannedExplicitly
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.ReducerDiscoveryTests.DiscoverReducersWithActionInMethodSignatureTests.TypesThatShouldOnlyBeScannedExplicitly;
+
+public class DoNotScanThisNamespace : Middleware
 {
-	public class DoNotScanThisNamespace : Middleware
-	{
-	}
 }

@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchWhileInitializingTests.SupportFiles
+﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchWhileInitializingTests.SupportFiles;
+
+public class TestAction
 {
-	public class TestAction
-	{
-	}
 }

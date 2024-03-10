@@ -1,30 +1,28 @@
-﻿using Fluxor.Exceptions;
-using System;
+﻿using System;
 
-namespace Fluxor.Exceptions
+namespace Fluxor.Exceptions;
+
+/// <summary>
+/// An exception that is thrown when the Store fails to initialize
+/// </summary>
+public class StoreInitializationException : FluxorException
 {
 	/// <summary>
-	/// An exception that is thrown when the Store fails to initialize
+	/// Creates a new instance of the exception
 	/// </summary>
-	public class StoreInitializationException : FluxorException
+	/// <param name="message">The message that describes the error</param>
+	public StoreInitializationException(string message)
+		: base(message)
 	{
-		/// <summary>
-		/// Creates a new instance of the exception
-		/// </summary>
-		/// <param name="message">The message that describes the error</param>
-		public StoreInitializationException(string message)
-			: base(message)
-		{
-		}
+	}
 
-		/// <summary>
-		/// Creates a new instance of the exception
-		/// </summary>
-		/// <param name="message">The message that describes the error</param>
-		/// <param name="innerException">The exception that is the cause of the current exception, or a null reference</param>
-		public StoreInitializationException(string message, Exception innerException)
-			: base(message, innerException)
-		{
-		}
+	/// <summary>
+	/// Creates a new instance of the exception
+	/// </summary>
+	/// <param name="message">The message that describes the error</param>
+	/// <param name="innerException">The exception that is the cause of the current exception, or a null reference</param>
+	public StoreInitializationException(string message, Exception innerException)
+		: base(message, innerException)
+	{
 	}
 }

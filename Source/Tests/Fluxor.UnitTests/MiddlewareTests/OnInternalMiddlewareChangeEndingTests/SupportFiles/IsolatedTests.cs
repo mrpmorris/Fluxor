@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.MiddlewareTests.OnInternalMiddlewareChangeEndingTests.SupportFiles
+﻿namespace Fluxor.UnitTests.MiddlewareTests.OnInternalMiddlewareChangeEndingTests.SupportFiles;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
-	}
 }

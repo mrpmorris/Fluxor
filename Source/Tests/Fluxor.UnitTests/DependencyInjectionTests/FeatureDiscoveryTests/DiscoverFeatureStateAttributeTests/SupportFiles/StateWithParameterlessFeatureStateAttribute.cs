@@ -1,7 +1,6 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureStateAttributeTests.SupportFiles
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureStateAttributeTests.SupportFiles;
+
+[FeatureState]
+public class StateWithParameterlessFeatureStateAttribute
 {
-	[FeatureState]
-	public class StateWithParameterlessFeatureStateAttribute
-	{
-	}
 }

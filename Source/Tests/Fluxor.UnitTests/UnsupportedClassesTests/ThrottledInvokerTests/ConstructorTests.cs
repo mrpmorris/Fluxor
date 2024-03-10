@@ -2,16 +2,15 @@
 using System;
 using Xunit;
 
-namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests
+namespace Fluxor.UnitTests.UnsupportedClassesTests.ThrottledInvokerTests;
+
+public class ConstructorTests
 {
-	public class ConstructorTests
+	[Fact]
+	public void WhenActionIsNull_ThenThrowsArgumentNullException()
 	{
-		[Fact]
-		public void WhenActionIsNull_ThenThrowsArgumentNullException()
-		{
-			Assert.Throws<ArgumentNullException>(
-				"throttledAction",
-				() => new ThrottledInvoker(null));
-		}
+		Assert.Throws<ArgumentNullException>(
+			"throttledAction",
+			() => new ThrottledInvoker(null));
 	}
 }

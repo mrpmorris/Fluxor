@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.ActionSubscriberTests.UnsubscribeFromAllActionsTests.SupportFiles
+﻿namespace Fluxor.UnitTests.ActionSubscriberTests.UnsubscribeFromAllActionsTests.SupportFiles;
+
+public class TestAction
 {
-	public class TestAction
-	{
-	}
 }

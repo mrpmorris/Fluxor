@@ -1,21 +1,20 @@
 ﻿using System;
 
-namespace Fluxor.DependencyInjection
+namespace Fluxor.DependencyInjection;
+
+internal class ReducerClassInfo
 {
-	internal class ReducerClassInfo
+	public readonly Type ImplementingType;
+	public readonly Type StateType;
+
+	public ReducerClassInfo(Type implementingType, Type stateType)
 	{
-		public readonly Type ImplementingType;
-		public readonly Type StateType;
+		ImplementingType = implementingType;
+		StateType = stateType;
+	}
 
-		public ReducerClassInfo(Type implementingType, Type stateType)
-		{
-			ImplementingType = implementingType;
-			StateType = stateType;
-		}
-
-		internal object GroupBy(Func<object, object> p)
-		{
-			throw new NotImplementedException();
-		}
+	internal object GroupBy(Func<object, object> p)
+	{
+		throw new NotImplementedException();
 	}
 }

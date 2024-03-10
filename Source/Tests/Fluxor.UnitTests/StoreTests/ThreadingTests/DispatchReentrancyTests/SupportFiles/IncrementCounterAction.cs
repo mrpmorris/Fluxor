@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchReentrancyTests.SupportFiles
+﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchReentrancyTests.SupportFiles;
+
+class IncrementCounterAction
 {
-	class IncrementCounterAction
-	{
-	}
 }
