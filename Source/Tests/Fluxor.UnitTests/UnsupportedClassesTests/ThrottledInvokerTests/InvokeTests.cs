@@ -82,7 +82,7 @@ public class InvokeTests
 			Assert.Fail("Deferred Invoke was not executed at start of second window.");
 
 		if (InvokeCount > 2)
-			Assert.Fail("Expected additional Invokes to be discarded when a deffered Invoke is waiting to execute.");
+			Assert.Fail("Expected additional Invokes to be discarded when a deferred Invoke is waiting to execute.");
 	}
 
 	[Fact]
