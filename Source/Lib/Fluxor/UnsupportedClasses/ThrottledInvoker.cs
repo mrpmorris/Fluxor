@@ -56,7 +56,6 @@ public class ThrottledInvoker
 			Invoke(throttleWindowMS, wasImmediateInvoke: true);
 		else
 			_ = InvokeDeferredAsync(throttleWindowMS);
-
 	}
 
 	private void Invoke(int throttleWindowMS, bool wasImmediateInvoke)
