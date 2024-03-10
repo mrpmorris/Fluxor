@@ -24,18 +24,18 @@ namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests
 		[Fact]
 		public async Task WhenBaseOnInitializedWasNotCalled_ThenThrowsNullReferenceException()
 		{
-			string errorMessage = null;
 			var component = new FluxorComponentThatOptionallyCallsBaseOnInitialized();
-			try
-			{
-				component.Test_OnInitialized();
-				await component.DisposeAsync();
-			}
-			catch (NullReferenceException e)
-			{
-				errorMessage = e.Message;
-			}
-			Assert.Equal("Have you forgotten to call base.OnInitialized() in your component?", errorMessage);
+
+			var exception = await Assert.ThrowsAsync<NullReferenceException>(
+				async () =>
+				{
+					component.Test_OnInitialized();
+					await component.DisposeAsync();
+
+				}
+			);
+			
+			Assert.Equal("Have you forgotten to call base.OnInitialized() in your component?", exception.Message);
 		}
 
 		[Fact]
