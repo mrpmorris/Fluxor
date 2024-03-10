@@ -1,5 +1,4 @@
-﻿#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-using Fluxor.Blazor.Web.ReduxDevTools.Internal;
+﻿using Fluxor.Blazor.Web.ReduxDevTools.Internal;
 using Fluxor.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -7,19 +6,19 @@ using Xunit;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools.UnitTests.ReduxDevToolsInteropTests;
 
-public class AfterDispatchTests
+public class AfterDispatchTests : IAsyncLifetime
 {
 	private readonly Mock<IReduxDevToolsInterop> MockReduxDevToolsInterop;
 	private ReduxDevToolsMiddlewareOptions Options;
-	private Lazy<ReduxDevToolsMiddleware> Subject;
+	private ReduxDevToolsMiddleware Subject;
 
 	[Fact]
 	public async Task WhenUsingActionFiltering_AndAnyFilterReturnsFalse_ThenActionShouldNotBeLogged()
 	{
 		Options.AddActionFilter(_ => false);
 		Options.AddActionFilter(_ => true);
-		Subject.Value.AfterDispatch(this);
-		await Task.Yield();
+		Subject.AfterDispatch(this);
+		await Task.Delay(50);
 
 		MockReduxDevToolsInterop.Verify(
 			x => x.DispatchAsync(
@@ -34,8 +33,8 @@ public class AfterDispatchTests
 	public async Task WhenUsingActionFiltering_AndFilterReturnsTrue_ThenActionShouldBeLogged()
 	{
 		Options.AddActionFilter(_ => true);
-		Subject.Value.AfterDispatch(this);
-		await Task.Yield();
+		Subject.AfterDispatch(this);
+		await Task.Delay(50);
 		
 		MockReduxDevToolsInterop.Verify(
 			x => x.DispatchAsync(
@@ -44,14 +43,13 @@ public class AfterDispatchTests
 				It.IsAny<string>()),
 			Times.Once,
 			"Should have logged action");
-
 	}
 
 	[Fact]
 	public async Task WhenNotUsingActionFiltering_ThenActionShouldBeLogged()
 	{
-		Subject.Value.AfterDispatch(this);
-		await Task.Yield(); 
+		Subject.AfterDispatch(this);
+		await Task.Delay(50);
 		
 		MockReduxDevToolsInterop.Verify(
 			x => x.DispatchAsync(
@@ -66,17 +64,15 @@ public class AfterDispatchTests
 	{
 		MockReduxDevToolsInterop = new Mock<IReduxDevToolsInterop>();
 		Options = new ReduxDevToolsMiddlewareOptions(new FluxorOptions(new ServiceCollection()));
-		Subject = new(() =>
-		{
-
-			var result = new ReduxDevToolsMiddleware(
+		Subject =
+			new ReduxDevToolsMiddleware(
 				MockReduxDevToolsInterop.Object,
 				Options);
-			result.InitializeAsync(Mock.Of<IDispatcher>(), new Store(Mock.Of<IDispatcher>()));
-			return result;
-		});
-
 	}
-}
 
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+	async Task IAsyncLifetime.InitializeAsync() =>
+		await Subject.InitializeAsync(Mock.Of<IDispatcher>(), new Store(Mock.Of<IDispatcher>()));
+
+	Task IAsyncLifetime.DisposeAsync() => Task.CompletedTask;
+
+}
