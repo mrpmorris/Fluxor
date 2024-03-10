@@ -33,7 +33,7 @@ namespace Fluxor.Blazor.Web.Components
 		/// <summary>
 		/// If greater than 0, the feature will not execute state changes
 		/// more often than this many times per second. Additional notifications
-		/// will be surpressed, and observers will be notified of the latest
+		/// will be supressed, and observers will be notified of the latest
 		/// state when the time window has elapsed to allow another notification.
 		/// </summary>
 		protected byte MaximumStateChangedNotificationsPerSecond { get; set; }
@@ -60,6 +60,7 @@ namespace Fluxor.Blazor.Web.Components
 			if (Disposed)
 				return;
 
+			StateHasChangedThrottler.Dispose();
 			await DisposeAsyncCore(true).ConfigureAwait(false);
 			GC.SuppressFinalize(this);
 			Disposed = true;

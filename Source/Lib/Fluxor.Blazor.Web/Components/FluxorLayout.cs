@@ -59,6 +59,7 @@ namespace Fluxor.Blazor.Web.Components
 			if (Disposed)
 				return;
 
+			StateHasChangedThrottler.Dispose();
 			await DisposeAsyncCore(true).ConfigureAwait(false);
 			GC.SuppressFinalize(this);
 			Disposed = true;

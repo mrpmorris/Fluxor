@@ -64,7 +64,7 @@ public sealed class ThrottledInvoker : IDisposable
 			_ = InvokeDeferredAsync(throttleWindowMS);
 	}
 
-	void IDisposable.Dispose()
+	public void Dispose()
 	{
 		if (IsDisposed) return;
 		CancellationTokenSource.Cancel();
