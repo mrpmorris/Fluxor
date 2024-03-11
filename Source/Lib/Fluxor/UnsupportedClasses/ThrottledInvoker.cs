@@ -6,9 +6,9 @@ namespace Fluxor.UnsupportedClasses;
 
 public sealed class ThrottledInvoker : IDisposable
 {
+	private static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(1); private DateTime NextAllowedInvokeUtc;
 	private readonly object SyncRoot = new();
 	private readonly Action ThrottledAction;
-	private DateTime NextAllowedInvokeUtc;
 	private bool HasPendingImmediateInvocation;
 	private bool HasPendingDeferredInvocation;
 	private bool IsDisposed;
@@ -67,15 +67,15 @@ public sealed class ThrottledInvoker : IDisposable
 	public void Dispose()
 	{
 		if (IsDisposed) return;
-		CancellationTokenSource.Cancel();
 		IsDisposed = true;
+		CancellationTokenSource.Dispose();
 	}
 
 	private void Invoke(int throttleWindowMS, bool wasImmediateInvoke)
 	{
 		try
 		{
-			if (!CancellationTokenSource.IsCancellationRequested)
+			if (!IsDisposed && !CancellationTokenSource.IsCancellationRequested)
 				ThrottledAction();
 		}
 		finally
@@ -98,20 +98,21 @@ public sealed class ThrottledInvoker : IDisposable
 		Invoke(throttleWindowMS: throttleWindowMS, wasImmediateInvoke: false);
 	}
 
+	
 	private async ValueTask WaitUntilAfterAsync(DateTime targetTimeUtc)
 	{
 		await Task.Yield();
 		do
 		{
-			int totalMillisecondsToWait = (int)Math.Ceiling((targetTimeUtc - DateTime.UtcNow).TotalMilliseconds);
-			if (totalMillisecondsToWait <= 0)
+			TimeSpan timeToWait = targetTimeUtc - DateTime.UtcNow;
+			if (timeToWait <= TimeSpan.Zero)
 				break;
 
-			if (totalMillisecondsToWait > 1000)
-				totalMillisecondsToWait = 1000;
+			if (timeToWait > OneSecond)
+				timeToWait = OneSecond;
 
-			await Task.Delay(totalMillisecondsToWait, CancellationTokenSource.Token);
+			await Task.Delay(timeToWait, CancellationTokenSource.Token);
 		}
-		while (!CancellationTokenSource.IsCancellationRequested);
+		while (!IsDisposed && !CancellationTokenSource.IsCancellationRequested);
 	}
 }
