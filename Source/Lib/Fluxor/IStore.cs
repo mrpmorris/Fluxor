@@ -93,5 +93,18 @@ namespace Fluxor
 		/// Executed when an exception is not handled
 		/// </summary>
 		event EventHandler<Exceptions.UnhandledExceptionEventArgs> UnhandledException;
+
+		/// <summary>
+		/// Persists the features in the store to a serialized string.
+		/// </summary>
+		/// <returns></returns>
+		string SerializeToJson();
+
+		/// <summary>
+		/// Deserializes a previously serialized store and rehydrates each feature using the
+		/// provided values.
+		/// </summary>
+		/// <param name="json">The serialized store.</param>
+		void RehydrateFromJson(string json);
 	}
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using System.Threading;
 using System;
+using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.Components
 {
@@ -65,15 +66,15 @@ namespace Fluxor.Blazor.Web.Components
 			}
 		}
 
-		/// <summary>
-		/// Initializes the store (primarily intended for WASM components and pages).
-		/// </summary>
-		protected override void async Task OnParametersSetAsync()
+		protected override async Task OnAfterRenderAsync(bool firstRender)
 		{
-			await base.OnParametersSetAsync();
+			if (firstRender)
+			{
+				//Attempt to initialize the store knowing that if it's already been initialized, this won't do anything.
+				await Store.InitializeAsync();
+			}
 
-			//Attempt to initialize the store knowing that if it's already been initialized, this won't do anything
-			await Store.InitializeAsync();
+			await base.OnAfterRenderAsync(firstRender);
 		}
 
 		/// <summary>
