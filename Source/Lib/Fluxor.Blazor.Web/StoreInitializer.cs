@@ -49,6 +49,14 @@ namespace Fluxor.Blazor.Web
 			base.OnInitialized();
 		}
 
+#if NET8
+		protected override async Task OnInitializedAsync()
+		{
+			await Store.InitializeAsync();
+			await base.OnInitializedAsync();
+		}
+#endif
+
 		protected override void OnAfterRender(bool firstRender)
 		{
 			base.OnAfterRender(firstRender);
@@ -73,7 +81,9 @@ namespace Fluxor.Blazor.Web
 					if (!string.IsNullOrWhiteSpace(MiddlewareInitializationScripts))
 						await JSRuntime.InvokeVoidAsync("eval", MiddlewareInitializationScripts);
 
+#if !NET8
 					await Store.InitializeAsync();
+#endif
 				}
 				catch (JSException err)
 				{

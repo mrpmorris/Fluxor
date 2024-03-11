@@ -1,6 +1,8 @@
 ﻿using Fluxor.UnsupportedClasses;
 using Microsoft.AspNetCore.Components;
+using System.Threading;
 using System;
+using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.Components
 {
@@ -62,6 +64,17 @@ namespace Fluxor.Blazor.Web.Components
 				GC.SuppressFinalize(this);
 				Disposed = true;
 			}
+		}
+
+		protected override async Task OnAfterRenderAsync(bool firstRender)
+		{
+			if (firstRender)
+			{
+				//Attempt to initialize the store knowing that if it's already been initialized, this won't do anything.
+				await Store.InitializeAsync();
+			}
+
+			await base.OnAfterRenderAsync(firstRender);
 		}
 
 		/// <summary>

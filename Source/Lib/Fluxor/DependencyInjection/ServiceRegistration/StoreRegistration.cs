@@ -1,5 +1,6 @@
 ﻿using Fluxor.DependencyInjection.WrapperFactories;
 using Fluxor.Extensions;
+using Fluxor.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,13 @@ namespace Fluxor.DependencyInjection.ServiceRegistration
 			services.Add(typeof(Store), serviceProvider =>
 			{
 				var dispatcher = serviceProvider.GetService<IDispatcher>();
+
+#if NET6_0_OR_GREATER
+				var persistenceManager = serviceProvider.GetService<IPersistenceManager>();
+				var store = new Store(dispatcher, persistenceManager);
+#else
 				var store = new Store(dispatcher);
+#endif
 				foreach (FeatureClassInfo featureClassInfo in featureClassInfos)
 				{
 					var feature = (IFeature)serviceProvider.GetService(featureClassInfo.FeatureInterfaceGenericType);
