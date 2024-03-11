@@ -4,7 +4,7 @@
 		<Description>A zero boilerplate Redux/Flux framework for .NET</Description>
 		<PackageIcon>fluxor-small-logo.png</PackageIcon>
 		<PackageTags>Redux Flux DotNet CSharp</PackageTags>
-		<SignAssembly Condition="'$(Configuration)'=='Release'" >True</SignAssembly>
+		<SignAssembly Condition="'$(Configuration)'=='Release'">True</SignAssembly>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -20,5 +20,6 @@
 		<PackageReference Condition="'$(TargetFramework)' == 'net6.0'" Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 		<PackageReference Condition="'$(TargetFramework)' == 'net5.0'" Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
 		<PackageReference Condition="'$(TargetFramework)' != 'net7.0' AND '$(TargetFramework)' != 'net6.0' AND '$(TargetFramework)' != 'net5.0'" Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
+		<PackageReference Include="System.Text.Json" Version="4.7.2" />
 	</ItemGroup>
 </Project>

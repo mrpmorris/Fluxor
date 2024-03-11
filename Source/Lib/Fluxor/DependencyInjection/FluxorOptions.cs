@@ -1,4 +1,5 @@
 ﻿using Fluxor.Extensions;
+using Fluxor.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -138,5 +139,32 @@ namespace Fluxor.DependencyInjection
 			.ToArray();
 			return this;
 		}
+
+#if NET6_0_OR_GREATER
+
+		/// <summary>
+		/// Enables automatic store persistence between location state changes.
+		/// </summary>
+		/// <typeparam name="T">The type of persistence implementation to use.</typeparam>
+		/// <returns>Options</returns>
+		public FluxorOptions WithPersistence<T>() where T : IPersistenceManager
+		{
+			Services.AddScoped(typeof(IPersistenceManager), typeof(T));
+			return this;
+		}
+
+		/// <summary>
+		/// Enables automatic store persistence between location state changes.
+		/// </summary>
+		/// <typeparam name="T">The type of persistence implementation to use.</typeparam>
+		/// <returns>Options</returns>
+		public FluxorOptions WithPersistence<T>(IServiceCollection serviceCollection) where T : IPersistenceManager
+		{
+			WithPersistence<T>();
+			foreach (var serviceDescriptor in serviceCollection) Services.Add(serviceDescriptor);
+			return this;
+		}
+
+#endif
 	}
 }

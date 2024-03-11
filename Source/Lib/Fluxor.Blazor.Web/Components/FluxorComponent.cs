@@ -1,5 +1,6 @@
 ﻿using Fluxor.UnsupportedClasses;
 using Microsoft.AspNetCore.Components;
+using System.Threading;
 using System;
 
 namespace Fluxor.Blazor.Web.Components
