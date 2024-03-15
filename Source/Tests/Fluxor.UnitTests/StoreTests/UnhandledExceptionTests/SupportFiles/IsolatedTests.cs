@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests.SupportFiles
+﻿namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests.SupportFiles;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
-	}
 }

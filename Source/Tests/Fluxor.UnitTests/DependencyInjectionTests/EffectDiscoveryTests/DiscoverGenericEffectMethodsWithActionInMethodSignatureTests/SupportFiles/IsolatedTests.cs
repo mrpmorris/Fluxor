@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverGenericEffectMethodsWithActionInMethodSignatureTests.SupportFiles
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverGenericEffectMethodsWithActionInMethodSignatureTests.SupportFiles;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
-	}
 }

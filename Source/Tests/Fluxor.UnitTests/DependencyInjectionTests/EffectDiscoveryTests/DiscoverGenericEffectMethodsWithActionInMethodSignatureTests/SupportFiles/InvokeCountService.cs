@@ -1,13 +1,12 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverGenericEffectMethodsWithActionInMethodSignatureTests.SupportFiles
-{
-	public class InvokeCountService
-	{
-		private int Count;
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverGenericEffectMethodsWithActionInMethodSignatureTests.SupportFiles;
 
-		public int GetCount() => Count;
-		public void IncrementCount()
-		{
-			Count++;
-		}
+public class InvokeCountService
+{
+	private int Count;
+
+	public int GetCount() => Count;
+	public void IncrementCount()
+	{
+		Count++;
 	}
 }

@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
 
-namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests
-{
-   public class LifeCycleTests
+namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests;
+
+public class LifeCycleTests
    {
       [Fact]
       public void WhenStoreIsCreatedWithScopedLifecycle_ItIsUniqueToDependencyInjectionScope()
@@ -96,4 +96,3 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests
          return (serviceScope, store, dispatcher, state);
       }
    }
-}

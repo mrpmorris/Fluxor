@@ -1,14 +1,13 @@
 ﻿using Fluxor.Blazor.Web.Middlewares.Routing;
 using Fluxor.DependencyInjection;
 
-namespace Fluxor
+namespace Fluxor;
+
+public static class OptionsRoutingExtensions
 {
-	public static class OptionsRoutingExtensions
+	public static FluxorOptions UseRouting(this FluxorOptions options)
 	{
-		public static FluxorOptions UseRouting(this FluxorOptions options)
-		{
-			options.AddMiddleware<RoutingMiddleware>();
-			return options;
-		}
+		options.AddMiddleware<RoutingMiddleware>();
+		return options;
 	}
 }

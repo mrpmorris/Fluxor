@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureClassDescendantsTests.SupportFiles
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.FeatureDiscoveryTests.DiscoverFeatureClassDescendantsTests.SupportFiles;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
-	}
 }

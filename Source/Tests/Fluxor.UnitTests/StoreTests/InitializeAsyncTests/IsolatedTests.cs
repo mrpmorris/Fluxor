@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests
+﻿namespace Fluxor.UnitTests.StoreTests.InitializeAsyncTests;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
-	}
 }

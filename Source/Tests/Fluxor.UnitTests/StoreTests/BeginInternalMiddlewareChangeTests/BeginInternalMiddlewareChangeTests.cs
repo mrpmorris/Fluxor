@@ -1,34 +1,33 @@
 ﻿using Moq;
 using Xunit;
 
-namespace Fluxor.UnitTests.StoreTests.BeginInternalMiddlewareChangeTests
+namespace Fluxor.UnitTests.StoreTests.BeginInternalMiddlewareChangeTests;
+
+public class BeginInternalMiddlewareChangeTests
 {
-	public class BeginInternalMiddlewareChangeTests
+	[Fact]
+	public void WhenCalled_ThenExecutesOnAllRegisteredMiddlewares()
 	{
-		[Fact]
-		public void WhenCalled_ThenExecutesOnAllRegisteredMiddlewares()
-		{
-			int disposeCount = 0;
-			var mockMiddleware = new Mock<IMiddleware>();
-			mockMiddleware
-				.Setup(x => x.BeginInternalMiddlewareChange())
-				.Returns(new DisposableCallback(
-					$"{nameof(BeginInternalMiddlewareChangeTests)}.{nameof(WhenCalled_ThenExecutesOnAllRegisteredMiddlewares)}",
-					() => disposeCount++));
+		int disposeCount = 0;
+		var mockMiddleware = new Mock<IMiddleware>();
+		mockMiddleware
+			.Setup(x => x.BeginInternalMiddlewareChange())
+			.Returns(new DisposableCallback(
+				$"{nameof(BeginInternalMiddlewareChangeTests)}.{nameof(WhenCalled_ThenExecutesOnAllRegisteredMiddlewares)}",
+				() => disposeCount++));
 
-			var dispatcher = new Dispatcher();
-			var subject = new Store(dispatcher);
-			subject.AddMiddleware(mockMiddleware.Object);
+		var dispatcher = new Dispatcher();
+		var subject = new Store(dispatcher);
+		subject.AddMiddleware(mockMiddleware.Object);
 
-			var disposable1 = subject.BeginInternalMiddlewareChange();
-			var disposable2 = subject.BeginInternalMiddlewareChange();
+		var disposable1 = subject.BeginInternalMiddlewareChange();
+		var disposable2 = subject.BeginInternalMiddlewareChange();
 
-			disposable1.Dispose();
-			Assert.Equal(0, disposeCount);
+		disposable1.Dispose();
+		Assert.Equal(0, disposeCount);
 
-			disposable2.Dispose();
-			Assert.Equal(1, disposeCount);
-		}
+		disposable2.Dispose();
+		Assert.Equal(1, disposeCount);
 	}
 }
 

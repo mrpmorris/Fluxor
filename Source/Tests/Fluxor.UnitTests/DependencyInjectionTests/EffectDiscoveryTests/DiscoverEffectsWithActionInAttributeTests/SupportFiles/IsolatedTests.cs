@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
-	}
 }

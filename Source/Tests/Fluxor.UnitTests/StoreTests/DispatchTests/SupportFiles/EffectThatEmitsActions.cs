@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles
-{
-	public class EffectThatEmitsActions : Effect<TestAction>
-	{
-		public readonly object[] ActionsToEmit;
+namespace Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles;
 
-		public EffectThatEmitsActions(object[] actionsToEmit)
-		{
-			ActionsToEmit = actionsToEmit ?? Array.Empty<object>();
-		}
-		public override Task HandleAsync(TestAction action, IDispatcher dispatcher)
-		{
-			foreach (object actionToEmit in ActionsToEmit)
-				dispatcher.Dispatch(actionToEmit);
-			return Task.CompletedTask;
-		}
+public class EffectThatEmitsActions : Effect<TestAction>
+{
+	public readonly object[] ActionsToEmit;
+
+	public EffectThatEmitsActions(object[] actionsToEmit)
+	{
+		ActionsToEmit = actionsToEmit ?? Array.Empty<object>();
+	}
+	public override Task HandleAsync(TestAction action, IDispatcher dispatcher)
+	{
+		foreach (object actionToEmit in ActionsToEmit)
+			dispatcher.Dispatch(actionToEmit);
+		return Task.CompletedTask;
 	}
 }

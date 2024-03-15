@@ -1,9 +1,8 @@
-﻿namespace Fluxor.Blazor.Web.Middlewares.Routing
+﻿namespace Fluxor.Blazor.Web.Middlewares.Routing;
+
+internal static class Reducers 
 {
-	internal static class Reducers 
-	{
-		[ReducerMethod]
-		public static RoutingState ReduceGoAction(RoutingState state, GoAction action) =>
-			new RoutingState(action.NewUri ?? "");
-	}
+	[ReducerMethod]
+	public static RoutingState ReduceGoAction(RoutingState state, GoAction action) =>
+		new RoutingState(action.NewUri ?? "");
 }

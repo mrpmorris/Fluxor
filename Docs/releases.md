@@ -1,7 +1,12 @@
 # Releases
 
-## New in 5.10
+## New in 6.0
+* **Breaking change**: Remove support for obsolete versions of .NET framework ([#384](https://github.com/mrpmorris/Fluxor/issues/384))
+* **Breaking change**: Replace IDisposable with IAsyncDisposable in Blazor components ([#324](https://github.com/mrpmorris/Fluxor/issues/324))
+* **Breaking change**: `UseReduxDevTools` no longer ensures `UseRouting` is called ([#360](https://github.com/mrpmorris/Fluxor/issues/360))
+* **Breaking change**: `UseReduxDevTools` no longer requires `Newtonsoft.Json` ([#386](https://github.com/mrpmorris/Fluxor/issues/386))
 *  Support Action Filtering in Redux Dev Tools ([#383](https://github.com/mrpmorris/Fluxor/issues/383))
+
 ## New in 5.9
 * Adds additional useful information to exception thrown by `DisposableAction` ([#425](https://github.com/mrpmorris/Fluxor/issues/425))
 * Fix deadlock scenario when dispatching actions from an effect triggered by store activation ([#426](https://github.com/mrpmorris/Fluxor/issues/426))
