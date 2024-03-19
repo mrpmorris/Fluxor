@@ -1,9 +1,11 @@
 ﻿using Fluxor.Blazor.Web.UnitTests.SupportFiles;
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests;
 
-public class OnInitializedTests
+public class OnInitializedTests : IAsyncLifetime
 {
 	private readonly FluxorComponentWithStateProperties Subject;
 	private readonly MockState<int> MockState1;
@@ -12,11 +14,15 @@ public class OnInitializedTests
 	[Fact]
 	public void SubscribesToStateProperties()
 	{
-		Subject.ExecuteOnInitialized();
+		Subject.Test_OnInitialized();
 
 		Assert.Equal(1, MockState1.SubscribeCount);
 		Assert.Equal(1, MockState2.SubscribeCount);
 	}
+
+	Task IAsyncLifetime.InitializeAsync() => Task.CompletedTask;
+
+	async Task IAsyncLifetime.DisposeAsync() => await Subject.DisposeAsync();
 
 	public OnInitializedTests()
 	{

@@ -14,7 +14,7 @@ public class DisposeTests
 	[Fact]
 	public async Task UnsubscribesFromStateProperties()
 	{
-		StateSubject.ExecuteOnInitialized();
+		StateSubject.Test_OnInitialized();
 		await StateSubject.DisposeAsync();
 
 		Assert.Equal(1, MockState1.UnsubscribeCount);
@@ -25,13 +25,12 @@ public class DisposeTests
 	public async Task WhenBaseOnInitializedWasNotCalled_ThenThrowsNullReferenceException()
 	{
 		var component = new FluxorComponentThatOptionallyCallsBaseOnInitialized();
+		component.Test_OnInitialized(callBase: false);
 
 		var exception = await Assert.ThrowsAsync<NullReferenceException>(
 			async () =>
 			{
-				component.Test_OnInitialized();
 				await component.DisposeAsync();
-
 			}
 		);
 		
@@ -41,11 +40,8 @@ public class DisposeTests
 	[Fact]
 	public async Task WhenBaseOnInitializedWasCalled_ThenDoesNotThrowAnException()
 	{
-		var component = new FluxorComponentThatOptionallyCallsBaseOnInitialized
-		{
-			CallBaseOnInitialized = true
-		};
-		component.Test_OnInitialized();
+		var component = new FluxorComponentThatOptionallyCallsBaseOnInitialized();
+		component.Test_OnInitialized(callBase: true);
 		await component.DisposeAsync();
 	}
 

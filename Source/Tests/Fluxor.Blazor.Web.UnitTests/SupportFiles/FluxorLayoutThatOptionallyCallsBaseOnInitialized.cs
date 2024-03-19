@@ -4,7 +4,7 @@ namespace Fluxor.Blazor.Web.UnitTests.SupportFiles;
 
 public class FluxorLayoutThatOptionallyCallsBaseOnInitialized : FluxorLayout
 {
-	public bool CallBaseOnInitialized;
+	private bool CallBaseOnInitialized;
 
 	protected override void OnInitialized()
 	{
@@ -12,5 +12,9 @@ public class FluxorLayoutThatOptionallyCallsBaseOnInitialized : FluxorLayout
 			base.OnInitialized();
 	}
 
-	public void Test_OnInitialized() => OnInitialized();
+	public void Test_OnInitialized(bool callBase)
+	{
+		CallBaseOnInitialized = callBase;
+		OnInitialized();
+	}
 }

@@ -58,11 +58,11 @@ public abstract class FluxorLayout : LayoutComponentBase, IAsyncDisposable
 	{
 		if (Disposed)
 			return;
+		Disposed = true;
 
 		StateHasChangedThrottler.Dispose();
 		await DisposeAsyncCore(true).ConfigureAwait(false);
 		GC.SuppressFinalize(this);
-		Disposed = true;
 	}
 
 	/// <summary>
