@@ -5,5 +5,10 @@ namespace Fluxor.Blazor.Web.Middlewares.Routing;
 internal static class UrlComparer
 {
 	public static bool AreEqual(string first, string second) =>
-		string.Equals(first?.TrimEnd('/'), second?.TrimEnd('/'), StringComparison.OrdinalIgnoreCase);
+		Uri.Compare(
+			uri1: new Uri(first),
+			uri2: new Uri(second),
+			partsToCompare: UriComponents.HostAndPort | UriComponents.PathAndQuery,
+			compareFormat: UriFormat.SafeUnescaped,
+			comparisonType: StringComparison.OrdinalIgnoreCase) == 0;
 }
