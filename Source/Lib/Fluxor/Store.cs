@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using Fluxor.Persistence;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -294,9 +295,6 @@ namespace Fluxor
 
 			lock (SyncRoot)
 			{
-				HasActivatedStore = true;
-				DequeueActions();
-
 #if NET6_0_OR_GREATER
 				if (_persistenceManager is not null)
 				{
@@ -304,6 +302,8 @@ namespace Fluxor
 					Dispatcher.Dispatch(new StoreRehydratingAction());
 				}
 #endif
+				HasActivatedStore = true;
+				DequeueActions();
 
 				InitializedCompletionSource.SetResult(true);
 			}
@@ -317,6 +317,13 @@ namespace Fluxor
 			IsDispatching = true;
 			try
 			{
+				//Only persist the store state if the action(s) in the queue don't consist solely of any combination of the following
+				if (!QueuedActions.IsEmpty && !QueuedActions.All(action => action is StoreInitializedAction or StoreRehydratingAction or StoreRehydratedAction or StorePersistingAction or StorePersistedAction))
+				{
+					//Add an action to the end of the queue that persists the results of the actions to state, skipping the dispatcher approach (which might lead to an infinite loop)
+					QueuedActions.Enqueue(new StorePersistingAction());
+				}
+
 				while (QueuedActions.TryDequeue(out object nextActionToProcess))
 				{
 					// Only process the action if no middleware vetos it
@@ -370,7 +377,7 @@ namespace Fluxor
 					if (featureValue is null)
 						continue;
 
-					Features[feature.Name].RestoreState(featureValue);
+					FeaturesByName[feature.Name].RestoreState(featureValue);
 				}
 			}
 		}

@@ -15,6 +15,9 @@ namespace Fluxor.Blazor.Web.Components
 		[Inject]
 		private IActionSubscriber ActionSubscriber { get; set; }
 
+		[Inject]
+		private IStore Store { get; set; }
+
 		private bool Disposed;
 		private IDisposable StateSubscription;
 		private readonly ThrottledInvoker StateHasChangedThrottler;
@@ -22,7 +25,7 @@ namespace Fluxor.Blazor.Web.Components
 		/// <summary>
 		/// Creates a new instance
 		/// </summary>
-		public FluxorComponent()
+		protected FluxorComponent()
 		{
 			StateHasChangedThrottler = new ThrottledInvoker(() =>
 			{
@@ -65,28 +68,25 @@ namespace Fluxor.Blazor.Web.Components
 				Disposed = true;
 			}
 		}
-
-		protected override async Task OnAfterRenderAsync(bool firstRender)
-		{
-			if (firstRender)
-			{
-				//Attempt to initialize the store knowing that if it's already been initialized, this won't do anything.
-				await Store.InitializeAsync();
-			}
-
-			await base.OnAfterRenderAsync(firstRender);
-		}
-
+		
 		/// <summary>
 		/// Subscribes to state properties
 		/// </summary>
 		protected override void OnInitialized()
 		{
-			base.OnInitialized();
 			StateSubscription = StateSubscriber.Subscribe(this, _ =>
 			{
 				StateHasChangedThrottler.Invoke(MaximumStateChangedNotificationsPerSecond);
 			});
+
+			base.OnInitialized();
+		}
+
+		protected override async Task OnInitializedAsync()
+		{
+			//Attempt to initialize the store knowing that if it's already been initialized, this won't do anything.
+			await Store.InitializeAsync();
+			await base.OnInitializedAsync();
 		}
 
 		protected virtual void Dispose(bool disposing)
