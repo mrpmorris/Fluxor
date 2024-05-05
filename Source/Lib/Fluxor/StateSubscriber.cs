@@ -8,7 +8,7 @@ using GetStateChangedPropertyDelegate = System.Func<object, Fluxor.IStateChanged
 namespace Fluxor;
 
 /// <summary>
-/// A utility class that automaticaly subscribes to all <see cref="IStateChangedNotifier"/> properties
+/// A utility class that automatically subscribes to all <see cref="IStateChangedNotifier"/> properties
 /// on a specific object
 /// </summary>
 public static class StateSubscriber
