@@ -34,7 +34,7 @@ public class StoreInitializer : FluxorComponent
 	{
 		if (disposing)
 			Store.UnhandledException -= OnUnhandledException;
-		return ValueTask.CompletedTask;
+		return base.DisposeAsyncCore(disposing);
 	}
 
 	/// <summary>
