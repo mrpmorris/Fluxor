@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using System;
 using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.Middlewares.Routing;
@@ -38,13 +39,15 @@ internal class RoutingMiddleware : Middleware
 	/// <see cref="Middleware.OnInternalMiddlewareChangeEnding"/>
 	protected override void OnInternalMiddlewareChangeEnding()
 	{
-		if (Feature.State.Uri is not null && !UrlComparer.AreEqual(Feature.State.Uri, NavigationManager.Uri))
+		string fullUri = NavigationManager.ToAbsoluteUri(Feature.State.Uri).AbsoluteUri;
+		if (Feature.State.Uri is not null && !UrlComparer.AreEqual(fullUri, NavigationManager.Uri))
 			NavigationManager.NavigateTo(Feature.State.Uri);
 	}
 
 	private void LocationChanged(object sender, LocationChangedEventArgs e)
 	{
-		if (Dispatcher is not null && !IsInsideMiddlewareChange && !UrlComparer.AreEqual(e.Location, Feature.State.Uri))
+		string fullUri = NavigationManager.ToAbsoluteUri(Feature.State.Uri).AbsoluteUri;
+		if (Dispatcher is not null && !IsInsideMiddlewareChange && !UrlComparer.AreEqual(e.Location, fullUri))
 			Dispatcher.Dispatch(new GoAction(e.Location));
 	}
 }
