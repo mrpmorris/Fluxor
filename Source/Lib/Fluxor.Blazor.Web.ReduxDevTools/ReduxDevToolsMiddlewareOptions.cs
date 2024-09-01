@@ -1,6 +1,8 @@
 ﻿using Fluxor.DependencyInjection;
 using System;
 using System.Collections.Immutable;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools;
@@ -24,6 +26,12 @@ public class ReduxDevToolsMiddlewareOptions
 	/// The name to display in the Redux Dev Tools window.
 	/// </summary>
 	public string Name { get; set; } = "Fluxor";
+
+	/// <summary>
+	/// JSON Serializer options for sending state to the 
+	/// ReduxDevTools plugin.
+	/// </summary>
+	public JsonSerializerOptions JsonSerializerOptions { get; set; }
 
 	/// <summary>
 	/// How often the Redux Dev Tools actions are updated.
@@ -60,6 +68,9 @@ public class ReduxDevToolsMiddlewareOptions
 	public ReduxDevToolsMiddlewareOptions(FluxorOptions fluxorOptions)
 	{
 		FluxorOptions = fluxorOptions;
+		JsonSerializerOptions = new JsonSerializerOptions {
+			NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals
+		};
 	}
 
 	/// <summary>

@@ -102,7 +102,9 @@ public sealed class ReduxDevToolsMiddleware : WebMiddleware
 		SequenceNumberOfCurrentState = callbackInfo.payload.actionId;
 		using (Store.BeginInternalMiddlewareChange())
 		{
-			var newFeatureStates = JsonSerializer.Deserialize<Dictionary<string, object>>(callbackInfo.state);
+			var newFeatureStates = JsonSerializer.Deserialize<Dictionary<string, object>>(
+				json: callbackInfo.state,
+				options: Options.JsonSerializerOptions);
 
 			foreach (KeyValuePair<string, object> newFeatureState in newFeatureStates)
 			{
@@ -113,7 +115,8 @@ public sealed class ReduxDevToolsMiddleware : WebMiddleware
 				object stronglyTypedFeatureState = JsonSerializer
 					.Deserialize(
 						json: newFeatureState.Value.ToString(),
-						returnType: feature.GetStateType());
+						returnType: feature.GetStateType(),
+						options: Options.JsonSerializerOptions);
 
 				// Now set the feature's state to the deserialized object
 				feature.RestoreState(stronglyTypedFeatureState);
