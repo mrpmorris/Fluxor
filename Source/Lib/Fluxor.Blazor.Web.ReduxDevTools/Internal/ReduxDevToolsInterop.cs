@@ -38,15 +38,17 @@ internal sealed class ReduxDevToolsInterop : IDisposable, IReduxDevToolsInterop
 	private bool IsInitializing;
 	private readonly IJSRuntime JSRuntime;
 	private readonly DotNetObjectReference<ReduxDevToolsInterop> DotNetRef;
+	private readonly ReduxDevToolsMiddlewareOptions Options;
 
 	/// <summary>
 	/// Creates an instance of the dev tools interop
 	/// </summary>
 	/// <param name="jsRuntime"></param>
-	public ReduxDevToolsInterop(IJSRuntime jsRuntime)
+	public ReduxDevToolsInterop(IJSRuntime jsRuntime, ReduxDevToolsMiddlewareOptions options)
 	{
 		JSRuntime = jsRuntime;
 		DotNetRef = DotNetObjectReference.Create(this);
+		Options = options;
 	}
 
 	public async ValueTask InitializeAsync(IDictionary<string, object> state)
@@ -82,7 +84,10 @@ internal sealed class ReduxDevToolsInterop : IDisposable, IReduxDevToolsInterop
 		if (string.IsNullOrWhiteSpace(messageAsJson))
 			return;
 
-		var message = JsonSerializer.Deserialize<BaseCallbackObject>(messageAsJson);
+		var message = JsonSerializer.Deserialize<BaseCallbackObject>(
+			json: messageAsJson,
+			options: Options.JsonSerializerOptions);
+
 		switch (message?.payload?.type)
 		{
 			case FromJsDevToolsDetectedActionTypeName:
@@ -104,7 +109,10 @@ internal sealed class ReduxDevToolsInterop : IDisposable, IReduxDevToolsInterop
 				Func<JumpToStateCallback, Task> jumpToState = OnJumpToState;
 				if (jumpToState is not null)
 				{
-					var callbackInfo = JsonSerializer.Deserialize<JumpToStateCallback>(messageAsJson);
+					var callbackInfo = JsonSerializer.Deserialize<JumpToStateCallback>(
+						json: messageAsJson,
+						options: Options.JsonSerializerOptions);
+
 					Task task = jumpToState(callbackInfo);
 					if (task is not null)
 						await task;
@@ -140,7 +148,8 @@ internal sealed class ReduxDevToolsInterop : IDisposable, IReduxDevToolsInterop
 				if (!IsDotNetReferenceObject(args[i]))
 					args[i] = JsonSerializer.Serialize(
 						value: args[i],
-						inputType: args[i]?.GetType() ?? typeof(object));
+						inputType: args[i]?.GetType() ?? typeof(object),
+						options: Options.JsonSerializerOptions);
 			}
 		}
 
