@@ -1,15 +1,14 @@
 ﻿using System;
 using Xunit;
 
-namespace Fluxor.UnitTests.StateSelectionTests
+namespace Fluxor.UnitTests.StateSelectionTests;
+
+public class SelectTests : TestsBase
 {
-	public class SelectTests : TestsBase
+	[Fact]
+	public void WhenSelectIsCalledTwice_ThenThrowsInvalidOperationException()
 	{
-		[Fact]
-		public void WhenSelectIsCalledTwice_ThenThrowsInvalidOperationException()
-		{
-			Subject.Select(x => x[0]);
-			Assert.Throws<InvalidOperationException>(() => Subject.Select(x => x[1]));
-		}
+		Subject.Select(x => x[0]);
+		Assert.Throws<InvalidOperationException>(() => Subject.Select(x => x[1]));
 	}
 }

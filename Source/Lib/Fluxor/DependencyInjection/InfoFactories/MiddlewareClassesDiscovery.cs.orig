@@ -1,0 +1,28 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Fluxor.DependencyInjection.InfoFactories;
+
+internal static class MiddlewareClassesDiscovery
+{
+<<<<<<< HEAD
+	internal static class MiddlewareClassesDiscovery
+	{
+		internal static AssemblyAndNamespace[] FindMiddlewareLocations(IEnumerable<IFluxorModule> modulesToImport)
+		=>
+			modulesToImport
+				.SelectMany(x => x.Middlewares)
+				.Select(x => new AssemblyAndNamespace(x.Assembly, x.Namespace))
+				.Distinct()
+				.ToArray();
+	}
+=======
+	internal static AssemblyScanSettings[] FindMiddlewareLocations(IEnumerable<Assembly> assembliesToScan)
+	=>
+		assembliesToScan
+			.SelectMany(x => x.GetTypes().Where(t => t.GetInterfaces().Any(i => i == typeof(IMiddleware))))
+			.Select(x => new AssemblyScanSettings(x.Assembly, x.Namespace))
+			.Distinct()
+			.ToArray();
+>>>>>>> master
+}

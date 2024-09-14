@@ -1,13 +1,12 @@
-﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchWhileInitializingTests.SupportFiles
-{
-	public class CounterState
-	{
-		public readonly int Counter;
+﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchWhileInitializingTests.SupportFiles;
 
-		public CounterState(int counter)
-		{
-			Counter = counter;
-		}
+public class CounterState
+{
+	public readonly int Counter;
+
+	public CounterState(int counter)
+	{
+		Counter = counter;
 	}
 }
 

@@ -1,0 +1,43 @@
+<<<<<<< HEAD
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+	</ItemGroup>
+=======
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<TargetFrameworks>net7.0</TargetFrameworks>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="CreateStoreClasses.mixin" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <AdditionalFiles Include="CreateStoreClasses.mixin" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.3" PrivateAssets="all" />
+		<PackageReference Include="Morris.Moxy" Version="1.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+	</ItemGroup>
+
+>>>>>>> bcc1d5f (Initial benchmark)
+</Project>

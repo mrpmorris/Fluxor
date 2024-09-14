@@ -1,9 +1,9 @@
 <Project>
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-		<Version>6.0.0</Version>
-		<AssemblyVersion>6.0.0.0</AssemblyVersion>
-		<FileVersion>6.0.0.0</FileVersion>
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+		<Version>6.1.0</Version>
+		<AssemblyVersion>6.1.0.0</AssemblyVersion>
+		<FileVersion>6.1.0.0</FileVersion>
 
 		<Authors>Peter Morris</Authors>
 		<Company />
@@ -29,6 +29,6 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.*" PrivateAssets="All" />
 	</ItemGroup>
 </Project>

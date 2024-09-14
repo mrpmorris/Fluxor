@@ -1,0 +1,20 @@
+﻿namespace Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests.SupportFiles;
+
+<<<<<<< HEAD
+		private CounterState() { }
+
+		public CounterState(int counter)
+		{
+			Counter = counter;
+		}
+=======
+public class CounterState
+{
+	public readonly int Counter;
+
+	public CounterState(int counter)
+	{
+		Counter = counter;
+>>>>>>> master
+	}
+}

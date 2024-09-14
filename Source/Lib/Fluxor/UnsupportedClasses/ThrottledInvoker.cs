@@ -1,104 +1,118 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
-namespace Fluxor.UnsupportedClasses
+namespace Fluxor.UnsupportedClasses;
+
+public sealed class ThrottledInvoker : IDisposable
 {
-	public class ThrottledInvoker
+	private static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(1); private DateTime NextAllowedInvokeUtc;
+	private readonly object SyncRoot = new();
+	private readonly Action ThrottledAction;
+	private bool HasPendingImmediateInvocation;
+	private bool HasPendingDeferredInvocation;
+	private bool IsDisposed;
+	private CancellationTokenSource CancellationTokenSource;
+
+	public ThrottledInvoker(Action throttledAction)
 	{
-		public ushort ThrottleWindowMs { get; set; }
+		ThrottledAction = throttledAction ?? throw new ArgumentNullException(nameof(throttledAction));
+		NextAllowedInvokeUtc = DateTime.UtcNow;
+		CancellationTokenSource = new CancellationTokenSource();
+	}
 
-		private volatile int LockFlag;
-		private volatile bool InvokingSuspended;
-		private DateTime LastInvokeTime;
-		private readonly Action Action;
-		private Timer ThrottleTimer;
+	public void Invoke(byte maximumInvokesPerSecond)
+	{
+		if (IsDisposed)
+			return;
 
-		public ThrottledInvoker(Action action)
+		int throttleWindowMS =
+			maximumInvokesPerSecond == 0
+			? 0
+			: 1000 / maximumInvokesPerSecond;
+
+		if (throttleWindowMS == 0)
 		{
-			Action = action ?? throw new ArgumentNullException(nameof(action));
-			LastInvokeTime = DateTime.UtcNow - TimeSpan.FromMilliseconds(ushort.MaxValue);
+			ThrottledAction();
+			return;
 		}
 
-		public void Invoke(byte maximumInvokesPerSecond)
+		bool shouldExecuteImmediately = false;
+		lock (SyncRoot)
 		{
-			if (maximumInvokesPerSecond == 0)
-				ThrottleWindowMs = 0;
-			else
-				ThrottleWindowMs = (ushort)(1000 / maximumInvokesPerSecond);
-			Invoke();
-		}
-
-		public void Invoke()
-		{
-			// If no throttle window then bypass throttling
-			if (ThrottleWindowMs == 0)
-			{
-				Action();
-				return;
-			}
-
-			LockAndExecuteOnlyIfNotAlreadyLocked(() =>
-			{
-				// If waiting for a previously throttled notification to execute
-				// then ignore this notification request
-				if (InvokingSuspended)
-					return;
-
-				int millisecondsSinceLastInvoke =
-					(int)(DateTime.UtcNow - LastInvokeTime).TotalMilliseconds;
-
-				// If last execute was outside the throttle window then execute immediately
-				if (millisecondsSinceLastInvoke >= ThrottleWindowMs)
-				{
-					ExecuteThrottledAction();
-					return;
-				}
-
-				// This is exactly the second invoke within the time window,
-				// so set a timer that will trigger at the start of the next
-				// time window and prevent further invokes until
-				// the timer has triggered
-				InvokingSuspended = true;
-				int delay = ThrottleWindowMs - millisecondsSinceLastInvoke;
-				ThrottleTimer = new Timer(
-					callback: _ => ExecuteThrottledAction(),
-					state: null,
-					dueTime: delay,
-					period: 0);
-			});
-		}
-
-		private void LockAndExecuteOnlyIfNotAlreadyLocked(Action action)
-		{
-			bool lockTaken =
-				(Interlocked.CompareExchange(ref LockFlag, 1, 0) == 0);
-			if (!lockTaken)
+			if (HasPendingDeferredInvocation)
 				return;
 
-			try
-			{
-				action();
-			}
-			finally
-			{
-				LockFlag = 0;
-			}
+			DateTime nowUtc = DateTime.UtcNow;
+			shouldExecuteImmediately =
+				!HasPendingImmediateInvocation
+				&& nowUtc >= NextAllowedInvokeUtc;
+
+			bool shouldExecuteDeferred =
+				!shouldExecuteImmediately
+				&& !HasPendingDeferredInvocation;
+
+			if (shouldExecuteImmediately)
+				HasPendingImmediateInvocation = true;
+			else if (shouldExecuteDeferred)
+				HasPendingDeferredInvocation = true;
 		}
 
-		private void ExecuteThrottledAction()
+		if (shouldExecuteImmediately)
+			Invoke(throttleWindowMS, wasImmediateInvoke: true);
+		else
+			_ = InvokeDeferredAsync(throttleWindowMS);
+	}
+
+	public void Dispose()
+	{
+		if (IsDisposed) return;
+		IsDisposed = true;
+		CancellationTokenSource.Dispose();
+	}
+
+	private void Invoke(int throttleWindowMS, bool wasImmediateInvoke)
+	{
+		try
 		{
-			try
+			if (!IsDisposed && !CancellationTokenSource.IsCancellationRequested)
+				ThrottledAction();
+		}
+		finally
+		{
+			lock (SyncRoot)
 			{
-				Action();
-			}
-			finally
-			{
-				ThrottleTimer?.Dispose();
-				ThrottleTimer = null;
-				LastInvokeTime = DateTime.UtcNow;
-				// This must be set last, as it is the circuit breaker within the lock code
-				InvokingSuspended = false;
+				NextAllowedInvokeUtc = DateTime.UtcNow.AddMilliseconds(throttleWindowMS);
+
+				if (wasImmediateInvoke)
+					HasPendingImmediateInvocation = false;
+				else
+					HasPendingDeferredInvocation = false;
 			}
 		}
+	}
+
+	private async ValueTask InvokeDeferredAsync(int throttleWindowMS)
+	{
+		await WaitUntilAfterAsync(DateTime.UtcNow.AddMilliseconds(throttleWindowMS));
+		Invoke(throttleWindowMS: throttleWindowMS, wasImmediateInvoke: false);
+	}
+
+	
+	private async ValueTask WaitUntilAfterAsync(DateTime targetTimeUtc)
+	{
+		await Task.Yield();
+		do
+		{
+			TimeSpan timeToWait = targetTimeUtc - DateTime.UtcNow;
+			if (timeToWait <= TimeSpan.Zero)
+				break;
+
+			if (timeToWait > OneSecond)
+				timeToWait = OneSecond;
+
+			await Task.Delay(timeToWait, CancellationTokenSource.Token);
+		}
+		while (!IsDisposed && !CancellationTokenSource.IsCancellationRequested);
 	}
 }

@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.FeatureTests.SupportFiles
+﻿namespace Fluxor.UnitTests.FeatureTests.SupportFiles;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
-	}
 }

@@ -1,4 +1,3 @@
-﻿namespace Fluxor.UnitTests.EffectTests.ShouldReactToActionTests.SupportFiles
-{
-	public class ActionThatQualifiesViaInheritance : ActionForEffect { }
-}
+﻿namespace Fluxor.UnitTests.EffectTests.ShouldReactToActionTests.SupportFiles;
+
+public class ActionThatQualifiesViaInheritance : ActionForEffect { }

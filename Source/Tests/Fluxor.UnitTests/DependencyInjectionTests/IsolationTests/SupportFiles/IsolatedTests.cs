@@ -1,6 +1,5 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests.SupportFiles
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests.SupportFiles;
+
+public class IsolatedTests : Middleware
 {
-	public class IsolatedTests : Middleware
-	{
    }
-}

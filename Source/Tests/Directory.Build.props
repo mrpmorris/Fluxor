@@ -1,8 +1,8 @@
 <Project>
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
 		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
-		<LangVersion>11</LangVersion>
+		<LangVersion>latest</LangVersion>
 		<AssemblyOriginatorKeyFile>..\..\..\..\..\MrPMorris.snk</AssemblyOriginatorKeyFile>
 		<SignAssembly>false</SignAssembly>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>

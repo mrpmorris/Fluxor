@@ -1,8 +1,7 @@
-﻿namespace Fluxor
+﻿namespace Fluxor;
+
+public enum StoreLifetime
 {
-	public enum StoreLifetime
-	{
-		Scoped,
-		Singleton
-	}
+	Scoped,
+	Singleton
 }

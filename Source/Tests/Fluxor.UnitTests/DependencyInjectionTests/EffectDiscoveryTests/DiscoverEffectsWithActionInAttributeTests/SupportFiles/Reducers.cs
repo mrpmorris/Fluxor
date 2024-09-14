@@ -1,9 +1,8 @@
-﻿namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles
+﻿namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles;
+
+public static class Reducers
 {
-	public static class Reducers
-	{
-		[ReducerMethod(typeof(EffectDispatchedAction))]
-		public static TestState Reduce(TestState state) =>
-			new TestState(state.Count + 1);
-	}
+	[ReducerMethod(typeof(EffectDispatchedAction))]
+	public static TestState Reduce(TestState state) =>
+		new TestState(state.Count + 1);
 }

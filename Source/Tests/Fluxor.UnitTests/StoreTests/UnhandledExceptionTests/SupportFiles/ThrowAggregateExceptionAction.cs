@@ -1,9 +1,8 @@
 ﻿using System.Threading;
 
-namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests.SupportFiles
+namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests.SupportFiles;
+
+public class ThrowAggregateExceptionAction
 {
-	public class ThrowAggregateExceptionAction
-	{
-		public ManualResetEvent TriggerHasFinished { get; } = new(initialState: false);
-	}
+	public ManualResetEvent TriggerHasFinished { get; } = new(initialState: false);
 }

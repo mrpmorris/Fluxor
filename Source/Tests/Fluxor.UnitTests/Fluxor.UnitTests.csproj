@@ -1,68 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<ItemGroup>
-	  <Compile Remove="ActionSubscriberTests\**" />
-	  <Compile Remove="DependencyInjectionTests\**" />
-	  <Compile Remove="DisposableCallbackTests\**" />
-	  <Compile Remove="EffectTests\**" />
-	  <Compile Remove="FeatureTests\**" />
-	  <Compile Remove="MiddlewareTests\**" />
-	  <Compile Remove="MockFactories\**" />
-	  <Compile Remove="StateSelectionTests\**" />
-	  <Compile Remove="StateSubscriberTests\**" />
-	  <Compile Remove="StoreTests\**" />
-	  <Compile Remove="UnsupportedClassesTests\**" />
-	  <EmbeddedResource Remove="ActionSubscriberTests\**" />
-	  <EmbeddedResource Remove="DependencyInjectionTests\**" />
-	  <EmbeddedResource Remove="DisposableCallbackTests\**" />
-	  <EmbeddedResource Remove="EffectTests\**" />
-	  <EmbeddedResource Remove="FeatureTests\**" />
-	  <EmbeddedResource Remove="MiddlewareTests\**" />
-	  <EmbeddedResource Remove="MockFactories\**" />
-	  <EmbeddedResource Remove="StateSelectionTests\**" />
-	  <EmbeddedResource Remove="StateSubscriberTests\**" />
-	  <EmbeddedResource Remove="StoreTests\**" />
-	  <EmbeddedResource Remove="UnsupportedClassesTests\**" />
-	  <None Remove="ActionSubscriberTests\**" />
-	  <None Remove="DependencyInjectionTests\**" />
-	  <None Remove="DisposableCallbackTests\**" />
-	  <None Remove="EffectTests\**" />
-	  <None Remove="FeatureTests\**" />
-	  <None Remove="MiddlewareTests\**" />
-	  <None Remove="MockFactories\**" />
-	  <None Remove="StateSelectionTests\**" />
-	  <None Remove="StateSubscriberTests\**" />
-	  <None Remove="StoreTests\**" />
-	  <None Remove="UnsupportedClassesTests\**" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Compile Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureClassDescendantsTests\DiscoverFeaturesTests.cs" />
-	  <Compile Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureClassDescendantsTests\SupportFiles\IntegerFeature.cs" />
-	  <Compile Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureClassDescendantsTests\SupportFiles\IsolatedTests.cs" />
-	  <Compile Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureClassDescendantsTests\SupportFiles\StringFeature.cs" />
-	  <Compile Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureStateAttributeTests\DiscoverFeatureStateAttributeTests.cs" />
-	  <Compile Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureStateAttributeTests\SupportFiles\IsolatedTests.cs" />
-	  <Compile Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureStateAttributeTests\SupportFiles\StateWithParameterizedFeatureStateAttribute.cs" />
-	  <Compile Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureStateAttributeTests\SupportFiles\StateWithParameterlessFeatureStateAttribute.cs" />
-	  <Compile Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureStateAttributeTests\SupportFiles\StateWithStaticFactoryMethod.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-		<PackageReference Include="Moq" Version="4.18.3" />
-		<PackageReference Include="xunit" Version="2.4.1" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="3.2.0">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\Lib\Fluxor.StoreBuilderSourceGenerator\Fluxor.StoreBuilderSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-		<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
-	</ItemGroup>
+		<PropertyGroup>
+				<IsPackable>false</IsPackable>
+		</PropertyGroup>
+
+		<ItemGroup>
+				<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.*" />
+				<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+				<PackageReference Include="Moq" Version="4.20.70" />
+				<PackageReference Include="xunit" Version="2.7.0" />
+				<PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
+						<PrivateAssets>all</PrivateAssets>
+						<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+				</PackageReference>
+				<PackageReference Include="coverlet.collector" Version="6.0.1">
+						<PrivateAssets>all</PrivateAssets>
+						<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+				</PackageReference>
+		</ItemGroup>
+
+		<ItemGroup>
+				<Folder Include="DependencyInjectionTests\FeatureDiscoveryTests\DiscoverFeatureClassDescendantsTests\" />
+		</ItemGroup>
+
+		<ItemGroup>
+				<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+				<ProjectReference Include="..\..\Lib\Fluxor.StoreBuilderSourceGenerator\Fluxor.StoreBuilderSourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		</ItemGroup>
 
 </Project>

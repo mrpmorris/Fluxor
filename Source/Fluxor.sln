@@ -12,7 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2279CD95
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C2B1D7B3-E943-4EA3-88B0-94433B49080C}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
+		..\Build.bat = ..\Build.bat
+		..\BuildAndTest.bat = ..\BuildAndTest.bat
+		Directory.Packages.props = Directory.Packages.props
+		..\LICENCE = ..\LICENCE
+		..\Publish.bat = ..\Publish.bat
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fluxor", "Lib\Fluxor\Fluxor.csproj", "{863909D3-7E81-4240-8C0A-6F57768D28FF}"
