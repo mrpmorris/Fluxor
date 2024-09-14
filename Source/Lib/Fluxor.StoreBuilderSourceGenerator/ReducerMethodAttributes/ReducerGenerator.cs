@@ -10,9 +10,7 @@ internal static class ReducerGenerator
 {
 	public static Void Generate(SourceProductionContext productionContext, ReducerMethodInfo reducerMethodInfo)
 	{
-		string fileName =
-			$"{reducerMethodInfo.ClassFullName}.{reducerMethodInfo.MethodName}.Fluxor.Reducer.{reducerMethodInfo.GetHashCode():X}.cs"
-			.Replace("-", "X");
+		string fileName = FilenameGenerator.Generate(reducerMethodInfo.ClassNamespace, reducerMethodInfo.ClassName);
 
 		string sourceCode = GenerateSourceCode(reducerMethodInfo);
 		productionContext.AddSource(fileName, sourceCode);

@@ -1,5 +1,4 @@
 ﻿using Fluxor.StoreBuilderSourceGenerator.Extensions;
-using Fluxor.StoreBuilderSourceGenerator.Helpers;
 using Microsoft.CodeAnalysis;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -11,8 +10,7 @@ internal static class EffectGenerator
 	public static Void Generate(SourceProductionContext productionContext, EffectMethodInfo effectMethodInfo)
 	{
 		string fileName =
-		$"{effectMethodInfo.ClassFullName}.{effectMethodInfo.MethodName}.Fluxor.Effect.{effectMethodInfo.GetHashCode():X}.cs"
-			.Replace("-", "X");
+			FilenameGenerator.Generate(effectMethodInfo.ClassNamespace, effectMethodInfo.ClassName);
 
 		string sourceCode = GenerateSourceCode(effectMethodInfo);
 		productionContext.AddSource(fileName, sourceCode);

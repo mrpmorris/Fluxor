@@ -10,8 +10,9 @@ internal static class FeatureGenerator
 {
 	public static Void Generate(SourceProductionContext productionContext, FeatureStateClassInfo featureStateClassInfo)
 	{
+		string filename = FilenameGenerator.Generate(featureStateClassInfo.ClassNamespace, featureStateClassInfo.ClassName);
 		string sourceCode = GenerateSourceCode(featureStateClassInfo);
-		productionContext.AddSource($"{featureStateClassInfo.ClassFullName}.Fluxor.Feature.cs", sourceCode);
+		productionContext.AddSource(filename, sourceCode);
 		return Void.Value;
 	}
 
