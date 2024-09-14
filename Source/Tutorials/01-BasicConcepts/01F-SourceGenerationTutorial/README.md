@@ -14,7 +14,7 @@ source code generation enabled.
 ### Steps
 First, recreate the [Effects tutorial](../01B-EffectsTutorial/).
 
-Next, add a NuGet package reference to `Fluxor.SotreBuilderSourceGenerator`.
+Next, add a NuGet package reference to `Fluxor.StoreBuilderSourceGenerator`.
 
 Edit the `csproj` file, and ensure the reference to the source generator has the following
 attributes
