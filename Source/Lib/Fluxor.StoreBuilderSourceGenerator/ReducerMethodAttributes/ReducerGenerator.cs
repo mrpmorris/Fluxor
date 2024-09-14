@@ -1,5 +1,4 @@
 ﻿using Fluxor.StoreBuilderSourceGenerator.Extensions;
-using Fluxor.StoreBuilderSourceGenerator.Helpers;
 using Microsoft.CodeAnalysis;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -10,7 +9,11 @@ internal static class ReducerGenerator
 {
 	public static Void Generate(SourceProductionContext productionContext, ReducerMethodInfo reducerMethodInfo)
 	{
-		string fileName = FilenameGenerator.Generate(reducerMethodInfo.ClassNamespace, reducerMethodInfo.ClassName);
+		string fileName = UniqueFilenameGenerator.Generate(
+			type: UniqueFilenameGenerator.FileType.Reducer,
+			classNamespace: reducerMethodInfo.ClassNamespace,
+			className: reducerMethodInfo.ClassName, uniqueMethodName:
+			GetGeneratedClassName(reducerMethodInfo));
 
 		string sourceCode = GenerateSourceCode(reducerMethodInfo);
 		productionContext.AddSource(fileName, sourceCode);
@@ -18,7 +21,7 @@ internal static class ReducerGenerator
 	}
 
 	public static string GetGeneratedClassName(ReducerMethodInfo reducerMethodInfo) =>
-		$"{reducerMethodInfo.ClassName}{reducerMethodInfo.GetHashCode():X}GeneratedFluxorReducer".Replace("-", "X");
+		$"{reducerMethodInfo.ClassName}_GeneratedFluxorReducer{reducerMethodInfo.GetHashCode():X}".Replace('-', 'X');
 
 	private static string GenerateSourceCode(ReducerMethodInfo reducerMethodInfo)
 	{

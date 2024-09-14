@@ -9,16 +9,18 @@ internal static class EffectGenerator
 {
 	public static Void Generate(SourceProductionContext productionContext, EffectMethodInfo effectMethodInfo)
 	{
-		string fileName =
-			FilenameGenerator.Generate(effectMethodInfo.ClassNamespace, effectMethodInfo.ClassName);
-
+		string fileName = UniqueFilenameGenerator.Generate(
+			type: UniqueFilenameGenerator.FileType.Effect,
+			classNamespace: effectMethodInfo.ClassNamespace,
+			className: effectMethodInfo.ClassName,
+			uniqueMethodName: GetGeneratedClassName(effectMethodInfo));
 		string sourceCode = GenerateSourceCode(effectMethodInfo);
 		productionContext.AddSource(fileName, sourceCode);
 		return Void.Value;
 	}
 
 	public static string GetGeneratedClassName(EffectMethodInfo effectMethodInfo) =>
-		$"{effectMethodInfo.ClassName}{effectMethodInfo.GetHashCode():X}GeneratedFluxorEffect".Replace("-", "X");
+		$"{effectMethodInfo.ClassName}_GeneratedFluxorEffect{effectMethodInfo.GetHashCode():X}".Replace('-', 'X');
 
 	private static string GenerateSourceCode(EffectMethodInfo effectMethodInfo)
 	{

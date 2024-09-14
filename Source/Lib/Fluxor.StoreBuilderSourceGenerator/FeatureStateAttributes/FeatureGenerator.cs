@@ -1,5 +1,4 @@
 ﻿using Fluxor.StoreBuilderSourceGenerator.Extensions;
-using Fluxor.StoreBuilderSourceGenerator.Helpers;
 using Microsoft.CodeAnalysis;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -10,14 +9,18 @@ internal static class FeatureGenerator
 {
 	public static Void Generate(SourceProductionContext productionContext, FeatureStateClassInfo featureStateClassInfo)
 	{
-		string filename = FilenameGenerator.Generate(featureStateClassInfo.ClassNamespace, featureStateClassInfo.ClassName);
+		string filename = UniqueFilenameGenerator.Generate(
+			type: UniqueFilenameGenerator.FileType.Feature,
+			classNamespace: featureStateClassInfo.ClassNamespace,
+			className: featureStateClassInfo.ClassName,
+			uniqueMethodName: GetGeneratedClassName(featureStateClassInfo));
 		string sourceCode = GenerateSourceCode(featureStateClassInfo);
 		productionContext.AddSource(filename, sourceCode);
 		return Void.Value;
 	}
 
 	public static string GetGeneratedClassName(FeatureStateClassInfo featureStateClassInfo) =>
-		$"{featureStateClassInfo.ClassName}GeneratedFluxorFeature";
+		$"{featureStateClassInfo.ClassName}_GeneratedFluxorFeature";
 
 	private static string GenerateSourceCode(FeatureStateClassInfo featureStateClassInfo)
 	{
