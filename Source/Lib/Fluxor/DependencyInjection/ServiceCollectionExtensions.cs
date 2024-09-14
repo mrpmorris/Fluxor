@@ -30,22 +30,22 @@ public static class ServiceCollectionExtensions
 		var options = new FluxorOptions(services);
 		configure?.Invoke(options);
 
-		// Register all middleware types with dependency injection
-		foreach (Type middlewareType in options.MiddlewareTypes)
-			services.Add(middlewareType, options);
+		// Add all registered middleware types with to dependency injection
+		foreach (Type registeredMiddlewareType in options.RegisteredMiddlewareTypes)
+			services.Add(registeredMiddlewareType, options);
 
-		IEnumerable<AssemblyScanSettings> scanIncludeList = options.MiddlewareTypes
+		IEnumerable<AssemblyScanSettings> scanIncludeList = options.RegisteredMiddlewareTypes
 			.Select(t => new AssemblyScanSettings(t.Assembly, t.Namespace));
 
-		ReflectionScanner.Scan(
-			options: options,
-			services: services,
-			assembliesToScan: options.AssembliesToScan,
-			typesToScan: options.TypesToScan,
-			modulesToImport: options.ModulesToImport,
-			scanIncludeList: scanIncludeList);
-		services.Add(typeof(IState<>), typeof(State<>), options);
-		services.AddTransient(typeof(IStateSelection<,>), typeof(StateSelection<,>));
+		services.Add<IDispatcher, Dispatcher>(options);
+		// Register IActionSubscriber as an alias to Store
+		services.Add<IActionSubscriber>(serviceProvider => serviceProvider.GetService<Store>(), options);
+		// Register IStore as an alias to Store
+		services.Add<IStore>(serviceProvider => serviceProvider.GetService<Store>(), options);
+
+		// TODO: PeteM - Can I still do this?
+		//services.Add(typeof(IState<>), typeof(State<>), options);
+		//services.AddTransient(typeof(IStateSelection<,>), typeof(StateSelection<,>));
 
 		return services;
 	}

@@ -11,7 +11,8 @@ namespace BasicConcepts.StateActionsReducersTutorial
 			var services = new ServiceCollection();
 			services.AddScoped<App>();
 			services.AddFluxor(o => o
-				.ScanAssemblies(typeof(Program).Assembly));
+				.AddModule(new GeneratedFluxorModule())
+			);
 
 			IServiceProvider serviceProvider = services.BuildServiceProvider();
 

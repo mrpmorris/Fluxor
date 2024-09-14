@@ -1,8 +1,7 @@
 ﻿using Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using System.Reflection;
 
 namespace Fluxor.DependencyInjection;
@@ -12,11 +11,9 @@ namespace Fluxor.DependencyInjection;
 /// </summary>
 public class FluxorOptions
 {
-	internal AssemblyScanSettings[] AssembliesToScan { get; private set; } = Array.Empty<AssemblyScanSettings>();
-	internal Type[] MiddlewareTypes = Array.Empty<Type>();
-	internal IFluxorModule[] ModulesToImport { get; private set; } = Array.Empty<IFluxorModule>();
+	internal ImmutableHashSet<Type> RegisteredMiddlewareTypes = ImmutableHashSet.Create<Type>();
+	internal ImmutableHashSet<IFluxorModule> ModulesToImport { get; private set; } = ImmutableHashSet.Create<IFluxorModule>();
 	internal StoreLifetime StoreLifetime { get; set; } = StoreLifetime.Scoped;
-	internal Type[] TypesToScan { get; private set; } = Array.Empty<Type>();
 
 	/// <summary>
 	/// Service collection for registering services
@@ -30,31 +27,6 @@ public class FluxorOptions
 	public FluxorOptions(IServiceCollection services)
 	{
 		Services = services;
-	}
-
-	public FluxorOptions ScanTypes(
-		Type typeToScan,
-		params Type[] additionalTypesToScan)
-	{
-		if (typeToScan is null)
-			throw new ArgumentNullException(nameof(typeToScan));
-
-		var allTypes = new List<Type> { typeToScan };
-		if (additionalTypesToScan is not null)
-			allTypes.AddRange(additionalTypesToScan);
-
-		string genericTypeNames = string.Join(",",
-			allTypes
-				.Where(x => x.IsGenericTypeDefinition)
-				.Select(x => x.Name));
-		if (genericTypeNames != string.Empty)
-			throw new InvalidOperationException($"The following types cannot be generic: {genericTypeNames}");
-
-		TypesToScan = TypesToScan
-			.Union(allTypes)
-			.ToArray();
-
-		return this;
 	}
 
 	/// <summary>
@@ -86,30 +58,6 @@ public class FluxorOptions
 		return this;
 	}
 
-	/// <summary>
-	/// Enables automatic discovery of features/effects/reducers
-	/// </summary>
-	/// <param name="additionalAssembliesToScan">A collection of assemblies to scan</param>
-	/// <returns>Options</returns>
-	public FluxorOptions ScanAssemblies(
-		Assembly assemblyToScan,
-		params Assembly[] additionalAssembliesToScan)
-	{
-			throw new InvalidOperationException();
-			// TODO: PeteM - UCM
-			//if (assemblyToScan is null)
-			//	throw new ArgumentNullException(nameof(assemblyToScan));
-
-			//var allAssemblies = new List<Assembly> { assemblyToScan };
-			//if (additionalAssembliesToScan is not null)
-			//	allAssemblies.AddRange(additionalAssembliesToScan);
-
-			//var newAssembliesToScan = allAssemblies.Select(x => new AssemblyScanSettings(x)).ToList();
-			//newAssembliesToScan.AddRange(AssembliesToScan);
-			//AssembliesToScan = newAssembliesToScan.ToArray();
-
-			//return this;
-	}
 
 	/// <summary>
 	/// Enables the developer to specify a class that implements <see cref="IMiddleware"/>
@@ -121,63 +69,50 @@ public class FluxorOptions
 	public FluxorOptions AddMiddleware<TMiddleware>()
 		where TMiddleware : IMiddleware
 	{
-		if (Array.IndexOf(MiddlewareTypes, typeof(TMiddleware)) > -1)
+		if (RegisteredMiddlewareTypes.Contains(typeof(TMiddleware)))
 			return this;
 
 		Services.Add(typeof(TMiddleware), this);
 		Assembly assembly = typeof(TMiddleware).Assembly;
 		string @namespace = typeof(TMiddleware).Namespace;
 
-		AssembliesToScan = new List<AssemblyScanSettings>(AssembliesToScan)
-		{
-			new AssemblyScanSettings(assembly, @namespace)
-		}
-		.ToArray();
-
-		MiddlewareTypes = new List<Type>(MiddlewareTypes)
-		{
-			typeof(TMiddleware)
-		}
-		.ToArray();
+		RegisteredMiddlewareTypes = RegisteredMiddlewareTypes.Add(typeof(TMiddleware));
 		return this;
 	}
 
-		/// <summary>
-		/// Adds a <see cref="IFluxorModule"/> to scan.
-		/// </summary>
-		/// <param name="module">The module to scan.</param>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="module"/> is null.</exception>
-		public FluxorOptions AddModule(IFluxorModule module) => AddModules(module);
+	/// <summary>
+	/// Adds a <see cref="IFluxorModule"/> to scan.
+	/// </summary>
+	/// <param name="module">The module to scan.</param>
+	/// <exception cref="ArgumentNullException">Thrown when <paramref name="module"/> is null.</exception>
+	public FluxorOptions AddModule(IFluxorModule module) => AddModules(module);
 
-		/// <summary>
-		/// Adds a <see cref="IFluxorModule"/> to scan.
-		/// </summary>
-		/// <typeparam name="TModule">The type of module to scan.</typeparam>
-		/// <returns></returns>
-		public FluxorOptions AddModule<TModule>() where TModule: IFluxorModule, new() =>
-			AddModule(new TModule());
+	/// <summary>
+	/// Adds a <see cref="IFluxorModule"/> to scan.
+	/// </summary>
+	/// <typeparam name="TModule">The type of module to scan.</typeparam>
+	/// <returns></returns>
+	public FluxorOptions AddModule<TModule>() where TModule : IFluxorModule, new() =>
+		AddModule(new TModule());
 
-		/// <summary>
-		/// Adds one or more <see cref="IFluxorModule"/>s to scan
-		/// </summary>
-		/// <param name="module">First module to scan.</param>
-		/// <param name="additionalModules">Any additional modules to scan.</param>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="module"/> is null.</exception>
-		public FluxorOptions AddModules(
-			IFluxorModule module,
-			params IFluxorModule[] additionalModules)
-		{
-			if (module is null)
-				throw new ArgumentNullException(nameof(module));
+	/// <summary>
+	/// Adds one or more <see cref="IFluxorModule"/>s to scan
+	/// </summary>
+	/// <param name="module">First module to scan.</param>
+	/// <param name="additionalModules">Any additional modules to scan.</param>
+	/// <exception cref="ArgumentNullException">Thrown when <paramref name="module"/> is null.</exception>
+	public FluxorOptions AddModules(
+		IFluxorModule module,
+		params IFluxorModule[] additionalModules)
+	{
+		if (module is null)
+			throw new ArgumentNullException(nameof(module));
 
-			var allModules = new List<IFluxorModule>(ModulesToImport);
-			allModules.Add(module);
-			if (additionalModules is not null)
-				allModules.AddRange(additionalModules);
+		ModulesToImport = ModulesToImport.Add(module);
+		if (additionalModules is not null)
+			foreach (IFluxorModule additionalModule in additionalModules)
+				ModulesToImport = ModulesToImport.Add(additionalModule);
 
-			ModulesToImport = allModules.Distinct().ToArray();
-
-			return this;
-		}
-
+		return this;
+	}
 }
