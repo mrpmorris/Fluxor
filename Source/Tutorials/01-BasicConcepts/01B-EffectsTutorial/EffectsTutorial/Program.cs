@@ -13,7 +13,8 @@ namespace BasicConcepts.EffectsTutorial
 			services.AddScoped<App>();
 			services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 			services.AddFluxor(o => o
-				.ScanAssemblies(typeof(Program).Assembly));
+				.AddModule(new GeneratedFluxorModule())
+			);
 
 			IServiceProvider serviceProvider = services.BuildServiceProvider();
 

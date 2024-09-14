@@ -23,7 +23,7 @@ namespace FluxorBlazorWeb.StateActionsReducersTutorial
 			services.AddRazorPages();
 			services.AddServerSideBlazor();
 			services.AddFluxor(x => x
-				.ScanAssemblies(typeof(Startup).Assembly)
+				.AddModule(new GeneratedFluxorModule())
 			);
 		}
 

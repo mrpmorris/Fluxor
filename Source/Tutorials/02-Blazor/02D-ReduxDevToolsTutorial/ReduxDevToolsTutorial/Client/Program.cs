@@ -1,9 +1,5 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Fluxor;
-using System.Net.Http;
-using System;
 using Fluxor.Blazor.Web.ReduxDevTools;
 
 namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client
@@ -19,7 +15,7 @@ namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client
 
 			builder.Services.AddFluxor(o =>
 			{
-				o.ScanAssemblies(typeof(Program).Assembly);
+				o.AddModule(new GeneratedFluxorModule());
 				o.UseRouting();
 #if DEBUG
 				o.UseReduxDevTools(rdt =>

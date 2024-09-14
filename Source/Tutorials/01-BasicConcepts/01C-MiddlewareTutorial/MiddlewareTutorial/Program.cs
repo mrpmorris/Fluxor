@@ -14,7 +14,7 @@ namespace BasicConcepts.MiddlewareTutorial
 			services.AddScoped<App>();
 			services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 			services.AddFluxor(o => o
-				.ScanAssemblies(typeof(Program).Assembly)
+				.AddModule(new GeneratedFluxorModule())
 				.AddMiddleware<LoggingMiddleware>());
 
 			IServiceProvider serviceProvider = services.BuildServiceProvider();
