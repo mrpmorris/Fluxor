@@ -95,6 +95,8 @@ public class FluxorOptions
 	public FluxorOptions AddModule<TModule>() where TModule : IFluxorModule, new() =>
 		AddModule(new TModule());
 
+	public FluxorOptions ScanTypes(Type type, params Type[] additionalTypes) => this;
+
 	/// <summary>
 	/// Adds one or more <see cref="IFluxorModule"/>s to scan
 	/// </summary>

@@ -39,7 +39,7 @@ public class DiscoverFeaturesTests
 			if (assemblyToScan is not null)
 			{
 				x.AddModule<GeneratedFluxorModule>();
-				// Allow all features in this namepspace to be scanned
+				// Allow all features in this namespace to be scanned
 				x.AddMiddleware<IsolatedTests>();
 			}
 			if (typeToScan is not null)
