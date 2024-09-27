@@ -19,9 +19,6 @@
 		<DebugType>embedded</DebugType>
 		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
 
-		<AssemblyOriginatorKeyFile>..\..\..\..\..\MrPMorris.snk</AssemblyOriginatorKeyFile>
-		<DelaySign>false</DelaySign>
-		<SignAssembly Condition="'$(Configuration)'=='Release'">true</SignAssembly>
 		<GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
 	</PropertyGroup>
 

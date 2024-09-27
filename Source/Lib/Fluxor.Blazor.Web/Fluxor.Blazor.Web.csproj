@@ -30,6 +30,7 @@
 						<Pack>True</Pack>
 						<PackagePath></PackagePath>
 				</None>
+				<InternalsVisibleTo Include="Fluxor.Blazor.Web.UnitTests" />
 		</ItemGroup>
 
 </Project>

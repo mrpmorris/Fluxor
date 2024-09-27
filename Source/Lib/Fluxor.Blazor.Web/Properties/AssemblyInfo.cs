@@ -1,7 +1,0 @@
-﻿using System.Runtime.CompilerServices;
-
-#if DEBUG
-[assembly: InternalsVisibleTo("Fluxor.Blazor.Web.UnitTests")]
-#else
-[assembly: InternalsVisibleTo("Fluxor.Blazor.Web.UnitTests, PublicKey=00240000048000009400000006020000002400005253413100040000010001001d1b01bcd1a2325521a3e5b899303e8198367dc23c99a4c42686d01bfdc8b7029b4bc942f747be0df0f1244401921ecf7e1971c96a8b9d784a4e597fd45fb9d4c9c52973371abb47410e1ed649a0415b3e50d6d9574f41789a40546da2922cc087a5b86cd50b23378f66bd2b82933682ec12d71627d2e273cff3b5394b75d8cb")]
-#endif
