@@ -9,6 +9,7 @@
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<LangVersion>latest</LangVersion>
+		<PackFolder>analyzers/dotnet</PackFolder>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -37,7 +38,7 @@
 		<!-- Generator package dependencies -->
 		<PackageReference Include="Microsoft.CSharp" Version="4.5.0" PrivateAssets="all" GeneratePathProperty="true" />
 	</ItemGroup>
-	
+
 	<PropertyGroup>
 		<GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
 	</PropertyGroup>

@@ -20,4 +20,8 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.*" Condition="'$(TargetFramework)' == 'net7.0'" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\Fluxor.StoreBuilderSourceGenerator\bin\$(Configuration)\netstandard2.0\Fluxor.StoreBuilderSourceGenerator.dll" Pack="true" PackagePath="analyzers\dotnet\cs" />
+	</ItemGroup>
 </Project>
