@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Fluxor;
 
@@ -34,7 +35,7 @@ public abstract class Feature<TState> : IFeature<TState>
 	/// </summary>
 	protected readonly List<IReducer<TState>> Reducers = new();
 
-	private readonly object SyncRoot = new();
+	private readonly Lock SyncRoot = new();
 	private bool HasInitialState;
 	private readonly ThrottledInvoker TriggerStateChangedCallbacksThrottler;
 

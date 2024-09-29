@@ -2,6 +2,7 @@
 using Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -18,15 +19,15 @@ internal static class FeatureRegistration
 		ReducerMethodInfo[] reducerMethodInfos,
 		FluxorOptions options)
 	{
-		Dictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType =
+		FrozenDictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType =
 			reducerClassInfos
 			.GroupBy(x => x.StateType)
-			.ToDictionary(x => x.Key);
+			.ToFrozenDictionary(x => x.Key);
 
-		Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType =
+		FrozenDictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType =
 			reducerMethodInfos
 				.GroupBy(x => x.StateType)
-				.ToDictionary(x => x.Key);
+				.ToFrozenDictionary(x => x.Key);
 
 		RegisterFeatureClassInfos(
 			services,
@@ -43,7 +44,7 @@ internal static class FeatureRegistration
 			options);
 	}
 
-	private static void RegisterFeatureClassInfos(IServiceCollection services, FeatureClassInfo[] featureClassInfos, Dictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType, Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType, FluxorOptions options)
+	private static void RegisterFeatureClassInfos(IServiceCollection services, FeatureClassInfo[] featureClassInfos, FrozenDictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType, FrozenDictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType, FluxorOptions options)
 	{
 		foreach (FeatureClassInfo info in featureClassInfos)
 		{
@@ -89,8 +90,8 @@ internal static class FeatureRegistration
 	private static void RegisterStateInfos(
 		IServiceCollection services,
 		FeatureStateInfo[] featureStateInfos,
-		Dictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType,
-		Dictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType,
+		FrozenDictionary<Type, IGrouping<Type, ReducerClassInfo>> reducerClassInfoByStateType,
+		FrozenDictionary<Type, IGrouping<Type, ReducerMethodInfo>> reducerMethodInfoByStateType,
 		FluxorOptions options)
 	{
 		foreach (FeatureStateInfo info in featureStateInfos)

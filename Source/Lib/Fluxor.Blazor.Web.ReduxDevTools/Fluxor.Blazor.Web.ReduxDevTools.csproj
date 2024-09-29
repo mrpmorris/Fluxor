@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 		<PropertyGroup>
-				<LangVersion>latest</LangVersion>
 				<Product>ReduxDevTools for Fluxor Blazor (Web)</Product>
 				<Description>Middleware link from a Blazor (Web) Fluxor store to the Redux Dev Tools browser extension for Chrome.</Description>
 				<PackageIcon>fluxor-blazor-reduxdevtools-small.png</PackageIcon>
@@ -9,16 +8,6 @@
 
 		<ItemGroup>
 				<SupportedPlatform Include="browser" />
-		</ItemGroup>
-
-		<ItemGroup>
-				<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'" />
-				<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.*" Condition="'$(TargetFramework)' == 'net7.0'" />
-				<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
-
-				<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.*" Condition="'$(TargetFramework)' == 'net8.0'" />
-				<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.*" Condition="'$(TargetFramework)' == 'net7.0'" />
-				<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.*" Condition="'$(TargetFramework)' == 'net6.0'" />
 		</ItemGroup>
 
 		<ItemGroup>

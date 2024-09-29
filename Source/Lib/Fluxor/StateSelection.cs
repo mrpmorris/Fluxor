@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Fluxor;
 
@@ -10,7 +11,7 @@ namespace Fluxor;
 public class StateSelection<TState, TValue> : IStateSelection<TState, TValue>
 {
 	private readonly IFeature<TState> Feature;
-	private readonly object SyncRoot = new();
+	private readonly Lock SyncRoot = new();
 	private bool HasSetSelector;
 	private TValue PreviousValue;
 	private Func<TState, TValue> Selector;

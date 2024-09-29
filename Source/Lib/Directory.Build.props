@@ -1,6 +1,6 @@
 <Project>
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
 		<Version>6.1.0</Version>
 		<AssemblyVersion>6.1.0.0</AssemblyVersion>
 		<FileVersion>6.1.0.0</FileVersion>
@@ -23,6 +23,7 @@
 		<DelaySign>false</DelaySign>
 		<SignAssembly Condition="'$(Configuration)'=='Release'">true</SignAssembly>
 		<GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
