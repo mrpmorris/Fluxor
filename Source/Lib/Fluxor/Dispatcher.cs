@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Fluxor;
 
@@ -8,7 +9,7 @@ namespace Fluxor;
 /// </summary>
 public class Dispatcher : IDispatcher
 {
-	private readonly object SyncRoot = new();
+	private readonly Lock SyncRoot = new();
 	private readonly Queue<object> QueuedActions = new Queue<object>();
 	private volatile bool IsDequeuing;
 	private EventHandler<ActionDispatchedEventArgs> _ActionDispatched;

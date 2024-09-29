@@ -7,7 +7,7 @@ namespace Fluxor.UnsupportedClasses;
 public sealed class ThrottledInvoker : IDisposable
 {
 	private static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(1); private DateTime NextAllowedInvokeUtc;
-	private readonly object SyncRoot = new();
+	private readonly Lock SyncRoot = new();
 	private readonly Action ThrottledAction;
 	private bool HasPendingImmediateInvocation;
 	private bool HasPendingDeferredInvocation;

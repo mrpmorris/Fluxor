@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web.ReduxDevTools;
@@ -13,7 +14,7 @@ namespace Fluxor.Blazor.Web.ReduxDevTools;
 /// </summary>
 public sealed class ReduxDevToolsMiddleware : WebMiddleware
 {
-	private readonly object SyncRoot = new();
+	private readonly Lock SyncRoot = new();
 	private Task TailTask = Task.CompletedTask;
 	private int SequenceNumberOfCurrentState = 0;
 	private int SequenceNumberOfLatestState = 0;

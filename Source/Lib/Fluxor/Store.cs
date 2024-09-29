@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Fluxor;
@@ -14,8 +15,8 @@ public class Store : IStore, IActionSubscriber, IDisposable
 	/// <see cref="IStore.Initialized"/>
 	public Task Initialized => InitializedCompletionSource.Task;
 
-	private object SyncRoot = new object();
 	private bool Disposed;
+	private readonly Lock SyncRoot = new();
 	private readonly IDispatcher Dispatcher;
 	private readonly Dictionary<string, IFeature> FeaturesByName = new(StringComparer.InvariantCultureIgnoreCase);
 	private readonly List<IEffect> Effects = new();

@@ -127,7 +127,7 @@ public class InvokeTests
 		int totalExecutionCount = 0;
 		int smallestFailMS = int.MaxValue;
 
-		object syncRoot = new object();
+		Lock syncRoot = new();
 
 		// Set up the action to execute
 		// This ensures each call is on or outside the MS window

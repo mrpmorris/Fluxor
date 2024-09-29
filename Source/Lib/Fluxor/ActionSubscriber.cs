@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace Fluxor;
 
 internal class ActionSubscriber : IActionSubscriber
 {
-	private readonly object SyncRoot = new();
+	private readonly Lock SyncRoot = new();
 	private readonly Dictionary<object, List<ActionSubscription>> SubscriptionsForInstance = new();
 	private readonly Dictionary<Type, List<ActionSubscription>> SubscriptionsForType = new();
 
