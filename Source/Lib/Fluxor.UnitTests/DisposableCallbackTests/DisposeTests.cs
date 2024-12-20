@@ -26,6 +26,8 @@ public class DisposeTests
 			$"{nameof(DisposeTests)}.{nameof(WhenCalledTwice_ThenThrowsObjectDisposedExceptionWithCallerInformation)}",
 			() => { });
 		subject.Dispose();
+		// TODO: PeteM - D1
+		subject.Dispose(); 
 		var exception = Assert.Throws<ObjectDisposedException>(() => subject.Dispose());
 
 		Assert.Contains(
