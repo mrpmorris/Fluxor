@@ -83,7 +83,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{028DE5AF-7
 		..\Docs\disposable-callback-not-disposed.md = ..\Docs\disposable-callback-not-disposed.md
 		..\Docs\README.md = ..\Docs\README.md
 		..\Docs\releases.md = ..\Docs\releases.md
-		..\Docs\upgrading-instructions.md = ..\Docs\upgrading-instructions.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasicConcepts.StateActionsReducersTutorial", "Tutorials\01-BasicConcepts\01A-StateActionsReducersTutorial\StateActionsReducersTutorial\BasicConcepts.StateActionsReducersTutorial.csproj", "{5E423494-7C7A-485E-8E84-A5CD11F7C504}"

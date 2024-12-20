@@ -25,10 +25,6 @@ You can download the latest release / pre-release NuGet packages from the offici
 ## Release notes
 See the [Releases page](./Docs/releases.md) for release history.
 
-## Upgrading from Blazor.Fluxor (v1 or v2)
-See the [Upgrading instructions](./Docs/upgrading-instructions.md) for instructions on how to upgrade from
-`Blazor.Fluxor` V1 or V2 to `Fluxor`.
-
 # Licence
 [MIT](https://opensource.org/licenses/MIT)
 
