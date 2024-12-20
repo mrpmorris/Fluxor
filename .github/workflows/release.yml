@@ -19,6 +19,9 @@ jobs:
       - name: Build
         run: dotnet build "./Source/" --configuration Release -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }}
         
+      - name: Test
+        run: dotnet test "./Source/" --configuration Release --no-build
+
       - name: Pack
         run: dotnet pack "./Source/" --configuration Release --no-build -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }} -o ./artifacts     
           
