@@ -1,0 +1,26 @@
+name: Release
+on:
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      
+      - name: Build
+        run: dotnet build "./Source/" --configuration Release -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }}
+        
+      - name: Pack
+        run: dotnet pack "./Source/" --configuration Release --no-build -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }} -o ./artifacts     
+          
+      - name: Push to NuGet
+        run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

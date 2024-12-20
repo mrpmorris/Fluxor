@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.2
+ * Support only .NET 8 and 9.
+
 ## New in 6.1
 * Allow relative URLs in routing middleware ([#497](https://github.com/mrpmorris/Fluxor/issues/497))
 * Support JsonOptions and double.Nan serialization in Redux Dev Tools ([#503](https://github.com/mrpmorris/Fluxor/issues/503))
