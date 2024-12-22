@@ -8,102 +8,112 @@ namespace Fluxor.Blazor.Web.Analyzers.Tests;
 [TestClass]
 public sealed class CallBaseOnInitializedTests
 {
-	[TestMethod]
-	public async Task WhenNotOverridden_ThenNoDiagnosticIsEmitted()
+	[DataTestMethod]
+	[DataRow("FluxorComponent")]
+	[DataRow("FluxorLayout")]
+	public async Task WhenNotOverridden_ThenNoDiagnosticIsEmitted(string baseClass)
 	{
-		string source = @"
+		string source = $$"""
 			namespace Fluxor.Blazor.Web.Components
 			{
-				public class FluxorComponent { }
+				public class {{baseClass}} { }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.FluxorComponent
+			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
 			{
 				void OnInitialized() { }
 			}
-			";
+			""";
 		await VerifyCS.VerifyAnalyzerAsync(source);
 	}
 
-	[TestMethod]
-	public async Task WhenBaseOnInitializedIsExecuted_ThenNoDiagnosticIsEmitted()
+	[DataTestMethod]
+	[DataRow("FluxorComponent")]
+	[DataRow("FluxorLayout")]
+	public async Task WhenBaseOnInitializedIsExecuted_ThenNoDiagnosticIsEmitted(string baseClass)
 	{
-		string source = @"
+		string source = $$"""
 			namespace Fluxor.Blazor.Web.Components
 			{
-				public class FluxorComponent { protected virtual void OnInitialized() { } }
+				public class {{baseClass}} { protected virtual void OnInitialized() { } }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.FluxorComponent
+			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
 			{
 				protected override void OnInitialized()
 				{
 					base.OnInitialized();
 				}
 			}
-			";
+			""";
 		await VerifyCS.VerifyAnalyzerAsync(source);
 	}
 
-	[TestMethod]
-	public async Task WhenBaseOnInitializedAsyncIsExecuted_ThenNoDiagnosticIsEmitted()
+	[DataTestMethod]
+	[DataRow("FluxorComponent")]
+	[DataRow("FluxorLayout")]
+	public async Task WhenBaseOnInitializedAsyncIsExecuted_ThenNoDiagnosticIsEmitted(string baseClass)
 	{
-		string source = @"
+		string source = $$"""
 			using System.Threading.Tasks;
 			namespace Fluxor.Blazor.Web.Components
 			{
-				public class FluxorComponent { protected virtual Task OnInitializedAsync() { return Task.CompletedTask; } }
+				public class {{baseClass}} { protected virtual Task OnInitializedAsync() { return Task.CompletedTask; } }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.FluxorComponent
+			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
 			{
 				protected override async Task OnInitializedAsync()
 				{
 					await base.OnInitializedAsync();
 				}
 			}
-			";
+			""";
 		await VerifyCS.VerifyAnalyzerAsync(source);
 	}
 
-	[TestMethod]
-	public async Task WhenBaseOnInitializedIsNotCalled_ThenDiagnosticIsEmitted()
+	[DataTestMethod]
+	[DataRow("FluxorComponent")]
+	[DataRow("FluxorLayout")]
+	public async Task WhenBaseOnInitializedIsNotCalled_ThenDiagnosticIsEmitted(string baseClass)
 	{
-		string source = @"
+		string source = $$"""
 			namespace Fluxor.Blazor.Web.Components
 			{
-				public class FluxorComponent { protected virtual void OnInitialized() { } }
+				public class {{baseClass}} { protected virtual void OnInitialized() { } }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.FluxorComponent
+			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
 			{
 				protected override void OnInitialized()
 				{
 				}
 			}
-			";
+			""";
 
-		DiagnosticResult expected = VerifyCS.Diagnostic("FLXW01").WithSpan(8, 29, 8, 42);
+		DiagnosticResult expected = VerifyCS.Diagnostic("FLXW01").WithSpan(7, 26, 7, 39);
 		await VerifyCS.VerifyAnalyzerAsync(
 			source: source,
 			expected: [expected]);
 	}
 
-	[TestMethod]
-	public async Task WhenBaseOnInitializedAsyncIsNotCalled_ThenDiagnosticIsEmitted()
+	[DataTestMethod]
+	[DataRow("FluxorComponent")]
+	[DataRow("FluxorLayout")]
+	public async Task WhenBaseOnInitializedAsyncIsNotCalled_ThenDiagnosticIsEmitted(string baseClass)
 	{
-		string source = @"
+		string source = $$"""
 			using System.Threading.Tasks;
 			namespace Fluxor.Blazor.Web.Components
 			{
-				public class FluxorComponent { protected virtual Task OnInitializedAsync() { return Task.CompletedTask; } }
+				public class {{baseClass}} { protected virtual Task OnInitializedAsync() { return Task.CompletedTask; } }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.FluxorComponent
+			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
 			{
 				protected override Task OnInitializedAsync()
 				{
 					return Task.CompletedTask;
 				}
 			}
-			";
+			""";
 
-		DiagnosticResult expected = VerifyCS.Diagnostic("FLXW01").WithSpan(9, 29, 9, 47);
+		DiagnosticResult expected = VerifyCS.Diagnostic("FLXW01").WithSpan(8, 26, 8, 44);
 		await VerifyCS.VerifyAnalyzerAsync(
 			source: source,
 			expected: [expected]);
