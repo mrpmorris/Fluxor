@@ -5,6 +5,7 @@
 		<Description>A zero boilerplate Redux/Flux framework for .NET</Description>
 		<PackageIcon>fluxor-small-logo.png</PackageIcon>
 		<PackageTags>Redux Flux DotNet CSharp</PackageTags>
+		<GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

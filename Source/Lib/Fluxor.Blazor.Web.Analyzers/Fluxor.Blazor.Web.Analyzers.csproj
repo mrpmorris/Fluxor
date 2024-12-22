@@ -4,11 +4,12 @@
 		<TargetFrameworks>netstandard2.0</TargetFrameworks>
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<ImplicitUsings>true</ImplicitUsings>
-		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<IsRoslynComponent>true</IsRoslynComponent>
 		<NoPackageAnalysis>true</NoPackageAnalysis>
 		<Nullable>enable</Nullable>
 		<LangVersion>latest</LangVersion>
+		<PackageType>Analyzer</PackageType>
+		<GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -5,6 +5,7 @@
 		<Description>A zero boilerplate Redux/Flux framework for Blazor</Description>
 		<PackageIcon>fluxor-blazor-logo-small.png</PackageIcon>
 		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents</PackageTags>
+		<GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
