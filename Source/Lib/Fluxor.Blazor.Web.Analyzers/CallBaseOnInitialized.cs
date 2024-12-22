@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,7 +10,7 @@ namespace Fluxor.Blazor.Web.Analyzers;
 public sealed class CallBaseOnInitialized : DiagnosticAnalyzer
 {
 	private static readonly DiagnosticDescriptor Rule = new(
-		id: "FLX001",
+		id: "FLXW01",
 		title: "Base method not called",
 		messageFormat: "Overriding OnInitialized or OnInitializedAsync without calling base is not allowed",
 		category: "Usage",

@@ -5,4 +5,4 @@
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
-FLX001 | Usage | Error | CallBaseOnInitialized
+FLXW01 | Usage | Error | CallBaseOnInitialized
