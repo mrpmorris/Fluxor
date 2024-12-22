@@ -66,7 +66,12 @@ public sealed class CallBaseOnInitialized : DiagnosticAnalyzer
 			methodDecl.Body is not null
 			&& methodDecl.Body.Statements
 				.OfType<ExpressionStatementSyntax>()
-				.Select(s => s.Expression).OfType<InvocationExpressionSyntax>()
+				.Select(s => s.Expression)
+				.Select(expr =>
+					expr is AwaitExpressionSyntax awaitExpr
+						? awaitExpr.Expression
+						: expr)
+				.OfType<InvocationExpressionSyntax>()
 				.Any(inv => IsBaseCall(inv, methodName, semanticModel));
 
 		if (!callsBase && methodDecl.ExpressionBody is null)
