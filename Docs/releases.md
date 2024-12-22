@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.2.1
+ * Analyzer to ensure base.OnInitialized or base.OnInitializedAsync is called in Blazor apps.
+
 ## New in 6.2
  * Support only .NET 8 and 9.
 
