@@ -21,12 +21,13 @@ public sealed class CallBaseOnInitialized : DiagnosticAnalyzer
 
 	public override void Initialize(AnalysisContext context)
 	{
-		context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+		context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
 		context.EnableConcurrentExecution();
 		context.RegisterSyntaxNodeAction(
 			action: AnalyzeMethod,
 			syntaxKinds: SyntaxKind.MethodDeclaration);
 	}
+
 
 	private static bool IsFluxorComponentBase(INamedTypeSymbol? symbol) =>
 		symbol is not null
