@@ -28,8 +28,8 @@ jobs:
           dotnet pack "./Source/Lib/Fluxor.Blazor.Web/Fluxor.Blazor.Web.csproj" --configuration Release --no-build -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }} -o artifacts
           dotnet pack "./Source/Lib/Fluxor.Blazor.Web.ReduxDevTools/Fluxor.Blazor.Web.ReduxDevTools.csproj" --configuration Release --no-build -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }} -o artifacts
 
-      - name: List artifacts
-        run: dir artifacts
-
       - name: Push to NuGet
-        run: dotnet nuget push artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: |
+          dotnet nuget push artifacts/Fluxor.${{ github.event.release.tag_name }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push artifacts/Fluxor.Blazor.Web.${{ github.event.release.tag_name }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push artifacts/Fluxor.Blazor.Web.ReduxDevTools.${{ github.event.release.tag_name }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
