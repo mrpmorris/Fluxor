@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.3
+ * Downgrade Microsoft.CodeAnalysis.CSharp.Workspaces to 4.9.2 (.NET 8 version). ([#519](https://github.com/mrpmorris/Fluxor/issues/519))
+
 ## New in 6.2.1
  * Analyzer to ensure base.OnInitialized or base.OnInitializedAsync is called in Blazor apps.
 
