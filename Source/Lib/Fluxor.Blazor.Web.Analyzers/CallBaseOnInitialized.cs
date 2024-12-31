@@ -1,4 +1,4 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
@@ -73,6 +73,7 @@ public sealed class CallBaseOnInitialized : DiagnosticAnalyzer
 
 	private static bool DerivesFrom(INamedTypeSymbol symbol, INamedTypeSymbol? candidateBaseType)
 	{
+		// Note: Generics may require special handling. See OriginalDefinition documentation.
 		var baseType = symbol.BaseType;
 		while (baseType is not null)
 		{
