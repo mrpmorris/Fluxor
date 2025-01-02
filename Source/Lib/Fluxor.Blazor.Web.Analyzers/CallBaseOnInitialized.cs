@@ -1,8 +1,7 @@
-﻿using System.Collections.Immutable;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace Fluxor.Blazor.Web.Analyzers;
 
@@ -23,91 +22,67 @@ public sealed class CallBaseOnInitialized : DiagnosticAnalyzer
 	{
 		context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.Analyze | GeneratedCodeAnalysisFlags.ReportDiagnostics);
 		context.EnableConcurrentExecution();
-		context.RegisterSyntaxNodeAction(
-			action: AnalyzeMethod,
-			syntaxKinds: SyntaxKind.MethodDeclaration);
+		context.RegisterCompilationStartAction(context =>
+		{
+			var fluxorComponent = context.Compilation.GetTypeByMetadataName("Fluxor.Blazor.Web.Components.FluxorComponent");
+			var fluxorLayout = context.Compilation.GetTypeByMetadataName("Fluxor.Blazor.Web.Components.FluxorLayout");
+			context.RegisterOperationBlockAction(context => AnalyzeOperationBlock(context, fluxorComponent, fluxorLayout));
+		});
 	}
 
-
-	private static bool IsFluxorComponentBase(INamedTypeSymbol? symbol) =>
-		symbol is not null
-		&& (
-			IsFluxorType(symbol, "Fluxor.Blazor.Web.Components.FluxorComponent")
-			|| IsFluxorType(symbol, "Fluxor.Blazor.Web.Components.FluxorLayout")
-		);
-
-	private static bool IsFluxorType(INamedTypeSymbol symbol, string fullyQualifiedName) =>
-		symbol.ToString() == fullyQualifiedName
-		|| (
-			symbol.BaseType is not null
-			&& IsFluxorType(symbol.BaseType, fullyQualifiedName)
-		);
-
-	private static void AnalyzeMethod(SyntaxNodeAnalysisContext context)
+	private void AnalyzeOperationBlock(OperationBlockAnalysisContext context, INamedTypeSymbol? fluxorComponent, INamedTypeSymbol? fluxorLayout)
 	{
-		if (context.Node is not MethodDeclarationSyntax methodDecl)
-			return;
-
-		if (methodDecl.Modifiers.All(m => m.Text != "override"))
-			return;
-
-		string methodName = methodDecl.Identifier.Text;
-		if (methodName != "OnInitialized" && methodName != "OnInitializedAsync")
-			return;
-
-		SemanticModel semanticModel = context.SemanticModel;
-		INamedTypeSymbol? containingType = semanticModel.GetDeclaredSymbol(methodDecl)?.ContainingType;
-		if (containingType is null)
-			return;
-
-		if (!IsFluxorComponentBase(containingType))
-			return;
-
-		bool callsBase =
-			methodDecl.Body is not null
-			&& methodDecl.Body.Statements
-				.OfType<ExpressionStatementSyntax>()
-				.Select(s => s.Expression)
-				.Select(expr =>
-					expr is AwaitExpressionSyntax awaitExpr
-						? awaitExpr.Expression
-						: expr)
-				.OfType<InvocationExpressionSyntax>()
-				.Any(inv => IsBaseCall(inv, methodName, semanticModel));
-
-		if (!callsBase && methodDecl.ExpressionBody is null)
+		if (context.OwningSymbol is not IMethodSymbol { IsOverride: true, Name: "OnInitialized" or "OnInitializedAsync" } method ||
+			!IsFluxorComponentBase(method.ContainingType, fluxorComponent, fluxorLayout))
 		{
-			context.ReportDiagnostic(Diagnostic.Create(Rule, methodDecl.Identifier.GetLocation()));
 			return;
 		}
 
-		if (methodDecl.ExpressionBody is not null)
-		{
-			ExpressionSyntax expr = methodDecl.ExpressionBody.Expression;
-			if (
-				expr is InvocationExpressionSyntax exprInv
-				&& IsBaseCall(exprInv, methodName, semanticModel)
-			)
-			{
-				return;
-			}
-			context.ReportDiagnostic(Diagnostic.Create(Rule, methodDecl.Identifier.GetLocation()));
-		}
+		if (!CallsBase(context.OperationBlocks, method.OverriddenMethod))
+			context.ReportDiagnostic(Diagnostic.Create(Rule, method.Locations[0]));
 	}
 
-	private static bool IsBaseCall(
-		InvocationExpressionSyntax invocation,
-		string methodName,
-		SemanticModel semanticModel)
+	private bool CallsBase(ImmutableArray<IOperation> operations, IMethodSymbol? overriddenMethod)
 	{
-		if (
-			invocation.Expression is MemberAccessExpressionSyntax memberAccess
-			&& memberAccess.Expression is BaseExpressionSyntax)
+		foreach (var operation in operations)
 		{
-			var symbol = semanticModel.GetSymbolInfo(invocation).Symbol as IMethodSymbol;
-			if (symbol is not null && symbol.Name == methodName)
+			if (CallsBase(operation, overriddenMethod))
 				return true;
 		}
+
+		return false;
+	}
+
+	private bool CallsBase(IOperation operation, IMethodSymbol? overriddenMethod)
+	{
+		if (operation is IBlockOperation blockOperation)
+			return CallsBase(blockOperation.Operations, overriddenMethod);
+
+		if (operation is IExpressionStatementOperation expressionStatementOperation)
+			operation = expressionStatementOperation.Operation;
+
+		if (operation is IAwaitOperation awaitOperation)
+			operation = awaitOperation.Operation;
+
+		return operation is IInvocationOperation invocation &&
+			invocation.TargetMethod.Equals(overriddenMethod, SymbolEqualityComparer.Default);
+	}
+
+	private static bool IsFluxorComponentBase(INamedTypeSymbol symbol, INamedTypeSymbol? fluxorComponent, INamedTypeSymbol? fluxorLayout)
+		=> DerivesFrom(symbol, fluxorComponent) || DerivesFrom(symbol, fluxorLayout);
+
+	private static bool DerivesFrom(INamedTypeSymbol symbol, INamedTypeSymbol? candidateBaseType)
+	{
+		// Note: Generics may require special handling. See OriginalDefinition documentation.
+		var baseType = symbol.BaseType;
+		while (baseType is not null)
+		{
+			if (SymbolEqualityComparer.Default.Equals(baseType, candidateBaseType))
+				return true;
+
+			baseType = baseType.BaseType;
+		}
+
 		return false;
 	}
 }
