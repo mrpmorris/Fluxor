@@ -1,5 +1,9 @@
 # Releases
 
+## New in 6.4
+ * Optimise Roslyn analyzer
+ * Use Microsoft.CodeAnalysis.CSharp instead of Microsoft.CodeAnalysis.CSharp.Workspaces
+
 ## New in 6.3
  * Downgrade Microsoft.CodeAnalysis.CSharp.Workspaces to 4.9.2 (.NET 8 version). ([#519](https://github.com/mrpmorris/Fluxor/issues/519))
 
