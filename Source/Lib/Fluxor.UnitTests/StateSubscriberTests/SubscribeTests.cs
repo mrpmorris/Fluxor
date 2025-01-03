@@ -10,7 +10,7 @@ public class SubscribeTests
 
 	private int CallbackInvocationCount;
 	private string State = "X";
-	private IStateSelection<string, char?> Selection { get; }
+	private IStateSelection<string, char?> Selection;
 
 	[Fact]
 	public void WhenSubscribedToSubject_ThenNotificationsShouldBeReceived()

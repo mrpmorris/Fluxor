@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.5
+ * Support subscribing to fields instead of properties ([#514](https://github.com/mrpmorris/Fluxor/issues/514))
+
 ## New in 6.4
  * Optimise Roslyn analyzer
  * Use Microsoft.CodeAnalysis.CSharp instead of Microsoft.CodeAnalysis.CSharp.Workspaces
