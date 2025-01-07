@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.5.2
+ * False positive FLWX01 error fixed ([#522](https://github.com/mrpmorris/Fluxor/issues/522))
+
 ## New in 6.5
  * Support subscribing to fields instead of properties ([#514](https://github.com/mrpmorris/Fluxor/issues/514))
 

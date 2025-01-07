@@ -53,10 +53,16 @@ public sealed class CallBaseOnInitialized : DiagnosticAnalyzer
 		return false;
 	}
 
-	private bool CallsBase(IOperation operation, IMethodSymbol? overriddenMethod)
+	private bool CallsBase(IOperation? operation, IMethodSymbol? overriddenMethod)
 	{
+		if (operation is null)
+			return false;
+
 		if (operation is IBlockOperation blockOperation)
 			return CallsBase(blockOperation.Operations, overriddenMethod);
+
+		if (operation is IReturnOperation returnOperation)
+			return CallsBase(returnOperation.ReturnedValue, overriddenMethod);
 
 		if (operation is IExpressionStatementOperation expressionStatementOperation)
 			operation = expressionStatementOperation.Operation;
@@ -73,7 +79,6 @@ public sealed class CallBaseOnInitialized : DiagnosticAnalyzer
 
 	private static bool DerivesFrom(INamedTypeSymbol symbol, INamedTypeSymbol? candidateBaseType)
 	{
-		// Note: Generics may require special handling. See OriginalDefinition documentation.
 		var baseType = symbol.BaseType;
 		while (baseType is not null)
 		{

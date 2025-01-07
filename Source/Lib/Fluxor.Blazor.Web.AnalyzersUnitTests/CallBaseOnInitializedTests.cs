@@ -58,11 +58,20 @@ public sealed class CallBaseOnInitializedTests
 			{
 				public class {{baseClass}} { protected virtual Task OnInitializedAsync() { return Task.CompletedTask; } }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
+
+			class MyComponent1 : Fluxor.Blazor.Web.Components.{{baseClass}}
 			{
 				protected override async Task OnInitializedAsync()
 				{
 					await base.OnInitializedAsync();
+				}
+			}
+			
+			class MyComponent2 : Fluxor.Blazor.Web.Components.{{baseClass}}
+			{
+				protected override Task OnInitializedAsync()
+				{
+					return base.OnInitializedAsync();
 				}
 			}
 			""";
