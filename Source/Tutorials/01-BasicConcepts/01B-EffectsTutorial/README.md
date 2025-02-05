@@ -109,19 +109,16 @@ the server, and an enumerable holding zero to many `WeatherForecast` objects.
 ```c#
 public class App
 {
-  public class App
+  ...
+  private readonly IState<WeatherState> WeatherState;
+
+  public App(
+    ...
+    IState<WeatherState> weatherState)
   {
     ...
-    private readonly IState<WeatherState> WeatherState;
-
-    public App(
-      ...
-      IState<WeatherState> weatherState)
-    {
-      ...
-      WeatherState = weatherState;
-      WeatherState.StateChanged += WeatherState_StateChanged;
-    }
+    WeatherState = weatherState;
+    WeatherState.StateChanged += WeatherState_StateChanged;
   }
 }
 ```
@@ -220,7 +217,7 @@ Effect handlers can be written in one of three ways.
 1. As with `[ReducerMethod]`, it is possible to use `[EffectMethod]` without
   the action parameter being needed in the method signature.
 
-```
+```c#
   [EffectMethod(typeof(FetchDataAction))]
   public async Task HandleFetchDataAction(IDispatcher dispatcher)
   {
