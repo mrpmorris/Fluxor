@@ -1,7 +1,7 @@
 # Fluxor - Basic concepts
 
 ## IActionSubscriber
-`IActionSubscriber` allows us to subscribe to the dispatch pipeline and be notifified
+`IActionSubscriber` allows us to subscribe to the dispatch pipeline and be notified
 whenever an action has been dispatched.
 
 One particularly useful example of this is when we wish to retrieve
@@ -47,7 +47,7 @@ public class GetCustomerForEditAction
   public int Id { get; }
 
   public GetCustomerForEditAction(int id)
- {
+  {
     Id = id;
   }
 }
