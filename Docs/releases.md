@@ -1,7 +1,7 @@
 # Releases
 
 ## New in 6.6
-* Allow DependencyInjection >=8 < 10 for .net 8 ([#530](https://github.com/mrpmorris/Fluxor/issues/5530))
+* Allow DependencyInjection >=8 < 10 for .net 8 ([#530](https://github.com/mrpmorris/Fluxor/issues/530))
 
 ## New in 6.5.2
  * False positive FLXW01 error fixed ([#522](https://github.com/mrpmorris/Fluxor/issues/522))
