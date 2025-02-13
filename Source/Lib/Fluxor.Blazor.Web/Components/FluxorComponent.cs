@@ -52,6 +52,20 @@ public abstract class FluxorComponent : ComponentBase, IAsyncDisposable
 		});
 	}
 
+	/// <see cref="IActionSubscriber.SubscribeToAction{TAction}(object, Action{TAction})"/>
+	public void SubscribeToAction<TAction>(Func<TAction, Task> callback)
+	{
+		ActionSubscriber.SubscribeToAction<TAction>(this, action =>
+		{
+			InvokeAsync(async () =>
+			{
+				if (!Disposed)
+					await callback(action);
+				StateHasChanged();
+			});
+		});
+	}
+
 	/// <summary>
 	/// Disposes of the component and unsubscribes from any state
 	/// </summary>
