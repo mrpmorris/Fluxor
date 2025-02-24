@@ -52,8 +52,13 @@ public abstract class FluxorComponent : ComponentBase, IAsyncDisposable
 		});
 	}
 
-	/// <see cref="IActionSubscriber.SubscribeToAction{TAction}(object, Action{TAction})"/>
-	public void SubscribeToAction<TAction>(Func<TAction, Task> callback)
+	/// <summary>
+	/// Subscribes to be notified whenever a specific action is dispatched
+	/// </summary>
+	/// <typeparam name="TAction">The type of action (and its descendants) to be notified of</typeparam>
+	/// <param name="subscriber">The instance that is subscribing to notifications</param>
+	/// <param name="callback">The asynchronous action to execute whenever a qualifying action is dispatched</param>
+	public void SubscribeToActionAsync<TAction>(Func<TAction, Task> callback)
 	{
 		ActionSubscriber.SubscribeToAction<TAction>(this, action =>
 		{
