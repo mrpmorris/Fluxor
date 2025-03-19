@@ -16,17 +16,38 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
+      - name: Extract Numeric Version
+        run: echo "VERSION=$(echo ${{ github.event.release.tag_name }} | sed 's/-.*//')" >> $GITHUB_ENV
+
       - name: Build
-        run: dotnet build "./Source/" --configuration Release -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }}
+        run: |
+          dotnet build "./Source/" --configuration Release \
+            -p:Version=${{ github.event.release.tag_name }} \
+            -p:AssemblyVersion=${{ env.VERSION }}.0 \
+            -p:FileVersion=${{ env.VERSION }}.0
 
       - name: Test
         run: dotnet test "./Source/" --configuration Release --no-build
 
       - name: Pack
         run: |
-          dotnet pack "./Source/Lib/Fluxor/Fluxor.csproj" --configuration Release --no-build -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }} -o artifacts
-          dotnet pack "./Source/Lib/Fluxor.Blazor.Web/Fluxor.Blazor.Web.csproj" --configuration Release --no-build -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }} -o artifacts
-          dotnet pack "./Source/Lib/Fluxor.Blazor.Web.ReduxDevTools/Fluxor.Blazor.Web.ReduxDevTools.csproj" --configuration Release --no-build -p:Version=${{ github.event.release.tag_name }} -p:AssemblyVersion=${{ github.event.release.tag_name }} -p:FileVersion=${{ github.event.release.tag_name }} -o artifacts
+          dotnet pack "./Source/Lib/Fluxor/Fluxor.csproj" --configuration Release --no-build \
+            -p:Version=${{ github.event.release.tag_name }} \
+            -p:AssemblyVersion=${{ env.VERSION }}.0 \
+            -p:FileVersion=${{ env.VERSION }}.0 \
+            -o artifacts
+
+          dotnet pack "./Source/Lib/Fluxor.Blazor.Web/Fluxor.Blazor.Web.csproj" --configuration Release --no-build \
+            -p:Version=${{ github.event.release.tag_name }} \
+            -p:AssemblyVersion=${{ env.VERSION }}.0 \
+            -p:FileVersion=${{ env.VERSION }}.0 \
+            -o artifacts
+
+          dotnet pack "./Source/Lib/Fluxor.Blazor.Web.ReduxDevTools/Fluxor.Blazor.Web.ReduxDevTools.csproj" --configuration Release --no-build \
+            -p:Version=${{ github.event.release.tag_name }} \
+            -p:AssemblyVersion=${{ env.VERSION }}.0 \
+            -p:FileVersion=${{ env.VERSION }}.0 \
+            -o artifacts
 
       - name: Push to NuGet
         run: |
