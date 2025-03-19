@@ -17,9 +17,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Extract Numeric Version
+        shell: bash
         run: echo "VERSION=$(echo ${{ github.event.release.tag_name }} | sed 's/-.*//')" >> $GITHUB_ENV
 
       - name: Build
+        shell: bash
         run: |
           dotnet build "./Source/" --configuration Release \
             -p:Version=${{ github.event.release.tag_name }} \
@@ -30,6 +32,7 @@ jobs:
         run: dotnet test "./Source/" --configuration Release --no-build
 
       - name: Pack
+        shell: bash
         run: |
           dotnet pack "./Source/Lib/Fluxor/Fluxor.csproj" --configuration Release --no-build \
             -p:Version=${{ github.event.release.tag_name }} \
