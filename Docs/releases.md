@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.7
+* Fix StoreInitialize error ([#535](https://github.com/mrpmorris/Fluxor/issues/535))
+
 ## New in 6.6
 * Allow DependencyInjection >=8 < 10 for .net 8 ([#530](https://github.com/mrpmorris/Fluxor/issues/530))
 

@@ -267,7 +267,7 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		{
 			HasActivatedStore = true;
 			DequeueActions();
-			InitializedCompletionSource.SetResult(true);
+			InitializedCompletionSource.TrySetResult(true);
 		}
 	}
 
