@@ -61,9 +61,12 @@ public sealed class ReduxDevToolsMiddleware : WebMiddleware
 				string.Join("\r\n",
 					new StackTrace(fNeedFileInfo: true)
 						.GetFrames()
-						.Select(x => $"at {x.GetMethod().DeclaringType.FullName}.{x.GetMethod().Name} ({x.GetFileName()}:{x.GetFileLineNumber()}:{x.GetFileColumnNumber()})")
+						.Select(x => new { StackFrame = x, Method = x.GetMethod() })
+						.Where(x => x.Method?.DeclaringType is not null)
+						.Select(x => $"at {x.Method.DeclaringType.FullName}.{x.Method.Name} ({x.StackFrame.GetFileName()}:{x.StackFrame.GetFileLineNumber()}:{x.StackFrame.GetFileColumnNumber()})")
 						.Where(x => Options.StackTraceFilterRegex?.IsMatch(x) != false)
-						.Take(maxItems));
+						.Take(maxItems)
+				);
 		lock (SyncRoot)
 		{
 			IDictionary<string, object> state = GetState();
