@@ -83,7 +83,8 @@ public sealed class ReduxDevToolsMiddleware : WebMiddleware
 	private IDictionary<string, object> GetState()
 	{
 		var state = new Dictionary<string, object>();
-		foreach (IFeature feature in Store.Features.Values.OrderBy(x => x.GetName()))
+		var serializableFeatures = Store.Features.Values.Where(x => x.DebuggerBrowsable);
+		foreach (IFeature feature in serializableFeatures.OrderBy(x => x.GetName()))
 			state[feature.GetName()] = feature.GetState();
 		return state;
 	}
