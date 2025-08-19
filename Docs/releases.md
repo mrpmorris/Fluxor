@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.8
+* Added DebuggerBrowsable property to FeatureAttribute to prevent state being sent to ReduxDevTools ([#541](https://github.com/mrpmorris/Fluxor/issues/541))
+
 ## New in 6.7
 * Fix StoreInitialize error ([#535](https://github.com/mrpmorris/Fluxor/issues/535))
 * Fix NullReferenceException when using ReduxDevTools ([#543](https://github.com/mrpmorris/Fluxor/issues/543))

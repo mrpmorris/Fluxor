@@ -17,6 +17,9 @@ public abstract class Feature<TState> : IFeature<TState>
 	/// <see cref="IFeature.GetState"/>
 	public virtual object GetState() => State;
 
+	/// <see cref="IFeature.DebuggerBrowsable"/>
+	public virtual bool DebuggerBrowsable { get; set; }
+
 	/// <see cref="IFeature.RestoreState(object)"/>
 	public virtual void RestoreState(object value) => State = (TState)value;
 

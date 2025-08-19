@@ -15,9 +15,15 @@ public interface IFeature
 	string GetName();
 
 	/// <summary>
+	/// Gets a value indicating whether the property should be visible
+	/// in any attached debugger (e.g. ReduxDevTools).
+	/// </summary>
+	bool DebuggerBrowsable { get; }
+
+	/// <summary>
 	/// If greater than 0, the feature will not execute state changes
 	/// more often than this many times per second. Additional notifications
-	/// will be surpressed, and observers will be notified of the latest
+	/// will be suppressed, and observers will be notified of the latest
 	/// state when the time window has elapsed to allow another notification.
 	/// </summary>
 	byte MaximumStateChangedNotificationsPerSecond { get; set; }
