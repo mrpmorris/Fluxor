@@ -65,28 +65,29 @@ will hold the values of your state to be displayed in your application.
 
 ```c#
 [FeatureState]
-public class CounterState
-{
-  public int ClickCount { get; }
-
-  private CounterState() {} // Required for creating initial state
-
-  public CounterState(int clickCount)
-  {
-    ClickCount = clickCount;
-  }
-}
-```
-
-Or you can use records
-```c#
-[FeatureState]
 public record CounterState(int ClickCount)
 {
     // Required for creating initial state
     public CounterState() : this(0)
     {
     }
+}
+```
+
+Or you can use a non-record class
+```c#
+[FeatureState]
+public class CounterState
+{
+  public int ClickCount { get; }
+
+  // Required for creating initial state
+  private CounterState() {}
+
+  public CounterState(int clickCount)
+  {
+    ClickCount = clickCount;
+  }
 }
 ```
 
