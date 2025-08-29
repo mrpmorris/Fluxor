@@ -75,7 +75,7 @@ Options for `EnableStackTrace` are
      * The default expression will exlude System, Microsoft, and Fluxor ReduxDevTools Middleware.
      * To include all stack frames, set the expression to "".
 
-Note that determining the stack trace is an expensive operation.
+Note that determining the stack trace is a computationally expensive operation.
 
 ![](./../../../../images/redux-dev-tools-trace.jpg)
 
