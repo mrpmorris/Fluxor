@@ -1,5 +1,8 @@
 # Releases
 
+## Next release
+* Migrate demos to .Net 9 ([#548](https://github.com/mrpmorris/Fluxor/issues/548))
+
 ## New in 6.8
 * Added DebuggerBrowsable property to FeatureAttribute to prevent state being sent to ReduxDevTools ([#541](https://github.com/mrpmorris/Fluxor/issues/541))
 
