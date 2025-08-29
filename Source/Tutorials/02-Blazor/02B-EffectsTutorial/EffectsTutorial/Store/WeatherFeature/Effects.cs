@@ -1,5 +1,4 @@
 ﻿using Fluxor;
-using System.Collections.Immutable;
 
 namespace FluxorBlazorWeb.EffectsTutorial.Store.WeatherFeature;
 
@@ -8,11 +7,11 @@ public class Effects
 	private readonly static string[] Summaries =
 		["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
 
-	[EffectMethod(typeof(FetchDataAction))]
+	[EffectMethod(typeof(FetchForecastsAction))]
 	public async Task HandleFetchDataAction(IDispatcher dispatcher)
 	{
 		// Simulate a delay
-		await Task.Delay(500);
+		await Task.Delay(1_000);
 
 		DateOnly startDate = DateOnly.FromDateTime(DateTime.Now);
 		var forecasts =
@@ -25,7 +24,7 @@ public class Effects
 				)
 			);
 
-		var action = new FetchDataResultAction(forecasts);
+		var action = new FetchForecastsResultAction(forecasts);
 		dispatcher.Dispatch(action);
 	}
 }

@@ -1,3 +1,3 @@
 ﻿namespace FluxorBlazorWeb.EffectsTutorial.Store.WeatherFeature;
 
-public class FetchDataAction;
+public readonly struct FetchForecastsAction;

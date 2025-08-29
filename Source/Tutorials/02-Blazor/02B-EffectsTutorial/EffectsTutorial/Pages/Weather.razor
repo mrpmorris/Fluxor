@@ -1,14 +1,15 @@
 ﻿@page "/weather"
-@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 @using FluxorBlazorWeb.EffectsTutorial.Store.WeatherFeature
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 @inject IDispatcher Dispatcher
+@inject HttpClient Http
 @inject IState<WeatherState> WeatherState
 
 <PageTitle>Weather</PageTitle>
 
 <h1>Weather</h1>
 
-<p>This component demonstrates showing data.</p>
+<p>This component demonstrates fetching data from the server.</p>
 
 @if (WeatherState.Value.IsLoading)
 {
@@ -43,7 +44,7 @@ else
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        var action = new FetchDataAction();
+        var action = new FetchForecastsAction();
         Dispatcher.Dispatch(action);
     }
 }

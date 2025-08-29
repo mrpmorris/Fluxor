@@ -15,16 +15,14 @@ This tutorial will expand on the previous tutorial to recreate the `Fetch data` 
 ### Steps
 
 - Under the `Store` folder, create a new folder named `WeatherFeature`.
-- Cut the source code for the `WeatherForecast` class from the bottom of `Weather.razor`
-  and paste it into a new `WeatherForecast` class in this new folder. Make sure you change
-  the class from `private` to `public, and make the `set` on properties `init` to ensure
-  they are readonly.
+- Delete the source code for the `WeatherForecast` class from the bottom of `Weather.razor`
+- Create a `WeatherForecast.cs` file in the `WeatherFeature` folder with the following content.
 
 ```c#
 // WeatherForecast - changed to a readonly record
 public record WeatherForecast(DateOnly Date, int TemperatureC, string Summary)
 {
-	public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+  public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }
 ```
 
@@ -33,14 +31,14 @@ public record WeatherForecast(DateOnly Date, int TemperatureC, string Summary)
 ```c#
 [FeatureState]
 public record WeatherState(
-	bool IsLoading,
-	ImmutableList<WeatherForecast> Forecasts)
+  bool IsLoading,
+  ImmutableList<WeatherForecast> Forecasts)
 {
-	public WeatherState() : this(
-		IsLoading: false,
-		Forecasts: [])
-	{
-	}
+  public WeatherState() : this(
+    IsLoading: false,
+    Forecasts: [])
+  {
+  }
 }
 ```
 
@@ -93,31 +91,34 @@ to
 @foreach (var forecast in WeatherState.Value.Forecasts)
 ```
 
-#### Using an Action and a Reducer to alter state
+#### Using an Action and a Reducer to initiate the fetch and UI update
 
-- In the `WeatherFeature` folder, create a class `FetchDataAction` (it can remain an empty class).
+- In the `WeatherFeature` folder, create a class `FetchForecastsAction` (it can remain an empty class).
 - Next, create a static `Reducers` class, which will set
-  `IsLoading` to true when our `FetchDataAction` action is dispatched.
+  `IsLoading` to true when our `FetchForecastsAction` action is dispatched.
 
 ```c#
 public static class Reducers
 {
-	[ReducerMethod]
-	public static WeatherState ReduceFetchDataAction(WeatherState state, FetchDataAction action) =>
-		new WeatherState(IsLoading: true, Forecasts: []);
+  [ReducerMethod]
+  public static WeatherState ReduceFetchForecastsAction(WeatherState state, FetchForecastsAction action) =>
+    new WeatherState(IsLoading: true, Forecasts: []);
 }
 ```
 
-Alternatively, because we aren't using any values from the `FetchDataAction action` we
+Alternatively, because we aren't using any values from the `FetchForecastsAction action` we
 can declare our reducer method without that parameter, like so:
 
 ```c#
-	[ReducerMethod]
-	public static WeatherState ReduceFetchDataAction(WeatherState state) =>
-		new WeatherState(IsLoading: true, Forecasts: []);
+public static class Reducers
+{
+  [ReducerMethod]
+  public static WeatherState ReduceFetchForecastsAction(WeatherState state) =>
+    new WeatherState(IsLoading: true, Forecasts: []);
+}
 ```
 
-- In `Fetchdata.razor` inject `IDispatcher` and dispatch our action from the `OnInitialized`
+- In `Weather.razor` inject `IDispatcher` and dispatch our action from the `OnInitialized`
 lifecycle method. 
 
 ```razor
@@ -133,7 +134,7 @@ lifecycle method.
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        var action = new FetchDataAction();
+        var action = new FetchForecastsAction();
         Dispatcher.Dispatch(action);
     }
 }
@@ -150,40 +151,40 @@ inside the `WeatherFeature` folder.
 ```c#
 public class Effects
 {
-	private readonly static string[] Summaries =
-		["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
+  private readonly static string[] Summaries =
+    ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
 
-	[EffectMethod(typeof(FetchDataAction))]
-	public async Task HandleFetchDataAction(IDispatcher dispatcher)
-	{
-		// Simulate a delay
-		await Task.Delay(500);
+  [EffectMethod(typeof(FetchForecastsAction))]
+  public async Task HandleFetchForecastsAction(IDispatcher dispatcher)
+  {
+    // Simulate a delay
+    await Task.Delay(1_000);
 
-		DateOnly startDate = DateOnly.FromDateTime(DateTime.Now);
-		var forecasts =
-			Enumerable.Range(1, 5)
-			.Select(
-				index => new WeatherForecast(
-					Date: startDate.AddDays(index),
-					TemperatureC: Random.Shared.Next(-20, 55),
-					Summary: Summaries[Random.Shared.Next(Summaries.Length)]
-				)
-			);
+    DateOnly startDate = DateOnly.FromDateTime(DateTime.Now);
+    var forecasts =
+      Enumerable.Range(1, 5)
+      .Select(
+        index => new WeatherForecast(
+          Date: startDate.AddDays(index),
+          TemperatureC: Random.Shared.Next(-20, 55),
+          Summary: Summaries[Random.Shared.Next(Summaries.Length)]
+        )
+      );
 
-		var action = new FetchDataResultAction(forecasts);
-		dispatcher.Dispatch(action);
-	}
+    var action = new FetchForecastsResultAction(forecasts);
+    dispatcher.Dispatch(action);
+  }
 }
 ```
 
 Effect handlers can be written in one of three ways.
 
-1. By decorating instance or static methods with `[EffectMethod]` (the name of the class and the
-method are unimportant);
+1. By decorating instance or static methods with `[EffectMethod]`
+   (the name of the class and the method are unimportant);
 
 ```c#
   [EffectMethod]
-  public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
+  public async Task HandleFetchForecastsAction(FetchForecastsAction action, IDispatcher dispatcher)
   {
     // code here
   }
@@ -194,8 +195,8 @@ method are unimportant);
   the action parameter being needed in the method signature.
 
 ```c#
-  [EffectMethod(typeof(FetchDataAction))]
-  public async Task HandleFetchDataAction(IDispatcher dispatcher)
+  [EffectMethod(typeof(FetchForecastsAction))]
+  public async Task HandleFetchForecastsAction(IDispatcher dispatcher)
   {
     // code here
   }
@@ -203,8 +204,42 @@ method are unimportant);
 
 3. By descending from the `Effect<TAction>` class (not recommended).
 
-These approaches work equally well, which you choose is an organisational choice. But keep
-in mind the following that an `[EffectMethod]` can be declared either as static or instance.
+These approaches work equally well, which you choose is an organisational choice. 
+
+[Read notes on Static vs Instance Effects](#static-vs-instance-effects)
+
+#### Reducing the `Effect` result into state
+
+- Next to the `FetchForecastsAction` file, create a new class `FetchForecastsResultAction`,
+  which will hold the results of the call to the server so they can be "reduced"
+  into our application state.
+
+```c#
+public record FetchForecastsResultAction(IEnumerable<WeatherForecast> Forecasts);
+```
+
+This is the action that is dispatched by our `Effect` earlier, after it has retrieved the data from
+the server via an HTTP request. we now need to reduce this data into state.
+
+- Edit the `Reducers.cs` class and add a new `[ReducerMethod]` to reduce the contents of this result
+action into state.
+
+```c#
+[ReducerMethod]
+public static WeatherState ReduceFetchForecastsResultAction(WeatherState state, FetchForecastsResultAction action) =>
+  new WeatherState(
+    IsLoading: false,
+    Forecasts: action.Forecasts?.ToImmutableList() ?? []);
+```
+
+This reducer simply sets the `IsLoading` state back to false, and sets the `Forecasts` state to the
+values in the action that was dispatched by our effect. The Forecasts in the action are `IEnumerable<T>` so
+we convert them to `ImmutableList<T>` using `ToImmutableList()`; if null then we default to an emtpy `[]`.
+
+
+<a id="static-vs-instance-effects"></a>
+## Static vs Instance Effects
+An `[EffectMethod]` can be declared either as static or instance.
 
 If declared static then the effect cannot have any dependencies injected.
 
@@ -223,31 +258,3 @@ For example, Blazor apps keep one long-lived injection scope per browser window.
 When injecting `HttpClient` and you anticipate a possible DNS change you could consider
 instead using `IHttpClientFactory` and requesting a `HttpClient` per execution of
 the effect code.
-
-#### Reducing the `Effect` result into state
-
-- Next to the `FetchDataAction` file, create a new class `FetchDataResultAction`,
-  which will hold the results of the call to the server so they can be "reduced"
-  into our application state.
-
-```c#
-public record FetchDataResultAction(IEnumerable<WeatherForecast> Forecasts);
-```
-
-This is the action that is dispatched by our `Effect` earlier, after it has retrieved the data from
-the server via an HTTP request.
-
-- Edit the `Reducers.cs` class and add a new `[ReducerMethod]` to reduce the contents of this result
-action into state.
-
-```c#
-[ReducerMethod]
-public static WeatherState ReduceFetchDataResultAction(WeatherState state, FetchDataResultAction action) =>
-	new WeatherState(
-	IsLoading: false,
-	Forecasts: action.Forecasts?.ToImmutableList() ?? []);
-```
-
-This reducer simply sets the `IsLoading` state back to false, and sets the `Forecasts` state to the
-values in the action that was dispatched by our effect. The Forecasts in the action are `IEnumerable<T>` so
-we convert them to `ImmutableList<T>` using `ToImmutableList()`; if null then we default to an emtpy `[]`.

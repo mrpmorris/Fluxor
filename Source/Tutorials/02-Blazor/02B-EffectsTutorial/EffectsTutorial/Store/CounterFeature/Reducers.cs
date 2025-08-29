@@ -4,7 +4,7 @@ namespace FluxorBlazorWeb.EffectsTutorial.Store.CounterFeature;
 
 public static class Reducers
 {
-	[ReducerMethod]
-	public static CounterState Reduce(CounterState state, IncrementCounterAction action) =>
+	[ReducerMethod(typeof(IncrementCounterAction))]
+	public static CounterState Reduce(CounterState state) =>
 		new CounterState(ClickCount: state.ClickCount + 1);
 }

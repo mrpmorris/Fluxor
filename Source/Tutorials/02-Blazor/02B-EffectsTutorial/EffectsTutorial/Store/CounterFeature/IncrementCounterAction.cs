@@ -1,3 +1,3 @@
 ﻿namespace FluxorBlazorWeb.EffectsTutorial.Store.CounterFeature;
 
-public struct IncrementCounterAction;
+public readonly struct IncrementCounterAction;
