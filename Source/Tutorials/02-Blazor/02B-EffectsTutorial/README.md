@@ -9,6 +9,8 @@ parameters.
 With this in mind, we need something that will enable us to access other sources of data such as
 web services, and then reduce the results into our state.
 
+This is achieved with `Effects` - see the [Mermaid diagram](#mermaid-diagram) below.
+
 ### Goal
 This tutorial will expand on the previous tutorial to recreate the `Fetch data` page in a standard Blazor app.
 
@@ -236,6 +238,29 @@ This reducer simply sets the `IsLoading` state back to false, and sets the `Fore
 values in the action that was dispatched by our effect. The Forecasts in the action are `IEnumerable<T>` so
 we convert them to `ImmutableList<T>` using `ToImmutableList()`; if null then we default to an emtpy `[]`.
 
+<a id="mermaid-diagram"></a>
+## Mermaid diagram
+
+```mermaid
+sequenceDiagram
+    participant UI
+    participant Fluxor
+    participant Reducers
+    participant Effects
+    participant Server
+
+    UI->>Fluxor: Dispatch FetchForecastsAction
+    Fluxor->>Reducers: Call Reducer with FetchForecastsAction
+    Reducers-->>Fluxor: State update (IsLoading=True, Forecasts=[])
+    Fluxor-->>UI: State has changed
+    Fluxor->>Effects: Trigger Effect with FetchForecastsAction
+    Effects->>Server: Call server
+    Server-->>Effects: Return data
+    Effects->>Fluxor: Dispatch FetchForecastsResultAction(Forecasts=data)
+    Fluxor->>Reducers: Call Reducer with FetchForecastsResultAction
+    Reducers-->>Fluxor: State update (IsLoading=False, Forecasts=action.Forecasts)
+    Fluxor-->>UI: State has changed
+```
 
 <a id="static-vs-instance-effects"></a>
 ## Static vs Instance Effects
