@@ -24,13 +24,14 @@ To enable Fluxor integration, follow these steps
  2. Use the `UseReduxDevTools` extension on the Fluxor options.
 
 ```c#
-services.AddFluxor(o =>
-    {
-        o.ScanAssemblies(typeof(SomeType).Assembly);
+builder.Services.AddFluxor(o =>
+  {
+      o.ScanAssemblies(typeof(SomeType).Assembly);
+      o.UseRouting(); // Add this to support routing via Fluxor actions
 #if DEBUG
-        o.UseReduxDevTools();
+      o.UseReduxDevTools();
 #endif
-    });
+  });
 ```
 
  3. When you run your application, click the icon for the Redux Dev Tools extension.
@@ -75,7 +76,7 @@ Options for `EnableStackTrace` are
      * The default expression will exlude System, Microsoft, and Fluxor ReduxDevTools Middleware.
      * To include all stack frames, set the expression to "".
 
-Note that determining the stack trace is an expensive operation.
+Note that determining the stack trace is a computationally expensive operation.
 
 ![](./../../../../images/redux-dev-tools-trace.jpg)
 

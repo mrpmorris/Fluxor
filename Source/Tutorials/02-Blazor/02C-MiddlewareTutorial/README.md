@@ -35,11 +35,8 @@ reference to the `IStore`.
 ```c#
 public class LoggingMiddleware : Middleware
 {
-  private IStore Store;
-
-  public override Task InitializeAsync(IStore store)
+  public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
   {
-    Store = store;
     Console.WriteLine(nameof(InitializeAsync));
     return Task.CompletedTask;
   }
@@ -59,51 +56,44 @@ services.AddFluxor(o => o
 Run the application now, and we should see the following console output
 
 ```
-Initializing store
 InitializeAsync
 ```
 
 #### Middleware lifecycle
 
-1. **Task InitializeAsync(IStore store)**
-- Executed when the store is first initialised. This gives us an opportunity to store away a reference to
-the store that has been initialized.
+1. **Task InitializeAsync(IDispatcher dispatcher, IStore store)**
+- Executed when the store is first initialised. This gives us an opportunity to store
+  away a reference to the store that has been initialized and/or the `IDispatcher`.
+
 2. **void AfterInitializeAllMiddlewares()**
-- Once the store has been initialised, and `InitializeAsync` has been executed on all Middleware, this method
-will be executed.
+- Once the store has been initialised, and `InitializeAsync` has been executed on all
+  Middleware, this method will be executed.
+
 3. **bool MayDispatchAction(object action)**
-- Every time `IDispatcher.Dispatch` is executed, the action dispatched will first be passed to every
-Middleware in turn to give it the chance to veto the action. If the method returns `true` then the action will
-be dispatched. The first Middleware to return `false` will terminate the dispatch process. An example of this
-is the [ReduxDevToolsMiddleware.cs class][5] which prevents the dispatching of new actions when the user is
-viewing a historical state.
+- Every time `IDispatcher.Dispatch` is executed, the action dispatched will first be passed
+  to every Middleware in turn to give it the chance to veto the action. If the method
+  returns `true` then the action will be dispatched. The first Middleware to return `false`
+  will terminate the dispatch process. An example of this is the
+  [ReduxDevToolsMiddleware.cs class][5] which prevents the dispatching of new actions
+  when the user is viewing a historical state.
+
 4. **void BeforeDispatch(object action)**
-- Once all Middlewares have approved, this method is called to inform us the action is about to be reduced
-into state.
+- Once all Middlewares have approved, this method is called to inform us the action is about
+  to be reduced into state.
+
 5. **void AfterDispatch(object action)**
 - After the action has been processed by all reducers this method will be called.
 
 #### Adding logging to our LoggingMiddleware
 
-Add `Newtonsoft.Json` to the project, and then in the Middleware class add the following method to
-serialize any object into JSON so it can be displayed in the console window.
-
-```c#
-private string ObjectInfo(object obj)
-  => ": " + obj.GetType().Name + " " + JsonConvert.SerializeObject(obj, Formatting.Indented);
-```
-
-With some additional `Console.WriteLine` calls in our methods, we end up with a `LoggingMiddleware` that
-looks like this.
+Override the base virtual methods and add some additional `Console.WriteLine` calls, and we
+end up with a `LoggingMiddleware` that looks like this.
 
 ```c#
 public class LoggingMiddleware : Middleware
 {
-  private IStore Store;
-
-  public override Task InitializeAsync(IStore store)
+  public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
   {
-    Store = store;
     Console.WriteLine(nameof(InitializeAsync));
     return Task.CompletedTask;
   }
@@ -131,7 +121,7 @@ public class LoggingMiddleware : Middleware
   }
 
   private string ObjectInfo(object obj)
-    => ": " + obj.GetType().Name + " " + JsonConvert.SerializeObject(obj, Formatting.Indented);
+    => ": " + obj.GetType().Name + " " + JsonSerializer.Serialize(obj);
 }
 ```
 
@@ -139,7 +129,6 @@ public class LoggingMiddleware : Middleware
 
 If we run our app now, our browser's console output should look something like the following.
 ```
-Initializing store
 InitializeAsync
 AfterInitializeAllMiddlewares
 MayDispatchAction: StoreInitializedAction {}
@@ -163,42 +152,25 @@ Now navigate to the Fetch Data page, the output should look something like the f
 have been added to explain what is happening.
 
 ```
-*** The FetchDataAction is dispatched.
-MayDispatchAction: FetchDataAction {}
-BeforeDispatch: FetchDataAction {}
-AfterDispatch: FetchDataAction {}
+*** The FetchForecastsAction is dispatched.
+MayDispatchAction: FetchForecastsAction {}
+BeforeDispatch: FetchForecastsAction {}
+AfterDispatch: FetchForecastsAction {}
 
-*** As there is an effect to fetch data that is triggered by FetchDataAction, the store triggers it here but does not wait for it to complete.
+*** As there is an effect to fetch data that is triggered by FetchForecastsAction, the store triggers it here but does not wait for it to complete.
 
-*** The dispatch of FetchDataAction is now complete.
+*** The dispatch of FetchForecastsAction is now complete.
 
-*** Later, the effect receives data from the mock server and dispatches that data in a new FetchDataResultAction.
+*** Later, the effect receives data from the mock server and dispatches that data in a new FetchForecastsResultAction.
 
-MayDispatchAction: FetchDataResultAction {
-  "Forecasts": [
-    {
-      "Date": "2020-03-22T10:39:14.6862635+00:00",
-      "TemperatureC": 17,
-      "Summary": "Hot",
-      "TemperatureF": 62
-    },
-    {
-      "Date": "2020-03-23T10:39:14.6862635+00:00",
-      "TemperatureC": -12,
-      "Summary": "Freezing",
-      "TemperatureF": 11
-    }
-  ]
+MayDispatchAction: FetchForecastsResultAction {
+  "Forecasts": [...data...]
 }
-BeforeDispatch: FetchDataResultAction {
-  "Forecasts": [
-    ...(as above)...
-  ]
+BeforeDispatch: FetchForecastsResultAction {
+  "Forecasts": [...data...]
 }
-AfterDispatch: FetchDataResultAction {
-  "Forecasts": [
-    ...(as above)...
-  ]
+AfterDispatch: FetchForecastsResultAction {
+  "Forecasts": [...data...]
 }
 ```
 
@@ -206,25 +178,39 @@ AfterDispatch: FetchDataResultAction {
 With some additional code in the `void AfterDispatch(object action)` we can interate through all the features
 within the store and output their state too.
 
+First, keep a reference to the `IStore` passed in via `InitializeAsync`.
+
 ```c#
-public override void AfterDispatch(object action)
-{
-  Console.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
-  Console.WriteLine("\t===========STATE AFTER DISPATCH===========");
-  foreach (KeyValuePair<string, IFeature> feature in Store.Features)
+  private IStore Store = null!;
+   private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions { WriteIndented = true };
+
+  public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
   {
-    string json = JsonConvert.SerializeObject(feature.Value, Formatting.Indented)
-      .Replace("\n", "\n\t");
-    Console.WriteLine("\t" + feature.Key + ": " + json);
+    Store = store;
+    Console.WriteLine(nameof(InitializeAsync));
+    return Task.CompletedTask;
   }
-  Console.WriteLine();
-}
+```
+
+
+```c#
+  public override void AfterDispatch(object action)
+  {
+    Console.WriteLine(nameof(AfterDispatch) + ObjectInfo(action));
+    Console.WriteLine("\t===========STATE AFTER DISPATCH===========");
+    foreach (KeyValuePair<string, IFeature> feature in Store.Features)
+    {
+      string json = JsonSerializer.Serialize(feature.Value, JsonOptions)
+        .Replace("\n", "\n\t");
+      Console.WriteLine("\t" + feature.Key + ": " + json);
+    }
+    Console.WriteLine();
+  }
 ```
 
 The output of which should look like the following:
 
 ```
-Initializing store
 InitializeAsync
 AfterInitializeAllMiddlewares
 MayDispatchAction: StoreInitializedAction {}
@@ -264,7 +250,7 @@ AfterDispatch: IncrementCounterAction {}
 
 ### Real-life uses
 
-**Task InitializeAsync(IStore store)**
+**Task InitializeAsync(IDispatcher dispatcher, IStore store)**
 
 [Redux Dev Tools Middleware class][5] uses this method to execute JavaScript to initialise the Chrome plugin.
 

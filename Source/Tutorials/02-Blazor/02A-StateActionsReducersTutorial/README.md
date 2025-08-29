@@ -6,72 +6,85 @@ First read the [Basic-concepts - State, Actions, and Reducers](../../01-BasicCon
 explanation of how these concepts work together. This tutorial will explain how to adjust those concepts
 to work with the Blazor Web user-interface.
 
+See the [Mermaid diagram](#mermaid-diagram) below.
+
 ### Goal
 This tutorial will recreate the `Counter` page in a standard Blazor app.
 
 ### Steps
 
 #### Add Fluxor.Blazor.Web and initialise
-- First create a new Blazor app, either a Server app or Web Assembly app will do.
+.Net has different templates for Blazor applications. Some will create a
+single project (Standalone Wasm, Interactive Server) and others will create
+a pair of projects (one for the Client and one for the Server).
 
-- Add a NuGet package reference to `Fluxor.Blazor.Web`.
+When there is a `{YourAppName}.Client.csproj` project you should perform these
+steps on that project. When there is only `{YourAppName}.csproj` you should
+perform them on that app instead.
 
-- We now need to register Fluxor. Find where the app registers its services
-(in a Server-side app this will be in `Startup.ConfigureServices`, in a Web Assembly app this will be
-in `Program.Main`).
-
-```c#
-// Server-side
-using Fluxor;
-
-public void ConfigureServices(IServiceCollection services)
-{
-  ...
-
-  // Add the following
-  var currentAssembly = typeof(Startup).Assembly;
-  services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
-}
-```
+- First create a new Blazor app.
+- Add a NuGet package reference `Fluxor.Blazor.Web`
+- Register Fluxor
+  - Open `Program.cs`
+  - Add `using Fluxor;` to the top of the file
+  - Find the line of code that creates `builder` and add the following
 
 ```c#
-// Web Assembly
-using Fluxor;
-
-public static async Task Main(string[] args)
-{
-  ...
-
-  // Add the following
-  var currentAssembly = typeof(Program).Assembly;
-  builder.Services.AddFluxor(options => options.ScanAssemblies(currentAssembly));
-
-  // This line already exists and should come last
-  await builder.Build().RunAsync();
-}
+builder.Services.AddFluxor(x =>
+    x.ScanAssemblies(typeof({SomeType}).Assembly));
 ```
 
-- Then we need to ensure the store is initialized. Edit `App.razor` and at the top of the file add
-the following mark-up.
+If your states + actions etc are in your Blazor app then you can
+use `Program` for `{SomeType}`, whereas if they are in a different project
+then it should be replaced with a type from that project instead.
+
+*Blazor tip: Because of the way Blazor works, if your app has both `{App}.csproj`
+and `{App}.Client.csproj` projects then you need to call `Services.AddFluxor` to
+the `Program.cs` files in both. I would recommend having a static method in your
+{App}.Client.csproj for registering shared services like Fluxor and calling it from
+both the Server and Client `Program.cs`.*
+
+- Then we need to ensure the store is initialized. Add the following markup 
+      above the `<Router>` component.
+
+  1. Blazor Wasm Standalone App: Put it in `App.razor`
+  1. For all other apps, in the `Routes.razor` file
+  
 
 ```html
 <Fluxor.Blazor.Web.StoreInitializer/>
 ```
 
 #### Adding the Counter to the store
+You can achieve this by putting the store into the same app, or by creating
+a class library with a reference to the `Fluxor` NuGet package and reference
+that from your Blazor app (recommended). I have chosen to create a folder
+named `Store` in the same project just to keep this tutorial more simple.
 
-- Create a folder named `Store`.
-- Within that folder create another folder named `CounterUseCase`.
-- Within the `CounterUseCase` folder create a new class named `CounterState`. This is the class that
+- Create a folder named `CounterFeature`.
+- Within the `CounterFeature` folder create a new class named `CounterState`. This is the class that
 will hold the values of your state to be displayed in your application.
 
+```c#
+[FeatureState]
+public record CounterState(int ClickCount)
+{
+    // Required for creating initial state
+    public CounterState() : this(0)
+    {
+    }
+}
+```
+
+Or you can use a non-record class
 ```c#
 [FeatureState]
 public class CounterState
 {
   public int ClickCount { get; }
 
-  private CounterState() {} // Required for creating initial state
+  // Required for creating initial state
+  private CounterState() {}
 
   public CounterState(int clickCount)
   {
@@ -87,36 +100,29 @@ public class CounterState
   - A parameterless constructor is required on state for determining the initial state,
     and can be private or public.
   - The folder structure used here is only a recommendation.
-  - I recommend building your store and your application around use
-    cases (e.g. FindSupplier, EditSupplier, etc)
-    rather than a single monolith state.
+  - I recommend building your store and your application around application
+    features cases (e.g. FindSupplier, EditSupplier, etc) rather than a single monolith state.
 
 #### Displaying state in a component
 
-*Note: C# code can be added to the `@code {}` block within Razor files, but I prefer to add a
-code-behind file.*
-
-- Find the `Pages` folder and add a new file named `Counter.razor.cs`
-- Mark the class `partial`.
+- Find the `Counter.razor` file.
 - Add the following `using` declarations
 
-```c#
-using Fluxor;
-using Microsoft.AspNetCore.Components;
-using YourAppName.Store.CounterUseCase;
+```razor
+@using Fluxor
+@using {Namespace for your CounterFeature folder}
 ```
 
-- Next we need to inject the `CounterState` into our component
+If you don't want to have to keep adding references to `Fluxor`, edit the
+`_Imports.razor` file and add `@using Fluxor`.
 
-```c#
-public partial class Counter
-{
-  [Inject]
-  private IState<CounterState> CounterState { get; set; }
-}
+- Next we need to inject the `CounterState` into our `Counter` page.
+
+```razor
+@inject IState<CounterState> CounterState
 ```
 
-- Edit `Counter.razor` and change `currentCount` to `@CounterState.Value.ClickCount`.
+- Next change `currentCount` to `@CounterState.Value.ClickCount`.
 
 ```html
 <p>Current count: @CounterState.Value.ClickCount</p>
@@ -127,43 +133,41 @@ Also, add the following line to the top of the razor file
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 ```
 
-*Note: This is required to ensure the component re-renders whenever its state changes. When you inherit from FluxorComponent the override of `OnInitialized()` will override the implementation of the FluxorComponent. Make sure you call `base.OnInitialized();` to register the StateHasChanged events correctly and to be notified about StateChanges. The override of `OnInitializedAsync()` will still override the ComponentBase implementation because Fluxor does not implement it on its own. An example for an `OnInitialized()` method when you are using `@inherits Fluxor.Blazor.Web.Components.FluxorComponent` would look like:*
+*Note: FluxorComponent and FluxorLayout override OnInitialized in order to subscribe
+to state changes. If you override `OnInitialized` or `OnInitializedAsync` please
+remember to call `base`.*
 
-```
- protected override void OnInitialized()
-  {
-    base.OnInitialized();
-    Dispatcher.Dispatch(new FetchDataAction());
-  }
-```
-
-*Note: If you are unable to descend from this component, you can instead subcribe to the `StateChanged` event and execute
-`InvokeAsync(StateHasChanged)`. If you do use the event, remember to implement `IDisposable` and
+*Note: If you are unable to descend from this component, you can instead subcribe to
+the `StateChanged` event on `IState<T>` and execute `InvokeAsync(StateHasChanged)`.
+If you do use the event, remember to implement `IDisposable` and
 unsubscribe from the event too, otherwise your app will leak memory.*
 
 Running the app will now show a `0` value for the current count, but clicking the "Click me" button does nothing.
 
 #### Using an Action and a Reducer to alter state
 
-- In the `Store` folder, create a new class `IncrementCounterAction`. This class can remain empty.
-- Edit `Counter.Razor` and remove the `@code {}` section.
-- In `Counter.razor.cs` we need to inject `IDispatcher` and then use it to dispatch an instance
-of our new `IncrementCounterAction` when the button is clicked.
+- Create a new class `IncrementCounterAction` in the folder with `CounterFeature`.
+  This class can remain empty.
+- Edit `Counter.Razor` and add `@inject IDispatcher Dispatcher`.
+- Remove the `currentCount` field as it is no longer needed.
+- Change the `IncrementCount` method to dispatch `IncrementCounterAction`.
 
-```c#
-public partial class Counter
+```razor
+@page "/counter"
+@using {YourNamespace}.CounterFeature
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inject IDispatcher Dispatcher
+@inject IState<CounterState> CounterState
+
+... existing razor markup
+
+@code
 {
-  [Inject]
-  private IState<CounterState> CounterState { get; set; }
-
-  [Inject]
-  public IDispatcher Dispatcher { get; set; }
-
-  private void IncrementCount()
-  {
-    var action = new IncrementCounterAction();
-    Dispatcher.Dispatch(action);
-  }
+    private void IncrementCount()
+    {
+        var action = new IncrementCounterAction();
+        Dispatcher.Dispatch(action);
+    }
 }
 ```
 
@@ -173,8 +177,7 @@ this is done.*
 Now our UI is dispatching our intention to increment the counter, but the state remains unchanged because
 we do not handle this action. We will fix that next.
 
-- In the `Store` folder create a new folder named `CounterUseCase`.
-- In the `Store\CounterUseCase` folder, create a new class `Reducers`.
+- In the `CounterFeature` folder, create a new class `Reducers`.
 - Make the class static, and add the following code.
 
 ```c#
@@ -259,3 +262,18 @@ public class IncrementCounterReducer : Reducer<CounterState, IncrementCounterAct
 ```
 
 This pattern requires a lot more code, therefore its use is not recommended.
+
+
+<a id="mermaid-diagram"></a>
+## Mermaid diagram
+```mermaid
+sequenceDiagram
+    participant UI
+    participant Fluxor
+    participant Reducers
+
+    UI->>Fluxor: Dispatch IncrementCountAction
+    Fluxor->>Reducers: Call Reducer with State & IncrementCountAction
+    Reducers-->>Fluxor: State update (ClickCount = ClickCount + 1)
+    Fluxor-->>UI: State has changed
+```
