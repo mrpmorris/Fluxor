@@ -6,6 +6,8 @@ First read the [Basic-concepts - State, Actions, and Reducers](../../01-BasicCon
 explanation of how these concepts work together. This tutorial will explain how to adjust those concepts
 to work with the Blazor Web user-interface.
 
+See the [Mermaid diagram](#mermaid-diagram) below.
+
 ### Goal
 This tutorial will recreate the `Counter` page in a standard Blazor app.
 
@@ -260,3 +262,18 @@ public class IncrementCounterReducer : Reducer<CounterState, IncrementCounterAct
 ```
 
 This pattern requires a lot more code, therefore its use is not recommended.
+
+
+<a id="mermaid-diagram"></a>
+## Mermaid diagram
+```mermaid
+sequenceDiagram
+    participant UI
+    participant Fluxor
+    participant Reducers
+
+    UI->>Fluxor: Dispatch IncrementCountAction
+    Fluxor->>Reducers: Call Reducer with State & IncrementCountAction
+    Reducers-->>Fluxor: State update (ClickCount = ClickCount + 1)
+    Fluxor-->>UI: State has changed
+```
