@@ -2,7 +2,7 @@
 
 namespace FluxorBlazorWeb.ReduxDevToolsTutorial.Client.Store.CounterUseCase
 {
-	[FeatureState(Name = "Counter", DebuggerBrowsable = false)]
+	[FeatureState(Name = "Counter")]
 	public class CounterState
 	{
 		public int ClickCount { get; }
