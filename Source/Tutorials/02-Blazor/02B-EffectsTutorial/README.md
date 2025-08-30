@@ -126,7 +126,7 @@ lifecycle method.
 ```razor
 @page "/weather"
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
-@using FluxorBlazorWeb.EffectsTutorial.Store.WeatherFeature
+@using Store.WeatherFeature
 @inject IDispatcher Dispatcher
 @inject IState<WeatherState> WeatherState
 

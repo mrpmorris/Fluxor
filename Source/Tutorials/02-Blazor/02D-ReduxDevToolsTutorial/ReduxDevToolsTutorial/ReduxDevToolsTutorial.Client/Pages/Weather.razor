@@ -1,14 +1,16 @@
 ﻿@page "/weather"
-@using ReduxDevToolsTutorial.Contracts
-@inject IWeatherService WeatherService
+@using Store.WeatherFeature
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inject IDispatcher Dispatcher
+@inject IState<WeatherState> WeatherState
 
 <PageTitle>Weather</PageTitle>
 
 <h1>Weather</h1>
 
-<p>This component demonstrates showing data.</p>
+<p>This component demonstrates fetching data from the server.</p>
 
-@if (forecasts == null)
+@if (WeatherState.Value.IsLoading)
 {
     <p><em>Loading...</em></p>
 }
@@ -24,7 +26,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @foreach (var forecast in WeatherState.Value.Forecasts)
             {
                 <tr>
                     <td>@forecast.Date.ToShortDateString()</td>
@@ -38,10 +40,10 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        forecasts = await WeatherService.GetForecastsAsync();
+        base.OnInitialized();
+        var action = new FetchForecastsAction();
+        Dispatcher.Dispatch(action);
     }
 }

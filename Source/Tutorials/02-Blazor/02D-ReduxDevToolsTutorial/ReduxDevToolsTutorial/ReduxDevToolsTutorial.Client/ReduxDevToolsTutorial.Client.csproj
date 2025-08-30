@@ -14,6 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Lib\Fluxor.Blazor.Web.Analyzers\Fluxor.Blazor.Web.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\..\..\Lib\Fluxor.Blazor.Web.ReduxDevTools\Fluxor.Blazor.Web.ReduxDevTools.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Lib\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Lib\Fluxor\Fluxor.csproj" />
     <ProjectReference Include="..\ReduxDevToolsTutorial.Contracts\ReduxDevToolsTutorial.Contracts.csproj" />
   </ItemGroup>
 

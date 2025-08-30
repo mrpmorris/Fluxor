@@ -1,8 +1,7 @@
 ﻿@page "/weather"
-@using FluxorBlazorWeb.EffectsTutorial.Store.WeatherFeature
+@using Store.WeatherFeature
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 @inject IDispatcher Dispatcher
-@inject HttpClient Http
 @inject IState<WeatherState> WeatherState
 
 <PageTitle>Weather</PageTitle>
