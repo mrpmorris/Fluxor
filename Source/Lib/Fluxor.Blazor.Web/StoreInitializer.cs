@@ -3,8 +3,11 @@ using Fluxor.Exceptions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Fluxor.Blazor.Web;
@@ -14,14 +17,24 @@ namespace Fluxor.Blazor.Web;
 /// </summary>
 public class StoreInitializer : FluxorComponent
 {
+#if NET9_0_OR_GREATER
+	private const string PersistenceStateKey = "Fluxor.StoreState";
+
+	[Parameter]
+	public bool DisableServerSideRendering { get; set; }
+#endif
+
 	[Parameter]
 	public EventCallback<Exceptions.UnhandledExceptionEventArgs> UnhandledException { get; set; }
 
 	[Inject]
-	private IStore Store { get; set; }
+	private IJSRuntime JSRuntime { get; set; }
 
 	[Inject]
-	private IJSRuntime JSRuntime { get; set; }
+	private PersistentComponentState PersistentComponentState { get; set; }
+
+	[Inject]
+	private IStore Store { get; set; }
 
 	private string MiddlewareInitializationScripts;
 	private Exception ExceptionToThrow;
@@ -40,7 +53,7 @@ public class StoreInitializer : FluxorComponent
 	/// <summary>
 	/// Retrieves supporting JavaScript for any Middleware
 	/// </summary>
-	protected override void OnInitialized()
+	protected override Task OnInitializedAsync()
 	{
 		Store.UnhandledException += OnUnhandledException;
 
@@ -58,6 +71,12 @@ public class StoreInitializer : FluxorComponent
 		}
 		MiddlewareInitializationScripts = scriptBuilder.ToString();
 		base.OnInitialized();
+
+#if NET9_0_OR_GREATER
+		return HandleServerSideRenderingAsync();
+#else
+		return Task.CompletedTask;
+#endif
 	}
 
 	protected override void OnAfterRender(bool firstRender)
@@ -84,7 +103,7 @@ public class StoreInitializer : FluxorComponent
 				if (!string.IsNullOrWhiteSpace(MiddlewareInitializationScripts))
 					await JSRuntime.InvokeVoidAsync("eval", MiddlewareInitializationScripts);
 
-				await Store.InitializeAsync();
+				await DeserializeStoreStateAndInitializeAsync();
 			}
 			catch (JSException err)
 			{
@@ -103,6 +122,66 @@ public class StoreInitializer : FluxorComponent
 			}
 		}
 	}
+
+	private async Task DeserializeStoreStateAndInitializeAsync()
+	{
+#if NET9_0_OR_GREATER
+		Console.WriteLine("Deserializing");
+		if (PersistentComponentState.TryTakeFromJson(
+			key: PersistenceStateKey,
+			instance: out IDictionary<string, JsonElement> persistedState))
+		{
+			var stateDict = new Dictionary<string, object>();
+			foreach(var kvp in Store.Features)
+			{
+				if (persistedState.TryGetValue(kvp.Key, out JsonElement persistedFeatureStateJsonElement))
+				{
+					object featureState = persistedFeatureStateJsonElement.Deserialize(kvp.Value.GetStateType());
+					stateDict[kvp.Key] = featureState;
+				}
+			}
+			foreach (var kvp in persistedState)
+				Console.WriteLine($"{kvp.Value.GetType().Name} {kvp.Key} = {kvp.Value}");
+			await Store.InitializeAsync(stateDict);
+		}
+#else
+		await Store.InitializeAsync();
+#endif
+	}
+
+#if NET9_0_OR_GREATER
+	private async Task HandleServerSideRenderingAsync()
+	{
+		Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(RendererInfo));
+		await InitializeAndSerializeStoreStateAsync();
+	}
+
+	private async Task InitializeAndSerializeStoreStateAsync()
+	{
+		if (DisableServerSideRendering || RendererInfo.IsInteractive || RendererInfo.Name != "Static")
+			return;
+
+
+		PersistentComponentState.RegisterOnPersisting(
+			() =>
+			{
+				Console.WriteLine("Serializing");
+				FrozenDictionary<string, object> storeState =
+					Store.GetState(onlyDebuggerBrowsable: false);
+
+				PersistentComponentState.PersistAsJson(
+					key: PersistenceStateKey,
+					instance: storeState
+				);
+				return Task.CompletedTask;
+			}
+		);
+
+		Console.WriteLine("Initializing");
+		await Store.InitializeAsync();
+		await Store.Initialized;
+	}
+#endif
 
 	private void OnUnhandledException(object sender, Exceptions.UnhandledExceptionEventArgs e)
 	{

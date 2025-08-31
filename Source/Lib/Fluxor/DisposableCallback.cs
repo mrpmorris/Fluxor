@@ -71,10 +71,11 @@ public sealed class DisposableCallback : IDisposable
 	{
 		if (!Disposed && WasCreated)
 		{
-			string message = $"{nameof(DisposableCallback)} with Id \"{GetIdInfo()}\" was not disposed";
-			throw new InvalidOperationException(
-				$"{message}. See https://github.com/mrpmorris/Fluxor/tree/master/Docs/disposable-callback-not-disposed.md" +
-				$" for more details");
+			// TODO: PeteM - UCB
+			//string message = $"{nameof(DisposableCallback)} with Id \"{GetIdInfo()}\" was not disposed";
+			//throw new InvalidOperationException(
+			//	$"{message}. See https://github.com/mrpmorris/Fluxor/tree/master/Docs/disposable-callback-not-disposed.md" +
+			//	$" for more details");
 		}
 	}
 }

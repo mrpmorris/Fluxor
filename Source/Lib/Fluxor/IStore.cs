@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -70,12 +71,17 @@ public interface IStore : IActionSubscriber
 	IReadOnlyDictionary<string, IFeature> Features { get; }
 
 	/// <summary>
+	/// Gets the state of the store as a dictionary
+	/// </summary>
+	FrozenDictionary<string, object> GetState(bool onlyDebuggerBrowsable);
+
+	/// <summary>
 	/// This method should be executed when the store is first ready to be initialized.
 	/// It will, in turn, initialise any middleware. This method can safely be executed
 	/// more than once.
 	/// </summary>
 	/// <returns>Task</returns>
-	Task InitializeAsync();
+	Task InitializeAsync(IDictionary<string, object> persistedState = null);
 
 	/// <summary>
 	/// Await this task if you need to asynchronously wait for the store to initialise
@@ -88,6 +94,12 @@ public interface IStore : IActionSubscriber
 	/// </summary>
 	/// <returns>Middleware instances currently registered</returns>
 	IEnumerable<IMiddleware> GetMiddlewares();
+
+	/// <summary>
+	/// Returns true if the store was initialized with previously persisted state,
+	/// otherwise returns false.
+	/// </summary>
+	bool WasPersisted { get; }
 	
 	/// <summary>
 	/// Executed when an exception is not handled

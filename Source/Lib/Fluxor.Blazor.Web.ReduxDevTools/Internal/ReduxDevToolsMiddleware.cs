@@ -41,7 +41,7 @@ public sealed class ReduxDevToolsMiddleware : WebMiddleware
 	public async override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 	{
 		Store = store;
-		await ToolsInterop.InitializeAsync(GetState());
+		await ToolsInterop.InitializeAsync(Store.GetState(onlyDebuggerBrowsable: true));
 	}
 
 	/// <see cref="IMiddleware.MayDispatchAction(object)"/>
@@ -69,7 +69,7 @@ public sealed class ReduxDevToolsMiddleware : WebMiddleware
 				);
 		lock (SyncRoot)
 		{
-			IDictionary<string, object> state = GetState();
+			IDictionary<string, object> state = Store.GetState(onlyDebuggerBrowsable: true);
 			TailTask = TailTask
 				.ContinueWith(_ => ToolsInterop.DispatchAsync(action, state, stackTrace)).Unwrap();
 		}
@@ -80,21 +80,14 @@ public sealed class ReduxDevToolsMiddleware : WebMiddleware
 		SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
 	}
 
-	private IDictionary<string, object> GetState()
-	{
-		var state = new Dictionary<string, object>();
-		var serializableFeatures = Store.Features.Values.Where(x => x.DebuggerBrowsable);
-		foreach (IFeature feature in serializableFeatures.OrderBy(x => x.GetName()))
-			state[feature.GetName()] = feature.GetState();
-		return state;
-	}
+
 
 	private async Task OnCommit()
 	{
 		// Wait for fire+forget state notifications to ReduxDevTools to dequeue
 		await TailTask.ConfigureAwait(false);
 
-		await ToolsInterop.InitializeAsync(GetState());
+		await ToolsInterop.InitializeAsync(Store.GetState(onlyDebuggerBrowsable: true));
 		SequenceNumberOfCurrentState = SequenceNumberOfLatestState;
 	}
 

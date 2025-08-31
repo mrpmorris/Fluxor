@@ -10,7 +10,7 @@ public static class CommonServicesRegistration
 		services.AddFluxor(x => x
 			.ScanAssemblies(typeof(CommonServicesRegistration).Assembly)
 			.UseRouting()
-			.UseReduxDevTools()
+			//.UseReduxDevTools()
 		);
 	}
 }

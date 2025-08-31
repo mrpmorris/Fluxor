@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ public class Store : IStore, IActionSubscriber, IDisposable
 	public IReadOnlyDictionary<string, IFeature> Features => FeaturesByName;
 	/// <see cref="IStore.Initialized"/>
 	public Task Initialized => InitializedCompletionSource.Task;
+	public bool WasPersisted { get; private set; }
 
 	private object SyncRoot = new object();
 	private bool Disposed;
@@ -38,7 +40,7 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		ActionSubscriber = new ActionSubscriber();
 		Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 		Dispatcher.ActionDispatched += ActionDispatched;
-		Dispatcher.Dispatch(new StoreInitializedAction());
+		Dispatcher.Dispatch(new StoreInitializedAction(this));
 	}
 
 	/// <see cref="IStore.GetMiddlewares"/>
@@ -108,10 +110,21 @@ public class Store : IStore, IActionSubscriber, IDisposable
 	}
 
 	/// <see cref="IStore.InitializeAsync"/>
-	public async Task InitializeAsync()
+	public async Task InitializeAsync(IDictionary<string, object> persistedState = null)
 	{
 		if (HasActivatedStore)
 			return;
+
+		WasPersisted = persistedState is not null;
+		if (WasPersisted)
+		{
+			foreach(KeyValuePair<string, IFeature> kvp in Features)
+			{
+				if (persistedState.TryGetValue(kvp.Key, out object featureState))
+					kvp.Value.RestoreState(featureState);
+			}
+		}
+
 		await ActivateStoreAsync();
 	}
 
@@ -132,6 +145,16 @@ public class Store : IStore, IActionSubscriber, IDisposable
 	/// <see cref="IActionSubscriber.GetActionUnsubscriberAsIDisposable(object)"/>
 	public IDisposable GetActionUnsubscriberAsIDisposable(object subscriber) =>
 		ActionSubscriber.GetActionUnsubscriberAsIDisposable(subscriber);
+
+	/// <inheritdoc/>
+	public FrozenDictionary<string, object> GetState(bool onlyDebuggerBrowsable)
+	{
+		var state = new Dictionary<string, object>();
+		var serializableFeatures = Features.Values.Where(x => !onlyDebuggerBrowsable || x.DebuggerBrowsable);
+		foreach (IFeature feature in serializableFeatures.OrderBy(x => x.GetName()))
+			state[feature.GetName()] = feature.GetState();
+		return state.ToFrozenDictionary();
+	}
 
 	void IDisposable.Dispose()
 	{
