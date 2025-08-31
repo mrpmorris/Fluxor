@@ -10,6 +10,7 @@ public class StoreInitializedAction
 	public bool WasPersisted => Store.WasPersisted;
 
 	private readonly IStore Store;
+
 	internal StoreInitializedAction(IStore store)
 	{
 		Store = store;
