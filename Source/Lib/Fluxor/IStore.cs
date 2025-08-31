@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -66,6 +65,11 @@ public interface IStore : IActionSubscriber
 	IDisposable BeginInternalMiddlewareChange();
 
 	/// <summary>
+	/// Await this task if you need to know when all dispatching (plus effects) has ended
+	/// </summary>
+	Task DispatchCompleted { get; }
+
+	/// <summary>
 	/// All of the features added to the store, keyed by their unique name.
 	/// </summary>
 	IReadOnlyDictionary<string, IFeature> Features { get; }
@@ -73,7 +77,7 @@ public interface IStore : IActionSubscriber
 	/// <summary>
 	/// Gets the state of the store as a dictionary
 	/// </summary>
-	FrozenDictionary<string, object> GetState(bool onlyDebuggerBrowsable);
+	Dictionary<string, object> GetState(bool onlyDebuggerBrowsable);
 
 	/// <summary>
 	/// This method should be executed when the store is first ready to be initialized.
@@ -99,6 +103,7 @@ public interface IStore : IActionSubscriber
 	/// Returns true if the store was initialized with previously persisted state,
 	/// otherwise returns false.
 	/// </summary>
+	// TODO: PeteM - Do I want this?
 	bool WasPersisted { get; }
 	
 	/// <summary>

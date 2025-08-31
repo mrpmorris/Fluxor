@@ -3,7 +3,6 @@ using Fluxor.Exceptions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +20,7 @@ public class StoreInitializer : FluxorComponent
 	private const string PersistenceStateKey = "Fluxor.StoreState";
 
 	[Parameter]
-	public bool DisableServerSideRendering { get; set; }
+	public ServerSideRenderingSupport ServerSideRenderingSupport { get; set; } = ServerSideRenderingSupport.None;
 #endif
 
 	[Parameter]
@@ -38,6 +37,10 @@ public class StoreInitializer : FluxorComponent
 
 	private string MiddlewareInitializationScripts;
 	private Exception ExceptionToThrow;
+	private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions {
+		PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+	};
+
 
 	/// <summary>
 	/// Disposes via IAsyncDisposable
@@ -131,17 +134,18 @@ public class StoreInitializer : FluxorComponent
 			key: PersistenceStateKey,
 			instance: out IDictionary<string, JsonElement> persistedState))
 		{
+		Console.WriteLine(" STATE " + System.Text.Json.JsonSerializer.Serialize(persistedState));
 			var stateDict = new Dictionary<string, object>();
 			foreach(var kvp in Store.Features)
 			{
 				if (persistedState.TryGetValue(kvp.Key, out JsonElement persistedFeatureStateJsonElement))
 				{
-					object featureState = persistedFeatureStateJsonElement.Deserialize(kvp.Value.GetStateType());
+					object featureState = System.Text.Json.JsonSerializer.Deserialize(persistedFeatureStateJsonElement, kvp.Value.GetStateType(), JsonSerializerOptions);
+					Console.WriteLine(" >> " + kvp.Key);
+					Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(kvp.Value));
 					stateDict[kvp.Key] = featureState;
 				}
 			}
-			foreach (var kvp in persistedState)
-				Console.WriteLine($"{kvp.Value.GetType().Name} {kvp.Key} = {kvp.Value}");
 			await Store.InitializeAsync(stateDict);
 		}
 #else
@@ -158,7 +162,7 @@ public class StoreInitializer : FluxorComponent
 
 	private async Task InitializeAndSerializeStoreStateAsync()
 	{
-		if (DisableServerSideRendering || RendererInfo.IsInteractive || RendererInfo.Name != "Static")
+		if (ServerSideRenderingSupport == ServerSideRenderingSupport.None || RendererInfo.IsInteractive || RendererInfo.Name != "Static")
 			return;
 
 
@@ -166,8 +170,7 @@ public class StoreInitializer : FluxorComponent
 			() =>
 			{
 				Console.WriteLine("Serializing");
-				FrozenDictionary<string, object> storeState =
-					Store.GetState(onlyDebuggerBrowsable: false);
+				Dictionary<string, object> storeState = Store.GetState(onlyDebuggerBrowsable: false);
 
 				PersistentComponentState.PersistAsJson(
 					key: PersistenceStateKey,
@@ -179,7 +182,14 @@ public class StoreInitializer : FluxorComponent
 
 		Console.WriteLine("Initializing");
 		await Store.InitializeAsync();
+		Console.WriteLine("Waiting for Store.Initialized");
 		await Store.Initialized;
+		if (ServerSideRenderingSupport == ServerSideRenderingSupport.Full)
+		{
+			await Task.Yield();
+			Console.WriteLine("Waiting for Store.DispatchCompleted");
+			await Store.DispatchCompleted;
+		}
 	}
 #endif
 

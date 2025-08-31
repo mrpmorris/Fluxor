@@ -14,6 +14,7 @@ internal class RoutingMiddleware : Middleware
 	private readonly NavigationManager NavigationManager;
 	private readonly IFeature<RoutingState> Feature;
 	private IDispatcher Dispatcher;
+	private IStore Store;
 
 	/// <summary>
 	/// Creates a new instance of the routing middleware
@@ -31,8 +32,11 @@ internal class RoutingMiddleware : Middleware
 	public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 	{
 		Dispatcher = dispatcher;
+		Store = store;
 		// If the URL changed before we initialized then dispatch an action
-		Dispatcher.Dispatch(new GoAction(NavigationManager.Uri));
+		Console.WriteLine($"Routing: WasPersisted = {Store.WasPersisted}");
+		if (!store.WasPersisted)
+			Dispatcher.Dispatch(new GoAction(NavigationManager.Uri));
 		return Task.CompletedTask;
 	}
 

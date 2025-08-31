@@ -12,6 +12,6 @@ public static class Reducers
 	[ReducerMethod]
 	public static WeatherState ReduceFetchDataResultAction(WeatherState state, FetchForecastsResultAction action) =>
 		new WeatherState(
-		IsLoading: false,
-		Forecasts: action.Forecasts?.ToImmutableList() ?? []);
+			IsLoading: false,
+			Forecasts: action.Forecasts?.ToImmutableList() ?? []);
 }

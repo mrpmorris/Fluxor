@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,10 +9,16 @@ namespace Fluxor;
 /// <see cref="IStore"/>
 public class Store : IStore, IActionSubscriber, IDisposable
 {
-	/// <see cref="IStore.Features"/>
+	/// <inheritdoc/>
+	public Task DispatchCompleted { get; private set; } = Task.CompletedTask;
+
+	/// <inheritdoc/>
 	public IReadOnlyDictionary<string, IFeature> Features => FeaturesByName;
-	/// <see cref="IStore.Initialized"/>
+
+	/// <inheritdoc/>
 	public Task Initialized => InitializedCompletionSource.Task;
+
+	/// <inheritdoc/>
 	public bool WasPersisted { get; private set; }
 
 	private object SyncRoot = new object();
@@ -147,13 +152,13 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		ActionSubscriber.GetActionUnsubscriberAsIDisposable(subscriber);
 
 	/// <inheritdoc/>
-	public FrozenDictionary<string, object> GetState(bool onlyDebuggerBrowsable)
+	public Dictionary<string, object> GetState(bool onlyDebuggerBrowsable)
 	{
 		var state = new Dictionary<string, object>();
 		var serializableFeatures = Features.Values.Where(x => !onlyDebuggerBrowsable || x.DebuggerBrowsable);
 		foreach (IFeature feature in serializableFeatures.OrderBy(x => x.GetName()))
 			state[feature.GetName()] = feature.GetState();
-		return state.ToFrozenDictionary();
+		return state;
 	}
 
 	void IDisposable.Dispose()
@@ -208,7 +213,7 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		}
 	}
 
-	private void TriggerEffects(object action)
+	private void TriggerEffects(object action, out Task effectsTasks)
 	{
 		var recordedExceptions = new List<Exception>();
 		var effectsToExecute = Effects
@@ -241,7 +246,7 @@ public class Store : IStore, IActionSubscriber, IDisposable
 			}
 		}
 
-		Task.Run(async () =>
+		effectsTasks = Task.Run(async () =>
 		{
 			try
 			{
@@ -299,6 +304,8 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		if (IsDispatching)
 			return;
 
+		var taskCompletionSource = new TaskCompletionSource();
+		DispatchCompleted = DispatchCompleted.ContinueWith(_ => taskCompletionSource.Task).Unwrap();
 		IsDispatching = true;
 		try
 		{
@@ -315,13 +322,15 @@ public class Store : IStore, IActionSubscriber, IDisposable
 
 					ActionSubscriber?.Notify(nextActionToProcess);
 					ExecuteMiddlewareAfterDispatch(nextActionToProcess);
-					TriggerEffects(nextActionToProcess);
+					TriggerEffects(nextActionToProcess, out Task effectsTasks);
+					DispatchCompleted = DispatchCompleted.ContinueWith(_ => effectsTasks).Unwrap();
 				}
 			}
 		}
 		finally
 		{
 			IsDispatching = false;
+			taskCompletionSource.TrySetResult();
 		}
 	}
 }

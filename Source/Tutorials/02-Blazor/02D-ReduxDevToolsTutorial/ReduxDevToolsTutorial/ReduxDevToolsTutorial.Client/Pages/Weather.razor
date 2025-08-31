@@ -3,6 +3,7 @@
 @inherits Fluxor.Blazor.Web.Components.FluxorComponent
 @inject IDispatcher Dispatcher
 @inject IState<WeatherState> WeatherState
+@inject IStore Store
 
 <PageTitle>Weather</PageTitle>
 
@@ -37,13 +38,4 @@ else
             }
         </tbody>
     </table>
-}
-
-@code {
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        var action = new FetchForecastsAction();
-        Dispatcher.Dispatch(action);
-    }
 }
