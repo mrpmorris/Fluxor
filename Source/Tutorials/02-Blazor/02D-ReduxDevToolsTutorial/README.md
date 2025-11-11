@@ -57,7 +57,7 @@ services.AddFluxor(o =>
  * Latency: How often actions are added to the plugin.
  * MaximumHistoryLength: How many actions at most should be displayed in the plugin.
 
-There is also an option to have Fluxor pass the strack trace to `ReduxDevTools`. This is useful
+There is also an option to have Fluxor pass the stack trace to `ReduxDevTools`. This is useful
 for when an action is being dispatched and you need to identify where it was dispatched from.
 
 ```c#

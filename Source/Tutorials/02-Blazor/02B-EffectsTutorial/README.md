@@ -114,7 +114,7 @@ can declare our reducer method without that parameter, like so:
 ```c#
 public static class Reducers
 {
-  [ReducerMethod]
+  [ReducerMethod(typeof(FetchForecastsAction))]
   public static WeatherState ReduceFetchForecastsAction(WeatherState state) =>
     new WeatherState(IsLoading: true, Forecasts: []);
 }
