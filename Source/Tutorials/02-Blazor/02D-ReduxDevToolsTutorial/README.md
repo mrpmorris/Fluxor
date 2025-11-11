@@ -5,7 +5,7 @@
 [Redux Dev Tools][ReduxDevToolsLink] is a browser plugin for
 [Chrome][ChromePluginLink] and [Firefox][FirefoxPluginLink].
 
-![](./../../../../images/redux-dev-tools.jpg)
+![](./../../../../Images/redux-dev-tools.jpg)
 
 **NOTE:** ReduxDevTools allows the user to alter the state of your store
 directly. This might be a security flaw, so you should only reference
@@ -78,7 +78,7 @@ Options for `EnableStackTrace` are
 
 Note that determining the stack trace is a computationally expensive operation.
 
-![](./../../../../images/redux-dev-tools-trace.jpg)
+![](./../../../../Images/redux-dev-tools-trace.jpg)
 
  [ReduxDevToolsLink]: https://github.com/zalmoxisus/redux-devtools-extension
  [ChromePluginLink]: https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en
