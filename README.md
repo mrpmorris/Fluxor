@@ -1,5 +1,7 @@
 # Fluxor
 ![](./Images/fluxor-logo.png)
+[![NuGet version](https://img.shields.io/nuget/v/Fluxor.svg)](https://www.nuget.org/packages/Fluxor)
+[![NuGet downloads](https://img.shields.io/nuget/dt/Fluxor.svg)](https://www.nuget.org/packages/Fluxor)
 
 ***Fluxor*** is a zero boilerplate Flux/Redux library for [Microsoft .NET](https://dotnet.microsoft.com/)
 
