@@ -1,9 +1,11 @@
 # Fluxor
 ![](./Images/fluxor-logo.png)
 
-***Fluxor*** is a zero boilerplate Flux/Redux library for [Microsoft .NET](https://dotnet.microsoft.com/)
-
+[![NuGet version](https://img.shields.io/nuget/v/Fluxor.svg)](https://www.nuget.org/packages/Fluxor)
+[![NuGet downloads](https://img.shields.io/nuget/dt/Fluxor.svg)](https://www.nuget.org/packages/Fluxor)
 [![Join the chat at https://gitter.im/mrpmorris/fluxor](https://badges.gitter.im/mrpmorris/fluxor.svg)](https://gitter.im/mrpmorris/fluxor?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+***Fluxor*** is a zero boilerplate Flux/Redux library for [Microsoft .NET](https://dotnet.microsoft.com/)
 
 ## Introduction
 If you are new to Fluxor, or to the Flux/Redux approach in general then [this YouTube video by Chris Clement](https://www.youtube.com/watch?v=sAyH-O0dFaI) is an excellent introduction.
