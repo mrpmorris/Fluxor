@@ -5,7 +5,7 @@ namespace Fluxor;
 ///	<summary>
 ///		Identifies a method as an Effect handler to be triggered in response to an action. This is an
 ///		alternative to using <see cref="IEffect"/> or <see cref="Effect{TTriggerAction}"/> and
-///		will be discovered when using <see cref="DependencyInjection.Options.UseDependencyInjection(System.Reflection.Assembly[])"/>.
+///		will be discovered when using <see cref="DependencyInjection.FluxorOptions.ScanAssemblies(System.Reflection.Assembly, System.Reflection.Assembly[])"/>.
 ///		<para>
 ///			When no ActionType is specified <see cref="EffectMethodAttribute.EffectMethodAttribute()"/> then the method signature must be
 ///				({ActionType} action, IDispatcher dispatcher) => Task

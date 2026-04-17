@@ -5,25 +5,25 @@ using System.Linq;
 
 namespace Fluxor;
 
-/// <see cref="IFeature{TState}"/>
+/// <inheritdoc/>
 public abstract class Feature<TState> : IFeature<TState>
 {
-	/// <see cref="IFeature.MaximumStateChangedNotificationsPerSecond"/>
+	/// <inheritdoc/>
 	public byte MaximumStateChangedNotificationsPerSecond { get; set; }
 
-	/// <see cref="IFeature.GetName"/>
+	/// <inheritdoc/>
 	public abstract string GetName();
 
-	/// <see cref="IFeature.GetState"/>
+	/// <inheritdoc/>
 	public virtual object GetState() => State;
 
-	/// <see cref="IFeature.DebuggerBrowsable"/>
+	/// <inheritdoc/>
 	public virtual bool DebuggerBrowsable { get; set; } = true;
 
-	/// <see cref="IFeature.RestoreState(object)"/>
+	/// <inheritdoc/>
 	public virtual void RestoreState(object value) => State = (TState)value;
 
-	/// <see cref="IFeature.GetStateType"/>
+	/// <inheritdoc/>
 	public virtual Type GetStateType() => typeof(TState);
 
 	/// <summary>
@@ -70,7 +70,7 @@ public abstract class Feature<TState> : IFeature<TState>
 	}
 
 	private TState _State;
-	/// <see cref="IFeature{TState}.State"/>
+	/// <inheritdoc/>
 	public virtual TState State
 	{
 		get
@@ -105,7 +105,7 @@ public abstract class Feature<TState> : IFeature<TState>
 		}
 	}
 
-	/// <see cref="IFeature{TState}.AddReducer(IReducer{TState})"/>
+	/// <inheritdoc/>
 	public virtual void AddReducer(IReducer<TState> reducer)
 	{
 		if (reducer is null)
@@ -113,7 +113,7 @@ public abstract class Feature<TState> : IFeature<TState>
 		Reducers.Add(reducer);
 	}
 
-	/// <see cref="IFeature.ReceiveDispatchNotificationFromStore(object)"/>
+	/// <inheritdoc/>
 	public virtual void ReceiveDispatchNotificationFromStore(object action)
 	{
 		if (action is null)
