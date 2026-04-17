@@ -78,6 +78,5 @@ public interface IFeature<TState> : IFeature
 	/// Adds an instance of a reducer to this feature
 	/// </summary>
 	/// <param name="reducer">The reducer instance</param>
-	/// <seealso cref="DependencyInjection.Options.UseDependencyInjection(System.Reflection.Assembly[])"/>
 	void AddReducer(IReducer<TState> reducer);
 }
