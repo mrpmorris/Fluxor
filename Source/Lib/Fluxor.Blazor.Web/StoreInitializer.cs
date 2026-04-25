@@ -66,9 +66,9 @@ public class StoreInitializer : FluxorComponent
 		base.OnAfterRender(firstRender);
 		if (ExceptionToThrow is not null)
 		{
-			ExceptionDispatchInfo dispatchInfo = ExceptionDispatchInfo.Capture(ExceptionToThrow);
+			ExceptionDispatchInfo DispatchInfo = ExceptionDispatchInfo.Capture(ExceptionToThrow);
 			ExceptionToThrow = null;
-			dispatchInfo.Throw();
+			DispatchInfo.Throw();
 		}
 	}
 
