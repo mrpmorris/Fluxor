@@ -15,6 +15,7 @@ internal static class ReducerMethodRegistration
 	{
 		IEnumerable<Type> hostClassTypes =
 			reducerMethodInfos
+				.Where(x => !x.MethodInfo.IsStatic)
 				.Select(x => x.HostClassType)
 				.Where(t => !t.IsAbstract)
 				.Distinct();

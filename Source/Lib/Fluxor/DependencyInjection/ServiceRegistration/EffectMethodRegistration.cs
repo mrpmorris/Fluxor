@@ -15,6 +15,7 @@ internal static class EffectMethodRegistration
 	{
 		IEnumerable<Type> hostClassTypes =
 			effectMethodInfos
+				.Where(x => !x.MethodInfo.IsStatic)
 				.Select(x => x.HostClassType)
 				.Where(t => !t.IsAbstract)
 				.Distinct();
