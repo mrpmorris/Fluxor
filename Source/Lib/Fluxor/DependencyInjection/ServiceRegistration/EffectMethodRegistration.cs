@@ -8,19 +8,10 @@ namespace Fluxor.DependencyInjection.ServiceRegistration;
 
 internal static class EffectMethodRegistration
 {
-	public static void Register(
-		IServiceCollection services,
-		EffectMethodInfo[] effectMethodInfos,
-		FluxorOptions options)
-	{
-		IEnumerable<Type> hostClassTypes =
-			effectMethodInfos
-				.Where(x => !x.MethodInfo.IsStatic)
-				.Select(x => x.HostClassType)
-				.Where(t => !t.IsAbstract)
-				.Distinct();
-
-		foreach (Type hostClassType in hostClassTypes)
-			services.Add(hostClassType, options);
-	}
+	public static IEnumerable<Type> GetHostClassTypes(EffectMethodInfo[] effectMethodInfos) =>
+		effectMethodInfos
+			.Where(x => !x.MethodInfo.IsStatic)
+			.Select(x => x.HostClassType)
+			.Where(t => !t.IsAbstract)
+			.Distinct();
 }

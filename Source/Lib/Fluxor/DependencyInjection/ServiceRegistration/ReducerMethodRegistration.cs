@@ -8,19 +8,10 @@ namespace Fluxor.DependencyInjection.ServiceRegistration;
 
 internal static class ReducerMethodRegistration
 {
-	public static void Register(
-		IServiceCollection services,
-		ReducerMethodInfo[] reducerMethodInfos,
-		FluxorOptions options)
-	{
-		IEnumerable<Type> hostClassTypes =
-			reducerMethodInfos
-				.Where(x => !x.MethodInfo.IsStatic)
-				.Select(x => x.HostClassType)
-				.Where(t => !t.IsAbstract)
-				.Distinct();
-
-		foreach (Type hostClassType in hostClassTypes)
-			services.Add(hostClassType, options);
-	}
+	public static IEnumerable<Type> GetHostClassTypes(ReducerMethodInfo[] reducerMethodInfos) =>
+		reducerMethodInfos
+			.Where(x => !x.MethodInfo.IsStatic)
+			.Select(x => x.HostClassType)
+			.Where(t => !t.IsAbstract)
+			.Distinct();
 }
