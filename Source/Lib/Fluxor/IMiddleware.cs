@@ -17,7 +17,7 @@ public interface IMiddleware
 	Task InitializeAsync(IDispatcher dispatcher, IStore store);
 
 	/// <summary>
-	/// Called exactly once by the store after <see cref="InitializeAsync(IStore)"/> has been
+	/// Called exactly once by the store after <see cref="InitializeAsync(IDispatcher dispatcher, IStore store)"/> has been
 	/// called on all registered Middlewares
 	/// </summary>
 	void AfterInitializeAllMiddlewares();

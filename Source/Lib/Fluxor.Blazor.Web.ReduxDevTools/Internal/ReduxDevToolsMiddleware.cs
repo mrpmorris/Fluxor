@@ -37,7 +37,7 @@ public sealed class ReduxDevToolsMiddleware : WebMiddleware
 	/// <see cref="IMiddleware.GetClientScripts"/>
 	public override string GetClientScripts() => ReduxDevToolsInterop.GetClientScripts(Options);
 
-	/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
+	/// <see cref="IMiddleware.InitializeAsync(IDispatcher dispatcher, IStore store)"/>
 	public async override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 	{
 		Store = store;

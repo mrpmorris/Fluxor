@@ -27,7 +27,7 @@ internal class RoutingMiddleware : Middleware
 		NavigationManager.LocationChanged += LocationChanged;
 	}
 
-	/// <see cref="IMiddleware.InitializeAsync(IStore)"/>
+	/// <see cref="IMiddleware.InitializeAsync(IDispatcher dispatcher, IStore store)"/>
 	public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 	{
 		Dispatcher = dispatcher;
