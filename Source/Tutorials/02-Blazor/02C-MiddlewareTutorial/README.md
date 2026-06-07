@@ -23,7 +23,7 @@ project for this tutorial. But before continuing, remove any `Console.WriteLine`
 to clutter the console output too much. Leave in the calls to `Console.WriteLine` that correspond to displaying
 user options, and the line `Console.WriteLine("Initializing store");`
 
-In the `Store` folder, create a file `Middlewares\Logging\LoggingMiddleware.cs`
+In the `Store/` folder, create a file `Middlewares/Logging/LoggingMiddleware.cs`
 
 Descend the class from `Fluxor.Middleware`. We could instead implement `Fluxor.IMiddleware`, but the
 `Middleware` class is recommended when possible as it enables us to override only the methods we wish

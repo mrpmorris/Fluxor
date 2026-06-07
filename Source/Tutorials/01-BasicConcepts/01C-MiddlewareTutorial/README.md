@@ -23,7 +23,7 @@ project for this tutorial. But before continuing, remove any `Console.WriteLine`
 to clutter the console output too much. Leave in the calls to `Console.WriteLine` that correspond to displaying
 user options, and the line `Console.WriteLine("Initializing store");`
 
-In the `Store` folder, create a file `Middlewares\Logging\LoggingMiddleware.cs`
+In the `Store/` folder, create a file `Middlewares/Logging/LoggingMiddleware.cs`
 
 Descend the class from `Fluxor.Middleware`. We could instead implement `Fluxor.IMiddleware`, but the
 `Middleware` class is recommended when possible as it enables us to override only the methods we wish
@@ -65,7 +65,7 @@ InitializeAsync
 
 #### Middleware lifecycle
 
-1. **Task InitializeAsync(IStore store)**
+1. **Task InitializeAsync(IDispatcher dispatcher, IStore store)**
 - Executed when the store is first initialised. This gives us an opportunity to store away a reference to
 the store that has been initialized.
 2. **void AfterInitializeAllMiddlewares()**
@@ -101,7 +101,7 @@ public class LoggingMiddleware : Middleware
 {
   private IStore Store;
 
-  public override Task InitializeAsync(IStore store)
+  public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
   {
     Store = store;
     Console.WriteLine(nameof(InitializeAsync));
@@ -283,7 +283,7 @@ x: Exit
 
 ### Real-life uses
 
-**Task InitializeAsync(IStore store)**
+**Task InitializeAsync(IDispatcher dispatcher, IStore store)**
 
 [Redux Dev Tools Middleware class][5] uses this method to execute JavaScript to initialise the Chrome plugin.
 
