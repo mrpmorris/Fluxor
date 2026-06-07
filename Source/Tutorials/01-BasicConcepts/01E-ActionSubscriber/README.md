@@ -19,7 +19,8 @@ representation of the action will be displayed in the console.
 
 ### Steps
 
-Create a folder named `ApiObjects` and then add the following class. This class would normally be
+- Create a folder named `ApiObjects`.
+- Within that folder create a new class named `CustomerEdit`. This class would normally be
 in a separate assembly that is shared between the client and the server.
 
 ```c#
@@ -35,11 +36,11 @@ public class CustomerEdit
     Id = id;
     RowVersion = rowVersion;
     Name = name;
-  }}
+  }
+}
 ```
-
-Create a `Store` folder, and in that folder create a folder named `EditCustomerUseCase`. Within
-that folder create some actions we need to simulate fetching a mutable object from an external API service.
+- Create a folder named `Store`.
+- Within that folder create two new actions named `GetCustomerForEditAction` and `GetCustomerForEditResultAction` that we need to simulate fetching a mutable object from an external API service.
 
 ```c#
 public class GetCustomerForEditAction
@@ -51,7 +52,9 @@ public class GetCustomerForEditAction
     Id = id;
   }
 }
+```
 
+```c#
 public class GetCustomerForEditResultAction
 {
   public CustomerEdit Customer { get; }
@@ -63,9 +66,8 @@ public class GetCustomerForEditResultAction
 }
 ```
 
-And within the `Store` create a new folder named `EditCustomerUseCase`, which is where we
-will store our feature's state, reducers, and effects.
-
+- In the `Store\` folder, create a new folder named `EditCustomerUseCase`. 
+- Within the `EditCustomerUseCase` folder create three classes `EditCustomerState`, `Reducers`, and `Effects`. This is where we will store our feature's state, reducers, and effects.
 
 ```c#
 [FeatureState]
@@ -79,7 +81,9 @@ public class EditCustomerState
     IsLoading = isLoading;
   }
 }
+```
 
+```c#
 public static class Reducers
 {
   [ReducerMethod(typeof(GetCustomerForEditAction))]
@@ -90,7 +94,9 @@ public static class Reducers
   public static EditCustomerState Reduce(EditCustomerState state) =>
     new EditCustomerState(isLoading: false);
 }
+```
 
+```c#
 public class Effects
 {
   [EffectMethod(typeof(GetCustomerForEditAction))]

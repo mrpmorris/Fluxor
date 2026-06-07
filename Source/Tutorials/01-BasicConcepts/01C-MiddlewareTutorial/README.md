@@ -37,7 +37,7 @@ public class LoggingMiddleware : Middleware
 {
   private IStore Store;
 
-  public override Task InitializeAsync(IStore store)
+  public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
   {
     Store = store;
     Console.WriteLine(nameof(InitializeAsync));
@@ -303,4 +303,4 @@ history.
   [2]: <https://github.com/mrpmorris/Fluxor/tree/master/Source/Lib/Fluxor.Blazor.Web.ReduxDevTools>
   [3]: <https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd>
   [4]: <https://github.com/mrpmorris/Fluxor/tree/master/Source/Tutorials/01-BasicConcepts/01B-EffectsTutorial>
-  [5]: <https://github.com/mrpmorris/Fluxor/blob/master/Source/Lib/Fluxor.Blazor.Web.ReduxDevTools/ReduxDevToolsMiddleware.cs>
+  [5]: <https://github.com/mrpmorris/Fluxor/blob/master/Source/Lib/Fluxor.Blazor.Web.ReduxDevTools/Internal/ReduxDevToolsMiddleware.cs>
