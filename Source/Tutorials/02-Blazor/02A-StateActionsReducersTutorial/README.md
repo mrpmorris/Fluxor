@@ -62,7 +62,7 @@ that from your Blazor app (recommended). I have chosen to create a folder
 named `Store` in the same project just to keep this tutorial more simple.
 
 - Create a folder named `CounterFeature`.
-- Within the `CounterFeature` folder create a new class named `CounterState`. This is the class that
+- Within the `CounterFeature/` folder create a new class named `CounterState`. This is the class that
 will hold the values of your state to be displayed in your application.
 
 ```c#
@@ -146,7 +146,7 @@ Running the app will now show a `0` value for the current count, but clicking th
 
 #### Using an Action and a Reducer to alter state
 
-- Create a new class `IncrementCounterAction` in the folder with `CounterFeature`.
+- In the `CounterFeature/` folder, create a new class named `IncrementCounterAction`.
   This class can remain empty.
 - Edit `Counter.Razor` and add `@inject IDispatcher Dispatcher`.
 - Remove the `currentCount` field as it is no longer needed.
@@ -177,7 +177,7 @@ this is done.*
 Now our UI is dispatching our intention to increment the counter, but the state remains unchanged because
 we do not handle this action. We will fix that next.
 
-- In the `CounterFeature` folder, create a new class `Reducers`.
+- In the `CounterFeature/` folder, create a new class named `Reducers`.
 - Make the class static, and add the following code.
 
 ```c#

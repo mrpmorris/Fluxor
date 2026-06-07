@@ -77,7 +77,7 @@ services.AddScoped<IWeatherForecastService, WeatherForecastService>();
 
 #### Creating a state for our use-case
 
-- Under the `Store` folder, create a new folder named `WeatherUseCase`.
+- Under the `Store/` folder, create a new folder named `WeatherUseCase`.
 - Create a new state class to hold the state for this use-case.
 
 ```c#
@@ -148,7 +148,7 @@ private void WeatherState_StateChanged(object sender, EventArgs e)
 
 #### Using an `Action` and a `Reducer` to alter state
 
-- In the `Store` folder, create an empty class `FetchDataAction` (this can remain empty).
+- In the `Store/` folder, create an empty class `FetchDataAction` (this can remain empty).
 - Create a static `Reducers` class, which will set `IsLoading` to true when our 
 `FetchDataAction` action is dispatched.
 

@@ -16,9 +16,9 @@ This tutorial will expand on the previous tutorial to recreate the `Fetch data` 
 
 ### Steps
 
-- Under the `Store` folder, create a new folder named `WeatherFeature`.
+- Under the `Store/` folder, create a new folder named `WeatherFeature`.
 - Delete the source code for the `WeatherForecast` class from the bottom of `Weather.razor`
-- Create a `WeatherForecast.cs` file in the `WeatherFeature` folder with the following content.
+- Create a `WeatherForecast.cs` file in the `WeatherFeature/` folder with the following content.
 
 ```c#
 // WeatherForecast - changed to a readonly record
@@ -95,7 +95,7 @@ to
 
 #### Using an Action and a Reducer to initiate the fetch and UI update
 
-- In the `WeatherFeature` folder, create a class `FetchForecastsAction` (it can remain an empty class).
+- In the `WeatherFeature/` folder, create a class `FetchForecastsAction` (it can remain an empty class).
 - Next, create a static `Reducers` class, which will set
   `IsLoading` to true when our `FetchForecastsAction` action is dispatched.
 
@@ -148,7 +148,7 @@ Effect handlers cannot (and should not) affect state directly. They are triggere
 they are interested in is dispatched through the store, and as a response they can dispatch new actions.
 
 Here is an example of how to simulate fetching forecasts. Add it into an `Effects.cs` file
-inside the `WeatherFeature` folder.
+inside the `WeatherFeature/` folder.
 
 ```c#
 public class Effects

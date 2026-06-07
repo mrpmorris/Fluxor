@@ -66,8 +66,8 @@ public class GetCustomerForEditResultAction
 }
 ```
 
-- In the `Store\` folder, create a new folder named `EditCustomerUseCase`. 
-- Within the `EditCustomerUseCase` folder create three classes `EditCustomerState`, `Reducers`, and `Effects`. This is where we will store our feature's state, reducers, and effects.
+- In the `Store/` folder, create a new folder named `EditCustomerUseCase`. 
+- Within the `EditCustomerUseCase/` folder, create three classes `EditCustomerState`, `Reducers`, and `Effects`. This is where we will store our feature's state, reducers, and effects.
 
 ```c#
 [FeatureState]

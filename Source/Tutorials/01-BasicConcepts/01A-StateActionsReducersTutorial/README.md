@@ -74,7 +74,7 @@ public class App
 
 - Create a folder named `Store`.
 - Within that folder create another folder named `CounterUseCase`.
-- Within the `CounterUseCase` folder create a new class named `CounterState`. This is the class that
+- Within the `CounterUseCase/` folder create a new class named `CounterState`. This is the class that
   will hold the values of your state to be displayed in your application.
 
 ```c#
@@ -142,9 +142,9 @@ private void CounterState_StateChanged(object sender, EventArgs e)
 
 #### Dispatching an Action to indicate our intention to change state
 
-- In the `Store\` folder, create a new class `IncrementCounterAction`. This class can remain empty.
-- In `App.cs` we need to inject `IDispatcher` and then use it to dispatch an instance
-of our new `IncrementCounterAction` when the user tells it to.
+- In the `Store/` folder, create a new class `IncrementCounterAction`. This class can remain empty.
+- In `App.cs` we need to inject `IDispatcher` and then use it to dispatch an instance of
+our new `IncrementCounterAction` when the user tells it to.
 
 ```c#
 var action = new IncrementCounterAction();
@@ -211,7 +211,7 @@ public class App
 Now our UI is dispatching our intention to increment the counter, but the state remains unchanged because
 we do not handle this action. We will fix that next.
 
-- In the `Store\CounterUseCase` folder, create a new class `Reducers`.
+- In the `Store/CounterUseCase/` folder, create a new class `Reducers`.
 - Make a static class, and add the following method.
 
 ```c#
