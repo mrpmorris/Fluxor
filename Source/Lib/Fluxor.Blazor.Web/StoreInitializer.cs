@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,9 +66,9 @@ public class StoreInitializer : FluxorComponent
 		base.OnAfterRender(firstRender);
 		if (ExceptionToThrow is not null)
 		{
-			Exception exception = ExceptionToThrow;
+			ExceptionDispatchInfo DispatchInfo = ExceptionDispatchInfo.Capture(ExceptionToThrow);
 			ExceptionToThrow = null;
-			throw exception;
+			DispatchInfo.Throw();
 		}
 	}
 
