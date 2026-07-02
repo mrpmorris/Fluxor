@@ -67,7 +67,7 @@ public class StoreInitializer : FluxorComponent
 		{
 			Exception exception = ExceptionToThrow;
 			ExceptionToThrow = null;
-			throw exception;
+			ExceptionDispatchInfo.Capture(exception).Throw();
 		}
 	}
 
