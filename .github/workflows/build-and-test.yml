@@ -1,0 +1,34 @@
+name: Build and Test
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    steps:
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.x
+            9.x
+            10.x
+
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: dotnet build "./Source/" --configuration DEBUG
+
+      - name: Test
+        run: dotnet test "./Source/" --configuration DEBUG --no-build
+
+      - name: Build
+        run: dotnet build "./Source/" --configuration Release
+
+      - name: Test
+        run: dotnet test "./Source/" --configuration Release --no-build
