@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.10
+* Preserve call stack when rethrowing unhandled exception ([#568](https://github.com/mrpmorris/Fluxor/issues/568))
+
 ## New in 6.9
 * Migrate demos to .Net 9 ([#548](https://github.com/mrpmorris/Fluxor/issues/548))
 * Support .Net 10
