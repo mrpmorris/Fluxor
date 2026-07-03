@@ -31,8 +31,11 @@ internal class RoutingMiddleware : Middleware
 	public override Task InitializeAsync(IDispatcher dispatcher, IStore store)
 	{
 		Dispatcher = dispatcher;
-		// If the URL changed before we initialized then dispatch an action
-		Dispatcher.Dispatch(new GoAction(NavigationManager.Uri));
+		// If the URL changed before we initialized then dispatch an action.
+		// Deliberately not awaited: the dispatched action cannot complete until store
+		// activation finishes, and activation is awaiting this method, so awaiting
+		// here would deadlock.
+		_ = Dispatcher.DispatchAsync(new GoAction(NavigationManager.Uri));
 		return Task.CompletedTask;
 	}
 
@@ -44,10 +47,12 @@ internal class RoutingMiddleware : Middleware
 			NavigationManager.NavigateTo(Feature.State.Uri);
 	}
 
-	private void LocationChanged(object sender, LocationChangedEventArgs e)
+	private async void LocationChanged(object sender, LocationChangedEventArgs e)
 	{
 		string fullUri = NavigationManager.ToAbsoluteUri(Feature.State.Uri).AbsoluteUri;
 		if (Dispatcher is not null && !IsInsideMiddlewareChange && !UrlComparer.AreEqual(e.Location, fullUri))
-			Dispatcher.Dispatch(new GoAction(e.Location));
+			// async void: any exception surfaces via the ambient SynchronizationContext
+			// (Blazor's normal unhandled-exception path)
+			await Dispatcher.DispatchAsync(new GoAction(e.Location));
 	}
 }

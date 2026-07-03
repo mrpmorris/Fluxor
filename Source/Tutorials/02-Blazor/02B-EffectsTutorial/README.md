@@ -137,7 +137,9 @@ lifecycle method.
     {
         base.OnInitialized();
         var action = new FetchForecastsAction();
-        Dispatcher.Dispatch(action);
+        // Not awaited: the store activates after first render, so this task cannot
+        // complete during OnInitialized. It completes once the store activates.
+        _ = Dispatcher.DispatchAsync(action);
     }
 }
 ```
@@ -174,7 +176,7 @@ public class Effects
       );
 
     var action = new FetchForecastsResultAction(forecasts);
-    dispatcher.Dispatch(action);
+    await dispatcher.DispatchAsync(action);
   }
 }
 ```

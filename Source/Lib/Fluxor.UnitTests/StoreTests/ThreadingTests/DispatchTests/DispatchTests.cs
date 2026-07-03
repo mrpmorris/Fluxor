@@ -1,4 +1,5 @@
 ﻿using Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchTests.SupportFiles;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ public class DispatchTests
 	private readonly IStore Subject;
 	private readonly IFeature<CounterState> Feature;
 	private readonly ManualResetEvent StartEvent;
+	private readonly ConcurrentBag<Task> DispatchTasks = new();
 
 	[Fact]
 	public async Task WhenExecutedByMultipleThreads_ThenSynchronizesStateUpdates()
@@ -36,6 +38,10 @@ public class DispatchTests
 		foreach (Thread thread in threads)
 			thread.Join();
 
+		// A joined thread may have enqueued actions that another thread's drain is still
+		// processing, so wait for every dispatch to complete before asserting
+		await Task.WhenAll(DispatchTasks);
+
 		Assert.Equal(NumberOfThreads * NumberOfIncrementsPerThread, Feature.State.Counter);
 	}
 
@@ -46,7 +52,7 @@ public class DispatchTests
 		var action = new IncrementCounterAction();
 		for (int i = 0; i < NumberOfIncrementsPerThread; i++)
 		{
-			Dispatcher.Dispatch(action);
+			DispatchTasks.Add(Dispatcher.DispatchAsync(action));
 		}
 	}
 

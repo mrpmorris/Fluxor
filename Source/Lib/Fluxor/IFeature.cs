@@ -52,7 +52,7 @@ public interface IFeature
 
 	/// <summary>
 	/// Allows a feature to react to an action dispatched via the store. This should not be called by
-	/// consuming applications. Instead you should dispatch actions only via <see cref="IDispatcher.Dispatch(object)"/>
+	/// consuming applications. Instead you should dispatch actions only via <see cref="IDispatcher.DispatchAsync(object)"/>
 	/// </summary>
 	/// <param name="action">The action dispatched via the store</param>
 	void ReceiveDispatchNotificationFromStore(object action);

@@ -14,10 +14,10 @@ public class DiscoverReducersWithActionInAttributeTests : IAsyncLifetime
 	private readonly IState<TestState> State;
 
 	[Fact]
-	public void WhenActionIsDispatched_ThenReducerWithActionInMethodSignatureIsExecuted()
+	public async Task WhenActionIsDispatched_ThenReducerWithActionInMethodSignatureIsExecuted()
 	{
 		Assert.Equal(0, State.Value.Counter);
-		Dispatcher.Dispatch(new TestAction());
+		await Dispatcher.DispatchAsync(new TestAction());
 		// 2 Reducers
 		// 1 assembly scanned (generic descendant)
 		// + 1 type scanned (closed generic)

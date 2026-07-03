@@ -4,6 +4,7 @@ using BasicConcepts.EffectsTutorial.Store.CounterUseCase;
 using BasicConcepts.EffectsTutorial.Store.WeatherUseCase;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using BasicConcepts.EffectsTutorial.Store;
 
 namespace BasicConcepts.EffectsTutorial
@@ -57,11 +58,11 @@ namespace BasicConcepts.EffectsTutorial
 			Console.WriteLine("");
 		}
 
-		public void Run()
+		public async Task RunAsync()
 		{
 			Console.Clear();
 			Console.WriteLine("Initializing store");
-			Store.InitializeAsync().Wait();
+			await Store.InitializeAsync();
 			string input;
 			do
 			{
@@ -75,12 +76,12 @@ namespace BasicConcepts.EffectsTutorial
 				{
 					case "1":
 						var incrementCounterActionction = new IncrementCounterAction();
-						Dispatcher.Dispatch(incrementCounterActionction);
+						await Dispatcher.DispatchAsync(incrementCounterActionction);
 						break;
 
 					case "2":
 						var fetchDataAction = new FetchDataAction();
-						Dispatcher.Dispatch(fetchDataAction);
+						await Dispatcher.DispatchAsync(fetchDataAction);
 						break;
 
 					case "x":

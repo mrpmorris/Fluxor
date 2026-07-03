@@ -2,6 +2,7 @@
 using BasicConcepts.StateActionsReducersTutorial.Store;
 using BasicConcepts.StateActionsReducersTutorial.Store.CounterUseCase;
 using System;
+using System.Threading.Tasks;
 
 namespace BasicConcepts.StateActionsReducersTutorial
 {
@@ -28,11 +29,11 @@ namespace BasicConcepts.StateActionsReducersTutorial
 			Console.WriteLine("");
 		}
 
-		public void Run()
+		public async Task RunAsync()
 		{
 			Console.Clear();
 			Console.WriteLine("Initializing store");
-			Store.InitializeAsync().Wait();
+			await Store.InitializeAsync();
 			string input;
 			do
 			{
@@ -45,7 +46,7 @@ namespace BasicConcepts.StateActionsReducersTutorial
 				{
 					case "1":
 						var action = new IncrementCounterAction();
-						Dispatcher.Dispatch(action);
+						await Dispatcher.DispatchAsync(action);
 						break;
 
 					case "x":

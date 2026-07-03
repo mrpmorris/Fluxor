@@ -14,11 +14,11 @@ public class DiscoverGenericReducersWithActionInMethodSignatureTests : IAsyncLif
 	private readonly IState<TestState<char>> State;
 
 	[Fact]
-	public void WhenActionIsDispatched_ThenReducerWithActionInMethodSignatureIsExecuted()
+	public async Task WhenActionIsDispatched_ThenReducerWithActionInMethodSignatureIsExecuted()
 	{
 		Assert.Equal(0, State.Value.Counters['A']);
 		Assert.Equal(0, State.Value.Counters['B']);
-		Dispatcher.Dispatch(new IncrementItemAction<char>('A'));
+		await Dispatcher.DispatchAsync(new IncrementItemAction<char>('A'));
 		// 2 Reducers
 		// 1 assembly scanned (generic descendant)
 		// + 1 type scanned (closed generic)

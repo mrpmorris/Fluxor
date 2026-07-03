@@ -1,12 +1,13 @@
 ﻿using Fluxor;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace BasicConcepts.ActionSubscriber
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static async Task Main(string[] args)
 		{
 			var services = new ServiceCollection();
 			services.AddScoped<App>();
@@ -16,7 +17,7 @@ namespace BasicConcepts.ActionSubscriber
 			IServiceProvider serviceProvider = services.BuildServiceProvider();
 
 			var app = serviceProvider.GetRequiredService<App>();
-			app.Run();
+			await app.RunAsync();
 		}
 	}
 }

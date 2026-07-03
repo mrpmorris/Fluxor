@@ -1,6 +1,7 @@
 ﻿using Fluxor.UnitTests.DependencyInjectionTests.IsolationTests.SupportFiles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests;
@@ -8,7 +9,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests;
 public class LifeCycleTests
    {
       [Fact]
-      public void WhenStoreIsCreatedWithScopedLifecycle_ItIsUniqueToDependencyInjectionScope()
+      public async Task WhenStoreIsCreatedWithScopedLifecycle_ItIsUniqueToDependencyInjectionScope()
       {
          IServiceProvider serviceProvider = SetupServiceProvider(StoreLifetime.Scoped);
 
@@ -25,15 +26,15 @@ public class LifeCycleTests
          Assert.Equal(0, state1.Value.Counter);
          Assert.Equal(0, state2.Value.Counter);
 
-         dispatcher1.Dispatch(action);
+         await dispatcher1.DispatchAsync(action);
          Assert.Equal(1, state1.Value.Counter);
          Assert.Equal(0, state2.Value.Counter);
 
-         dispatcher2.Dispatch(action);
+         await dispatcher2.DispatchAsync(action);
          Assert.Equal(1, state1.Value.Counter);
          Assert.Equal(1, state2.Value.Counter);
 
-         dispatcher2.Dispatch(action);
+         await dispatcher2.DispatchAsync(action);
          Assert.Equal(1, state1.Value.Counter);
          Assert.Equal(2, state2.Value.Counter);
 
@@ -42,7 +43,7 @@ public class LifeCycleTests
       }
 
       [Fact]
-      public void WhenStoreIsCreatedWithSingletonLifecycle_ItIsNotUniqueToDependencyInjectionScope()
+      public async Task WhenStoreIsCreatedWithSingletonLifecycle_ItIsNotUniqueToDependencyInjectionScope()
       {
          IServiceProvider serviceProvider = SetupServiceProvider(StoreLifetime.Singleton);
 
@@ -59,15 +60,15 @@ public class LifeCycleTests
          Assert.Equal(0, state1.Value.Counter);
          Assert.Equal(0, state2.Value.Counter);
 
-         dispatcher1.Dispatch(action);
+         await dispatcher1.DispatchAsync(action);
          Assert.Equal(1, state1.Value.Counter);
          Assert.Equal(1, state2.Value.Counter);
 
-         dispatcher2.Dispatch(action);
+         await dispatcher2.DispatchAsync(action);
          Assert.Equal(2, state1.Value.Counter);
          Assert.Equal(2, state2.Value.Counter);
 
-         dispatcher2.Dispatch(action);
+         await dispatcher2.DispatchAsync(action);
          Assert.Equal(3, state1.Value.Counter);
          Assert.Equal(3, state2.Value.Counter);
       }

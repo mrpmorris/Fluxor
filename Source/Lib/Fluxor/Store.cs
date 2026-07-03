@@ -21,9 +21,10 @@ public class Store : IStore, IActionSubscriber, IDisposable
 	private readonly List<IEffect> Effects = new();
 	private readonly List<IMiddleware> Middlewares = new();
 	private readonly List<IMiddleware> ReversedMiddlewares = new();
-	private readonly ConcurrentQueue<object> QueuedActions = new();
-	private readonly TaskCompletionSource<bool> InitializedCompletionSource = new();
+	private readonly ConcurrentQueue<ActionDispatchedEventArgs> QueuedActions = new();
+	private readonly TaskCompletionSource<bool> InitializedCompletionSource = new(TaskCreationOptions.RunContinuationsAsynchronously);
 	private readonly ActionSubscriber ActionSubscriber;
+	private readonly Task StoreInitializedDispatchTask;
 
 	private volatile bool IsDispatching;
 	private volatile int BeginMiddlewareChangeCount;
@@ -38,7 +39,8 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		ActionSubscriber = new ActionSubscriber();
 		Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 		Dispatcher.ActionDispatched += ActionDispatched;
-		Dispatcher.Dispatch(new StoreInitializedAction());
+		// A constructor cannot await, so hold the task and surface it during activation.
+		StoreInitializedDispatchTask = Dispatcher.DispatchAsync(new StoreInitializedAction());
 	}
 
 	/// <see cref="IStore.GetMiddlewares"/>
@@ -115,8 +117,6 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		await ActivateStoreAsync();
 	}
 
-	public event EventHandler<Exceptions.UnhandledExceptionEventArgs> UnhandledException;
-
 	/// <see cref="IActionSubscriber.SubscribeToAction{TAction}(object, Action{TAction})"/>
 	public void SubscribeToAction<TAction>(object subscriber, Action<TAction> callback)
 	{
@@ -151,11 +151,15 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		// We avoid dispatching inside a middleware change because we don't want UI events (like component Init)
 		// that trigger actions (such as fetching data from a server) to execute
 		if (IsInsideMiddlewareChange)
+		{
+			// Ignored by design; there is no work to await, so the action's task
+			// completes successfully and immediately.
+			e.Complete();
 			return;
-
+		}
 
 		// This is a concurrent queue, so is safe even if dequeuing is already in progress
-		QueuedActions.Enqueue(e.Action);
+		QueuedActions.Enqueue(e);
 
 		// HasActivatedStore is set to true when the page finishes loading
 		// At which point DequeueActions will be called
@@ -166,7 +170,10 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		// If a dequeue is still going then it will deal with the event we just
 		// queued, so we can exit at this point.
 		// This prevents a re-entrant deadlock
-		if (!IsDispatching)
+		// An action enqueued between the running loop's final failed TryDequeue and it
+		// resetting IsDispatching would otherwise be stranded with a forever-pending task,
+		// so retry until the queue is empty or another dequeue is in progress.
+		while (!IsDispatching && !QueuedActions.IsEmpty)
 		{
 			lock (SyncRoot)
 			{
@@ -185,55 +192,53 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		}
 	}
 
-	private void TriggerEffects(object action)
+	private void TriggerEffects(ActionDispatchedEventArgs dispatchedEvent)
 	{
-		var recordedExceptions = new List<Exception>();
+		object action = dispatchedEvent.Action;
 		var effectsToExecute = Effects
 			.Where(x => x.ShouldReactToAction(action))
 			.ToArray();
-		var executedEffects = new List<Task>();
 
-		Action<Exception> collectExceptions = e =>
+		if (effectsToExecute.Length == 0)
 		{
-			if (e is AggregateException aggregateException)
-				recordedExceptions.AddRange(aggregateException.Flatten().InnerExceptions);
-			else
-				recordedExceptions.Add(e);
-		};
+			// No effects, so the action's work is already complete
+			dispatchedEvent.Complete();
+			return;
+		}
+
+		var recordedExceptions = new List<Exception>();
+		var executedEffects = new List<Task>();
 
 		// Execute all tasks. Some will execute synchronously and complete immediately,
 		// so we need to catch their exceptions in the loop so they don't prevent
 		// other effects from executing.
-		// It's then up to the UI to decide if any of those exceptions should cause
-		// the app to terminate or not.
 		foreach (IEffect effect in effectsToExecute)
 		{
 			try
 			{
-				executedEffects.Add(effect.HandleAsync(action, Dispatcher));
+				// Guard against effects that return a null task, which would otherwise
+				// cause Task.WhenAll to throw synchronously
+				executedEffects.Add(effect.HandleAsync(action, Dispatcher) ?? Task.CompletedTask);
 			}
 			catch (Exception e)
 			{
-				collectExceptions(e);
+				recordedExceptions.Add(e);
 			}
 		}
 
-		Task.Run(async () =>
+		// Complete the dispatched action's task once all of its effects have completed.
+		// This must not be awaited by the dequeue loop, otherwise an effect awaiting a
+		// nested DispatchAsync would deadlock.
+		Task.WhenAll(executedEffects).ContinueWith(t =>
 		{
-			try
-			{
-				await Task.WhenAll(executedEffects);
-			}
-			catch (Exception e)
-			{
-				collectExceptions(e);
-			}
+			if (t.IsFaulted)
+				recordedExceptions.AddRange(t.Exception.Flatten().InnerExceptions);
 
-			// Let the UI decide if it wishes to deal with any unhandled exceptions.
-			// By default it should throw the exception if it is not handled.
-			foreach (Exception exception in recordedExceptions)
-				UnhandledException?.Invoke(this, new Exceptions.UnhandledExceptionEventArgs(exception));
-		});
+			if (recordedExceptions.Count == 0)
+				dispatchedEvent.Complete();
+			else
+				dispatchedEvent.Fail(recordedExceptions);
+		}, TaskScheduler.Default);
 	}
 
 	private async Task InitializeMiddlewaresAsync()
@@ -269,6 +274,9 @@ public class Store : IStore, IActionSubscriber, IDisposable
 			DequeueActions();
 			InitializedCompletionSource.TrySetResult(true);
 		}
+
+		// Surface any StoreInitializedAction reducer/effect failures to InitializeAsync callers
+		await StoreInitializedDispatchTask;
 	}
 
 	private void DequeueActions()
@@ -279,10 +287,19 @@ public class Store : IStore, IActionSubscriber, IDisposable
 		IsDispatching = true;
 		try
 		{
-			while (QueuedActions.TryDequeue(out object nextActionToProcess))
+			while (QueuedActions.TryDequeue(out ActionDispatchedEventArgs dispatchedEvent))
 			{
-				// Only process the action if no middleware vetos it
-				if (Middlewares.All(x => x.MayDispatchAction(nextActionToProcess)))
+				object nextActionToProcess = dispatchedEvent.Action;
+
+				// Only process the action if no middleware vetos it.
+				// A veto is normal control flow, not an error, so the task completes successfully.
+				if (!Middlewares.All(x => x.MayDispatchAction(nextActionToProcess)))
+				{
+					dispatchedEvent.Complete();
+					continue;
+				}
+
+				try
 				{
 					ExecuteMiddlewareBeforeDispatch(nextActionToProcess);
 
@@ -292,8 +309,16 @@ public class Store : IStore, IActionSubscriber, IDisposable
 
 					ActionSubscriber?.Notify(nextActionToProcess);
 					ExecuteMiddlewareAfterDispatch(nextActionToProcess);
-					TriggerEffects(nextActionToProcess);
 				}
+				catch (Exception e)
+				{
+					// Fault only this action's task so one bad action cannot wedge the queue;
+					// its effects are not triggered.
+					dispatchedEvent.Fail(e);
+					continue;
+				}
+
+				TriggerEffects(dispatchedEvent);
 			}
 		}
 		finally

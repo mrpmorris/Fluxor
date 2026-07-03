@@ -1,23 +1,21 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles;
 
 public class InstanceTestEffects
 {
 	[EffectMethod(typeof(TestAction))]
-	public Task Handle(IDispatcher dispatcher)
+	public async Task Handle(IDispatcher dispatcher)
 	{
-		dispatcher.Dispatch(new EffectDispatchedAction());
-		return Task.CompletedTask;
+		await dispatcher.DispatchAsync(new EffectDispatchedAction());
 	}
 }
 
 public static class StaticTestEffects
 {
 	[EffectMethod(typeof(TestAction))]
-	public static Task Handle(IDispatcher dispatcher)
+	public static async Task Handle(IDispatcher dispatcher)
 	{
-		dispatcher.Dispatch(new EffectDispatchedAction());
-		return Task.CompletedTask;
+		await dispatcher.DispatchAsync(new EffectDispatchedAction());
 	}
 }

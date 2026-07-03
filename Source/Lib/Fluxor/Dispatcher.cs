@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Fluxor;
 
@@ -9,7 +10,7 @@ namespace Fluxor;
 public class Dispatcher : IDispatcher
 {
 	private readonly object SyncRoot = new();
-	private readonly Queue<object> QueuedActions = new Queue<object>();
+	private readonly Queue<ActionDispatchedEventArgs> QueuedActions = new Queue<ActionDispatchedEventArgs>();
 	private volatile bool IsDequeuing;
 	private EventHandler<ActionDispatchedEventArgs> _ActionDispatched;
 
@@ -33,17 +34,19 @@ public class Dispatcher : IDispatcher
 		}
 	}
 
-	/// <see cref="IDispatcher.Dispatch(object)"/>
-	public void Dispatch(object action)
+	/// <see cref="IDispatcher.DispatchAsync(object)"/>
+	public Task DispatchAsync(object action)
 	{
 		if (action is null)
 			throw new ArgumentNullException(nameof(action));
 
+		var dispatchedEvent = new ActionDispatchedEventArgs(action);
 		lock (SyncRoot)
 		{
-			QueuedActions.Enqueue(action);
+			QueuedActions.Enqueue(dispatchedEvent);
 		}
 		DequeueActions();
+		return dispatchedEvent.Completion;
 	}
 
 	private void DequeueActions()
@@ -56,17 +59,17 @@ public class Dispatcher : IDispatcher
 		}
 		do
 		{
-			object dequeuedAction = null;
+			ActionDispatchedEventArgs dequeuedEvent = null;
 			EventHandler<ActionDispatchedEventArgs> callbacks;
 			lock (SyncRoot)
 			{
 				callbacks = _ActionDispatched;
-				IsDequeuing = callbacks is not null && QueuedActions.TryDequeue(out dequeuedAction);
+				IsDequeuing = callbacks is not null && QueuedActions.TryDequeue(out dequeuedEvent);
 				if (!IsDequeuing)
 					return;
 			}
 
-			callbacks(this, new ActionDispatchedEventArgs(dequeuedAction));
+			callbacks(this, dequeuedEvent);
 		} while (true);
 	}
 }

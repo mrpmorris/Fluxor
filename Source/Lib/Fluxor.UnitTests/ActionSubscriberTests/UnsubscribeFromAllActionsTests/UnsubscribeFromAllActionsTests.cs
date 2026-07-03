@@ -11,15 +11,15 @@ public class UnsubscribeFromAllActionsTests : IAsyncLifetime
 	private Store Subject;
 
 	[Fact]
-	public void WhenExecuted_ThenNoFutherSubscriptionsAreTriggeredForSubscriber()
+	public async Task WhenExecuted_ThenNoFutherSubscriptionsAreTriggeredForSubscriber()
 	{
 		Subject.SubscribeToAction<TestAction>(this, x => throw new InvalidOperationException("Subscriber should not be triggered"));
 		Subject.UnsubscribeFromAllActions(this);
-		Dispatcher.Dispatch(new TestAction());
+		await Dispatcher.DispatchAsync(new TestAction());
 	}
 
 	[Fact]
-	public void WhenExecuted_ThenOnlyUnsubscribesTheSpecifiedSubscriber()
+	public async Task WhenExecuted_ThenOnlyUnsubscribesTheSpecifiedSubscriber()
 	{
 		var subscriber1 = new object();
 		var subscriber2 = new object();
@@ -30,14 +30,14 @@ public class UnsubscribeFromAllActionsTests : IAsyncLifetime
 		Subject.SubscribeToAction<TestAction>(subscriber1, x => actionReceivedBySubscriber1 = x);
 		Subject.SubscribeToAction<TestAction>(subscriber2, x => actionReceivedBySubscriber2 = x);
 		Subject.UnsubscribeFromAllActions(subscriber1);
-		Dispatcher.Dispatch(dispatchedAction);
+		await Dispatcher.DispatchAsync(dispatchedAction);
 
 		Assert.Null(actionReceivedBySubscriber1);
 		Assert.Same(dispatchedAction, actionReceivedBySubscriber2);
 	}
 
 	[Fact]
-	public void WhenExecutedFromSubscriptionCallback_ThenDoesNotThrowAnError()
+	public async Task WhenExecutedFromSubscriptionCallback_ThenDoesNotThrowAnError()
 	{
 		int executionCount = 0;
 		var subscriber = new object();
@@ -49,8 +49,8 @@ public class UnsubscribeFromAllActionsTests : IAsyncLifetime
 			Subject.UnsubscribeFromAllActions(subscriber);
 		});
 
-		Dispatcher.Dispatch(dispatchedAction);
-		Dispatcher.Dispatch(dispatchedAction);
+		await Dispatcher.DispatchAsync(dispatchedAction);
+		await Dispatcher.DispatchAsync(dispatchedAction);
 
 		Assert.Equal(1, executionCount);
 	}

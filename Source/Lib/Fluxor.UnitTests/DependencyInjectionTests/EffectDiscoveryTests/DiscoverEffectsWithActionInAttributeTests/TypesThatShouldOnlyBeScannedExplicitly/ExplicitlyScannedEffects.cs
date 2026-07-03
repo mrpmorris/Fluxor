@@ -1,4 +1,4 @@
-﻿using Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles;
+using Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.SupportFiles;
 using System.Threading.Tasks;
 
 namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.DiscoverEffectsWithActionInAttributeTests.TypesThatShouldOnlyBeScannedExplicitly;
@@ -6,19 +6,17 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.EffectDiscoveryTests.Discove
 public class ExplicitlyScannedInstanceTestEffects
 {
 	[EffectMethod(typeof(TestAction))]
-	public Task Handle(IDispatcher dispatcher)
+	public async Task Handle(IDispatcher dispatcher)
 	{
-		dispatcher.Dispatch(new EffectDispatchedAction());
-		return Task.CompletedTask;
+		await dispatcher.DispatchAsync(new EffectDispatchedAction());
 	}
 }
 
 public static class ExplicitlyScannedStaticTestEffects
 {
 	[EffectMethod(typeof(TestAction))]
-	public static Task Handle(IDispatcher dispatcher)
+	public static async Task Handle(IDispatcher dispatcher)
 	{
-		dispatcher.Dispatch(new EffectDispatchedAction());
-		return Task.CompletedTask;
+		await dispatcher.DispatchAsync(new EffectDispatchedAction());
 	}
 }

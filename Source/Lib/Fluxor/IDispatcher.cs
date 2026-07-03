@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Threading.Tasks;
 
 namespace Fluxor;
 
@@ -13,10 +14,17 @@ public interface IDispatcher
 	/// interest in the action type are notified.
 	/// </summary>
 	/// <param name="action">The action to dispatch to all features</param>
-	void Dispatch(object action);
+	/// <returns>
+	/// A task that completes once all middleware hooks, reducers, action subscribers, and all
+	/// effects triggered by the action have completed. The task faults if a middleware hook,
+	/// reducer, or action subscriber throws, or if any effect throws (all effect exceptions
+	/// are aggregated). If no store is subscribed to <see cref="ActionDispatched"/> the action
+	/// remains queued and the task remains pending until a store subscribes.
+	/// </returns>
+	Task DispatchAsync(object action);
 
 	/// <summary>
-	/// An event that is triggered whenever <see cref="Dispatch(object)"/> is executed.
+	/// An event that is triggered whenever <see cref="DispatchAsync(object)"/> is executed.
 	/// </summary>
 	event EventHandler<ActionDispatchedEventArgs> ActionDispatched;
 }

@@ -1,4 +1,4 @@
-﻿using Fluxor.Blazor.Web.Components;
+using Fluxor.Blazor.Web.Components;
 using Fluxor.Exceptions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -14,9 +14,6 @@ namespace Fluxor.Blazor.Web;
 /// </summary>
 public class StoreInitializer : FluxorComponent
 {
-	[Parameter]
-	public EventCallback<Exceptions.UnhandledExceptionEventArgs> UnhandledException { get; set; }
-
 	[Inject]
 	private IStore Store { get; set; }
 
@@ -24,26 +21,12 @@ public class StoreInitializer : FluxorComponent
 	private IJSRuntime JSRuntime { get; set; }
 
 	private string MiddlewareInitializationScripts;
-	private Exception ExceptionToThrow;
-
-	/// <summary>
-	/// Disposes via IAsyncDisposable
-	/// </summary>
-	/// <param name="disposing">true if called manually, otherwise false</param>
-	protected override ValueTask DisposeAsyncCore(bool disposing)
-	{
-		if (disposing)
-			Store.UnhandledException -= OnUnhandledException;
-		return base.DisposeAsyncCore(disposing);
-	}
 
 	/// <summary>
 	/// Retrieves supporting JavaScript for any Middleware
 	/// </summary>
 	protected override void OnInitialized()
 	{
-		Store.UnhandledException += OnUnhandledException;
-
 		var webMiddlewares = Store.GetMiddlewares().OfType<IWebMiddleware>();
 
 		var scriptBuilder = new StringBuilder();
@@ -58,17 +41,6 @@ public class StoreInitializer : FluxorComponent
 		}
 		MiddlewareInitializationScripts = scriptBuilder.ToString();
 		base.OnInitialized();
-	}
-
-	protected override void OnAfterRender(bool firstRender)
-	{
-		base.OnAfterRender(firstRender);
-		if (ExceptionToThrow is not null)
-		{
-			Exception exception = ExceptionToThrow;
-			ExceptionToThrow = null;
-			throw exception;
-		}
 	}
 
 	/// <summary>
@@ -102,27 +74,5 @@ public class StoreInitializer : FluxorComponent
 				throw new StoreInitializationException("Store initialization error", err);
 			}
 		}
-	}
-
-	private void OnUnhandledException(object sender, Exceptions.UnhandledExceptionEventArgs e)
-	{
-		InvokeAsync(async () =>
-		{
-			Exception exceptionThrownInHandler = null;
-			try
-			{
-				await UnhandledException.InvokeAsync(e).ConfigureAwait(false);
-			}
-			catch (Exception exception)
-			{
-				exceptionThrownInHandler = exception;
-			}
-
-			if (exceptionThrownInHandler is not null || !e.WasHandled)
-			{
-				ExceptionToThrow = exceptionThrownInHandler ?? e.Exception;
-				StateHasChanged();
-			}
-		});
 	}
 }

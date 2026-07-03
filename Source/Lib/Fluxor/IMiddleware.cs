@@ -12,7 +12,12 @@ public interface IMiddleware
 	/// Called exactly once by the store when the store initialises, or when
 	/// the middleware is added to the store (if the store has already been initialised)
 	/// </summary>
-	/// <param name="dispatcher">A reference to the dispatcher</param>
+	/// <param name="dispatcher">
+	/// A reference to the dispatcher. Never await <see cref="IDispatcher.DispatchAsync(object)"/>
+	/// from within this method; dispatched actions cannot complete until store activation has
+	/// finished, and activation is awaiting this method, so awaiting would deadlock. Discard
+	/// the task instead (<c>_ = dispatcher.DispatchAsync(action);</c>).
+	/// </param>
 	/// <param name="store">A reference to the store</param>
 	Task InitializeAsync(IDispatcher dispatcher, IStore store);
 

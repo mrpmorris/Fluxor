@@ -14,10 +14,10 @@ public class DiscoverGenericEffectMethodsWithActionInMethodSignatureTests : IAsy
 	private readonly InvokeCountService InvokeCountService;
 
 	[Fact]
-	public void WhenActionIsDispatched_ThenGenericEffectClassIsExecuted()
+	public async Task WhenActionIsDispatched_ThenGenericEffectClassIsExecuted()
 	{
 		Assert.Equal(0, InvokeCountService.GetCount());
-		Dispatcher.Dispatch(new TestAction());
+		await Dispatcher.DispatchAsync(new TestAction());
 		// 2 Effects
 		// 1 assembly scanned (generic descendant)
 		// + 1 type scanned (closed generic)

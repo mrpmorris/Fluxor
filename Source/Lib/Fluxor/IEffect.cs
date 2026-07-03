@@ -14,7 +14,11 @@ public interface IEffect
 	/// indicate which action type this effect is interested in by calling <see cref="IStore.AddEffect(IEffect)"/>
 	/// </summary>
 	/// <param name="action">The action that was dispatched</param>
-	/// <param name="dispatcher">The dispatcher to use to trigger any additional actions</param>
+	/// <param name="dispatcher">
+	/// The dispatcher to use to trigger any additional actions. Always await
+	/// <see cref="IDispatcher.DispatchAsync(object)"/>; synchronously blocking on the returned
+	/// task (e.g. <c>.Wait()</c> or <c>.Result</c>) from within an effect will deadlock the store.
+	/// </param>
 	Task HandleAsync(object action, IDispatcher dispatcher);
 
 	/// <summary>

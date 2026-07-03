@@ -180,7 +180,7 @@ public static class Reducers
 - In our `App` class add code to dispatch the action when option 2 is chosen.
 
 ```c#
-public void Run()
+public async Task RunAsync()
 {
   ...
   Console.WriteLine("2: Fetch data");
@@ -189,12 +189,12 @@ public void Run()
     {
       case "1":
         var incrementCounterActionction = new IncrementCounterAction();
-        Dispatcher.Dispatch(incrementCounterActionction);
+        await Dispatcher.DispatchAsync(incrementCounterActionction);
         break;
 
       case "2":
         var fetchDataAction = new FetchDataAction();
-        Dispatcher.Dispatch(fetchDataAction);
+        await Dispatcher.DispatchAsync(fetchDataAction);
         break;
 
       case "x":
@@ -222,7 +222,7 @@ Effect handlers can be written in one of three ways.
   public async Task HandleFetchDataAction(IDispatcher dispatcher)
   {
     var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
-    dispatcher.Dispatch(new FetchDataResultAction(forecasts));
+    await dispatcher.DispatchAsync(new FetchDataResultAction(forecasts));
   }
 ```
 
@@ -243,7 +243,7 @@ public class Effects
   public async Task HandleFetchDataAction(FetchDataAction action, IDispatcher dispatcher)
   {
     var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
-    dispatcher.Dispatch(new FetchDataResultAction(forecasts));
+    await dispatcher.DispatchAsync(new FetchDataResultAction(forecasts));
   }
 }
 ```
@@ -264,7 +264,7 @@ public class FetchDataActionEffect : Effect<FetchDataAction>
   public override async Task HandleAsync(FetchDataAction action, IDispatcher dispatcher)
   {
     var forecasts = await WeatherForecastService.GetForecastAsync(DateTime.Now);
-    dispatcher.Dispatch(new FetchDataResultAction(forecasts));
+    await dispatcher.DispatchAsync(new FetchDataResultAction(forecasts));
   }
 }
 ```
@@ -331,29 +331,33 @@ IsLoading: True
 --- No weather forecasts
 <========================== WeatherState
 
-1: Increment counter
-2: Fetch data
-x: Exit
->
 =========================> WeatherState
 IsLoading: False
 Temp C  Temp F  Summary
 8       46      Mild
 -8      18      Sweltering
 <========================== WeatherState
+
+1: Increment counter
+2: Fetch data
+x: Exit
+>
 ```
 
 1. Our `App` class dispatches the `FetchDataAction` action to notify the store of our intent.
 * The `ReduceFetchDataAction` reducer method sets `IsLoading` to true, so our UI can reflect the change.
 2. The effect method is triggered by the `FetchDataAction` and asynchronously makes a data request
 to our mock server.
-* The call to `Dispatcher.Dispatch(fetchDataAction)` in our `App` class completes, so redisplays the
-menu options.
+* The task returned by `Dispatcher.DispatchAsync(fetchDataAction)` does not complete yet, because it
+completes only once the reducers **and** all effects for the action have finished, so our `App` class
+continues to await it.
 3. One second later the mock service returns data.
 4. The effect method bundles the result data into a new `FetchDataResultAction` and dispatches the action.
 * The `ReduceFetchDataResultAction` reducer methods sets `IsLoading` to false, and sets `Forecasts`
 to the values in the action.
 * The store now has new state for `WeatherState` so executes its `StateChanged` event, resulting in the
-new state being output to the console below the options menu.
+new state being output to the console.
+* The awaited `Dispatcher.DispatchAsync(fetchDataAction)` task now completes, so our `App` class
+redisplays the menu options.
 
 ![](../../../../Images/flux-effect.jpg)

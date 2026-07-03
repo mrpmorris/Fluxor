@@ -21,7 +21,7 @@ public class DispatchWhileInitializingTests
 		var dispatch = Task.Run(async () =>
 		{
 			await Task.Delay(50);
-			Dispatcher.Dispatch(new IncrementCounterAction());
+			await Dispatcher.DispatchAsync(new IncrementCounterAction());
 		});
 
 		await Task.WhenAny(timeout, Task.WhenAll(initialize, dispatch));

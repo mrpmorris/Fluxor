@@ -1,6 +1,17 @@
 # Releases
 
-## Next release
+## New in 7.0
+* **Breaking change**: `IDispatcher.Dispatch(object action)` has been replaced with `Task IDispatcher.DispatchAsync(object action)`.
+  The returned task completes only when all middleware hooks, reducers, action subscribers, and effects for
+  the dispatched action have completed.
+* **Breaking change**: Exceptions thrown by reducers or effects now fault the task returned by `DispatchAsync`
+  and surface at the `await` site. The `IStore.UnhandledException` event and the
+  `StoreInitializer.UnhandledException` Blazor parameter have been removed.
+* Guidance when migrating:
+  * Never await `DispatchAsync` inside `IMiddleware.InitializeAsync` - it will deadlock; discard the task instead (`_ = dispatcher.DispatchAsync(action)`).
+  * Never block on the returned task (`.Wait()` or `.Result`) inside an effect.
+  * In Blazor, do not await `DispatchAsync` in `OnInitialized`/`OnInitializedAsync` during prerendering - the store
+    only activates after the first render, so awaiting would hang prerendering; discard the task instead (`_ = Dispatcher.DispatchAsync(action)`).
 * Migrate demos to .Net 9 ([#548](https://github.com/mrpmorris/Fluxor/issues/548))
 
 ## New in 6.8

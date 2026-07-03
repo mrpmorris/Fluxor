@@ -16,7 +16,7 @@ To do this we will create a console application, as this will avoid as much UI s
 ```c#
 class Program
 {
-  static void Main(string[] args)
+  static async Task Main(string[] args)
   {
     var services = new ServiceCollection();
     services.AddScoped<App>();
@@ -26,7 +26,7 @@ class Program
     IServiceProvider serviceProvider = services.BuildServiceProvider();
 
     var app = serviceProvider.GetRequiredService<App>();
-    app.Run();
+    await app.RunAsync();
   }
 }
 ```
@@ -40,7 +40,7 @@ an example of a UI element that has dependencies injected. For now, we can just 
 ```c#
 public class App
 {
-  public void Run()
+  public async Task RunAsync()
   {
   }
 }
@@ -61,11 +61,11 @@ public class App
     Store = store;
   }
 
-  public void Run()
+  public async Task RunAsync()
   {
     Console.Clear();
     Console.WriteLine("Initializing store");
-    Store.InitializeAsync().Wait();
+    await Store.InitializeAsync();
   }
 }
 ```
@@ -148,7 +148,7 @@ of our new `IncrementCounterAction` when the user tells it to.
 
 ```c#
 var action = new IncrementCounterAction();
-Dispatcher.Dispatch(action);
+await Dispatcher.DispatchAsync(action);
 ```
 
 The `App` class should now look like the following code:
@@ -177,11 +177,11 @@ public class App
     Console.WriteLine("");
   }
 
-  public void Run()
+  public async Task RunAsync()
   {
     Console.Clear();
     Console.WriteLine("Initializing store");
-    Store.InitializeAsync().Wait();
+    await Store.InitializeAsync();
     string input = "";
     do
     {
@@ -194,7 +194,7 @@ public class App
       {
         case "1":
           var action = new IncrementCounterAction();
-          Dispatcher.Dispatch(action);
+          await Dispatcher.DispatchAsync(action);
           break;
 
         case "x":

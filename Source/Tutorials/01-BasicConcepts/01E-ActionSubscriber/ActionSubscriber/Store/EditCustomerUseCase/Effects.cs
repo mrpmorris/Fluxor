@@ -17,7 +17,7 @@ namespace BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase
 
 			string jsonFromServer = $"{{\"Id\":42,\"RowVersion\":\"AQIDBAUGBwgJCgsMDQ4PEA==\",\"Name\":\"Our first customer\"}}";
 			var objectFromServer = JsonConvert.DeserializeObject<CustomerEdit>(jsonFromServer);
-			dispatcher.Dispatch(new GetCustomerForEditResultAction(objectFromServer));
+			await dispatcher.DispatchAsync(new GetCustomerForEditResultAction(objectFromServer));
 		}
 	}
 }

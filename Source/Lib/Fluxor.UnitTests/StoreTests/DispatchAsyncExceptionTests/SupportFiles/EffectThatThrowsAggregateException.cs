@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
-namespace Fluxor.UnitTests.StoreTests.UnhandledExceptionTests.SupportFiles;
+namespace Fluxor.UnitTests.StoreTests.DispatchAsyncExceptionTests.SupportFiles;
 
 public class EffectThatThrowsAggregateException : Effect<ThrowAggregateExceptionAction>
 {
@@ -12,15 +12,8 @@ public class EffectThatThrowsAggregateException : Effect<ThrowAggregateException
 		var exception3 = new InvalidProgramException("Third embedded exception");
 
 		await Task.Delay(100);
-		try
-		{
-			throw new AggregateException(
-				exception1,
-				new AggregateException(exception2, exception3));
-		}
-		finally
-		{
-			action.TriggerHasFinished.Set();
-		}
+		throw new AggregateException(
+			exception1,
+			new AggregateException(exception2, exception3));
 	}
 }

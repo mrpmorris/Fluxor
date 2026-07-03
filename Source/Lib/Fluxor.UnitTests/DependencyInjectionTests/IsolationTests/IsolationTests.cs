@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 using Fluxor.UnitTests.DependencyInjectionTests.IsolationTests.SupportFiles;
 
@@ -8,7 +9,7 @@ namespace Fluxor.UnitTests.DependencyInjectionTests.IsolationTests;
 public class IsolationTests
 {
 	[Fact]
-	public void WhenStoreIsCreated_ItIsUniqueToDependencyInjectionScope()
+	public async Task WhenStoreIsCreated_ItIsUniqueToDependencyInjectionScope()
 	{
 		IDispatcher dispatcher1;
 		IState<CounterState> state1;
@@ -23,15 +24,15 @@ public class IsolationTests
 		Assert.Equal(0, state1.Value.Counter);
 		Assert.Equal(0, state2.Value.Counter);
 
-		dispatcher1.Dispatch(action);
+		await dispatcher1.DispatchAsync(action);
 		Assert.Equal(1, state1.Value.Counter);
 		Assert.Equal(0, state2.Value.Counter);
 
-		dispatcher2.Dispatch(action);
+		await dispatcher2.DispatchAsync(action);
 		Assert.Equal(1, state1.Value.Counter);
 		Assert.Equal(1, state2.Value.Counter);
 
-		dispatcher2.Dispatch(action);
+		await dispatcher2.DispatchAsync(action);
 		Assert.Equal(1, state1.Value.Counter);
 		Assert.Equal(2, state2.Value.Counter);
 	}

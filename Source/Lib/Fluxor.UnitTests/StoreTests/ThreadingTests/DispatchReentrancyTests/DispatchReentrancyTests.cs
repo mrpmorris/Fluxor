@@ -15,7 +15,7 @@ public class DispatchReentrancyTests
 	public async Task WhenObserverSubscribesToAnAction_AndDispatchesAnActionFromANewThread_ThenThereShouldBeNoDeadlock()
 	{
 		Thread initialThread = Thread.CurrentThread;
-		Subject.SubscribeToAction<StoreInitializedAction>(this, _ =>
+		Subject.SubscribeToAction<StoreInitializedAction>(this, storeInitializedAction =>
 		{
 			var thread = new Thread(() =>
 			{
@@ -23,7 +23,7 @@ public class DispatchReentrancyTests
 				while (Thread.CurrentThread == initialThread)
 					Thread.Sleep(0);
 
-				Dispatcher.Dispatch(new IncrementCounterAction());
+				_ = Dispatcher.DispatchAsync(new IncrementCounterAction());
 			});
 			thread.Start();
 			thread.Join();

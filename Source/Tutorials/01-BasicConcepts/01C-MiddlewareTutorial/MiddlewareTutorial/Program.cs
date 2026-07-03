@@ -3,12 +3,13 @@ using BasicConcepts.MiddlewareTutorial.Services;
 using BasicConcepts.MiddlewareTutorial.Store.Middlewares.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace BasicConcepts.MiddlewareTutorial
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static async Task Main(string[] args)
 		{
 			var services = new ServiceCollection();
 			services.AddScoped<App>();
@@ -20,7 +21,7 @@ namespace BasicConcepts.MiddlewareTutorial
 			IServiceProvider serviceProvider = services.BuildServiceProvider();
 
 			var app = serviceProvider.GetRequiredService<App>();
-			app.Run();
+			await app.RunAsync();
 		}
 	}
 }

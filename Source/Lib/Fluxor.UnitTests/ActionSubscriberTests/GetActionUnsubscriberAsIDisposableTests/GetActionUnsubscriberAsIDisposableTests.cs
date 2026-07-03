@@ -11,11 +11,11 @@ public class GetActionUnsubscriberAsIDisposableTests : IAsyncLifetime
 	private Store Subject;
 
 	[Fact]
-	public void WhenExecuted_ThenNoFutherSubscriptionsAreTriggeredForSubscriber()
+	public async Task WhenExecuted_ThenNoFutherSubscriptionsAreTriggeredForSubscriber()
 	{
 		Subject.SubscribeToAction<TestAction>(this, x => throw new InvalidOperationException("Subscriber should not be triggered"));
 		Subject.GetActionUnsubscriberAsIDisposable(this).Dispose();
-		Dispatcher.Dispatch(new TestAction());
+		await Dispatcher.DispatchAsync(new TestAction());
 	}
 
 	public GetActionUnsubscriberAsIDisposableTests()

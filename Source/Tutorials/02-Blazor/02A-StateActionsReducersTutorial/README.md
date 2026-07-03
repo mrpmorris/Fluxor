@@ -163,10 +163,10 @@ Running the app will now show a `0` value for the current count, but clicking th
 
 @code
 {
-    private void IncrementCount()
+    private async Task IncrementCount()
     {
         var action = new IncrementCounterAction();
-        Dispatcher.Dispatch(action);
+        await Dispatcher.DispatchAsync(action);
     }
 }
 ```

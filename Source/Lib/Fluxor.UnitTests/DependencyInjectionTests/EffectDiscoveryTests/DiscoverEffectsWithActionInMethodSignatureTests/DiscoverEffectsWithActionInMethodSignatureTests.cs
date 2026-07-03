@@ -14,9 +14,9 @@ public class DiscoverEffectsWithActionInMethodSignatureTests : IAsyncLifetime
 	private readonly IState<TestState> State;
 
 	[Fact]
-	public void WhenActionIsDispatched_ThenEffectWithActionInMethodSignatureIsExecuted()
+	public async Task WhenActionIsDispatched_ThenEffectWithActionInMethodSignatureIsExecuted()
 	{
-		Dispatcher.Dispatch(new TestAction());
+		await Dispatcher.DispatchAsync(new TestAction());
 		// 4 effects.
 		// Static & Instance
 		// 2 assembly scanned

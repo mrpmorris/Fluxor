@@ -25,6 +25,6 @@ public class Effects
 			);
 
 		var action = new FetchForecastsResultAction(forecasts);
-		dispatcher.Dispatch(action);
+		await dispatcher.DispatchAsync(action);
 	}
 }

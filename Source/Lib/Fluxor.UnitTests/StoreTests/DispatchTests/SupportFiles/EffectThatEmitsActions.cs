@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles;
@@ -11,10 +11,9 @@ public class EffectThatEmitsActions : Effect<TestAction>
 	{
 		ActionsToEmit = actionsToEmit ?? Array.Empty<object>();
 	}
-	public override Task HandleAsync(TestAction action, IDispatcher dispatcher)
+	public override async Task HandleAsync(TestAction action, IDispatcher dispatcher)
 	{
 		foreach (object actionToEmit in ActionsToEmit)
-			dispatcher.Dispatch(actionToEmit);
-		return Task.CompletedTask;
+			await dispatcher.DispatchAsync(actionToEmit);
 	}
 }

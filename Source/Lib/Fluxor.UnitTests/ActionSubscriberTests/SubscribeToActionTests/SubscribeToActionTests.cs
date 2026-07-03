@@ -25,31 +25,31 @@ public class SubscribeToActionTests : IAsyncLifetime
 	}
 
 	[Fact]
-	public void WhenActionIsDispatched_ThenTriggersSubscription()
+	public async Task WhenActionIsDispatched_ThenTriggersSubscription()
 	{
 		var dispatchedAction = new TestAction();
 		TestAction receivedAction = null;
 
 		Subject.SubscribeToAction<TestAction>(this, x => receivedAction = x);
-		Dispatcher.Dispatch(dispatchedAction);
+		await Dispatcher.DispatchAsync(dispatchedAction);
 
 		Assert.Same(dispatchedAction, receivedAction);
 	}
 
 	[Fact]
-	public void WhenDescendantActionIsDispatched_ThenTriggersSubscription()
+	public async Task WhenDescendantActionIsDispatched_ThenTriggersSubscription()
 	{
 		var dispatchedAction = new TestDescendantAction();
 		TestAction receivedAction = null;
 
 		Subject.SubscribeToAction<TestAction>(this, x => receivedAction = x);
-		Dispatcher.Dispatch(dispatchedAction);
+		await Dispatcher.DispatchAsync(dispatchedAction);
 
 		Assert.Same(dispatchedAction, receivedAction);
 	}
 
 	[Fact]
-	public void WhenSubscribingToTheSameActionTypeMultipleTimes_ThenTriggersEachSubscription()
+	public async Task WhenSubscribingToTheSameActionTypeMultipleTimes_ThenTriggersEachSubscription()
 	{
 		var dispatchedAction = new TestAction();
 		TestAction receivedAction1 = null;
@@ -57,14 +57,14 @@ public class SubscribeToActionTests : IAsyncLifetime
 
 		Subject.SubscribeToAction<TestAction>(this, x => receivedAction1 = x);
 		Subject.SubscribeToAction<TestAction>(this, x => receivedAction2 = x);
-		Dispatcher.Dispatch(dispatchedAction);
+		await Dispatcher.DispatchAsync(dispatchedAction);
 
 		Assert.Same(dispatchedAction, receivedAction1);
 		Assert.Same(dispatchedAction, receivedAction2);
 	}
 
 	[Fact]
-	public void WhenAncestorActionIsDispatched_ThenDoesNotTriggerSubscriptionsForDescendantActionTypes()
+	public async Task WhenAncestorActionIsDispatched_ThenDoesNotTriggerSubscriptionsForDescendantActionTypes()
 	{
 		var dispatchedAncestorAction = new TestAction();
 		TestAction receivedAncestorAction = null;
@@ -72,14 +72,14 @@ public class SubscribeToActionTests : IAsyncLifetime
 
 		Subject.SubscribeToAction<TestAction>(this, x => receivedAncestorAction = x);
 		Subject.SubscribeToAction<TestDescendantAction>(this, x => receivedDescendantAction = x);
-		Dispatcher.Dispatch(dispatchedAncestorAction);
+		await Dispatcher.DispatchAsync(dispatchedAncestorAction);
 
 		Assert.Same(dispatchedAncestorAction, receivedAncestorAction);
 		Assert.Null(receivedDescendantAction);
 	}
 
 	[Fact]
-	public void WhenDescenantActionIsDispatched_ThenTriggersSubscriptionsForAncestorActionTypes()
+	public async Task WhenDescenantActionIsDispatched_ThenTriggersSubscriptionsForAncestorActionTypes()
 	{
 		var dispatchedDescendantAction = new TestDescendantAction();
 		TestAction receivedAncestorAction = null;
@@ -87,14 +87,14 @@ public class SubscribeToActionTests : IAsyncLifetime
 
 		Subject.SubscribeToAction<TestAction>(this, x => receivedAncestorAction = x);
 		Subject.SubscribeToAction<TestDescendantAction>(this, x => receivedDescendantAction = x);
-		Dispatcher.Dispatch(dispatchedDescendantAction);
+		await Dispatcher.DispatchAsync(dispatchedDescendantAction);
 
 		Assert.Same(dispatchedDescendantAction, receivedAncestorAction);
 		Assert.Same(dispatchedDescendantAction, receivedDescendantAction);
 	}
 
 	[Fact]
-	public void WhenActionIsDispatched_ThenUpdatesStateBeforeNotifyingSubscribers()
+	public async Task WhenActionIsDispatched_ThenUpdatesStateBeforeNotifyingSubscribers()
 	{
 		var subscriber = new object();
 		var dispatchedAction = new TestAction();
@@ -106,14 +106,14 @@ public class SubscribeToActionTests : IAsyncLifetime
 			actionReceivedBySubscriber = x;
 			stateWhenSubscriberWasNotified = State.Value;
 		});
-		Dispatcher.Dispatch(dispatchedAction);
+		await Dispatcher.DispatchAsync(dispatchedAction);
 
 		Assert.Same(dispatchedAction, actionReceivedBySubscriber);
 		Assert.Equal(1, stateWhenSubscriberWasNotified.DispatchCount);
 	}
 
 	[Fact]
-	public void WhenActionIsDispatched_ThenNotifiesMultipleSubscribers()
+	public async Task WhenActionIsDispatched_ThenNotifiesMultipleSubscribers()
 	{
 		var subscriber1 = new object();
 		var subscriber2 = new object();
@@ -123,14 +123,14 @@ public class SubscribeToActionTests : IAsyncLifetime
 
 		Subject.SubscribeToAction<TestAction>(subscriber1, x => actionReceivedBySubscriber1 = x);
 		Subject.SubscribeToAction<TestAction>(subscriber2, x => actionReceivedBySubscriber2 = x);
-		Dispatcher.Dispatch(dispatchedAction);
+		await Dispatcher.DispatchAsync(dispatchedAction);
 
 		Assert.Same(dispatchedAction, actionReceivedBySubscriber1);
 		Assert.Same(dispatchedAction, actionReceivedBySubscriber2);
 	}
 
 	[Fact]
-	public void WhenActionIsDispatched_ThenNotifiesOnlySubscribedSubscribers()
+	public async Task WhenActionIsDispatched_ThenNotifiesOnlySubscribedSubscribers()
 	{
 		var subscriber1 = new object();
 		var subscriber2 = new object();
@@ -139,7 +139,7 @@ public class SubscribeToActionTests : IAsyncLifetime
 		TestAction actionReceivedBySubscriber2 = null;
 
 		Subject.SubscribeToAction<TestAction>(subscriber1, x => actionReceivedBySubscriber1 = x);
-		Dispatcher.Dispatch(dispatchedAction);
+		await Dispatcher.DispatchAsync(dispatchedAction);
 
 		Assert.Same(dispatchedAction, actionReceivedBySubscriber1);
 		Assert.Null(actionReceivedBySubscriber2);

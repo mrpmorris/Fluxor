@@ -12,11 +12,10 @@ public class EffectThatEmitsActions : Effect<StoreInitializedAction>
 	{
 		ActionsToEmit = actionsToEmit ?? Array.Empty<object>();
 	}
-	public override Task HandleAsync(StoreInitializedAction action, IDispatcher dispatcher)
+	public override async Task HandleAsync(StoreInitializedAction action, IDispatcher dispatcher)
 	{
 		Thread.Sleep(500);
 		foreach (object actionToEmit in ActionsToEmit)
-			dispatcher.Dispatch(actionToEmit);
-		return Task.CompletedTask;
+			await dispatcher.DispatchAsync(actionToEmit);
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using Fluxor;
 using System;
+using System.Threading.Tasks;
 using BasicConcepts.MiddlewareTutorial.Store;
 
 namespace BasicConcepts.MiddlewareTutorial
@@ -17,11 +18,11 @@ namespace BasicConcepts.MiddlewareTutorial
 			Dispatcher = dispatcher;
 		}
 
-		public void Run()
+		public async Task RunAsync()
 		{
 			Console.Clear();
 			Console.WriteLine("Initializing store");
-			Store.InitializeAsync().Wait();
+			await Store.InitializeAsync();
 			string input = "";
 			do
 			{
@@ -35,12 +36,12 @@ namespace BasicConcepts.MiddlewareTutorial
 				{
 					case "1":
 						var incrementCounterActionction = new IncrementCounterAction();
-						Dispatcher.Dispatch(incrementCounterActionction);
+						await Dispatcher.DispatchAsync(incrementCounterActionction);
 						break;
 
 					case "2":
 						var fetchDataAction = new FetchDataAction();
-						Dispatcher.Dispatch(fetchDataAction);
+						await Dispatcher.DispatchAsync(fetchDataAction);
 						break;
 
 					case "x":

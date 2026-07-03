@@ -1,4 +1,4 @@
-﻿using Fluxor.UnitTests.MockFactories;
+using Fluxor.UnitTests.MockFactories;
 using Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles;
 using Moq;
 using System;
@@ -15,9 +15,9 @@ public class DispatchTests : IAsyncLifetime
 	private readonly IStore Subject;
 
 	[Fact]
-	public void WhenActionIsNull_ThenThrowsArgumentNullException()
+	public async Task WhenActionIsNull_ThenThrowsArgumentNullException()
 	{
-		Assert.Throws<ArgumentNullException>(() => Dispatcher.Dispatch(null));
+		await Assert.ThrowsAsync<ArgumentNullException>(() => Dispatcher.DispatchAsync(null));
 	}
 
 	[Fact]
@@ -30,14 +30,16 @@ public class DispatchTests : IAsyncLifetime
 		var testAction = new TestAction();
 		using (Subject.BeginInternalMiddlewareChange())
 		{
-			Dispatcher.Dispatch(testAction);
+			Task dispatchTask = Dispatcher.DispatchAsync(testAction);
+			// The action is ignored by design, so its task completes immediately
+			Assert.True(dispatchTask.IsCompletedSuccessfully);
 		}
 
 		mockMiddleware.Verify(x => x.MayDispatchAction(testAction), Times.Never);
 	}
 
 	[Fact]
-	public void WhenMiddlewareForbidsIt_ThenDoesNotSendActionToFeatures()
+	public async Task WhenMiddlewareForbidsIt_ThenDoesNotSendActionToFeatures()
 	{
 		var testAction = new TestAction();
 		var mockFeature = MockFeatureFactory.Create();
@@ -46,40 +48,54 @@ public class DispatchTests : IAsyncLifetime
 			.Setup(x => x.MayDispatchAction(testAction))
 			.Returns(false);
 
-		Dispatcher.Dispatch(testAction);
+		await Dispatcher.DispatchAsync(testAction);
 
 		mockFeature
 			.Verify(x => x.ReceiveDispatchNotificationFromStore(testAction), Times.Never);
 	}
 
 	[Fact]
-	public void WhenCalled_ThenCallsBeforeDispatchOnAllMiddlewares()
+	public async Task WhenVetoedByMiddleware_ThenTaskCompletesSuccessfully()
+	{
+		var testAction = new TestAction();
+		var mockMiddleware = MockMiddlewareFactory.Create();
+		mockMiddleware
+			.Setup(x => x.MayDispatchAction(testAction))
+			.Returns(false);
+		Subject.AddMiddleware(mockMiddleware.Object);
+
+		// A veto is normal control flow, not an error
+		await Dispatcher.DispatchAsync(testAction);
+	}
+
+	[Fact]
+	public async Task WhenCalled_ThenCallsBeforeDispatchOnAllMiddlewares()
 	{
 		var testAction = new TestAction();
 		var mockMiddleware = MockMiddlewareFactory.Create();
 		Subject.AddMiddleware(mockMiddleware.Object);
 
-		Dispatcher.Dispatch(testAction);
+		await Dispatcher.DispatchAsync(testAction);
 
 		mockMiddleware
 			.Verify(x => x.BeforeDispatch(testAction), Times.Once);
 	}
 
 	[Fact]
-	public void WhenCalled_ThenPassesActionOnToAllFeatures()
+	public async Task WhenCalled_ThenPassesActionOnToAllFeatures()
 	{
 		var mockFeature = MockFeatureFactory.Create();
 		Subject.AddFeature(mockFeature.Object);
 
 		var testAction = new TestAction();
-		Dispatcher.Dispatch(testAction);
+		await Dispatcher.DispatchAsync(testAction);
 
 		mockFeature
 			.Verify(x => x.ReceiveDispatchNotificationFromStore(testAction));
 	}
 
 	[Fact]
-	public void WhenFinished_ThenDispatchesTasksFromRegisteredEffects()
+	public async Task WhenFinished_ThenDispatchesTasksFromRegisteredEffects()
 	{
 		var mockFeature = MockFeatureFactory.Create();
 		var actionToEmit1 = new TestActionFromEffect1();
@@ -88,7 +104,7 @@ public class DispatchTests : IAsyncLifetime
 		Subject.AddFeature(mockFeature.Object);
 		Subject.AddEffect(new EffectThatEmitsActions(actionsToEmit));
 
-		Dispatcher.Dispatch(new TestAction());
+		await Dispatcher.DispatchAsync(new TestAction());
 
 		mockFeature
 			.Verify(x => x.ReceiveDispatchNotificationFromStore(actionToEmit1), Times.Once);
@@ -97,7 +113,7 @@ public class DispatchTests : IAsyncLifetime
 	}
 
 	[Fact]
-	public void WhenCalled_ThenTriggersOnlyEffectsThatHandleTheDispatchedAction()
+	public async Task WhenCalled_ThenTriggersOnlyEffectsThatHandleTheDispatchedAction()
 	{
 		var mockIncompatibleEffect = new Mock<IEffect>();
 		mockIncompatibleEffect
@@ -112,14 +128,14 @@ public class DispatchTests : IAsyncLifetime
 		Subject.AddEffect(mockCompatibleEffect.Object);
 
 		var action = new TestAction();
-		Dispatcher.Dispatch(action);
+		await Dispatcher.DispatchAsync(action);
 
 		mockIncompatibleEffect.Verify(x => x.HandleAsync(action, It.IsAny<IDispatcher>()), Times.Never);
 		mockCompatibleEffect.Verify(x => x.HandleAsync(action, It.IsAny<IDispatcher>()), Times.Once);
 	}
 
 	[Fact]
-	public void WhenSynchronousEffectThrowsException_ThenStillExecutesSubsequentEffects()
+	public async Task WhenSynchronousEffectThrowsException_ThenStillExecutesSubsequentEffects()
 	{
 		var action = new object();
 
@@ -138,19 +154,67 @@ public class DispatchTests : IAsyncLifetime
 
 		Subject.AddEffect(mockSynchronousEffectThatThrows.Object);
 		Subject.AddEffect(mockEffectThatFollows.Object);
-		Dispatcher.Dispatch(action);
+		await Assert.ThrowsAsync<NotImplementedException>(() => Dispatcher.DispatchAsync(action));
 
 		mockSynchronousEffectThatThrows.Verify(x => x.HandleAsync(action, Dispatcher));
 		mockEffectThatFollows.Verify(x => x.HandleAsync(action, Dispatcher));
 	}
 
 	[Fact]
+	public async Task WhenDispatched_ThenTaskDoesNotCompleteUntilAllEffectsHaveCompleted()
+	{
+		var effectCompletionSource = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+		var mockEffect = new Mock<IEffect>();
+		mockEffect
+			.Setup(x => x.ShouldReactToAction(It.IsAny<object>()))
+			.Returns(true);
+		mockEffect
+			.Setup(x => x.HandleAsync(It.IsAny<object>(), It.IsAny<IDispatcher>()))
+			.Returns(effectCompletionSource.Task);
+		Subject.AddEffect(mockEffect.Object);
+
+		Task dispatchTask = Dispatcher.DispatchAsync(new TestAction());
+		Assert.False(dispatchTask.IsCompleted);
+
+		effectCompletionSource.SetResult();
+		await dispatchTask.WaitAsync(TimeSpan.FromSeconds(5));
+	}
+
+	[Fact]
+	public async Task WhenEffectAwaitsNestedDispatch_ThenBothTasksComplete()
+	{
+		Task nestedDispatchTask = null;
+		var mockEffect = new Mock<IEffect>();
+		mockEffect
+			.Setup(x => x.ShouldReactToAction(It.IsAny<object>()))
+			.Returns((object action) => action is TestAction);
+		mockEffect
+			.Setup(x => x.HandleAsync(It.IsAny<object>(), It.IsAny<IDispatcher>()))
+			.Returns(async (object _, IDispatcher dispatcher) =>
+			{
+				nestedDispatchTask = dispatcher.DispatchAsync(new TestActionFromEffect1());
+				await nestedDispatchTask;
+			});
+		Subject.AddEffect(mockEffect.Object);
+
+		await Dispatcher.DispatchAsync(new TestAction()).WaitAsync(TimeSpan.FromSeconds(5));
+
+		Assert.NotNull(nestedDispatchTask);
+		Assert.True(nestedDispatchTask.IsCompletedSuccessfully);
+	}
+
+	[Fact]
 	public void WhenNoSubscriberIsAttachedToTheDispatcher_ThenActionsAreStoredUntilOneSubscribes()
 	{
 		var dispatcher = new Dispatcher();
-		dispatcher.Dispatch(0);
-		dispatcher.Dispatch(1);
-		dispatcher.Dispatch(2);
+		Task task0 = dispatcher.DispatchAsync(0);
+		Task task1 = dispatcher.DispatchAsync(1);
+		Task task2 = dispatcher.DispatchAsync(2);
+
+		// No store is subscribed, so the actions' tasks remain pending
+		Assert.False(task0.IsCompleted);
+		Assert.False(task1.IsCompleted);
+		Assert.False(task2.IsCompleted);
 
 		var receivedActions = new List<int>();
 		dispatcher.ActionDispatched += (_, args) => receivedActions.Add((int)args.Action);
@@ -174,13 +238,13 @@ public class DispatchTests : IAsyncLifetime
 
 			var thread = new Thread(_ =>
 			{
-				dispatcher.Dispatch(secondaryAction);
+				_ = dispatcher.DispatchAsync(secondaryAction);
 			});
 			thread.Start();
 			thread.Join(millisecondsTimeout: 1_000);
 			Assert.Equal(ThreadState.Stopped, thread.ThreadState);
 		};
-		dispatcher.Dispatch(primaryAction);
+		_ = dispatcher.DispatchAsync(primaryAction);
 	}
 
 	public DispatchTests()

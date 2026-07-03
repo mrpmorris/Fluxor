@@ -3,6 +3,7 @@ using BasicConcepts.ActionSubscriber.Store.EditCustomerUseCase;
 using Fluxor;
 using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 
 namespace BasicConcepts.ActionSubscriber
 {
@@ -19,11 +20,11 @@ namespace BasicConcepts.ActionSubscriber
 			ActionSubscriber = actionSubscriber;
 		}
 
-		public void Run()
+		public async Task RunAsync()
 		{
 			Console.Clear();
 			Console.WriteLine("Initializing store");
-			Store.InitializeAsync().Wait();
+			await Store.InitializeAsync();
 			SubscribeToResultAction();
 			string input = "";
 			do
@@ -37,7 +38,7 @@ namespace BasicConcepts.ActionSubscriber
 				{
 					case "1":
 						var getCustomerAction = new GetCustomerForEditAction(Guid.NewGuid());
-						Dispatcher.Dispatch(getCustomerAction);
+						await Dispatcher.DispatchAsync(getCustomerAction);
 						break;
 
 					case "x":

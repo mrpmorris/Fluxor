@@ -102,7 +102,7 @@ public class Effects
 
     string jsonFromServer = $"{{\"Id\":42,\"RowVersion\":\"AQIDBAUGBwgJCgsMDQ4PEA==\",\"Name\":\"Our first customer\"}}";
     var objectFromServer = JsonConvert.DeserializeObject<CustomerEdit>(jsonFromServer);
-    dispatcher.Dispatch(new GetCustomerForEditResultAction(objectFromServer));
+    await dispatcher.DispatchAsync(new GetCustomerForEditResultAction(objectFromServer));
   }
 }
 ```
@@ -123,11 +123,11 @@ public class App : IDisposable
     ActionSubscriber = actionSubscriber;
   }
 
-  public void Run()
+  public async Task RunAsync()
   {
     Console.Clear();
     Console.WriteLine("Initializing store");
-    Store.InitializeAsync().Wait();
+    await Store.InitializeAsync();
     SubscribeToResultAction();
     string input = "";
     do
@@ -141,7 +141,7 @@ public class App : IDisposable
       {
         case "1":
           var getCustomerAction = new GetCustomerForEditAction(42);
-          Dispatcher.Dispatch(getCustomerAction);
+          await Dispatcher.DispatchAsync(getCustomerAction);
           break;
 
         case "x":
@@ -168,7 +168,7 @@ public class App : IDisposable
 Replace the `Main` method in `Program.cs` to execute our test app.
 
 ```c#
-static void Main(string[] args)
+static async Task Main(string[] args)
 {
   var services = new ServiceCollection();
   services.AddScoped<App>();
@@ -178,7 +178,7 @@ static void Main(string[] args)
   IServiceProvider serviceProvider = services.BuildServiceProvider();
 
   var app = serviceProvider.GetRequiredService<App>();
-  app.Run();
+  await app.RunAsync();
 }
 ```
 
