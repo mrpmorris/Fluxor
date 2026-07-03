@@ -22,8 +22,11 @@ public class AddMiddlewareTests
 		await subject.InitializeAsync();
 		subject.AddMiddleware(mockMiddleware.Object);
 
-		// Wait no more than 1 second for AfterInitializeAllMiddlewares to be executed
-		signal.WaitOne(TimeSpan.FromSeconds(1));
+		// AfterInitializeAllMiddlewares is executed via a thread-pool continuation, which can be
+		// slow to schedule on a busy CI agent. WaitOne returns as soon as the signal is set, so a
+		// generous timeout only slows down the failure case.
+		bool afterInitializeCalled = signal.WaitOne(TimeSpan.FromSeconds(30));
+		Assert.True(afterInitializeCalled, "Timed out waiting for AfterInitializeAllMiddlewares");
 
 		mockMiddleware
 			.Verify(x => x.AfterInitializeAllMiddlewares());
