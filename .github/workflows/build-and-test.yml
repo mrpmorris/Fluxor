@@ -25,10 +25,10 @@ jobs:
         run: dotnet build "./Source/" --configuration DEBUG
 
       - name: Test
-        run: dotnet test "./Source/" --configuration DEBUG --no-build
+        run: dotnet test "./Source/" --configuration DEBUG --no-build -m:1 -p:TestTfmsInParallel=false
 
       - name: Build
         run: dotnet build "./Source/" --configuration Release
 
       - name: Test
-        run: dotnet test "./Source/" --configuration Release --no-build
+        run: dotnet test "./Source/" --configuration Release --no-build -m:1 -p:TestTfmsInParallel=false

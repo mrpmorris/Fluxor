@@ -11,7 +11,10 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '10.x'
+          dotnet-version: |
+            8.x
+            9.x
+            10.x
 
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -29,7 +32,7 @@ jobs:
             -p:FileVersion=${{ env.VERSION }}.0
 
       - name: Test
-        run: dotnet test "./Source/" --configuration Release --no-build
+        run: dotnet test "./Source/" --configuration Release --no-build -m:1 -p:TestTfmsInParallel=false
 
       - name: Pack
         shell: bash

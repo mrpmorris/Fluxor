@@ -1,4 +1,5 @@
 ﻿using Fluxor.UnitTests.StoreTests.ThreadingTests.DispatchWhileInitializingTests.SupportFiles;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -16,7 +17,9 @@ public class DispatchWhileInitializingTests
 	{
 		Thread initialThread = Thread.CurrentThread; 
 
-		var timeout = Task.Delay(1000);
+		// Generous timeout because CI runners can be slow when executing tests in parallel;
+		// it is only ever waited in full when the test fails
+		var timeout = Task.Delay(TimeSpan.FromSeconds(30));
 		var initialize = Task.Run(async () => await Subject.InitializeAsync());
 		var dispatch = Task.Run(async () =>
 		{

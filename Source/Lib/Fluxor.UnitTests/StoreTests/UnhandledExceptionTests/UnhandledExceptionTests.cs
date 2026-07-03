@@ -54,8 +54,9 @@ public class UnhandledExceptionTests : IAsyncLifetime
 		Task effectTask = Task.Run(() =>
 		{
 			Dispatcher.Dispatch(action);
-			// Wait for Effect to say it is ready, 1 second timeout
-			resetEvent.WaitOne(1000);
+			// Generous timeout because CI runners can be slow when executing tests in parallel
+			bool allEventsReceived = resetEvent.WaitOne(TimeSpan.FromSeconds(30));
+			Assert.True(allEventsReceived, "Timed out waiting for UnhandledException events");
 		});
 
 		await effectTask.ConfigureAwait(false);
