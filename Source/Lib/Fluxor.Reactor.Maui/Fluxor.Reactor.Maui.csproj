@@ -1,16 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<LangVersion>latest</LangVersion>
-		<Product>Fluxor for Blazor (Web)</Product>
-		<Description>A zero boilerplate Redux/Flux framework for Blazor</Description>
-		<PackageIcon>fluxor-blazor-logo-small.png</PackageIcon>
-		<PackageTags>Redux Flux DotNet CSharp Blazor RazorComponents</PackageTags>
+		<Product>Fluxor for MauiReactor</Product>
+		<Description>A zero boilerplate Redux/Flux framework for MauiReactor</Description>
+		<PackageIcon>fluxor-maui-reactor-logo-small.png</PackageIcon>
+		<PackageTags>Redux Flux DotNet CSharp MauiReactor</PackageTags>
 		<GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">True</GeneratePackageOnBuild>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<SupportedPlatform Include="browser" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[8.0.0.0,)" />
@@ -22,17 +18,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="..\..\..\Images\fluxor-blazor-logo-small.png">
+		<None Include="..\..\..\Images\fluxor-maui-reactor-logo-small.png">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Fluxor.Blazor.Web.Analyzers\Fluxor.Blazor.Web.Analyzers.csproj">
+		<ProjectReference Include="..\Fluxor.Reactor.Maui.Analyzers\Fluxor.Reactor.Maui.Analyzers.csproj">
 			<ReferenceOutputAssembly>False</ReferenceOutputAssembly>
 		</ProjectReference>
-		<None Include="..\Fluxor.Blazor.Web.Analyzers\bin\$(Configuration)\netstandard2.0\Fluxor.Blazor.Web.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="..\Fluxor.Reactor.Maui.Analyzers\bin\$(Configuration)\netstandard2.0\Fluxor.Reactor.Maui.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 
 </Project>
