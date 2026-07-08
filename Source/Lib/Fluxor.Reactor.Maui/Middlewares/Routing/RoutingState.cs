@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fluxor.Blazor.Web.Middlewares.Routing;
+namespace Fluxor.Reactor.Maui.Middlewares.Routing;
 
 /// <summary>
 /// State used by <see cref="RoutingMiddleware"/> and <see cref="Feature"/>.

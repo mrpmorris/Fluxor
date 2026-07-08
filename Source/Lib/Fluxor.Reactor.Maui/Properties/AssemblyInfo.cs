@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Fluxor.Blazor.Web.UnitTests")]
+[assembly: InternalsVisibleTo("Fluxor.Reactor.Maui.UnitTests")]

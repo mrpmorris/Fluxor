@@ -1,4 +1,4 @@
-﻿using Fluxor.Blazor.Web.Middlewares.Routing;
+﻿using Fluxor.Reactor.Maui.Middlewares.Routing;
 using Fluxor.DependencyInjection;
 
 namespace Fluxor;

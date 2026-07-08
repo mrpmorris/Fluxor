@@ -1,9 +1,9 @@
-﻿namespace Fluxor.Blazor.Web.Middlewares.Routing;
+﻿namespace Fluxor.Reactor.Maui.Middlewares.Routing;
 
 /// <summary>
 /// Dispatching this action will navigate the browser to the specified URL
 /// </summary>
-/// <seealso cref="Microsoft.AspNetCore.Components.NavigationManager"/>
+/// <seealso cref="MauiReactor.NavigationManager"/>
 public class GoAction
 {
 	/// <summary>

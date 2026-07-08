@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fluxor.Blazor.Web.Middlewares.Routing;
+namespace Fluxor.Reactor.Maui.Middlewares.Routing;
 
 internal static class UrlComparer
 {

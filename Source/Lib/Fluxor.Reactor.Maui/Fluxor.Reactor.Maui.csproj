@@ -9,9 +9,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="[8.0.0.0,)" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[8.0.0.0,)" />
-	</ItemGroup>
+        <PackageReference Include="Reactor.Maui" Version="[2.0.19,)" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[8.0.0.0,)" />
+    </ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Fluxor\Fluxor.csproj" />

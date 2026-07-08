@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.Maui.Controls;
 
-namespace Fluxor.Blazor.Web.Middlewares.Routing;
+namespace Fluxor.Reactor.Maui.Middlewares.Routing;
 
 /// <summary>
 /// The feature required by <see cref="RoutingMiddleware"/> to store URL state
@@ -21,9 +21,9 @@ internal class Feature : Feature<RoutingState>
 	/// <summary>
 	/// Creates a new instance of the routing feature
 	/// </summary>
-	/// <param name="navigationManager">Uri helper</param>
-	public Feature(NavigationManager navigationManager)
+	/// <param name="shell">Uri helper</param>
+	public Feature(Shell shell)
 	{
-		InitialUrl = navigationManager.Uri;
+		InitialUrl = shell.CurrentState.Location.AbsoluteUri;
 	}
 }

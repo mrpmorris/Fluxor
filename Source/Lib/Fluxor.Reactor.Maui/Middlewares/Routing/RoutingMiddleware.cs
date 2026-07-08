@@ -1,30 +1,29 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
+﻿using Microsoft.Maui.Controls;
 using System;
 using System.Threading.Tasks;
 
-namespace Fluxor.Blazor.Web.Middlewares.Routing;
+namespace Fluxor.Reactor.Maui.Middlewares.Routing;
 
 /// <summary>
-/// Adds support for routing <see cref="Microsoft.AspNetCore.Components.NavigationManager"/>
+/// Adds support for routing <see cref="MauiReactor.NavigationManager"/>
 /// via a Fluxor store.
 /// </summary>
 internal class RoutingMiddleware : Middleware
 {
-	private readonly NavigationManager NavigationManager;
+	private readonly Shell Shell;
 	private readonly IFeature<RoutingState> Feature;
 	private IDispatcher Dispatcher;
 
 	/// <summary>
 	/// Creates a new instance of the routing middleware
 	/// </summary>
-	/// <param name="navigationManager">Uri helper</param>
+	/// <param name="shell">Uri helper</param>
 	/// <param name="feature">The routing feature</param>
-	public RoutingMiddleware(NavigationManager navigationManager, IFeature<RoutingState> feature)
+	public RoutingMiddleware(Shell shell, IFeature<RoutingState> feature)
 	{
-		NavigationManager = navigationManager;
+		Shell = shell;
 		Feature = feature;
-		NavigationManager.LocationChanged += LocationChanged;
+		Shell.Navigated += Navigated;
 	}
 
 	/// <see cref="IMiddleware.InitializeAsync(IDispatcher dispatcher, IStore store)"/>
@@ -32,22 +31,22 @@ internal class RoutingMiddleware : Middleware
 	{
 		Dispatcher = dispatcher;
 		// If the URL changed before we initialized then dispatch an action
-		Dispatcher.Dispatch(new GoAction(NavigationManager.Uri));
+		Dispatcher.Dispatch(new GoAction(Shell.CurrentState.Location.AbsoluteUri));
 		return Task.CompletedTask;
 	}
 
 	/// <see cref="Middleware.OnInternalMiddlewareChangeEnding"/>
 	protected override void OnInternalMiddlewareChangeEnding()
 	{
-		string fullUri = NavigationManager.ToAbsoluteUri(Feature.State.Uri).AbsoluteUri;
-		if (Feature.State.Uri is not null && !UrlComparer.AreEqual(fullUri, NavigationManager.Uri))
-			NavigationManager.NavigateTo(Feature.State.Uri);
+		string fullUri = new ShellNavigationState(Feature.State.Uri).Location.AbsoluteUri;
+		if (Feature.State.Uri is not null && !UrlComparer.AreEqual(fullUri, Shell.CurrentState.Location.AbsoluteUri))
+			Shell.GoToAsync(Feature.State.Uri);
 	}
 
-	private void LocationChanged(object sender, LocationChangedEventArgs e)
+	private void Navigated(object sender, ShellNavigatedEventArgs e)
 	{
-		string fullUri = NavigationManager.ToAbsoluteUri(Feature.State.Uri).AbsoluteUri;
-		if (Dispatcher is not null && !IsInsideMiddlewareChange && !UrlComparer.AreEqual(e.Location, fullUri))
-			Dispatcher.Dispatch(new GoAction(e.Location));
+		string fullUri = new ShellNavigationState(Feature.State.Uri).Location.AbsoluteUri;
+		if (Dispatcher is not null && !IsInsideMiddlewareChange && !UrlComparer.AreEqual(e.Current.Location.AbsoluteUri, fullUri))
+			Dispatcher.Dispatch(new GoAction(e.Current.Location.AbsoluteUri));
 	}
 }
