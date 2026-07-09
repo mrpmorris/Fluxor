@@ -13,7 +13,7 @@ namespace Fluxor.Reactor.Maui.Components;
 /// </summary>
 public abstract class FluxorComponent : Component, IAsyncDisposable
 {
-	private IActionSubscriber ActionSubscriber;
+	private readonly IActionSubscriber ActionSubscriber;
 
 	private bool Disposed;
 	private IDisposable StateSubscription;
@@ -34,7 +34,7 @@ public abstract class FluxorComponent : Component, IAsyncDisposable
 	/// </summary>
 	public FluxorComponent()
 	{
-		ActionSubscriber = Services.GetRequiredService<Fluxor.IActionSubscriber>();
+		ActionSubscriber = Services.GetRequiredService<IActionSubscriber>();
 
 		StateHasChangedThrottler = new ThrottledInvoker(() =>
 		{
