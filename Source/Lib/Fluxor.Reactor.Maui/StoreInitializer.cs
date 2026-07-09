@@ -22,9 +22,7 @@ public partial class StoreInitializer : FluxorComponent
 
 	public override VisualNode Render()
 	{
-		return Label("Hello, World!")
-			.FontSize(32)
-			.HCenter();
+		return Children().Single();
 	}
 
 	/// <summary>

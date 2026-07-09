@@ -19,6 +19,16 @@ public abstract class FluxorComponent : Component, IAsyncDisposable
 	private IDisposable StateSubscription;
 	private readonly ThrottledInvoker StateHasChangedThrottler;
 
+	public static StoreInitializer StoreInitializer(VisualNode content)
+	{
+		var storeInitializer = new StoreInitializer
+		{
+			content
+		};
+
+		return storeInitializer;
+	}
+
 	/// <summary>
 	/// Creates a new instance
 	/// </summary>
