@@ -11,6 +11,11 @@ partial class HomePage : FluxorComponent
     [Inject]
     IState<CounterState> CounterState;
 
+    protected override void OnMounted()
+    {
+        base.OnMounted();
+    }
+
     public override VisualNode Render()
         => ContentPage(
                 ScrollView(
