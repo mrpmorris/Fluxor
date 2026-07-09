@@ -24,16 +24,15 @@ public sealed class CallBaseOnMounted : DiagnosticAnalyzer
 		context.EnableConcurrentExecution();
 		context.RegisterCompilationStartAction(context =>
 		{
-			var fluxorComponent = context.Compilation.GetTypeByMetadataName("Fluxor.Blazor.Web.Components.FluxorComponent");
-			var fluxorLayout = context.Compilation.GetTypeByMetadataName("Fluxor.Blazor.Web.Components.FluxorLayout");
-			context.RegisterOperationBlockAction(context => AnalyzeOperationBlock(context, fluxorComponent, fluxorLayout));
+			var fluxorComponent = context.Compilation.GetTypeByMetadataName("Fluxor.Reactor.Maui.Components.FluxorComponent");
+			context.RegisterOperationBlockAction(context => AnalyzeOperationBlock(context, fluxorComponent));
 		});
 	}
 
-	private void AnalyzeOperationBlock(OperationBlockAnalysisContext context, INamedTypeSymbol? fluxorComponent, INamedTypeSymbol? fluxorLayout)
+	private void AnalyzeOperationBlock(OperationBlockAnalysisContext context, INamedTypeSymbol? fluxorComponent)
 	{
 		if (context.OwningSymbol is not IMethodSymbol { IsOverride: true, Name: "OnMounted" } method ||
-			!IsFluxorComponentBase(method.ContainingType, fluxorComponent, fluxorLayout))
+			!IsFluxorComponentBase(method.ContainingType, fluxorComponent))
 		{
 			return;
 		}
@@ -74,8 +73,8 @@ public sealed class CallBaseOnMounted : DiagnosticAnalyzer
 			invocation.TargetMethod.Equals(overriddenMethod, SymbolEqualityComparer.Default);
 	}
 
-	private static bool IsFluxorComponentBase(INamedTypeSymbol symbol, INamedTypeSymbol? fluxorComponent, INamedTypeSymbol? fluxorLayout)
-		=> DerivesFrom(symbol, fluxorComponent) || DerivesFrom(symbol, fluxorLayout);
+	private static bool IsFluxorComponentBase(INamedTypeSymbol symbol, INamedTypeSymbol? fluxorComponent)
+		=> DerivesFrom(symbol, fluxorComponent);
 
 	private static bool DerivesFrom(INamedTypeSymbol symbol, INamedTypeSymbol? candidateBaseType)
 	{

@@ -10,7 +10,6 @@ public sealed class CallBaseOnMountedTests
 {
 	[DataTestMethod]
 	[DataRow("FluxorComponent")]
-	[DataRow("FluxorLayout")]
 	public async Task WhenNotOverridden_ThenNoDiagnosticIsEmitted(string baseClass)
 	{
 		string source = $$"""
@@ -21,11 +20,6 @@ public sealed class CallBaseOnMountedTests
 			class MyComponent : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
 				void OnMounted() { }
-
-				public override VisualNode Render()
-				{
-					throw new System.NotImplementedException();
-				}
 			}
 			""";
 		await VerifyCS.VerifyAnalyzerAsync(source);
@@ -34,18 +28,18 @@ public sealed class CallBaseOnMountedTests
 	[DataTestMethod]
 	[DataRow("FluxorComponent")]
 	[DataRow("FluxorLayout")]
-	public async Task WhenBaseOnInitializedIsExecuted_ThenNoDiagnosticIsEmitted(string baseClass)
+	public async Task WhenBaseOnMountedIsExecuted_ThenNoDiagnosticIsEmitted(string baseClass)
 	{
 		string source = $$"""
 			namespace Fluxor.Reactor.Maui.Components
 			{
-				public class {{baseClass}} { protected virtual void OnInitialized() { } }
+				public class {{baseClass}} { protected virtual void OnMounted() { } }
 			}
 			class MyComponent : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
-				protected override void OnInitialized()
+				protected override void OnMounted()
 				{
-					base.OnInitialized();
+					base.OnMounted();
 				}
 			}
 			""";
@@ -55,28 +49,28 @@ public sealed class CallBaseOnMountedTests
 	[DataTestMethod]
 	[DataRow("FluxorComponent")]
 	[DataRow("FluxorLayout")]
-	public async Task WhenBaseOnInitializedAsyncIsExecuted_ThenNoDiagnosticIsEmitted(string baseClass)
+	public async Task WhenBaseOnMountedAsyncIsExecuted_ThenNoDiagnosticIsEmitted(string baseClass)
 	{
 		string source = $$"""
 			using System.Threading.Tasks;
 			namespace Fluxor.Reactor.Maui.Components
 			{
-				public class {{baseClass}} { protected virtual Task OnInitializedAsync() { return Task.CompletedTask; } }
+				public class {{baseClass}} { protected virtual Task OnMountedAsync() { return Task.CompletedTask; } }
 			}
 
 			class MyComponent1 : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
-				protected override async Task OnInitializedAsync()
+				protected override async Task OnMountedAsync()
 				{
-					await base.OnInitializedAsync();
+					await base.OnMountedAsync();
 				}
 			}
 			
 			class MyComponent2 : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
-				protected override Task OnInitializedAsync()
+				protected override Task OnMountedAsync()
 				{
-					return base.OnInitializedAsync();
+					return base.OnMountedAsync();
 				}
 			}
 			""";
@@ -85,49 +79,22 @@ public sealed class CallBaseOnMountedTests
 
 	[DataTestMethod]
 	[DataRow("FluxorComponent")]
-	[DataRow("FluxorLayout")]
-	public async Task WhenBaseOnInitializedIsNotCalled_ThenDiagnosticIsEmitted(string baseClass)
+	public async Task WhenBaseOnMountedIsNotCalled_ThenDiagnosticIsEmitted(string baseClass)
 	{
 		string source = $$"""
 			namespace Fluxor.Reactor.Maui.Components
 			{
-				public class {{baseClass}} { protected virtual void OnInitialized() { } }
+				public class {{baseClass}} { protected virtual void OnMounted() { } }
 			}
 			class MyComponent : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
-				protected override void OnInitialized()
+				protected override void OnMounted()
 				{
 				}
 			}
 			""";
 
-		DiagnosticResult expected = VerifyCS.Diagnostic("FLXW01").WithSpan(7, 26, 7, 39);
-		await VerifyCS.VerifyAnalyzerAsync(
-			source: source,
-			expected: [expected]);
-	}
-
-	[DataTestMethod]
-	[DataRow("FluxorComponent")]
-	[DataRow("FluxorLayout")]
-	public async Task WhenBaseOnInitializedAsyncIsNotCalled_ThenDiagnosticIsEmitted(string baseClass)
-	{
-		string source = $$"""
-			using System.Threading.Tasks;
-			namespace Fluxor.Reactor.Maui.Components
-			{
-				public class {{baseClass}} { protected virtual Task OnInitializedAsync() { return Task.CompletedTask; } }
-			}
-			class MyComponent : Fluxor.Reactor.Maui.Components.{{baseClass}}
-			{
-				protected override Task OnInitializedAsync()
-				{
-					return Task.CompletedTask;
-				}
-			}
-			""";
-
-		DiagnosticResult expected = VerifyCS.Diagnostic("FLXW01").WithSpan(8, 26, 8, 44);
+		DiagnosticResult expected = VerifyCS.Diagnostic("FLXM01").WithSpan(7, 26, 7, 35);
 		await VerifyCS.VerifyAnalyzerAsync(
 			source: source,
 			expected: [expected]);
