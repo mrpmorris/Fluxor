@@ -1,12 +1,16 @@
-﻿namespace MauiReactorWithFluxor.Components;
+﻿using Fluxor;
+using Fluxor.Reactor.Maui.Components;
 
-class HomePageState
-{
-    public int Counter { get; set; }
-}
+namespace MauiReactorWithFluxor.Components;
 
-partial class HomePage : Component<HomePageState>
+partial class HomePage : FluxorComponent
 {
+    [Inject]
+    IDispatcher Dispatcher;
+
+    [Inject]
+    IState<CounterState> CounterState;
+
     public override VisualNode Render()
         => ContentPage(
                 ScrollView(
@@ -24,8 +28,8 @@ partial class HomePage : Component<HomePageState>
                             .FontSize(18)
                             .HCenter(),
 
-                        Button(State.Counter == 0 ? "Click me" : $"Clicked {State.Counter} times!")
-                            .OnClicked(() => SetState(s => s.Counter++))
+                        Button(CounterState.Value.CurrentCount == 0 ? "Click me" : $"Clicked {CounterState.Value.CurrentCount} times!")
+                            .OnClicked(() => Dispatcher.Dispatch(new CounterIncrementAction()))
                             .HCenter()
                 )
                 .VCenter()

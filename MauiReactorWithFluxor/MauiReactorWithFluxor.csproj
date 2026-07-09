@@ -61,11 +61,14 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
-		<PackageReference Include="Reactor.Maui" Version="4.0.15" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
 		<PackageReference Include="Reactor.Maui.HotReload" Version="4.0.15" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Source\Lib\Fluxor.Reactor.Maui\Fluxor.Reactor.Maui.csproj" />
 	</ItemGroup>
 
 </Project>

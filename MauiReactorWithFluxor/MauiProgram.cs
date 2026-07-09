@@ -1,4 +1,5 @@
-﻿using MauiReactor;
+﻿using Fluxor;
+using MauiReactor;
 using MauiReactor.HotReload;
 using MauiReactorWithFluxor.Components;
 using MauiReactorWithFluxor.Resources.Styles;
@@ -17,7 +18,7 @@ namespace MauiReactorWithFluxor
                     {
                         app.UseTheme<ApplicationTheme>();
                     },
-                    unhandledExceptionAction: e => 
+                    unhandledExceptionAction: e =>
                     {
                         System.Diagnostics.Debug.WriteLine(e.ExceptionObject);
                     })
@@ -27,6 +28,7 @@ namespace MauiReactorWithFluxor
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services.AddFluxor(o => o.ScanAssemblies(typeof(MauiProgram).Assembly));
 
             return builder.Build();
         }
