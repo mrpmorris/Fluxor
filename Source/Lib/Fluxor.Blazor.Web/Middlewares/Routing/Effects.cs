@@ -20,7 +20,7 @@ internal class Effects
 		{
 			// Only navigate if we are not already at the URI specified,
 			// or if we have been told to do a proper page reload (ForceLoad)
-			NavigationManager.NavigateTo(action.NewUri, action.ForceLoad);
+			NavigationManager.NavigateTo(action.NewUri, action.ForceLoad, action.Reload);
 		}
 		return Task.CompletedTask;
 	}
