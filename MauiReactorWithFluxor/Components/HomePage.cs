@@ -1,4 +1,5 @@
 ﻿using Fluxor;
+using Fluxor.Reactor.Maui;
 using Fluxor.Reactor.Maui.Components;
 
 namespace MauiReactorWithFluxor.Components;
@@ -18,6 +19,7 @@ partial class HomePage : FluxorComponent
 
     public override VisualNode Render()
         => ContentPage(
+                new StoreInitializer(),
                 ScrollView(
                     VStack(
                         Image("dotnet_bot.png")
