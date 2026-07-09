@@ -22,7 +22,7 @@ public class DisposeTests
 	}
 
 	[Fact]
-	public async Task WhenBaseOnInitializedWasNotCalled_ThenThrowsNullReferenceException()
+	public async Task WhenBaseOnMountedWasNotCalled_ThenThrowsNullReferenceException()
 	{
 		var component = new FluxorComponentThatOptionallyCallsBaseOnMounted();
 		component.Test_OnMounted(callBase: false);
@@ -34,11 +34,11 @@ public class DisposeTests
 			}
 		);
 		
-		Assert.Equal("Have you forgotten to call base.OnInitialized() in your component?", exception.Message);
+		Assert.Equal("Have you forgotten to call base.OnMounted() in your component?", exception.Message);
 	}
 
 	[Fact]
-	public async Task WhenBaseOnInitializedWasCalled_ThenDoesNotThrowAnException()
+	public async Task WhenBaseOnMountedWasCalled_ThenDoesNotThrowAnException()
 	{
 		var component = new FluxorComponentThatOptionallyCallsBaseOnMounted();
 		component.Test_OnMounted(callBase: true);
