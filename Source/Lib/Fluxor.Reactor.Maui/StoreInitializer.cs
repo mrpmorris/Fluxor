@@ -22,7 +22,9 @@ public partial class StoreInitializer : FluxorComponent
 
 	public override VisualNode Render()
 	{
-		return new ContentView();
+		return Label("Hello, World!")
+			.FontSize(32)
+			.HCenter();
 	}
 
 	/// <summary>
@@ -42,6 +44,8 @@ public partial class StoreInitializer : FluxorComponent
 	protected override void OnMounted()
 	{
 		Store.UnhandledException += OnUnhandledException;
+
+		Store.InitializeAsync();
 
 		base.OnMounted();
 	}
