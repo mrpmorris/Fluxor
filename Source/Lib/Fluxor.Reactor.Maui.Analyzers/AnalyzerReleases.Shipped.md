@@ -4,4 +4,4 @@
 
 Rule ID | Category | Severity | Notes
 --------|----------|----------|-------
-FLXW01 | Usage | Error | CallBaseOnInitialized
+FLXM01 | Usage | Error | CallBaseOnMounted

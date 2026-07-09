@@ -1,11 +1,11 @@
-﻿using Fluxor.Blazor.Web.UnitTests.SupportFiles;
+﻿using Fluxor.Reactor.Maui.UnitTests.SupportFiles;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests;
+namespace Fluxor.Reactor.Maui.UnitTests.Components.FluxorComponentTests;
 
-public class OnInitializedTests : IAsyncLifetime
+public class OnMountedTests : IAsyncLifetime
 {
 	private readonly FluxorComponentWithStateProperties Subject;
 	private readonly MockState<int> MockState1;
@@ -14,7 +14,7 @@ public class OnInitializedTests : IAsyncLifetime
 	[Fact]
 	public void SubscribesToStateProperties()
 	{
-		Subject.Test_OnInitialized();
+		Subject.Test_OnMounted();
 
 		Assert.Equal(1, MockState1.SubscribeCount);
 		Assert.Equal(1, MockState2.SubscribeCount);
@@ -24,7 +24,7 @@ public class OnInitializedTests : IAsyncLifetime
 
 	async Task IAsyncLifetime.DisposeAsync() => await Subject.DisposeAsync();
 
-	public OnInitializedTests()
+	public OnMountedTests()
 	{
 		MockState1 = new MockState<int>();
 		MockState2 = new MockState<int>();

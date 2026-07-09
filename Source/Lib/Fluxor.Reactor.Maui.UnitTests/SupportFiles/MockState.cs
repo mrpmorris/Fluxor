@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fluxor.Blazor.Web.UnitTests.SupportFiles;
+namespace Fluxor.Reactor.Maui.UnitTests.SupportFiles;
 
 public class MockState<T> : IStateChangedNotifier, IState<T>
 {

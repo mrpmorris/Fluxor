@@ -1,9 +1,9 @@
-﻿using Fluxor.Blazor.Web.UnitTests.SupportFiles;
+﻿using Fluxor.Reactor.Maui.UnitTests.SupportFiles;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Fluxor.Blazor.Web.UnitTests.Components.FluxorComponentTests;
+namespace Fluxor.Reactor.Maui.UnitTests.Components.FluxorComponentTests;
 
 public class DisposeTests
 {
@@ -14,7 +14,7 @@ public class DisposeTests
 	[Fact]
 	public async Task UnsubscribesFromStateProperties()
 	{
-		StateSubject.Test_OnInitialized();
+		StateSubject.Test_OnMounted();
 		await StateSubject.DisposeAsync();
 
 		Assert.Equal(1, MockState1.UnsubscribeCount);
@@ -24,8 +24,8 @@ public class DisposeTests
 	[Fact]
 	public async Task WhenBaseOnInitializedWasNotCalled_ThenThrowsNullReferenceException()
 	{
-		var component = new FluxorComponentThatOptionallyCallsBaseOnInitialized();
-		component.Test_OnInitialized(callBase: false);
+		var component = new FluxorComponentThatOptionallyCallsBaseOnMounted();
+		component.Test_OnMounted(callBase: false);
 
 		var exception = await Assert.ThrowsAsync<NullReferenceException>(
 			async () =>
@@ -40,8 +40,8 @@ public class DisposeTests
 	[Fact]
 	public async Task WhenBaseOnInitializedWasCalled_ThenDoesNotThrowAnException()
 	{
-		var component = new FluxorComponentThatOptionallyCallsBaseOnInitialized();
-		component.Test_OnInitialized(callBase: true);
+		var component = new FluxorComponentThatOptionallyCallsBaseOnMounted();
+		component.Test_OnMounted(callBase: true);
 		await component.DisposeAsync();
 	}
 

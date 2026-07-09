@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Fluxor.Blazor.Web.Analyzers\Fluxor.Blazor.Web.Analyzers.csproj" />
+	  <ProjectReference Include="..\Fluxor.Reactor.Maui.Analyzers\Fluxor.Reactor.Maui.Analyzers.csproj" />
 	</ItemGroup>
 
 </Project>

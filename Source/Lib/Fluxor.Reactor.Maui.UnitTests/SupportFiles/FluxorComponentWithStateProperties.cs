@@ -1,14 +1,20 @@
-﻿using Fluxor.Blazor.Web.Components;
+﻿using Fluxor.Reactor.Maui.Components;
+using MauiReactor;
 
-namespace Fluxor.Blazor.Web.UnitTests.SupportFiles;
+namespace Fluxor.Reactor.Maui.UnitTests.SupportFiles;
 
 public class FluxorComponentWithStateProperties : FluxorComponent
 {
 	public IState<int> State1 { get; set; }
 	public IState<int> State2 { get; set; }
 
-	public void Test_OnInitialized()
+	public override VisualNode Render()
 	{
-		OnInitialized();
+		throw new System.NotImplementedException();
+	}
+
+	public void Test_OnMounted()
+	{
+		OnMounted();
 	}
 }

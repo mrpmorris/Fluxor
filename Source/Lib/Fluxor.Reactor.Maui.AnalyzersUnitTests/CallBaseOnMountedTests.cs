@@ -1,12 +1,12 @@
 ﻿using Microsoft.CodeAnalysis.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
-using VerifyCS = Microsoft.CodeAnalysis.CSharp.Testing.CSharpAnalyzerVerifier<Fluxor.Blazor.Web.Analyzers.CallBaseOnInitialized, Microsoft.CodeAnalysis.Testing.DefaultVerifier>;
+using VerifyCS = Microsoft.CodeAnalysis.CSharp.Testing.CSharpAnalyzerVerifier<Fluxor.Reactor.Maui.Analyzers.CallBaseOnMounted, Microsoft.CodeAnalysis.Testing.DefaultVerifier>;
 
-namespace Fluxor.Blazor.Web.Analyzers.Tests;
+namespace Fluxor.Reactor.Maui.Analyzers.Tests;
 
 [TestClass]
-public sealed class CallBaseOnInitializedTests
+public sealed class CallBaseOnMountedTests
 {
 	[DataTestMethod]
 	[DataRow("FluxorComponent")]
@@ -14,13 +14,18 @@ public sealed class CallBaseOnInitializedTests
 	public async Task WhenNotOverridden_ThenNoDiagnosticIsEmitted(string baseClass)
 	{
 		string source = $$"""
-			namespace Fluxor.Blazor.Web.Components
+			namespace Fluxor.Reactor.Maui.Components
 			{
 				public class {{baseClass}} { }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
+			class MyComponent : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
-				void OnInitialized() { }
+				void OnMounted() { }
+
+				public override VisualNode Render()
+				{
+					throw new System.NotImplementedException();
+				}
 			}
 			""";
 		await VerifyCS.VerifyAnalyzerAsync(source);
@@ -32,11 +37,11 @@ public sealed class CallBaseOnInitializedTests
 	public async Task WhenBaseOnInitializedIsExecuted_ThenNoDiagnosticIsEmitted(string baseClass)
 	{
 		string source = $$"""
-			namespace Fluxor.Blazor.Web.Components
+			namespace Fluxor.Reactor.Maui.Components
 			{
 				public class {{baseClass}} { protected virtual void OnInitialized() { } }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
+			class MyComponent : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
 				protected override void OnInitialized()
 				{
@@ -54,12 +59,12 @@ public sealed class CallBaseOnInitializedTests
 	{
 		string source = $$"""
 			using System.Threading.Tasks;
-			namespace Fluxor.Blazor.Web.Components
+			namespace Fluxor.Reactor.Maui.Components
 			{
 				public class {{baseClass}} { protected virtual Task OnInitializedAsync() { return Task.CompletedTask; } }
 			}
 
-			class MyComponent1 : Fluxor.Blazor.Web.Components.{{baseClass}}
+			class MyComponent1 : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
 				protected override async Task OnInitializedAsync()
 				{
@@ -67,7 +72,7 @@ public sealed class CallBaseOnInitializedTests
 				}
 			}
 			
-			class MyComponent2 : Fluxor.Blazor.Web.Components.{{baseClass}}
+			class MyComponent2 : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
 				protected override Task OnInitializedAsync()
 				{
@@ -84,11 +89,11 @@ public sealed class CallBaseOnInitializedTests
 	public async Task WhenBaseOnInitializedIsNotCalled_ThenDiagnosticIsEmitted(string baseClass)
 	{
 		string source = $$"""
-			namespace Fluxor.Blazor.Web.Components
+			namespace Fluxor.Reactor.Maui.Components
 			{
 				public class {{baseClass}} { protected virtual void OnInitialized() { } }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
+			class MyComponent : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
 				protected override void OnInitialized()
 				{
@@ -109,11 +114,11 @@ public sealed class CallBaseOnInitializedTests
 	{
 		string source = $$"""
 			using System.Threading.Tasks;
-			namespace Fluxor.Blazor.Web.Components
+			namespace Fluxor.Reactor.Maui.Components
 			{
 				public class {{baseClass}} { protected virtual Task OnInitializedAsync() { return Task.CompletedTask; } }
 			}
-			class MyComponent : Fluxor.Blazor.Web.Components.{{baseClass}}
+			class MyComponent : Fluxor.Reactor.Maui.Components.{{baseClass}}
 			{
 				protected override Task OnInitializedAsync()
 				{

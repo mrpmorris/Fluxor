@@ -1,7 +1,7 @@
-﻿using Fluxor.Blazor.Web.Middlewares.Routing;
+﻿using Fluxor.Reactor.Maui.Middlewares.Routing;
 using Xunit;
 
-namespace Fluxor.Blazor.Web.UnitTests.Middlewares.Routing.UrlComparerTests;
+namespace Fluxor.Reactor.Maui.UnitTests.Middlewares.Routing.UrlComparerTests;
 
 public class AreEqualTests
 {

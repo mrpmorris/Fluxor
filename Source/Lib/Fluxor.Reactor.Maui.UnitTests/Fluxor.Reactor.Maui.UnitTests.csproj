@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Lib\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
+		<ProjectReference Include="..\..\Lib\Fluxor.Reactor.Maui\Fluxor.Reactor.Maui.csproj" />
 		<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
 	</ItemGroup>
 </Project>

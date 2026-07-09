@@ -3,15 +3,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Operations;
 
-namespace Fluxor.Blazor.Web.Analyzers;
+namespace Fluxor.Reactor.Maui.Analyzers;
 
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
-public sealed class CallBaseOnInitialized : DiagnosticAnalyzer
+public sealed class CallBaseOnMounted : DiagnosticAnalyzer
 {
 	private static readonly DiagnosticDescriptor Rule = new(
-		id: "FLXW01",
+		id: "FLXM01",
 		title: "Base method not called",
-		messageFormat: "Overriding OnInitialized or OnInitializedAsync without calling base is not allowed",
+		messageFormat: "Overriding OnMounted without calling base is not allowed",
 		category: "Usage",
 		defaultSeverity: DiagnosticSeverity.Error,
 		isEnabledByDefault: true);
@@ -32,7 +32,7 @@ public sealed class CallBaseOnInitialized : DiagnosticAnalyzer
 
 	private void AnalyzeOperationBlock(OperationBlockAnalysisContext context, INamedTypeSymbol? fluxorComponent, INamedTypeSymbol? fluxorLayout)
 	{
-		if (context.OwningSymbol is not IMethodSymbol { IsOverride: true, Name: "OnInitialized" or "OnInitializedAsync" } method ||
+		if (context.OwningSymbol is not IMethodSymbol { IsOverride: true, Name: "OnMounted" } method ||
 			!IsFluxorComponentBase(method.ContainingType, fluxorComponent, fluxorLayout))
 		{
 			return;
