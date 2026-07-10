@@ -28,6 +28,8 @@ public class DisposeTests : IDisposable
 	[Fact]
 	public async Task WhenBaseOnMountedWasNotCalled_ThenThrowsNullReferenceException()
 	{
+		using var serviceContext = new ServiceContext(services =>
+			services.AddSingleton<IActionSubscriber, MockActionSubscriber>());
 		var component = new FluxorComponentThatOptionallyCallsBaseOnMounted();
 		component.Test_OnMounted(callBase: false);
 
@@ -44,6 +46,8 @@ public class DisposeTests : IDisposable
 	[Fact]
 	public async Task WhenBaseOnMountedWasCalled_ThenDoesNotThrowAnException()
 	{
+		using var serviceContext = new ServiceContext(services =>
+			services.AddSingleton<IActionSubscriber, MockActionSubscriber>());
 		var component = new FluxorComponentThatOptionallyCallsBaseOnMounted();
 		component.Test_OnMounted(callBase: true);
 		await component.DisposeAsync();
