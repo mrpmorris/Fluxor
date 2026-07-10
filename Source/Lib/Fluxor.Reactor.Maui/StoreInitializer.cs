@@ -1,7 +1,6 @@
 ﻿using Fluxor.Reactor.Maui.Components;
 using MauiReactor;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Fluxor.Reactor.Maui;
 
@@ -16,15 +15,6 @@ public partial class StoreInitializer : FluxorComponent
 	public override VisualNode Render()
 	{
 		return Children().Single();
-	}
-
-	/// <summary>
-	/// Disposes via IAsyncDisposable
-	/// </summary>
-	/// <param name="disposing">true if called manually, otherwise false</param>
-	protected override ValueTask DisposeAsyncCore(bool disposing)
-	{
-		return base.DisposeAsyncCore(disposing);
 	}
 
 	/// <summary>

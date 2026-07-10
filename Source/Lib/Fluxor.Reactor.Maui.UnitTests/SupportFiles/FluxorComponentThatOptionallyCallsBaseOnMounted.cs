@@ -19,6 +19,11 @@ public class FluxorComponentThatOptionallyCallsBaseOnMounted : FluxorComponent
 		OnMounted();
 	}
 
+	public void Test_OnWillUnmount()
+	{
+		OnWillUnmount();
+	}
+
 	public override VisualNode Render()
 	{
 		throw new System.NotImplementedException();

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Fluxor.Reactor.Maui.UnitTests.Components.FluxorComponentTests;
 
-public class OnMountedTests : IAsyncLifetime, IDisposable
+public class OnMountedTests : IDisposable
 {
 	private readonly ServiceContext ServiceContext;
 	private readonly FluxorComponentWithStateProperties Subject;
@@ -23,10 +23,6 @@ public class OnMountedTests : IAsyncLifetime, IDisposable
 		Assert.Equal(1, MockState1.SubscribeCount);
 		Assert.Equal(1, MockState2.SubscribeCount);
 	}
-
-	Task IAsyncLifetime.InitializeAsync() => Task.CompletedTask;
-
-	async Task IAsyncLifetime.DisposeAsync() => await Subject.DisposeAsync();
 
 	public OnMountedTests()
 	{
@@ -47,6 +43,7 @@ public class OnMountedTests : IAsyncLifetime, IDisposable
 		{
 			if (disposing)
 			{
+				Subject.Test_OnWillUnmount();
 				ServiceContext.Dispose();
 			}
 

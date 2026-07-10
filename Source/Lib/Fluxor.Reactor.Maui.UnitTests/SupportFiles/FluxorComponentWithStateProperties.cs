@@ -17,4 +17,9 @@ public class FluxorComponentWithStateProperties : FluxorComponent
 	{
 		OnMounted();
 	}
+
+	public void Test_OnWillUnmount()
+	{
+		OnWillUnmount();
+	}
 }

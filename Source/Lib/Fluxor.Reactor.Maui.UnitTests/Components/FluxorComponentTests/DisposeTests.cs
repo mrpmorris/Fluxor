@@ -16,10 +16,10 @@ public class DisposeTests : IDisposable
 	private bool disposedValue;
 
 	[Fact]
-	public async Task UnsubscribesFromStateProperties()
+	public void UnsubscribesFromStateProperties()
 	{
 		StateSubject.Test_OnMounted();
-		await StateSubject.DisposeAsync();
+		StateSubject.Test_OnWillUnmount();
 
 		Assert.Equal(1, MockState1.UnsubscribeCount);
 		Assert.Equal(1, MockState2.UnsubscribeCount);
@@ -33,10 +33,10 @@ public class DisposeTests : IDisposable
 		var component = new FluxorComponentThatOptionallyCallsBaseOnMounted();
 		component.Test_OnMounted(callBase: false);
 
-		var exception = await Assert.ThrowsAsync<NullReferenceException>(
-			async () =>
+		var exception = Assert.Throws<NullReferenceException>(
+			() =>
 			{
-				await component.DisposeAsync();
+				component.Test_OnWillUnmount();
 			}
 		);
 		
@@ -44,13 +44,13 @@ public class DisposeTests : IDisposable
 	}
 
 	[Fact]
-	public async Task WhenBaseOnMountedWasCalled_ThenDoesNotThrowAnException()
+	public void WhenBaseOnMountedWasCalled_ThenDoesNotThrowAnException()
 	{
 		using var serviceContext = new ServiceContext(services =>
 			services.AddSingleton<IActionSubscriber, MockActionSubscriber>());
 		var component = new FluxorComponentThatOptionallyCallsBaseOnMounted();
 		component.Test_OnMounted(callBase: true);
-		await component.DisposeAsync();
+		component.Test_OnWillUnmount();
 	}
 
 	public DisposeTests()
