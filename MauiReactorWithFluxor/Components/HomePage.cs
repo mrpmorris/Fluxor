@@ -14,35 +14,41 @@ partial class HomePage : FluxorComponent
 
     protected override void OnMounted()
     {
+        Routing.RegisterRoute<Page2>("page-2");
         base.OnMounted();
     }
 
     public override VisualNode Render()
-        => StoreInitializer(
-                ContentPage(
-                    ScrollView(
-                        VStack(
-                            Image("dotnet_bot.png")
-                                .HeightRequest(200)
-                                .HCenter()
-                                .Set(MauiControls.SemanticProperties.DescriptionProperty, "Cute dot net bot waving hi to you!"),
-
-                            Label("Hello, World!")
-                                .FontSize(32)
-                                .HCenter(),
-
-                            Label("Welcome to MauiReactor: MAUI with superpowers!")
-                                .FontSize(18)
-                                .HCenter(),
-
-                            Button(CounterState.Value.CurrentCount == 0 ? "Click me" : $"Clicked {CounterState.Value.CurrentCount} times!")
-                                .OnClicked(() => Dispatcher.Dispatch(new CounterIncrementAction()))
-                                .HCenter()
-                    )
-                    .VCenter()
-                    .Spacing(25)
-                    .Padding(30, 0)
-                )
+        => Shell(
+            FlyoutItem("Page1",
+                ShellContent()
+                    .RenderContent(() => ContentPage("Page1",
+                        Button("Goto to Page2")
+                            .HCenter()
+                            .VCenter()
+                        .OnClicked(async ()=> await MauiControls.Shell.Current.GoToAsync("page-2"))
+                    ))
             )
+        )
+        .ItemTemplate(RenderItemTemplate);            
+
+    static VisualNode RenderItemTemplate(MauiControls.BaseShellItem item)
+        => Grid("68", "*",
+            Label(item.Title)
+                .VCenter()
+                .Margin(10,0)
         );
+}
+
+class Page2 : Component
+{
+    public override VisualNode Render()
+    {
+        return ContentPage("Page2",
+            Button("Goto back")
+                .HCenter()
+                .VCenter()
+            .OnClicked(async ()=> await MauiControls.Shell.Current.GoToAsync(".."))
+        );
+    }
 }
