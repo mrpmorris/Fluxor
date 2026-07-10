@@ -3,7 +3,6 @@ using MauiReactor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.ApplicationModel;
 using System;
-using System.Threading.Tasks;
 
 namespace Fluxor.Reactor.Maui.Components;
 
@@ -11,11 +10,10 @@ namespace Fluxor.Reactor.Maui.Components;
 /// A component that auto-subscribes to state changes on all <see cref="IStateChangedNotifier"/> properties
 /// and ensures <see cref="ComponentBase.StateHasChanged"/> is called
 /// </summary>
-public abstract class FluxorComponent : Component, IAsyncDisposable
+public abstract class FluxorComponent : Component
 {
 	private readonly IActionSubscriber ActionSubscriber;
 
-	private bool Disposed;
 	private IDisposable StateSubscription;
 	private readonly ThrottledInvoker StateHasChangedThrottler;
 
@@ -38,7 +36,7 @@ public abstract class FluxorComponent : Component, IAsyncDisposable
 
 		StateHasChangedThrottler = new ThrottledInvoker(() =>
 		{
-			if (!Disposed)
+			if (_isMounted)
 				MainThread.InvokeOnMainThreadAsync(Invalidate);
 		});
 	}
@@ -58,46 +56,11 @@ public abstract class FluxorComponent : Component, IAsyncDisposable
 		{
 			MainThread.InvokeOnMainThreadAsync(() =>
 			{
-				if (!Disposed)
+				if (_isMounted)
 					callback(action);
 				Invalidate();
 			});
 		});
-	}
-
-	/// <summary>
-	/// Disposes of the component and unsubscribes from any state
-	/// </summary>
-	public async ValueTask DisposeAsync()
-	{
-		if (Disposed)
-			return;
-		Disposed = true;
-
-		StateHasChangedThrottler.Dispose();
-		await DisposeAsyncCore(true).ConfigureAwait(false);
-		GC.SuppressFinalize(this);
-	}
-
-	/// <summary>
-	/// Disposes via IAsyncDisposable
-	/// </summary>
-	/// <param name="disposing">true if called manually, otherwise false</param>
-	/// <returns></returns>
-	/// <exception cref="NullReferenceException">
-	///		Thrown when a descendant overrides DisposeAsyncCore and does call not base.
-	/// </exception>
-	protected virtual ValueTask DisposeAsyncCore(bool disposing)
-	{
-		if (disposing)
-		{
-			if (StateSubscription is null)
-				throw new NullReferenceException(ErrorMessages.ForgottenToCallBaseOnMounted);
-
-			StateSubscription.Dispose();
-			ActionSubscriber?.UnsubscribeFromAllActions(this);
-		}
-		return ValueTask.CompletedTask;
 	}
 
 	/// <summary>
@@ -110,5 +73,22 @@ public abstract class FluxorComponent : Component, IAsyncDisposable
 		{
 			StateHasChangedThrottler.Invoke(MaximumStateChangedNotificationsPerSecond);
 		});
+	}
+
+	/// <summary>
+	/// Unsubscribes from state properties
+	/// </summary>
+	/// <exception cref="NullReferenceException"></exception>
+	/// <exception cref="NullReferenceException">
+	///		Thrown when a descendant overrides DisposeAsyncCore and does call not base.
+	/// </exception>
+	protected override void OnWillUnmount()
+	{
+		base.OnWillUnmount();
+		if (StateSubscription is null)
+			throw new NullReferenceException(ErrorMessages.ForgottenToCallBaseOnMounted);
+
+		StateSubscription.Dispose();
+		ActionSubscriber?.UnsubscribeFromAllActions(this);
 	}
 }
