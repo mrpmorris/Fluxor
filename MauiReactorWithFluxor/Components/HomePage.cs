@@ -24,9 +24,9 @@ partial class HomePage : FluxorComponent
                             Button("Goto to Page2")
                                 .HCenter()
                                 .VCenter()
-                            .OnClicked(async ()=> 
-                            await MauiControls.Shell.Current.GoToAsync<Page2Props>
-                                ("page-2", props => props.Id = 23))
+                            .OnClicked(()=> 
+                            Dispatcher.Dispatch(new GoAction<Page2Props>
+                                ("page-2", props => props.Id = 23)))
                         ))
                 )
             )
