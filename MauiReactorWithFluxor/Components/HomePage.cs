@@ -24,7 +24,9 @@ partial class HomePage : FluxorComponent
                             Button("Goto to Page2")
                                 .HCenter()
                                 .VCenter()
-                            .OnClicked(()=> Dispatcher.Dispatch(new GoAction("page-2")))
+                            .OnClicked(async ()=> 
+                            await MauiControls.Shell.Current.GoToAsync<Page2Props>
+                                ("page-2", props => props.Id = 23))
                         ))
                 )
             )
@@ -39,7 +41,15 @@ partial class HomePage : FluxorComponent
         );
 }
 
-partial class Page2 : FluxorComponent
+class Page2State
+{ }
+
+class Page2Props
+{
+    public int Id { get; set; }
+}
+
+partial class Page2 : Component<Page2State, Page2Props>
 {
     [Inject]
     private readonly IDispatcher Dispatcher;
@@ -47,7 +57,7 @@ partial class Page2 : FluxorComponent
     public override VisualNode Render()
     {
         return ContentPage("Page2",
-            Button("Goto back")
+             Button($"Received Id: {Props.Id}")
                 .HCenter()
                 .VCenter()
             .OnClicked(()=> Dispatcher.Dispatch(new GoAction("..")))
