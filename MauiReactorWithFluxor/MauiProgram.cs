@@ -28,7 +28,9 @@ namespace MauiReactorWithFluxor
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddFluxor(o => o.ScanAssemblies(typeof(MauiProgram).Assembly));
+            builder.Services.AddFluxor(o => o
+                .ScanAssemblies(typeof(MauiProgram).Assembly)
+                .UseRouting());
 
             return builder.Build();
         }
