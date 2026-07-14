@@ -23,9 +23,15 @@ internal class ActionInfo
 	public static string GetTypeDisplayName(Type type)
 	{
 		if (!type.IsGenericType)
-			return type.Name;
+		{
+			string fullName = type.FullName ?? type.Name;
+			int lastDot = fullName.LastIndexOf('.');
+			return lastDot < 0 ? fullName : fullName.Substring(lastDot + 1);
+		}
 
-		string name = type.GetGenericTypeDefinition().Name;
+		string genericFullName = type.GetGenericTypeDefinition().FullName ?? type.GetGenericTypeDefinition().Name;
+		int lastDotIndex = genericFullName.LastIndexOf('.');
+		string name = lastDotIndex < 0 ? genericFullName : genericFullName.Substring(lastDotIndex + 1);
 		name = name.Remove(name.IndexOf('`'));
 		IEnumerable<string> genericTypes = type
 			.GetGenericArguments()
