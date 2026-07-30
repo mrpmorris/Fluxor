@@ -19,7 +19,7 @@ public class GoAction
 	/// <summary>
 	/// If true, replaces the current entry in the history stack. If false, appends the new entry to the history stack
 	/// </summary>
-	public bool Reload { get; }
+	public bool Replace { get; }
 
 	/// <summary>
 	/// Creates a new instance of the action
@@ -43,11 +43,11 @@ public class GoAction
 	/// </summary>
 	/// <param name="newUri">The new address to navigate to</param>
 	/// <param name="forceLoad">When true forces a real browser navigation and page reload</param>
-	/// <param name="reload">If true, replaces the current entry in the history stack. If false, appends the new entry to the history stack</param>
-	public GoAction(string newUri, bool forceLoad = false, bool reload = false)
+	/// <param name="replace">If true, replaces the current entry in the history stack. If false, appends the new entry to the history stack</param>
+	public GoAction(string newUri, bool forceLoad = false, bool replace = false)
 	{
 		NewUri = newUri;
 		ForceLoad = forceLoad;
-		Reload = reload;
+		Replace = replace;
 	}
 }
