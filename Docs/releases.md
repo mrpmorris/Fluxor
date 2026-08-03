@@ -2,6 +2,7 @@
 
 ## New in 6.12
 * Release IsDequeuing when an ActionDispatched subscriber throws ([#581](https://github.com/mrpmorris/Fluxor/issues/581))
+* Support `Replace` in `GoAction` ([#583](https://github.com/mrpmorris/Fluxor/issues/583))
 
 ## New in 6.11
 * Enhance Redux DevTools action naming for nested/inner records ([#575](https://github.com/mrpmorris/Fluxor/issues/575))
