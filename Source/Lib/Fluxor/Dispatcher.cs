@@ -54,19 +54,33 @@ public class Dispatcher : IDispatcher
 				return;
 			IsDequeuing = true;
 		}
-		do
+		try
 		{
-			object dequeuedAction = null;
-			EventHandler<ActionDispatchedEventArgs> callbacks;
+			do
+			{
+				object dequeuedAction = null;
+				EventHandler<ActionDispatchedEventArgs> callbacks;
+				lock (SyncRoot)
+				{
+					callbacks = _ActionDispatched;
+					IsDequeuing = callbacks is not null && QueuedActions.TryDequeue(out dequeuedAction);
+					if (!IsDequeuing)
+						return;
+				}
+
+				callbacks(this, new ActionDispatchedEventArgs(dequeuedAction));
+			} while (true);
+		}
+		catch
+		{
+			// The loop clears IsDequeuing inside the same lock that observes the queue is empty, so the
+			// normal exit path must be left alone. Only an abnormal exit needs to release it here, and
+			// doing so is safe because no other thread can have started dequeuing while the flag was set.
 			lock (SyncRoot)
 			{
-				callbacks = _ActionDispatched;
-				IsDequeuing = callbacks is not null && QueuedActions.TryDequeue(out dequeuedAction);
-				if (!IsDequeuing)
-					return;
+				IsDequeuing = false;
 			}
-
-			callbacks(this, new ActionDispatchedEventArgs(dequeuedAction));
-		} while (true);
+			throw;
+		}
 	}
 }
