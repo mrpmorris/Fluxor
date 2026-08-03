@@ -17,12 +17,37 @@ public class GoAction
 	public bool ForceLoad { get; }
 
 	/// <summary>
+	/// If true, replaces the current entry in the history stack. If false, appends the new entry to the history stack
+	/// </summary>
+	public bool Replace { get; }
+
+	/// <summary>
 	/// Creates a new instance of the action
 	/// </summary>
-	/// <param name="newUri"></param>
-	public GoAction(string newUri, bool forceLoad = false)
+	/// <param name="newUri">The new address to navigate to</param>
+	public GoAction(string newUri) : this(newUri, false)
+	{
+	}
+
+	/// <summary>
+	/// Creates a new instance of the action
+	/// </summary>
+	/// <param name="newUri">The new address to navigate to</param>
+	/// <param name="forceLoad">When true forces a real browser navigation and page reload</param>
+	public GoAction(string newUri, bool forceLoad = false) : this(newUri, forceLoad, false)
+	{
+	}
+
+	/// <summary>
+	/// Creates a new instance of the action
+	/// </summary>
+	/// <param name="newUri">The new address to navigate to</param>
+	/// <param name="forceLoad">When true forces a real browser navigation and page reload</param>
+	/// <param name="replace">If true, replaces the current entry in the history stack. If false, appends the new entry to the history stack</param>
+	public GoAction(string newUri, bool forceLoad = false, bool replace = false)
 	{
 		NewUri = newUri;
 		ForceLoad = forceLoad;
+		Replace = replace;
 	}
 }
