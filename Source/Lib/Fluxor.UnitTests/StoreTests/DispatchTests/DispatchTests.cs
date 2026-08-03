@@ -183,6 +183,87 @@ public class DispatchTests : IAsyncLifetime
 		dispatcher.Dispatch(primaryAction);
 	}
 
+	[Fact]
+	public void WhenActionDispatchedListenerDoesNotThrow_ThenActionsAreDispatchedInTheOrderTheyWereQueued()
+	{
+		var firstAction = new object();
+		var secondAction = new object();
+
+		var receivedActions = new List<object>();
+		var dispatcher = new Dispatcher();
+		dispatcher.ActionDispatched += (_, args) => receivedActions.Add(args.Action);
+
+		dispatcher.Dispatch(firstAction);
+		dispatcher.Dispatch(secondAction);
+
+		Assert.Equal(2, receivedActions.Count);
+		Assert.Same(firstAction, receivedActions[0]);
+		Assert.Same(secondAction, receivedActions[1]);
+	}
+
+	[Fact]
+	public void WhenActionDispatchedListenerThrows_ThenTheExceptionIsPassedOnToTheCaller()
+	{
+		var actionThatThrows = new object();
+
+		var dispatcher = new Dispatcher();
+		dispatcher.ActionDispatched += (_, _) => throw new InvalidOperationException();
+
+		Assert.Throws<InvalidOperationException>(() => dispatcher.Dispatch(actionThatThrows));
+	}
+
+	[Fact]
+	public void WhenActionDispatchedListenerThrows_ThenSubsequentActionsAreStillDispatched()
+	{
+		var actionThatThrows = new object();
+		var subsequentAction = new object();
+
+		var receivedActions = new List<object>();
+		var dispatcher = new Dispatcher();
+		dispatcher.ActionDispatched += (_, args) =>
+		{
+			receivedActions.Add(args.Action);
+			if (args.Action == actionThatThrows)
+				throw new InvalidOperationException();
+		};
+
+		Assert.Throws<InvalidOperationException>(() => dispatcher.Dispatch(actionThatThrows));
+		dispatcher.Dispatch(subsequentAction);
+
+		Assert.Equal(2, receivedActions.Count);
+		Assert.Same(actionThatThrows, receivedActions[0]);
+		Assert.Same(subsequentAction, receivedActions[1]);
+	}
+
+	[Fact]
+	public void WhenActionDispatchedListenerThrows_ThenActionsAlreadyQueuedAreDispatchedOnTheNextDispatch()
+	{
+		var actionThatThrows = new object();
+		var actionQueuedBehindIt = new object();
+		var subsequentAction = new object();
+
+		var receivedActions = new List<object>();
+		var dispatcher = new Dispatcher();
+		dispatcher.ActionDispatched += (_, args) =>
+		{
+			receivedActions.Add(args.Action);
+			if (args.Action != actionThatThrows)
+				return;
+
+			// Dispatched while the dispatcher is draining, so it is still queued when the exception is thrown
+			dispatcher.Dispatch(actionQueuedBehindIt);
+			throw new InvalidOperationException();
+		};
+
+		Assert.Throws<InvalidOperationException>(() => dispatcher.Dispatch(actionThatThrows));
+		dispatcher.Dispatch(subsequentAction);
+
+		Assert.Equal(3, receivedActions.Count);
+		Assert.Same(actionThatThrows, receivedActions[0]);
+		Assert.Same(actionQueuedBehindIt, receivedActions[1]);
+		Assert.Same(subsequentAction, receivedActions[2]);
+	}
+
 	public DispatchTests()
 	{
 		Dispatcher = new Dispatcher();
