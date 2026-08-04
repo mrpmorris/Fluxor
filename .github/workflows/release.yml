@@ -55,8 +55,15 @@ jobs:
             -p:FileVersion=${{ env.VERSION }}.0 \
             -o artifacts
 
+          dotnet pack "./Source/Lib/Fluxor.Reactor.Maui/Fluxor.Reactor.Maui.csproj" --configuration Release --no-build \
+            -p:Version=${{ github.event.release.tag_name }} \
+            -p:AssemblyVersion=${{ env.VERSION }}.0 \
+            -p:FileVersion=${{ env.VERSION }}.0 \
+            -o artifacts
+
       - name: Push to NuGet
         run: |
           dotnet nuget push artifacts/Fluxor.${{ github.event.release.tag_name }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
           dotnet nuget push artifacts/Fluxor.Blazor.Web.${{ github.event.release.tag_name }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
           dotnet nuget push artifacts/Fluxor.Blazor.Web.ReduxDevTools.${{ github.event.release.tag_name }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push artifacts/Fluxor.Reactor.Maui.${{ github.event.release.tag_name }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
