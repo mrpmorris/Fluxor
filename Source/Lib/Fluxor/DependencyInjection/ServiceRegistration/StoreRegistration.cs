@@ -2,6 +2,8 @@
 using Fluxor.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Fluxor.DependencyInjection.ServiceRegistration;
 
@@ -25,9 +27,19 @@ internal static class StoreRegistration
 			reducerMethodInfos,
 			options); ;
 		ReducerClassRegistration.Register(services, reducerClassInfos, options);
-		ReducerMethodRegistration.Register(services, reducerMethodInfos, options);
 		EffectClassRegistration.Register(services, effectClassInfos, options);
-		EffectMethodRegistration.Register(services, effectMethodInfos, options);
+
+		var methodHostClassTypes = new HashSet<Type>(
+			ReducerMethodRegistration.GetHostClassTypes(reducerMethodInfos)
+				.Concat(EffectMethodRegistration.GetHostClassTypes(effectMethodInfos)));
+
+		foreach (Type methodHostClassType in methodHostClassTypes)
+		{
+			if (services.Any(x => x.ServiceType == methodHostClassType))
+				continue;
+
+			services.Add(methodHostClassType, options);
+		}
 
 		services.Add<IDispatcher, Dispatcher>(options);
 		// Register IActionSubscriber as an alias to Store
