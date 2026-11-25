@@ -236,7 +236,7 @@ public class DispatchTests : IAsyncLifetime
 	}
 
 	[Fact]
-	public void WhenActionDispatchedListenerThrows_ThenActionsAlreadyQueuedAreDispatchedOnTheNextDispatch()
+	public void WhenActionDispatchedListenerThrows_ThenActionsAlreadyQueuedAreDispatchedBeforeTheExceptionIsPassedOn()
 	{
 		var actionThatThrows = new object();
 		var actionQueuedBehindIt = new object();
@@ -256,6 +256,10 @@ public class DispatchTests : IAsyncLifetime
 		};
 
 		Assert.Throws<InvalidOperationException>(() => dispatcher.Dispatch(actionThatThrows));
+
+		// Already delivered when the exception reaches the caller, without waiting for another Dispatch
+		Assert.Equal(new[] { actionThatThrows, actionQueuedBehindIt }, receivedActions);
+
 		dispatcher.Dispatch(subsequentAction);
 
 		Assert.Equal(3, receivedActions.Count);

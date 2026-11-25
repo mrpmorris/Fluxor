@@ -22,8 +22,9 @@ public class Dispatcher : IDispatcher
 	/// <exception cref="AggregateException">
 	/// Thrown when more than one <see cref="ActionDispatched"/> subscriber call throws while the queue is
 	/// drained; it holds the exceptions in the order they were thrown. A single exception is rethrown
-	/// unchanged (same instance, type and stack trace). Either way it is thrown only after every queued
-	/// action has been delivered.
+	/// unchanged (same instance, type and stack trace). Either way it is thrown once the drain has ended:
+	/// every queued action has been delivered, unless no subscriber remains (for example one unsubscribed
+	/// while throwing), in which case the remaining actions stay queued until a subscriber is added.
 	/// </exception>
 	public event EventHandler<ActionDispatchedEventArgs> ActionDispatched
 	{
@@ -48,8 +49,9 @@ public class Dispatcher : IDispatcher
 	/// <exception cref="AggregateException">
 	/// Thrown when more than one <see cref="ActionDispatched"/> subscriber call throws while the queue is
 	/// drained; it holds the exceptions in the order they were thrown. A single exception is rethrown
-	/// unchanged (same instance, type and stack trace). Either way it is thrown only after every queued
-	/// action has been delivered.
+	/// unchanged (same instance, type and stack trace). Either way it is thrown once the drain has ended:
+	/// every queued action has been delivered, unless no subscriber remains (for example one unsubscribed
+	/// while throwing), in which case the remaining actions stay queued until a subscriber is added.
 	/// </exception>
 	public void Dispatch(object action)
 	{

@@ -27,6 +27,23 @@ public class DispatcherRecoveryTests
 	}
 
 	[Fact]
+	public async Task WhenEffectDispatchesTwoActionsAndTheFirstOnesReducerThrows_ThenTheSecondIsReducedBeforeDispatchReturns()
+	{
+		var dispatcher = new Dispatcher();
+		var store = new Store(dispatcher);
+		var feature = new CounterFeature();
+		feature.AddReducer(new CounterReducer());
+		store.AddFeature(feature);
+		store.AddEffect(new EffectThatEmitsActions(new object[] { new Boom(), new Increment() }));
+		await store.InitializeAsync();
+
+		Assert.Throws<InvalidOperationException>(() => dispatcher.Dispatch(new TestAction()));
+
+		// No further Dispatch: the Increment queued behind the failing Boom must already be reduced
+		Assert.Equal(1, feature.State);
+	}
+
+	[Fact]
 	public void WhenListenerThrows_ThenActionsQueuedBehindItAreDeliveredBeforeDispatchReturns()
 	{
 		var a = new object();
