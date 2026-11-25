@@ -1,5 +1,8 @@
 # Releases
 
+## New in 6.12
+* Dispatcher delivers actions that were queued behind an action whose `ActionDispatched` subscriber threw, before passing the exception on; if more than one subscriber call throws, an `AggregateException` holding them in order is thrown ([#584](https://github.com/mrpmorris/Fluxor/pull/584))
+
 ## New in 6.11
 * Enhance Redux DevTools action naming for nested/inner records ([#575](https://github.com/mrpmorris/Fluxor/issues/575))
 * Release IsDequeuing when an ActionDispatched subscriber throws ([#581](https://github.com/mrpmorris/Fluxor/issues/581))
