@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Fluxor.UnitTests.StoreTests.DispatchTests.SupportFiles;
@@ -184,6 +185,151 @@ public class DispatcherRecoveryTests
 
 		Assert.Throws<InvalidOperationException>(() => dispatcher.Dispatch(a));
 		await otherThread.WaitAsync(timeout);
+
+		lock (received)
+			Assert.Equal(new[] { a, b }, received);
+	}
+
+	[Fact]
+	public void WhenActionIsNull_ThenDispatchThrowsArgumentNullExceptionAndDeliversNothing()
+	{
+		var received = new List<object>();
+		var dispatcher = new Dispatcher();
+		dispatcher.ActionDispatched += (_, args) => received.Add(args.Action);
+
+		var thrown = Assert.Throws<ArgumentNullException>(() => dispatcher.Dispatch(null));
+
+		Assert.Equal("action", thrown.ParamName);
+		Assert.Empty(received);
+	}
+
+	[Fact]
+	public void WhenNullIsDispatchedWithoutSubscribers_ThenItIsRejectedImmediatelyAndNeverQueued()
+	{
+		var dispatcher = new Dispatcher();
+
+		var thrown = Assert.Throws<ArgumentNullException>(() => dispatcher.Dispatch(null));
+		Assert.Equal("action", thrown.ParamName);
+
+		// A queued null would be delivered (and fail) as soon as the first subscriber arrives
+		var received = new List<object>();
+		dispatcher.ActionDispatched += (_, args) => received.Add(args.Action);
+		Assert.Empty(received);
+	}
+
+	[Fact]
+	public async Task WhenSeveralThreadsDispatchAtTheSameTime_ThenListenersNeverRunConcurrentlyAndEveryActionIsDeliveredOnce()
+	{
+		const int threadCount = 4;
+		const int rounds = 300;
+		var timeout = TimeSpan.FromSeconds(5);
+		var deadline = DateTime.UtcNow + TimeSpan.FromSeconds(20);
+
+		for (int round = 0; round < rounds && DateTime.UtcNow < deadline; round++)
+		{
+			int active = 0;
+			int maxActive = 0;
+			int delivered = 0;
+			var dispatcher = new Dispatcher();
+			dispatcher.ActionDispatched += (_, _) =>
+			{
+				int now = Interlocked.Increment(ref active);
+				int seen;
+				while ((seen = Volatile.Read(ref maxActive)) < now && Interlocked.CompareExchange(ref maxActive, now, seen) != seen)
+				{
+				}
+				Thread.SpinWait(2000);
+				Interlocked.Decrement(ref active);
+				Interlocked.Increment(ref delivered);
+			};
+
+			using var barrier = new Barrier(threadCount);
+			var tasks = Enumerable.Range(0, threadCount)
+				.Select(_ => Task.Factory.StartNew(() =>
+				{
+					Assert.True(barrier.SignalAndWait(timeout), "The threads did not meet in time");
+					dispatcher.Dispatch(new object());
+				}, TaskCreationOptions.LongRunning))
+				.ToArray();
+			await Task.WhenAll(tasks).WaitAsync(timeout);
+
+			Assert.Equal(1, maxActive);
+			Assert.Equal(threadCount, delivered);
+		}
+	}
+
+	[Fact]
+	public void WhenTheDrainThreadIsInterruptedOutsideAListener_ThenTheExceptionSurfacesAndALaterDispatchIsStillDelivered()
+	{
+		var timeout = TimeSpan.FromSeconds(5);
+		var a = new object();
+		var b = new object();
+
+		var received = new List<object>();
+		using var listenerEntered = new ManualResetEventSlim();
+		using var releaseListener = new ManualResetEventSlim();
+		using var listenerFinished = new ManualResetEventSlim();
+		var dispatcher = new Dispatcher();
+		dispatcher.ActionDispatched += (_, args) =>
+		{
+			lock (received)
+				received.Add(args.Action);
+			listenerEntered.Set();
+			Assert.True(releaseListener.Wait(timeout), "The listener was not released in time");
+			listenerFinished.Set();
+		};
+
+		// Hold the dispatcher's lock so the drain thread blocks on it between two listener calls,
+		// which is outside the try/catch that surrounds the listener call itself
+		object syncRoot = typeof(Dispatcher)
+			.GetField("SyncRoot", BindingFlags.Instance | BindingFlags.NonPublic)
+			.GetValue(dispatcher);
+
+		Exception drainFailure = null;
+		var drainThread = new Thread(() =>
+		{
+			try
+			{
+				dispatcher.Dispatch(a);
+			}
+			catch (Exception ex)
+			{
+				drainFailure = ex;
+			}
+		});
+		drainThread.Start();
+		try
+		{
+			Assert.True(listenerEntered.Wait(timeout), "The listener was not entered in time");
+
+			Monitor.Enter(syncRoot);
+			try
+			{
+				releaseListener.Set();
+				Assert.True(listenerFinished.Wait(timeout), "The listener did not finish in time");
+
+				// Once the listener has returned, the only thing the drain thread can wait for is our lock
+				var deadline = DateTime.UtcNow + timeout;
+				bool blocked;
+				while (!(blocked = drainThread.ThreadState.HasFlag(ThreadState.WaitSleepJoin)) && DateTime.UtcNow < deadline)
+					Thread.Yield();
+				Assert.True(blocked, "The drain thread never blocked on the lock");
+				drainThread.Interrupt();
+			}
+			finally
+			{
+				Monitor.Exit(syncRoot);
+			}
+			Assert.True(drainThread.Join(timeout), "The drain thread did not finish in time");
+		}
+		finally
+		{
+			releaseListener.Set();
+		}
+
+		Assert.IsType<ThreadInterruptedException>(drainFailure);
+
+		dispatcher.Dispatch(b);
 
 		lock (received)
 			Assert.Equal(new[] { a, b }, received);
