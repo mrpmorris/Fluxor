@@ -15,6 +15,7 @@ jobs:
             8.x
             9.x
             10.x
+            11.x
 
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -28,29 +29,33 @@ jobs:
         run: |
           dotnet build "./Source/" --configuration Release \
             -p:Version=${{ github.event.release.tag_name }} \
+            -p:FluxorTargetNet11=true \
             -p:AssemblyVersion=${{ env.VERSION }}.0 \
             -p:FileVersion=${{ env.VERSION }}.0
 
       - name: Test
-        run: dotnet test "./Source/" --configuration Release --no-build -m:1 -p:TestTfmsInParallel=false
+        run: dotnet test "./Source/" --configuration Release --no-build -m:1 -p:TestTfmsInParallel=false -p:FluxorTargetNet11=true
 
       - name: Pack
         shell: bash
         run: |
           dotnet pack "./Source/Lib/Fluxor/Fluxor.csproj" --configuration Release --no-build \
             -p:Version=${{ github.event.release.tag_name }} \
+            -p:FluxorTargetNet11=true \
             -p:AssemblyVersion=${{ env.VERSION }}.0 \
             -p:FileVersion=${{ env.VERSION }}.0 \
             -o artifacts
 
           dotnet pack "./Source/Lib/Fluxor.Blazor.Web/Fluxor.Blazor.Web.csproj" --configuration Release --no-build \
             -p:Version=${{ github.event.release.tag_name }} \
+            -p:FluxorTargetNet11=true \
             -p:AssemblyVersion=${{ env.VERSION }}.0 \
             -p:FileVersion=${{ env.VERSION }}.0 \
             -o artifacts
 
           dotnet pack "./Source/Lib/Fluxor.Blazor.Web.ReduxDevTools/Fluxor.Blazor.Web.ReduxDevTools.csproj" --configuration Release --no-build \
             -p:Version=${{ github.event.release.tag_name }} \
+            -p:FluxorTargetNet11=true \
             -p:AssemblyVersion=${{ env.VERSION }}.0 \
             -p:FileVersion=${{ env.VERSION }}.0 \
             -o artifacts
