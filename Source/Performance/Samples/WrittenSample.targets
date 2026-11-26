@@ -1,0 +1,49 @@
+<Project>
+
+	<!--
+		Imported by every project that compiles a sample written by Fluxor.Performance.SampleWriter. The samples are not
+		checked in: the writer writes the sample into obj at build time, before compiling. The importing project sets
+		  SampleWriterArguments   which sample: empty for the standard sample (SampleOptions.Default), otherwise the
+		                          writer's size or scaling option and the sample's name
+		  SampleCompileFolder     optional: Base, to compile the code of the separate base assembly (Complex profile)
+		                          instead of the sample itself
+	-->
+
+	<PropertyGroup>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Built first, to write the sample; not referenced by the sample's code. Its path is in @(FluxorSampleWriter). -->
+		<ProjectReference Include="$(MSBuildThisFileDirectory)..\Fluxor.Performance.SampleWriter\Fluxor.Performance.SampleWriter.csproj"
+						  ReferenceOutputAssembly="false"
+						  OutputItemType="FluxorSampleWriter" />
+	</ItemGroup>
+
+	<!--
+		Writes the sample into obj\<configuration>\<framework>\Sample (the base assembly's code, if any, into Sample\Base)
+		and compiles one of the two. The writer leaves files whose text has not changed alone, so the build stays
+		incremental.
+	-->
+	<Target Name="WriteSample" BeforeTargets="BeforeCompile">
+		<PropertyGroup>
+			<!-- IntermediateOutputPath is absolute with dotnet publish -artifacts-path -->
+			<_SampleDirectory>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(IntermediateOutputPath)', 'Sample'))</_SampleDirectory>
+			<_SampleCompileDirectory>$(_SampleDirectory)</_SampleCompileDirectory>
+			<_SampleCompileDirectory Condition="'$(SampleCompileFolder)' != ''">$(_SampleDirectory)\$(SampleCompileFolder)</_SampleCompileDirectory>
+			<_SampleWriterAssembly>@(FluxorSampleWriter)</_SampleWriterAssembly>
+			<_SampleDotNet>$(DOTNET_HOST_PATH)</_SampleDotNet>
+			<_SampleDotNet Condition="'$(_SampleDotNet)' == ''">dotnet</_SampleDotNet>
+		</PropertyGroup>
+		<Error Condition="'$(_SampleWriterAssembly)' == '' and '$(DesignTimeBuild)' != 'true'"
+			   Text="Fluxor.Performance.SampleWriter was not built, so the sample cannot be written" />
+		<Exec Condition="'$(DesignTimeBuild)' != 'true'"
+			  Command="&quot;$(_SampleDotNet)&quot; &quot;$(_SampleWriterAssembly)&quot; $(SampleWriterArguments) --out &quot;$(_SampleDirectory)&quot; --base-out &quot;$(_SampleDirectory)\Base&quot;"
+			  StandardOutputImportance="low" />
+		<ItemGroup>
+			<Compile Include="$(_SampleCompileDirectory)\*.cs" LinkBase="Sample" />
+		</ItemGroup>
+	</Target>
+
+</Project>

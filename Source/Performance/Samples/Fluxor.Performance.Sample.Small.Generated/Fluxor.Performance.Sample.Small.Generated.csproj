@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- The small sample in ..\Small, registered by generated code -->
+	<PropertyGroup>
+		<SampleSize>Small</SampleSize>
+		<SampleRegistration>Generated</SampleRegistration>
+	</PropertyGroup>
+
+	<Import Project="..\SizedSample.targets" />
+
+</Project>

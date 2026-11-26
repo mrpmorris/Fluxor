@@ -12,18 +12,22 @@ internal static class EffectMethodInfoFactory
 		IEnumerable<TypeAndMethodInfo> allCandidateMethods)
 	=>
 		allCandidateMethods
+			.Where(c => c.GeneratedReducerMethod is null)
 			.Select(c =>
-				new
-				{
-					HostClassType = c.Type,
-					c.MethodInfo,
-					EffectAttribute = c.MethodInfo.GetCustomAttribute<EffectMethodAttribute>(false)
-				})
-			.Where(x => x.EffectAttribute is not null)
-			.Select(x =>
-				new EffectMethodInfo(
-					x.HostClassType,
-					x.EffectAttribute, 
-					x.MethodInfo))
+				c.GeneratedEffectMethod is not null
+				? new EffectMethodInfo(c.Type, c.GeneratedEffectMethod)
+				: CreateFromMethodInfo(c))
+			.Where(x => x is not null)
 			.ToArray();
+
+	private static EffectMethodInfo CreateFromMethodInfo(TypeAndMethodInfo candidate)
+	{
+		EffectMethodAttribute effectAttribute = candidate.MethodInfo.GetCustomAttribute<EffectMethodAttribute>(false);
+		return effectAttribute is null
+			? null
+			: new EffectMethodInfo(
+				candidate.Type,
+				effectAttribute,
+				candidate.MethodInfo);
+	}
 }

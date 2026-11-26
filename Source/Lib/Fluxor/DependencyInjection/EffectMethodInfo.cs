@@ -1,4 +1,5 @@
-﻿using Fluxor.Extensions;
+﻿using Fluxor.DependencyInjection.Generated;
+using Fluxor.Extensions;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -11,6 +12,18 @@ internal class EffectMethodInfo
 	public readonly MethodInfo MethodInfo;
 	public readonly Type ActionType;
 	public readonly bool RequiresActionParameterInMethod;
+	public readonly bool IsStatic;
+	// Set when the method is described by generated code; MethodInfo and ActionType are then null
+	public readonly Func<object, int, IEffect> CreateEffect;
+	public readonly int GeneratedIndex;
+
+	public EffectMethodInfo(Type hostClassType, GeneratedEffectMethod generatedEffectMethod)
+	{
+		HostClassType = hostClassType;
+		IsStatic = generatedEffectMethod.IsStatic;
+		CreateEffect = generatedEffectMethod.CreateEffect;
+		GeneratedIndex = generatedEffectMethod.Index;
+	}
 
 	public EffectMethodInfo(
 		Type hostClassType,
@@ -49,5 +62,6 @@ internal class EffectMethodInfo
 		MethodInfo = methodInfo;
 		ActionType = attribute.ActionType ?? methodParameters[0].ParameterType;
 		RequiresActionParameterInMethod = attribute.ActionType is null;
+		IsStatic = methodInfo.IsStatic;
 	}
 }

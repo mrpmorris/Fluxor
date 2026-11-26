@@ -25,6 +25,9 @@
 
 		<ItemGroup>
 				<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+				<ProjectReference Include="..\Fluxor.UnitTests.HandWrittenRegistration\Fluxor.UnitTests.HandWrittenRegistration.csproj" />
+				<ProjectReference Include="..\Fluxor.UnitTests.ScannedSample\Fluxor.UnitTests.ScannedSample.csproj" />
+				<ProjectReference Include="..\Fluxor.UnitTests.GeneratedSample\Fluxor.UnitTests.GeneratedSample.csproj" />
 		</ItemGroup>
 
 </Project>

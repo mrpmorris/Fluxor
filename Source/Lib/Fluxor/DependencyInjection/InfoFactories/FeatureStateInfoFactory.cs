@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Fluxor.DependencyInjection.Generated;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,15 +11,24 @@ internal class FeatureStateInfoFactory
 {
 	internal static FeatureStateInfo[] Create(
 		IServiceCollection services,
-		IEnumerable<Type> allCandidateTypes)
+		IEnumerable<Type> allCandidateTypes,
+		GeneratedRegistrationCatalog catalog)
 	=>
 		allCandidateTypes
-			.Select(x => new
-			{
-				Type = x,
-				FeatureStateAttribute = x.GetCustomAttribute<FeatureStateAttribute>()
-			})
-			.Where(x => x.FeatureStateAttribute is not null)
-			.Select(x => new FeatureStateInfo(x.FeatureStateAttribute, x.Type))
+			.Select(x => Create(x, catalog))
+			.Where(x => x is not null)
 			.ToArray();
+
+	private static FeatureStateInfo Create(Type type, GeneratedRegistrationCatalog catalog)
+	{
+		if (catalog.TryGetEntry(type, out GeneratedTypeEntry entry))
+			return entry.FeatureState is null
+				? null
+				: new FeatureStateInfo(entry.FeatureState);
+
+		FeatureStateAttribute featureStateAttribute = type.GetCustomAttribute<FeatureStateAttribute>();
+		return featureStateAttribute is null
+			? null
+			: new FeatureStateInfo(featureStateAttribute, type);
+	}
 }

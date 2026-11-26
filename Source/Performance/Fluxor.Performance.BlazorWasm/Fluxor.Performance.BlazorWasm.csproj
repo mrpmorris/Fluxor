@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<!--
+		A minimal Blazor WebAssembly app for the start-up benchmark (Fluxor.Performance.BlazorWasm.Benchmark). Which
+		sample it registers is chosen when it is built:
+		  -p:FluxorSampleSize=Small|Medium|Complex|ComplexPlain4000   (default Small; ComplexPlain4000 is the complex
+		    sample with 4,000 plain classes, a sample of the scaling proofs written at build time)
+		  -p:FluxorSample=Scanned|Generated   (default Scanned)
+		Nothing else differs between the builds.
+	-->
+	<PropertyGroup>
+		<FluxorSampleSize Condition="'$(FluxorSampleSize)' == ''">Small</FluxorSampleSize>
+		<FluxorSample Condition="'$(FluxorSample)' == ''">Scanned</FluxorSample>
+		<FluxorSampleProject>..\Samples\Fluxor.Performance.Sample.$(FluxorSampleSize).$(FluxorSample)\Fluxor.Performance.Sample.$(FluxorSampleSize).$(FluxorSample).csproj</FluxorSampleProject>
+		<FluxorSampleProject Condition="!Exists('$(FluxorSampleProject)')">..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.$(FluxorSampleSize).$(FluxorSample)\Fluxor.Performance.Sample.Scaling.$(FluxorSampleSize).$(FluxorSample).csproj</FluxorSampleProject>
+		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+		<!-- [JSImport] interop for performance.mark, usable before the host is built -->
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Lib\Fluxor.Blazor.Web\Fluxor.Blazor.Web.csproj" />
+		<ProjectReference Include="$(FluxorSampleProject)" />
+	</ItemGroup>
+
+	<Target Name="CheckFluxorSample" BeforeTargets="ResolveProjectReferences;Restore;_GenerateRestoreProjectSpec">
+		<Error Condition="!Exists('$(FluxorSampleProject)')"
+			   Text="There is no sample $(FluxorSampleSize).$(FluxorSample): FluxorSampleSize must be Small, Medium, Complex or ComplexPlain4000 and FluxorSample Scanned or Generated" />
+	</Target>
+
+</Project>

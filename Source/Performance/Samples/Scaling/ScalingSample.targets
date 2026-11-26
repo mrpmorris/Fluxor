@@ -1,0 +1,36 @@
+<Project>
+
+	<!--
+		Imported by the projects that compile a sample of the scaling proofs. Each sets ScalingSample (the name of a
+		ScalingSample in Fluxor.Performance.SampleWriter: K1, K2, K4, K8, K1Plain2000, K1Plain4000, K1Plain8000 or
+		ComplexPlain4000) and SampleRegistration: Scanned (reflection scan, no opt-in) or Generated (generated
+		registration). The sample is written into obj at build time (WrittenSample.targets). The base assembly's code
+		of the Complex profile is written to Sample\Base and not compiled here: it is Fluxor.Performance.Sample.ComplexBase.
+	-->
+
+	<!-- In-repo there is no Fluxor package, so import what the package's build folder would -->
+	<Import Project="$(MSBuildThisFileDirectory)..\..\..\Lib\Fluxor\build\Fluxor.props" Condition="'$(SampleRegistration)' != 'Scanned'" />
+
+	<PropertyGroup>
+		<FluxorGenerateRegistration Condition="'$(SampleRegistration)' != 'Scanned'">true</FluxorGenerateRegistration>
+		<SampleWriterArguments>--scaling $(ScalingSample)</SampleWriterArguments>
+	</PropertyGroup>
+
+	<Import Project="$(MSBuildThisFileDirectory)..\WrittenSample.targets" />
+
+	<ItemGroup>
+		<ProjectReference Include="$(MSBuildThisFileDirectory)..\..\..\Lib\Fluxor\Fluxor.csproj" />
+		<ProjectReference Include="$(MSBuildThisFileDirectory)..\..\..\Lib\Fluxor.SourceGenerator\Fluxor.SourceGenerator.csproj"
+						  Condition="'$(SampleRegistration)' != 'Scanned'"
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false" />
+		<!-- The Complex profile's inheritance chains start in a separate assembly that does not opt in -->
+		<ProjectReference Include="$(MSBuildThisFileDirectory)..\Fluxor.Performance.Sample.ComplexBase\Fluxor.Performance.Sample.ComplexBase.csproj"
+						  Condition="'$(ScalingSample)' == 'ComplexPlain4000'" />
+	</ItemGroup>
+
+	<Target Name="CheckScalingSample" BeforeTargets="WriteSample">
+		<Error Condition="'$(ScalingSample)' == ''" Text="Set ScalingSample to the name of a ScalingSample" />
+	</Target>
+
+</Project>

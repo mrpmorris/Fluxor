@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- The medium sample in ..\Medium, scanned by reflection (does not opt in) -->
+	<PropertyGroup>
+		<SampleSize>Medium</SampleSize>
+		<SampleRegistration>Scanned</SampleRegistration>
+	</PropertyGroup>
+
+	<Import Project="..\SizedSample.targets" />
+
+</Project>

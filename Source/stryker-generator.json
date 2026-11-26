@@ -1,0 +1,9 @@
+{
+  "stryker-config": {
+    "project": "Fluxor.SourceGenerator.csproj",
+    "test-projects": [ "Source/Lib/Fluxor.SourceGenerator.UnitTests/Fluxor.SourceGenerator.UnitTests.csproj" ],
+    "configuration": "Release",
+    "reporters": [ "html", "json", "progress", "cleartext" ],
+    "thresholds": { "high": 95, "low": 90, "break": 90 }
+  }
+}

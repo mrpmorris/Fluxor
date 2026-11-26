@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Fluxor.DependencyInjection.Generated;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -36,24 +37,34 @@ internal class AssemblyScanSettings
 				|| !scanExcludeList.Any(excl => excl.Matches(t)))
 			.ToArray();
 
-	public static TypeAndMethodInfo[] FilterMethods(IEnumerable<Type> allCandidateTypes) =>
+	public static TypeAndMethodInfo[] FilterMethods(
+		IEnumerable<Type> allCandidateTypes,
+		GeneratedRegistrationCatalog catalog) =>
 		allCandidateTypes
-			.Select(t =>
-				new
-				{
-					Type = t,
-					Methods = t
-						.GetMethods(
-							BindingFlags.Public
-							| BindingFlags.Instance
-							| BindingFlags.Static
-							| BindingFlags.FlattenHierarchy)
-						.Where(m =>
-							m.GetCustomAttributes(true).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
-				})
-			.SelectMany(x => x.Methods
-				.Select(m => new TypeAndMethodInfo(x.Type, m)))
+			.SelectMany(t =>
+				catalog.TryGetEntry(t, out GeneratedTypeEntry entry)
+				? GetGeneratedMethods(t, entry)
+				: GetReflectedMethods(t))
 			.ToArray();
+
+	// Reducer and effect methods are later filtered into separate lists, so only the order within
+	// each kind matters; the generated entry lists each kind in GetMethods order.
+	private static IEnumerable<TypeAndMethodInfo> GetGeneratedMethods(Type type, GeneratedTypeEntry entry) =>
+		entry.ReducerMethods
+			.Select(m => new TypeAndMethodInfo(type, m))
+			.Concat(entry.EffectMethods
+				.Select(m => new TypeAndMethodInfo(type, m)));
+
+	private static IEnumerable<TypeAndMethodInfo> GetReflectedMethods(Type type) =>
+		type
+			.GetMethods(
+				BindingFlags.Public
+				| BindingFlags.Instance
+				| BindingFlags.Static
+				| BindingFlags.FlattenHierarchy)
+			.Where(m =>
+				m.GetCustomAttributes(true).Any(a => a is ReducerMethodAttribute || a is EffectMethodAttribute))
+			.Select(m => new TypeAndMethodInfo(type, m));
 
 	public override bool Equals(object obj)
 	{

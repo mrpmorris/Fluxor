@@ -9,8 +9,30 @@ internal class EffectWrapper<TAction> : IEffect
 	private delegate Task HandleWithoutActionParameterAsyncHandler(IDispatcher dispatcher);
 	private readonly HandleWithActionParameterAsyncHandler HandleAsync;
 
-	Task IEffect.HandleAsync(object action, IDispatcher dispatcher) => HandleAsync((TAction)action, dispatcher);
+	Task IEffect.HandleAsync(object action, IDispatcher dispatcher) =>
+		HandleAsync is not null
+		? HandleAsync((TAction)action, dispatcher)
+		: HandleWithGeneratedHandler(action, dispatcher);
+
+	// Generated code supplies a typed delegate (Handler) that is called directly: no closure, no other delegate type
+	private Task HandleWithGeneratedHandler(object action, IDispatcher dispatcher) =>
+		Handler is Func<TAction, IDispatcher, Task> handle
+		? handle((TAction)action, dispatcher)
+		: ((Func<IDispatcher, Task>)Handler)(dispatcher);
 	bool IEffect.ShouldReactToAction(object action) => action is TAction;
+
+	// The delegate supplied by generated code, kept so tests can inspect Handler.Method
+	private readonly Delegate Handler;
+
+	public EffectWrapper(Func<TAction, IDispatcher, Task> handle)
+	{
+		Handler = handle ?? throw new ArgumentNullException(nameof(handle));
+	}
+
+	public EffectWrapper(Func<IDispatcher, Task> handle)
+	{
+		Handler = handle ?? throw new ArgumentNullException(nameof(handle));
+	}
 
 	public EffectWrapper(object effectHostInstance, EffectMethodInfo effectMethodInfos)
 	{

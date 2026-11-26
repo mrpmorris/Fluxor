@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- The standard sample (written into obj at build time), scanned by reflection (does not opt in) -->
+	<Import Project="..\Samples\WrittenSample.targets" />
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+	</ItemGroup>
+
+</Project>

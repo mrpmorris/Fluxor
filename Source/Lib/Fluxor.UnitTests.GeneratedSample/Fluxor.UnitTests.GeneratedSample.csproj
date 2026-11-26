@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- In-repo there is no Fluxor package, so import what the package's build folder would -->
+	<Import Project="..\Fluxor\build\Fluxor.props" />
+
+	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<LangVersion>latest</LangVersion>
+		<FluxorGenerateRegistration>true</FluxorGenerateRegistration>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Fluxor\Fluxor.csproj" />
+		<ProjectReference Include="..\Fluxor.UnitTests.ScannedSample\Fluxor.UnitTests.ScannedSample.csproj" />
+		<ProjectReference Include="..\Fluxor.SourceGenerator\Fluxor.SourceGenerator.csproj"
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+</Project>

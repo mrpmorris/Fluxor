@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>Fluxor start-up benchmark</title>
+	<base href="/" />
+	<link rel="preload" id="webassembly" />
+	<script type="importmap"></script>
+	<script>
+		// Set up before Blazor starts, so every long task of the start-up is recorded. The app sets its
+		// performance.marks through fluxorBench.mark and calls fluxorBench.report when it is done.
+		window.fluxorBench = {
+			longTasks: [],
+			shape: null,
+			done: false,
+			observer: null,
+			mark: name => { performance.mark(name); },
+			report: json => {
+				window.fluxorBench.shape = JSON.parse(json);
+				window.fluxorBench.done = true;
+			}
+		};
+		window.fluxorBench.observer = new PerformanceObserver(list => {
+			for (const entry of list.getEntries())
+				window.fluxorBench.longTasks.push({ start: entry.startTime, duration: entry.duration });
+		});
+		window.fluxorBench.observer.observe({ type: 'longtask', buffered: true });
+	</script>
+</head>
+
+<body>
+	<div id="app">Loading...</div>
+	<script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+</body>
+
+</html>

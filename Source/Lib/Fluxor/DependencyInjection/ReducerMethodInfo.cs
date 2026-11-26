@@ -1,4 +1,5 @@
-﻿using Fluxor.Extensions;
+﻿using Fluxor.DependencyInjection.Generated;
+using Fluxor.Extensions;
 using System;
 using System.Reflection;
 
@@ -11,6 +12,19 @@ internal class ReducerMethodInfo
 	public readonly Type StateType;
 	public readonly Type ActionType;
 	public readonly bool RequiresActionParameterInMethod;
+	public readonly bool IsStatic;
+	// Set when the method is described by generated code; MethodInfo and ActionType are then null
+	public readonly Func<object, int, object> CreateReducer;
+	public readonly int GeneratedIndex;
+
+	public ReducerMethodInfo(Type hostClassType, GeneratedReducerMethod generatedReducerMethod)
+	{
+		HostClassType = hostClassType;
+		StateType = generatedReducerMethod.StateType;
+		IsStatic = generatedReducerMethod.IsStatic;
+		CreateReducer = generatedReducerMethod.CreateReducer;
+		GeneratedIndex = generatedReducerMethod.Index;
+	}
 
 	public ReducerMethodInfo(Type hostClassType, ReducerMethodAttribute attribute, MethodInfo methodInfo)
 	{
@@ -39,5 +53,6 @@ internal class ReducerMethodInfo
 		StateType = methodParameters[0].ParameterType;
 		ActionType = attribute.ActionType ?? methodParameters[1].ParameterType;
 		RequiresActionParameterInMethod = attribute.ActionType is null;
+		IsStatic = methodInfo.IsStatic;
 	}
 }

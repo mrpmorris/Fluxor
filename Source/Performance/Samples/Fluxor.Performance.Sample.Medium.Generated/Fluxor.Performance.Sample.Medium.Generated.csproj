@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- The medium sample in ..\Medium, registered by generated code -->
+	<PropertyGroup>
+		<SampleSize>Medium</SampleSize>
+		<SampleRegistration>Generated</SampleRegistration>
+	</PropertyGroup>
+
+	<Import Project="..\SizedSample.targets" />
+
+</Project>

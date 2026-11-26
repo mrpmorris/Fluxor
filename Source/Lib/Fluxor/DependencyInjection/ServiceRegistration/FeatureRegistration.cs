@@ -68,6 +68,8 @@ internal static class FeatureRegistration
 				AddReducers(
 					serviceProvider,
 					featureInstance,
+					info.AddReducer,
+					info.GeneratedStateIndex,
 					reducerClassInfosForStateType,
 					reducerMethodInfosForStateType);
 
@@ -107,16 +109,16 @@ internal static class FeatureRegistration
 			services.Add(info.FeatureInterfaceGenericType, serviceProvider =>
 			{
 				// Create an instance of the implementing type
-				ConstructorInfo featureConstructor =
-				info.FeatureWrapperGenericType.GetConstructor(
-					new Type[] { typeof(FeatureStateInfo) });
-
-				var featureInstance =
-					(IFeature)featureConstructor.Invoke(new object[] { info });
+				IFeature featureInstance =
+					info.CreateFeature is not null
+					? info.CreateFeature(info.GeneratedStateIndex)
+					: CreateFeatureStateWrapper(info);
 
 				AddReducers(
 					serviceProvider,
 					featureInstance,
+					info.AddReducer,
+					info.GeneratedStateIndex,
 					reducerClassInfosForStateType,
 					reducerMethodInfosForStateType);
 
@@ -126,20 +128,38 @@ internal static class FeatureRegistration
 		}
 	}
 
+	private static IFeature CreateFeatureStateWrapper(FeatureStateInfo info)
+	{
+		ConstructorInfo featureConstructor =
+			info.FeatureWrapperGenericType.GetConstructor(
+				new Type[] { typeof(FeatureStateInfo) });
+
+		return (IFeature)featureConstructor.Invoke(new object[] { info });
+	}
+
+	/// <param name="generatedAddReducer">
+	/// The generated typed AddReducer call when the feature is described by generated code, otherwise null
+	/// </param>
+	/// <param name="generatedStateIndex">The index generated code passes to <paramref name="generatedAddReducer"/></param>
 	private static void AddReducers(
 		IServiceProvider serviceProvider,
 		IFeature featureInstance,
+		Action<IFeature, object, int> generatedAddReducer,
+		int generatedStateIndex,
 		IEnumerable<ReducerClassInfo> reducerClassInfosForStateType,
 		IEnumerable<ReducerMethodInfo> reducerMethodInfosForStateType)
 	{
-		MethodInfo featureAddReducerMethodInfo = GetAddReducerMethod(featureInstance.GetType());
+		Action<IFeature, object> addReducer =
+			generatedAddReducer is not null
+			? (feature, reducer) => generatedAddReducer(feature, reducer, generatedStateIndex)
+			: CreateReflectionAddReducer(featureInstance.GetType());
 
 		if (reducerClassInfosForStateType is not null)
 		{
 			foreach (ReducerClassInfo reducerClass in reducerClassInfosForStateType)
 			{
 				object reducerInstance = serviceProvider.GetService(reducerClass.ImplementingType);
-				featureAddReducerMethodInfo.Invoke(featureInstance, new object[] { reducerInstance });
+				addReducer(featureInstance, reducerInstance);
 			}
 		}
 
@@ -148,8 +168,14 @@ internal static class FeatureRegistration
 			foreach (ReducerMethodInfo reducerMethodInfo in reducerMethodInfosForStateType)
 			{
 				object reducerWrapperInstance = ReducerWrapperFactory.Create(serviceProvider, reducerMethodInfo);
-				featureAddReducerMethodInfo.Invoke(featureInstance, new object[] { reducerWrapperInstance });
+				addReducer(featureInstance, reducerWrapperInstance);
 			}
 		}
+	}
+
+	private static Action<IFeature, object> CreateReflectionAddReducer(Type featureImplementingType)
+	{
+		MethodInfo featureAddReducerMethodInfo = GetAddReducerMethod(featureImplementingType);
+		return (feature, reducer) => featureAddReducerMethodInfo.Invoke(feature, new object[] { reducer });
 	}
 }

@@ -1,4 +1,5 @@
-﻿using Fluxor.DependencyInjection.Wrappers;
+﻿using Fluxor.DependencyInjection.Generated;
+using Fluxor.DependencyInjection.Wrappers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,8 @@ internal static class ReducerClassInfoFactory
 {
 	internal static ReducerClassInfo[] Create(
 		IServiceCollection services,
-		IEnumerable<Type> allCandidateTypes)
+		IEnumerable<Type> allCandidateTypes,
+		GeneratedRegistrationCatalog catalog)
 	=>
 		allCandidateTypes
 			.Where(t => t != typeof(ReducerWrapper<,>))
@@ -18,11 +20,16 @@ internal static class ReducerClassInfoFactory
 				new
 				{
 					ImplementingType = t,
-					GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IReducer<>))
+					StateType = GetStateType(t, catalog)
 				})
-			.Where(x => x.GenericParameterTypes is not null)
+			.Where(x => x.StateType is not null)
 			.Select(x => new ReducerClassInfo(
 				implementingType: x.ImplementingType,
-				stateType: x.GenericParameterTypes[0]))
+				stateType: x.StateType))
 			.ToArray();
+
+	private static Type GetStateType(Type type, GeneratedRegistrationCatalog catalog) =>
+		catalog.TryGetEntry(type, out GeneratedTypeEntry entry)
+		? entry.ReducerClassStateType
+		: TypeHelper.GetGenericParametersForImplementedInterface(type, typeof(IReducer<>))?[0];
 }

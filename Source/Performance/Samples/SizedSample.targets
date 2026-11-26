@@ -1,0 +1,30 @@
+<Project>
+
+	<!--
+		Imported by the projects that compile a size sample of the browser benchmark. Each sets SampleSize (Small, Medium
+		or Complex: a SizedSample in Fluxor.Performance.SampleWriter) and SampleRegistration: Scanned (reflection scan, no
+		opt-in) or Generated (generated registration). The sample is written into obj at build time (WrittenSample.targets).
+	-->
+
+	<!-- In-repo there is no Fluxor package, so import what the package's build folder would -->
+	<Import Project="$(MSBuildThisFileDirectory)..\..\Lib\Fluxor\build\Fluxor.props" Condition="'$(SampleRegistration)' != 'Scanned'" />
+
+	<PropertyGroup>
+		<FluxorGenerateRegistration Condition="'$(SampleRegistration)' != 'Scanned'">true</FluxorGenerateRegistration>
+		<SampleWriterArguments>--size $(SampleSize)</SampleWriterArguments>
+	</PropertyGroup>
+
+	<Import Project="$(MSBuildThisFileDirectory)WrittenSample.targets" />
+
+	<ItemGroup>
+		<ProjectReference Include="$(MSBuildThisFileDirectory)..\..\Lib\Fluxor\Fluxor.csproj" />
+		<ProjectReference Include="$(MSBuildThisFileDirectory)..\..\Lib\Fluxor.SourceGenerator\Fluxor.SourceGenerator.csproj"
+						  Condition="'$(SampleRegistration)' != 'Scanned'"
+						  OutputItemType="Analyzer"
+						  ReferenceOutputAssembly="false" />
+		<!-- The Complex sample's inheritance chains start in a separate assembly that does not opt in -->
+		<ProjectReference Include="$(MSBuildThisFileDirectory)Fluxor.Performance.Sample.ComplexBase\Fluxor.Performance.Sample.ComplexBase.csproj"
+						  Condition="'$(SampleSize)' == 'Complex'" />
+	</ItemGroup>
+
+</Project>

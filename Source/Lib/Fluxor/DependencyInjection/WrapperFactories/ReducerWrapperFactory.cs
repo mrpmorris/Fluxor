@@ -13,9 +13,12 @@ internal static class ReducerWrapperFactory
 		Type actionType = info.ActionType;
 
 		Type hostClassType = info.HostClassType;
-		object reducerHostInstance = info.MethodInfo.IsStatic
+		object reducerHostInstance = info.IsStatic
 			? null
 			: serviceProvider.GetService(hostClassType);
+
+		if (info.CreateReducer is not null)
+			return info.CreateReducer(reducerHostInstance, info.GeneratedIndex);
 
 		Type classGenericType = typeof(ReducerWrapper<,>).MakeGenericType(stateType, actionType);
 		var result = Activator.CreateInstance(
