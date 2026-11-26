@@ -15,6 +15,8 @@ public class Store : IStore, IActionSubscriber, IDisposable
 	public Task Initialized => InitializedCompletionSource.Task;
 
 	private object SyncRoot = new object();
+	private readonly object ActivationSyncRoot = new();
+	private Task ActivationTask;
 	private bool Disposed;
 	private readonly IDispatcher Dispatcher;
 	private readonly Dictionary<string, IFeature> FeaturesByName = new(StringComparer.InvariantCultureIgnoreCase);
@@ -108,11 +110,16 @@ public class Store : IStore, IActionSubscriber, IDisposable
 	}
 
 	/// <see cref="IStore.InitializeAsync"/>
-	public async Task InitializeAsync()
+	public Task InitializeAsync()
 	{
-		if (HasActivatedStore)
-			return;
-		await ActivateStoreAsync();
+		// Every caller shares one activation, so a call made while another is still initializing
+		// the middlewares does not initialize them a second time. A failed activation may be retried.
+		lock (ActivationSyncRoot)
+		{
+			if (ActivationTask is null || ActivationTask.IsFaulted || ActivationTask.IsCanceled)
+				ActivationTask = ActivateStoreAsync();
+			return ActivationTask;
+		}
 	}
 
 	public event EventHandler<Exceptions.UnhandledExceptionEventArgs> UnhandledException;
