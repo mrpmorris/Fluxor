@@ -19,6 +19,26 @@ public class UnsubscribeFromAllActionsTests : IAsyncLifetime
 	}
 
 	[Fact]
+	public void WhenSubscriberIsNull_ThenThrowsArgumentNullException()
+	{
+		Assert.Throws<ArgumentNullException>("subscriber", () => Subject.UnsubscribeFromAllActions(null));
+	}
+
+	[Fact]
+	public void WhenSubscriberHasNoSubscriptions_ThenDoesNothing()
+	{
+		var subscribedObject = new object();
+		TestAction receivedAction = null;
+		Subject.SubscribeToAction<TestAction>(subscribedObject, x => receivedAction = x);
+
+		Subject.UnsubscribeFromAllActions(new object());
+		var dispatchedAction = new TestAction();
+		Dispatcher.Dispatch(dispatchedAction);
+
+		Assert.Same(dispatchedAction, receivedAction);
+	}
+
+	[Fact]
 	public void WhenExecuted_ThenOnlyUnsubscribesTheSpecifiedSubscriber()
 	{
 		var subscriber1 = new object();

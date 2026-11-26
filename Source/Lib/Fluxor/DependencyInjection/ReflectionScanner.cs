@@ -22,7 +22,9 @@ internal static class ReflectionScanner
 		totalScanSources += typesToScan?.Count() ?? 0;
 
 		if (totalScanSources < 1)
-			throw new ArgumentException($"Must supply either {typesToScan} or {assembliesToScan}");
+			throw new ArgumentException(
+				$"Must call either {nameof(FluxorOptions)}.{nameof(FluxorOptions.ScanAssemblies)}"
+				+ $" or {nameof(FluxorOptions)}.{nameof(FluxorOptions.ScanTypes)}");
 
 		GetCandidateTypes(
 			assembliesToScan: assembliesToScan,

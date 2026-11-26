@@ -28,3 +28,7 @@ state combined with the changes expected for the action.
 * [Effects](../Source/Tutorials/02-Blazor/02B-EffectsTutorial/)
 * [Middleware](../Source/Tutorials/02-Blazor/02C-MiddlewareTutorial/)
 * [Redux Dev Tools](../Source/Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/)
+
+## Contributing
+
+* [Mutation testing](./mutation-testing.md): checking that the unit tests catch real bugs

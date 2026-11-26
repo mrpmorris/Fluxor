@@ -31,7 +31,7 @@ internal class ReducerMethodInfo
 
 		if (methodInfo.ReturnType != methodParameters[0].ParameterType)
 			throw new ArgumentException(
-				$"Expected reducer method to return type {methodInfo.ReturnType.FullName}. " + methodInfo.GetClassNameAndMethodName(),
+				$"Expected reducer method to return type {methodParameters[0].ParameterType.FullName}. " + methodInfo.GetClassNameAndMethodName(),
 				nameof(methodInfo));
 
 		HostClassType = hostClassType;
