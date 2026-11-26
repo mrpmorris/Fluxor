@@ -1,0 +1,10 @@
+{
+  "stryker-config": {
+    "project": "Fluxor.Blazor.Web.csproj",
+    "test-projects": [ "Source/Lib/Fluxor.Blazor.Web.UnitTests/Fluxor.Blazor.Web.UnitTests.csproj" ],
+    "target-framework": "net10.0",
+    "configuration": "Release",
+    "reporters": [ "html", "json", "progress", "cleartext" ],
+    "thresholds": { "high": 80, "low": 10, "break": 10 }
+  }
+}
