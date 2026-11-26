@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!--
+		Starts the Blazor WebAssembly app (..\Fluxor.Performance.BlazorWasm) in headless Chromium, once per sample
+		size and registration build, and compares the start-up. Runs only on demand (FLUXOR_WASM_BENCHMARK=1): it
+		publishes six variants (two more for the non-Fluxor code comparison) and needs a Playwright browser
+		(pwsh bin/<config>/net10.0/playwright.ps1 install chromium).
+	-->
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+		<PackageReference Include="Microsoft.Playwright" Version="1.64.1" />
+		<PackageReference Include="xunit" Version="2.9.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
+
+	<!-- Where the benchmark finds the app to publish and writes its results -->
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>AppProjectPath</_Parameter1>
+			<_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\Fluxor.Performance.BlazorWasm\Fluxor.Performance.BlazorWasm.csproj'))</_Parameter2>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>ResultsFilePath</_Parameter1>
+			<_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\results\wasm-benchmark.md'))</_Parameter2>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+</Project>

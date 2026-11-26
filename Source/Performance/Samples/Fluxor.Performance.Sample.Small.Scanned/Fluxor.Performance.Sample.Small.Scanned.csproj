@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- The small sample in ..\Small, scanned by reflection (does not opt in) -->
+	<PropertyGroup>
+		<SampleSize>Small</SampleSize>
+		<SampleRegistration>Scanned</SampleRegistration>
+	</PropertyGroup>
+
+	<Import Project="..\SizedSample.targets" />
+
+</Project>

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Does not opt in to generated registration: Fluxor scans it by reflection -->
+	<PropertyGroup>
+		<IsPackable>false</IsPackable>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Fluxor\Fluxor.csproj" />
+	</ItemGroup>
+
+</Project>

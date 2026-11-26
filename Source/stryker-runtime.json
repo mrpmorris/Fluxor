@@ -1,0 +1,25 @@
+{
+  "stryker-config": {
+    "project": "Fluxor.csproj",
+    "test-projects": [ "Source/Lib/Fluxor.UnitTests/Fluxor.UnitTests.csproj" ],
+    "target-framework": "net10.0",
+    "configuration": "Release",
+    "mutate": [
+      "**/DependencyInjection/GeneratedRegistrationCatalog.cs",
+      "**/DependencyInjection/Generated/*.cs",
+      "**/DependencyInjection/InfoFactories/*.cs",
+      "**/DependencyInjection/ServiceRegistration/FeatureRegistration.cs",
+      "**/DependencyInjection/WrapperFactories/*.cs",
+      "**/DependencyInjection/Wrappers/*.cs",
+      "**/DependencyInjection/EffectMethodInfo.cs",
+      "**/DependencyInjection/FeatureClassInfo.cs",
+      "**/DependencyInjection/FeatureStateInfo.cs",
+      "**/DependencyInjection/ReducerMethodInfo.cs",
+      "**/DependencyInjection/TypeAndMethodInfo.cs",
+      "**/DependencyInjection/AssemblyScanSettings.cs",
+      "**/DependencyInjection/ReflectionScanner.cs"
+    ],
+    "reporters": [ "html", "json", "progress", "cleartext" ],
+    "thresholds": { "high": 97, "low": 95, "break": 95 }
+  }
+}

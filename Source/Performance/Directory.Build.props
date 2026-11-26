@@ -1,0 +1,16 @@
+<Project>
+	<!-- Source/Performance is outside Lib, so it does not get Lib's Directory.Build.props -->
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<!--
+			Fluxor.sln does not select these projects for building (they are opt-in, see Source/Directory.Solution.targets),
+			so in a solution build they must build their references themselves
+		-->
+		<OnlyReferenceAndBuildProjectsEnabledInSolutionConfiguration>false</OnlyReferenceAndBuildProjectsEnabledInSolutionConfiguration>
+	</PropertyGroup>
+</Project>

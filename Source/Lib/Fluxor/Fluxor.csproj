@@ -15,6 +15,22 @@
 		</None>
 	</ItemGroup>
 
+	<!-- The source generator ships as an analyzer; the props make the opt-in property visible to it -->
+	<ItemGroup>
+		<ProjectReference Include="..\Fluxor.SourceGenerator\Fluxor.SourceGenerator.csproj">
+			<ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+		</ProjectReference>
+		<None Include="..\Fluxor.SourceGenerator\bin\$(Configuration)\netstandard2.0\Fluxor.SourceGenerator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+		<None Include="build\Fluxor.props" Pack="true" PackagePath="build" />
+		<None Include="buildTransitive\Fluxor.props" Pack="true" PackagePath="buildTransitive" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Fluxor.UnitTests" />
+		<!-- Times GeneratedRegistrationCatalog alone (ScalingTests); test only, as Fluxor.UnitTests -->
+		<InternalsVisibleTo Include="Fluxor.PerformanceTests" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[8.0.0.0,)" />
 	</ItemGroup>

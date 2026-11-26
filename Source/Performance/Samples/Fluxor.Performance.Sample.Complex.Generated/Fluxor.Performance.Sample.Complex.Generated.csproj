@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- The complex sample in ..\Complex, registered by generated code -->
+	<PropertyGroup>
+		<SampleSize>Complex</SampleSize>
+		<SampleRegistration>Generated</SampleRegistration>
+	</PropertyGroup>
+
+	<Import Project="..\SizedSample.targets" />
+
+</Project>

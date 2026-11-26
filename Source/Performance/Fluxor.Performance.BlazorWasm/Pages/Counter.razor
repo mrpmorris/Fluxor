@@ -1,0 +1,64 @@
+@page "/"
+@using System.Globalization
+@using System.Runtime.InteropServices
+@using System.Text.Json
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+<p>Count: <span id="count">@CounterState.Value.Count</span></p>
+<button id="increment" @onclick="Increment">Increment</button>
+
+@code {
+	[Inject]
+	private IState<State000> CounterState { get; set; } = null!;
+
+	[Inject]
+	private IDispatcher Dispatcher { get; set; } = null!;
+
+	[Inject]
+	private IStore Store { get; set; } = null!;
+
+	private bool IsStoreInitialized;
+	private bool IsReported;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		// Marked the moment the store finishes initializing, then rendered again to report
+		Store.Initialized.ContinueWith(
+			_ =>
+			{
+				BenchmarkMarks.Mark(BenchmarkMarks.StoreInitialized);
+				IsStoreInitialized = true;
+				InvokeAsync(StateHasChanged);
+			},
+			TaskContinuationOptions.ExecuteSynchronously);
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+			BenchmarkMarks.Mark(BenchmarkMarks.FirstRender);
+
+		if (!IsStoreInitialized || IsReported)
+			return;
+		IsReported = true;
+
+		// Everything is measured: let the browser finish the task, then read the store (reflection, not measured)
+		await Task.Delay(1);
+		StoreShape shape = StoreShape.Read(Store, typeof(State000).Assembly);
+		BenchmarkMarks.Report(JsonSerializer.Serialize(new
+		{
+			features = shape.Features,
+			reducers = shape.Reducers,
+			effects = shape.Effects,
+			methodReducers = shape.MethodReducers,
+			methodEffects = shape.MethodEffects,
+			generatedReducers = shape.GeneratedReducers,
+			generatedEffects = shape.GeneratedEffects,
+			hasGeneratedRegistration = shape.HasGeneratedRegistration,
+			runtime = $"{RuntimeInformation.FrameworkDescription} {RuntimeInformation.RuntimeIdentifier}"
+		}));
+	}
+
+	private void Increment() => Dispatcher.Dispatch(new State000Action0(1));
+}

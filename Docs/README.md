@@ -28,3 +28,12 @@ state combined with the changes expected for the action.
 * [Effects](../Source/Tutorials/02-Blazor/02B-EffectsTutorial/)
 * [Middleware](../Source/Tutorials/02-Blazor/02C-MiddlewareTutorial/)
 * [Redux Dev Tools](../Source/Tutorials/02-Blazor/02D-ReduxDevToolsTutorial/)
+
+## Performance
+
+* [Generated registration](./generated-registration.md): register states, reducers and effects with
+generated code instead of the reflection scan, for a faster start-up (largest on Blazor WebAssembly)
+
+## Contributing
+
+* [Mutation testing](./mutation-testing.md): how the generated registration's tests are checked with Stryker.NET

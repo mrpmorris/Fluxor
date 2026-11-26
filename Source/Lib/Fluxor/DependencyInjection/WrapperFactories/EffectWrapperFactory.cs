@@ -12,9 +12,12 @@ internal static class EffectWrapperFactory
 		Type actionType = info.ActionType;
 
 		Type hostClassType = info.HostClassType;
-		object effectHostInstance = info.MethodInfo.IsStatic
+		object effectHostInstance = info.IsStatic
 			? null
 			: serviceProvider.GetService(hostClassType);
+
+		if (info.CreateEffect is not null)
+			return info.CreateEffect(effectHostInstance, info.GeneratedIndex);
 
 		Type classGenericType = typeof(EffectWrapper<>).MakeGenericType(actionType);
 		var result = (IEffect)Activator.CreateInstance(

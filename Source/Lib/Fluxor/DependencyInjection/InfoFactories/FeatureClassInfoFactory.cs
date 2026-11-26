@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Fluxor.DependencyInjection.Generated;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +12,24 @@ internal static class FeatureClassInfoFactory
 		IServiceCollection services,
 		IEnumerable<Type> allCandidateTypes,
 		IEnumerable<ReducerClassInfo> reducerClassInfos,
-		IEnumerable<ReducerMethodInfo> reducerMethodInfos)
+		IEnumerable<ReducerMethodInfo> reducerMethodInfos,
+		GeneratedRegistrationCatalog catalog)
 	=>
 		allCandidateTypes
-			.Select(t =>
-				new
-				{
-					ImplementingType = t,
-					GenericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(t, typeof(IFeature<>))
-				})
-			.Where(x => x.GenericParameterTypes is not null)
-			.Select(x => new FeatureClassInfo(
-				implementingType: x.ImplementingType,
-				stateType: x.GenericParameterTypes[0]
-				)
-			)
+			.Select(t => Create(t, catalog))
+			.Where(x => x is not null)
 			.ToArray();
+
+	private static FeatureClassInfo Create(Type type, GeneratedRegistrationCatalog catalog)
+	{
+		if (catalog.TryGetEntry(type, out GeneratedTypeEntry entry))
+			return entry.FeatureClass is null
+				? null
+				: new FeatureClassInfo(implementingType: type, entry.FeatureClass);
+
+		Type[] genericParameterTypes = TypeHelper.GetGenericParametersForImplementedInterface(type, typeof(IFeature<>));
+		return genericParameterTypes is null
+			? null
+			: new FeatureClassInfo(implementingType: type, stateType: genericParameterTypes[0]);
+	}
 }

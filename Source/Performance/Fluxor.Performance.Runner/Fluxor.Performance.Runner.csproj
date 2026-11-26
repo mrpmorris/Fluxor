@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+	</ItemGroup>
+
+	<!--
+		Both samples declare the same types, so the runner never names them: it loads the chosen sample by
+		assembly name and works only with Fluxor's own types.
+	-->
+	<ItemGroup>
+		<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+		<ProjectReference Include="..\Fluxor.Performance.Sample.Generated\Fluxor.Performance.Sample.Generated.csproj" />
+		<ProjectReference Include="..\Fluxor.Performance.Sample.Scanned\Fluxor.Performance.Sample.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Small.Scanned\Fluxor.Performance.Sample.Small.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Small.Generated\Fluxor.Performance.Sample.Small.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Medium.Scanned\Fluxor.Performance.Sample.Medium.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Medium.Generated\Fluxor.Performance.Sample.Medium.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Complex.Scanned\Fluxor.Performance.Sample.Complex.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Complex.Generated\Fluxor.Performance.Sample.Complex.Generated.csproj" />
+	</ItemGroup>
+
+	<!--
+		The samples of the scaling proofs (ScalingTests), written at build time: scaling-<name>-<generated|scanned>.
+		Opt-in (-p:FluxorScalingSamples=true): they are tens of MB of generated code, for timing tests a normal build skips.
+	-->
+	<ItemGroup Condition="'$(FluxorScalingSamples)' == 'true'">
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K1.Scanned\Fluxor.Performance.Sample.Scaling.K1.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K1.Generated\Fluxor.Performance.Sample.Scaling.K1.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K2.Scanned\Fluxor.Performance.Sample.Scaling.K2.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K2.Generated\Fluxor.Performance.Sample.Scaling.K2.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K4.Scanned\Fluxor.Performance.Sample.Scaling.K4.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K4.Generated\Fluxor.Performance.Sample.Scaling.K4.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K8.Scanned\Fluxor.Performance.Sample.Scaling.K8.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K8.Generated\Fluxor.Performance.Sample.Scaling.K8.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K1Plain2000.Scanned\Fluxor.Performance.Sample.Scaling.K1Plain2000.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K1Plain2000.Generated\Fluxor.Performance.Sample.Scaling.K1Plain2000.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K1Plain4000.Scanned\Fluxor.Performance.Sample.Scaling.K1Plain4000.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K1Plain4000.Generated\Fluxor.Performance.Sample.Scaling.K1Plain4000.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K1Plain8000.Scanned\Fluxor.Performance.Sample.Scaling.K1Plain8000.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K1Plain8000.Generated\Fluxor.Performance.Sample.Scaling.K1Plain8000.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.ComplexPlain4000.Scanned\Fluxor.Performance.Sample.Scaling.ComplexPlain4000.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.ComplexPlain4000.Generated\Fluxor.Performance.Sample.Scaling.ComplexPlain4000.Generated.csproj" />
+	</ItemGroup>
+
+</Project>

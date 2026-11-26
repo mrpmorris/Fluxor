@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- The complex sample in ..\Complex, scanned by reflection (does not opt in) -->
+	<PropertyGroup>
+		<SampleSize>Complex</SampleSize>
+		<SampleRegistration>Scanned</SampleRegistration>
+	</PropertyGroup>
+
+	<Import Project="..\SizedSample.targets" />
+
+</Project>

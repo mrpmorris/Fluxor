@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!--
+		The first level of the Complex sample's inheritance chains (the writer's base assembly code of the complex size,
+		written into obj at build time), in a separate assembly that does not opt in to generated registration
+	-->
+	<PropertyGroup>
+		<SampleWriterArguments>--size complex</SampleWriterArguments>
+		<SampleCompileFolder>Base</SampleCompileFolder>
+	</PropertyGroup>
+
+	<Import Project="..\WrittenSample.targets" />
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Lib\Fluxor\Fluxor.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- The scaling sample K1 (written into obj at build time), scanned by reflection (does not opt in) -->
+	<PropertyGroup>
+		<ScalingSample>K1</ScalingSample>
+		<SampleRegistration>Scanned</SampleRegistration>
+	</PropertyGroup>
+
+	<Import Project="..\ScalingSample.targets" />
+
+</Project>

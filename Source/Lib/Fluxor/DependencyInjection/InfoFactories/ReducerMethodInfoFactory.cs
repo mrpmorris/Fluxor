@@ -12,17 +12,22 @@ internal static class ReducerMethodInfoFactory
 		IEnumerable<TypeAndMethodInfo> allCandidateMethods)
 	=>
 		allCandidateMethods
+			.Where(c => c.GeneratedEffectMethod is null)
 			.Select(c =>
-				new
-				{
-					HostClassType = c.Type, 
-					c.MethodInfo,
-					ReducerAttribute = c.MethodInfo.GetCustomAttribute<ReducerMethodAttribute>(false)
-				})
-			.Where(x => x.ReducerAttribute is not null)
-			.Select(x => new ReducerMethodInfo(
-				x.HostClassType,
-				x.ReducerAttribute,
-				x.MethodInfo))
+				c.GeneratedReducerMethod is not null
+				? new ReducerMethodInfo(c.Type, c.GeneratedReducerMethod)
+				: CreateFromMethodInfo(c))
+			.Where(x => x is not null)
 			.ToArray();
+
+	private static ReducerMethodInfo CreateFromMethodInfo(TypeAndMethodInfo candidate)
+	{
+		ReducerMethodAttribute reducerAttribute = candidate.MethodInfo.GetCustomAttribute<ReducerMethodAttribute>(false);
+		return reducerAttribute is null
+			? null
+			: new ReducerMethodInfo(
+				candidate.Type,
+				reducerAttribute,
+				candidate.MethodInfo);
+	}
 }

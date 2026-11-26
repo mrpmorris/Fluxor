@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+		<PackageReference Include="xunit" Version="2.9.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="3.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
+	</ItemGroup>
+
+	<!-- The browser benchmark's store shape reader -->
+	<ItemGroup>
+		<Compile Include="..\Fluxor.Performance.BlazorWasm\StoreShape.cs" Link="Shared\StoreShape.cs" />
+	</ItemGroup>
+
+	<!-- The size samples, two builds each; they declare the same types, so the tests load them by assembly name -->
+	<ItemGroup>
+		<ProjectReference Include="..\..\Lib\Fluxor\Fluxor.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Small.Scanned\Fluxor.Performance.Sample.Small.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Small.Generated\Fluxor.Performance.Sample.Small.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Medium.Scanned\Fluxor.Performance.Sample.Medium.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Medium.Generated\Fluxor.Performance.Sample.Medium.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Complex.Scanned\Fluxor.Performance.Sample.Complex.Scanned.csproj" />
+		<ProjectReference Include="..\Samples\Fluxor.Performance.Sample.Complex.Generated\Fluxor.Performance.Sample.Complex.Generated.csproj" />
+	</ItemGroup>
+
+	<!--
+		The generated scaling samples, whose GeneratedRegistrationCatalog ScalingTests times in this process. Opt-in, as in
+		Fluxor.Performance.Runner (-p:FluxorScalingSamples=true); without it ScalingTests skip and say how to enable them.
+	-->
+	<ItemGroup Condition="'$(FluxorScalingSamples)' == 'true'">
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K1.Generated\Fluxor.Performance.Sample.Scaling.K1.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K2.Generated\Fluxor.Performance.Sample.Scaling.K2.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K4.Generated\Fluxor.Performance.Sample.Scaling.K4.Generated.csproj" />
+		<ProjectReference Include="..\Samples\Scaling\Fluxor.Performance.Sample.Scaling.K8.Generated\Fluxor.Performance.Sample.Scaling.K8.Generated.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Fluxor.Performance.SampleWriter\Fluxor.Performance.SampleWriter.csproj" />
+		<!-- Built so the tests can start it as a separate process; not referenced by the test code -->
+		<ProjectReference Include="..\Fluxor.Performance.Runner\Fluxor.Performance.Runner.csproj"
+						  ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
+	<!-- Where the tests find the runner and write the scaling results -->
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>Configuration</_Parameter1>
+			<_Parameter2>$(Configuration)</_Parameter2>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>RunnerPath</_Parameter1>
+			<_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\Fluxor.Performance.Runner\bin\$(Configuration)\$(TargetFramework)\Fluxor.Performance.Runner.dll'))</_Parameter2>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>ScalingResultsPath</_Parameter1>
+			<_Parameter2>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\results\scaling.md'))</_Parameter2>
+		</AssemblyAttribute>
+		<!-- Recorded in the results: the SDK that built the tests, the runner and the samples -->
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>ScalingSamples</_Parameter1>
+			<_Parameter2>$(FluxorScalingSamples)</_Parameter2>
+		</AssemblyAttribute>
+		<AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>SdkVersion</_Parameter1>
+			<_Parameter2>$(NETCoreSdkVersion)</_Parameter2>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+</Project>

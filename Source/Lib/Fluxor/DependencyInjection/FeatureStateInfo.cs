@@ -1,4 +1,5 @@
-﻿using Fluxor.DependencyInjection.Wrappers;
+﻿using Fluxor.DependencyInjection.Generated;
+using Fluxor.DependencyInjection.Wrappers;
 using System;
 using System.Reflection;
 
@@ -11,6 +12,23 @@ internal class FeatureStateInfo
 	public readonly Type FeatureInterfaceGenericType;
 	public readonly Type FeatureWrapperGenericType;
 	public readonly Func<object> CreateInitialStateFunc;
+	// Set when the state is described by generated code; the attribute, wrapper type and
+	// initial state factory are then null because the generated code creates the feature itself
+	public readonly Func<int, IFeature> CreateFeature;
+	public readonly Action<IFeature, object, int> AddReducer;
+	public readonly int GeneratedStateIndex;
+
+	public FeatureStateInfo(GeneratedFeatureState generatedFeatureState)
+	{
+		if (generatedFeatureState is null)
+			throw new ArgumentNullException(nameof(generatedFeatureState));
+
+		StateType = generatedFeatureState.StateType;
+		FeatureInterfaceGenericType = generatedFeatureState.FeatureInterfaceType;
+		CreateFeature = generatedFeatureState.CreateFeature;
+		AddReducer = generatedFeatureState.AddReducer;
+		GeneratedStateIndex = generatedFeatureState.StateIndex;
+	}
 
 	public FeatureStateInfo(
 		FeatureStateAttribute featureStateAttribute,

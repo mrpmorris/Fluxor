@@ -1,0 +1,23 @@
+<Project>
+
+	<!--
+		The performance projects (Source/Performance) are in Fluxor.sln but not selected for building, so a plain
+		dotnet build or dotnet test of the solution skips them: they need no restore, build or test in a normal run.
+		-p:FluxorPerformance=true adds them to the solution build (and to restore and test), except the scaling samples,
+		which also need -p:FluxorScalingSamples=true (it implies FluxorPerformance).
+	-->
+	<PropertyGroup>
+		<FluxorPerformance Condition="'$(FluxorScalingSamples)' == 'true'">true</FluxorPerformance>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(FluxorPerformance)' == 'true'">
+		<_FluxorPerformanceProject Include="$(MSBuildThisFileDirectory)Performance\**\*.csproj"
+								   Exclude="$(MSBuildThisFileDirectory)Performance\**\bin\**;$(MSBuildThisFileDirectory)Performance\**\obj\**;$(MSBuildThisFileDirectory)Performance\Samples\Scaling\**" />
+		<ProjectReference Include="@(_FluxorPerformanceProject->'%(FullPath)')"
+						  AdditionalProperties="Configuration=$(Configuration); Platform=AnyCPU"
+						  Configuration="$(Configuration)"
+						  Platform="AnyCPU"
+						  SkipNonexistentProjects="False" />
+	</ItemGroup>
+
+</Project>
