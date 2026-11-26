@@ -33,15 +33,15 @@ not contain any JSON tokens". To fix it, update Visual Studio, then delete `Sour
 
 ## What is mutated
 
-| Library | Config | Tests used | Score when added | `break` |
+| Library | Config | Tests used | Score | `break` |
 |---|---|---|---|---|
-| Fluxor | `Source/stryker-fluxor.json` | Fluxor.UnitTests | 70.3–70.7 % | 70 |
+| Fluxor | `Source/stryker-fluxor.json` | Fluxor.UnitTests | 80.72 % (70.5 % when added) | 80 |
 | Fluxor.Blazor.Web | `Source/stryker-blazor-web.json` | Fluxor.Blazor.Web.UnitTests | 14.68 % | 10 |
 | Fluxor.Blazor.Web.ReduxDevTools | `Source/stryker-reduxdevtools.json` | Fluxor.Blazor.Web.ReduxDevTools.UnitTests | 15.18 % | 15 |
 
 Stryker needs one target framework for multi-targeted projects, so the configs use `net10.0`. A run fails
-when its score drops below `break`. That threshold is the score when the config was added, rounded down to
-a multiple of 5, so it catches regressions without failing on today's gaps.
+when its score drops below `break`. That threshold is the latest score rounded down to a multiple of 5, so
+it catches regressions without failing on today's gaps.
 
 ## Working with survivors
 
