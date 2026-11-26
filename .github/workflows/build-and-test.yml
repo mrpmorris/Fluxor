@@ -17,18 +17,19 @@ jobs:
             8.x
             9.x
             10.x
+            11.x
 
       - name: Check out repository code
         uses: actions/checkout@v4
 
       - name: Build
-        run: dotnet build "./Source/" --configuration DEBUG
+        run: dotnet build "./Source/" --configuration DEBUG -p:FluxorTargetNet11=true
 
       - name: Test
-        run: dotnet test "./Source/" --configuration DEBUG --no-build -m:1 -p:TestTfmsInParallel=false
+        run: dotnet test "./Source/" --configuration DEBUG --no-build -m:1 -p:TestTfmsInParallel=false -p:FluxorTargetNet11=true
 
       - name: Build
-        run: dotnet build "./Source/" --configuration Release
+        run: dotnet build "./Source/" --configuration Release -p:FluxorTargetNet11=true
 
       - name: Test
-        run: dotnet test "./Source/" --configuration Release --no-build -m:1 -p:TestTfmsInParallel=false
+        run: dotnet test "./Source/" --configuration Release --no-build -m:1 -p:TestTfmsInParallel=false -p:FluxorTargetNet11=true

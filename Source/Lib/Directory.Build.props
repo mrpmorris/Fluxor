@@ -16,6 +16,22 @@
 		<DebugType>embedded</DebugType>
 	</PropertyGroup>
 
+	<!--
+		net11.0 is added only when the SDK can build it, so machines with just the .NET 10 SDK still build.
+		The .NET 11 SDK's resolver sets NETCoreSdkVersion before this file is read, both under the dotnet CLI
+		and in Visual Studio. Older SDKs set it later, so here it is empty and the version is read from the
+		SDK folder name instead (e.g. ...\sdk\10.0.404; in Visual Studio that folder is "Bin", which leaves
+		net11.0 off, correctly, because the SDK is older than 11).
+		CI and release pass -p:FluxorTargetNet11=true so a missing SDK fails the build instead of
+		silently shipping without net11.0; -p:FluxorTargetNet11=false opts out.
+	-->
+	<PropertyGroup>
+		<_FluxorSdkVersion Condition="'$(_FluxorSdkVersion)' == ''">$(NETCoreSdkVersion)</_FluxorSdkVersion>
+		<_FluxorSdkVersion Condition="'$(_FluxorSdkVersion)' == ''">$([System.IO.Path]::GetFileName('$(MSBuildBinPath)'))</_FluxorSdkVersion>
+		<FluxorTargetNet11 Condition="'$(FluxorTargetNet11)' == '' and $([System.Text.RegularExpressions.Regex]::IsMatch('$(_FluxorSdkVersion)', '^\d+\.\d+'))">$([MSBuild]::VersionGreaterThanOrEquals('$(_FluxorSdkVersion)', '11.0'))</FluxorTargetNet11>
+		<TargetFrameworks Condition="'$(FluxorTargetNet11)' == 'true'">$(TargetFrameworks);net11.0</TargetFrameworks>
+	</PropertyGroup>
+
 	<PropertyGroup>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
