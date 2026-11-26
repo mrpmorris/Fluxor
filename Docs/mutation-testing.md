@@ -35,7 +35,7 @@ not contain any JSON tokens". To fix it, update Visual Studio, then delete `Sour
 
 | Library | Config | Tests used | Score | `break` |
 |---|---|---|---|---|
-| Fluxor | `Source/stryker-fluxor.json` | Fluxor.UnitTests | 80.72 % (70.5 % when added) | 80 |
+| Fluxor | `Source/stryker-fluxor.json` | Fluxor.UnitTests | 89.56 % (70.5 % when added) | 85 |
 | Fluxor.Blazor.Web | `Source/stryker-blazor-web.json` | Fluxor.Blazor.Web.UnitTests | 14.68 % | 10 |
 | Fluxor.Blazor.Web.ReduxDevTools | `Source/stryker-reduxdevtools.json` | Fluxor.Blazor.Web.ReduxDevTools.UnitTests | 15.18 % | 15 |
 
@@ -52,3 +52,28 @@ For each surviving or uncovered mutant, either:
 2. if the mutant cannot change behaviour (equivalent), note why in the pull request.
 
 When a score goes up, raise that config's `break` to the new score rounded down to a multiple of 5.
+
+### Fluxor survivors already reviewed
+
+These remain on purpose. A test cannot kill them, or killing them would mean testing timing or internals:
+
+* **Dead code:** `AssemblyScanSettings.Equals`/`GetHashCode` (never called), `Store.ReversedMiddlewares`
+  (written, never read), `StateSelection.cs:63-64` (unreachable, see the selection bug below).
+* **Equivalent:**
+  * Choosing the static or the instance path for a static reducer or effect method. Creating the delegate
+    with a `null` target works for static methods either way.
+  * `Any` vs `All` and the `inherit` flag in `AssemblyScanSettings.FilterMethods`. The factories filter by
+    attribute again.
+  * The middleware registered twice (`FluxorOptions.AddMiddleware` and `AddFluxor`).
+  * `InitializedCompletionSource.TrySetResult(true/false)`. `Initialized` is exposed as a plain `Task`.
+  * `Store.Dispose` setting `Disposed`. Unsubscribing twice is harmless.
+* **Not reachable through the public API:** null checks in internal classes (`ActionSubscriber.Notify`,
+  `FeatureStateInfo`, `MethodInfoExtensions`).
+* **Timing:** `ThrottledInvoker` boundaries (`>=` vs `>`, `Task.Yield`, the delay loop). Tests for these would
+  depend on timing and be flaky.
+* **Undecided behaviour:** `ReducerMethodInfoFactory`/`EffectMethodInfoFactory` read the attribute with
+  `inherit: false`. So an override of a `[ReducerMethod]`/`[EffectMethod]` method without the attribute is
+  ignored, and no test pins whether that is intended.
+* **Known bug:** a callback passed to `IStateSelection.Select(..., selectedValueChanged:)` alone never fires.
+  The test is skipped until upstream decides how a callback-only selection should unsubscribe
+  ([#586](https://github.com/mrpmorris/Fluxor/issues/586)).
